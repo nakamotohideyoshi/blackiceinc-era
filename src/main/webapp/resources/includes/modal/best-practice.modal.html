@@ -1,0 +1,18 @@
+<div class="md-modal md-effect-7 modal-width-80" style="top: 60%;">
+<div class="md-content">
+   <div class="modal-content">
+      <div class="modal-header">
+         <button type="button" class="close" ng-click="CloseModal()" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i> </button>
+         <h4 class="modal-title" id="myModalLabel"> Best Practice Details</h4>
+      </div>
+      <div class="modal-body" style="font-size: 15px;">
+      	<h6>Best Practice Name</h6>
+      	<p>{{bp.bpName}}</p><br>
+      	<h6>Best Practice Description</h6>
+         <textarea rows="10" class="custom-scroll " style="width: 100%;resize: vertical;" readonly ng-model="bp.bpDescription"></textarea>
+      	<h6>Comment</h6>
+      	<p>{{bp.bpComment}}</p>
+      </div>
+   </div>
+</div>
+</div>

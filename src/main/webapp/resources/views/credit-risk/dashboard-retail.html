@@ -1,0 +1,325 @@
+<div ng-controller="RetailController">
+    <div class="row">
+        <div class="col-md-12" style="margin-bottom: 20px;">
+            <div class="table-responsive">
+
+                <table class="table  smart-form">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <div class="lb">Credit Risk</div>
+                            <div class="fm">
+                                <label class="select">
+                                    <select class="input-sm"
+                                            ng-model="mode"
+                                            ng-change="ChangeView(mode)">
+                                        <option value="wholesale">Wholesale</option>
+                                        <option value="retail">Retail</option>
+                                    </select> <i></i>
+                                </label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="lb">Scenario</div>
+                            <div class="fm">
+                                <label class="select" ng-class="{ 'has-success' : QueryParams.scenario }">
+                                    <select class="form-control input-sm"
+                                            ng-model="QueryParams.scenario"
+                                            ng-change="FilterTable()">
+                                        <option value="RC">RC</option>
+                                        <option value="EC">EC</option>
+                                    </select> <i></i>
+                                </label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="lb">Asset Class</div>
+                            <div class="fm">
+                                <label class="select"
+                                       ng-class="{ 'has-success' : QueryParams.asset_class }">
+                                    <select class="form-control input-sm"
+                                            ng-model="QueryParams.asset_class"
+                                            ng-change="FilterTable()"
+                                            ng-options="o.asset_class as o.asset_class for o in filterOptions.asset_class">
+                                        <option value="">All</option>
+                                    </select> <i></i>
+                                </label>
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="lb">Geography</div>
+                            <div class="fm">
+                                <label class="select"
+                                       ng-class="{ 'has-success' : QueryParams.province}">
+                                    <select class="form-control input-sm"
+                                            ng-model="QueryParams.province"
+                                            ng-change="FilterTable()"
+                                            ng-options="o.province as o.province for o in filterOptions.province">
+                                        <option value="">All</option>
+                                    </select> <i></i>
+                                </label>
+                            </div>
+                        </td>
+                        <!-- -->
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="lb">Snaphot Date</div>
+                            <div class="fm">
+                                <label class="select"
+                                       ng-class="{ 'has-success' : QueryParams.snapshot_date }">
+                                    <select class="form-control input-sm"
+                                            ng-model="QueryParams.snapshot_date"
+                                            ng-change="FilterTable()"
+                                            ng-options="o.snapshotDate as o.snapshotDate for o in filterOptions.snapshotDate">
+                                        <option value="">All</option>
+                                    </select> <i></i>
+                                </label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="lb">Treatment</div>
+                            <div class="fm">
+                                <label class="select"
+                                       ng-class="{ 'has-success' : QueryParams.treatment }">
+                                    <select class="form-control input-sm"
+                                            data-ng-model="QueryParams.treatment"
+                                            data-ng-change="FilterTable()">
+                                        <option value="AIRB" selected>AIRB</option>
+                                        <option value="FIRB">FIRB</option>
+                                        <option value="STD">STD</option>
+                                    </select><i></i>
+                                </label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="lb">Exposure Type</div>
+                            <div class="fm">
+                                <label class="select"
+                                       ng-class="{ 'has-success' : QueryParams.exposure_type }">
+                                    <select class="form-control input-sm"
+                                            ng-model="QueryParams.exposure_type"
+                                            ng-change="FilterTable()"
+                                            ng-options="o.exposure_type as o.exposure_type for o in filterOptions.exposure_type">
+                                        <option value="">All</option>
+                                    </select> <i></i>
+                                </label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="lb">Account Type</div>
+                            <div class="fm">
+                                <label class="select"
+                                       ng-class="{ 'has-success' : QueryParams.account_type }"> <select
+                                        class="form-control input-sm" ng-model="QueryParams.account_type"
+                                        ng-change="FilterTable()"
+                                        ng-options="o.acc_type as o.acc_type for o in filterOptions.account_type">
+                                    <option value="">All</option>
+
+
+                                </select> <i></i>
+                                </label>
+                            </div>
+                        </td>
+                        <!-- -->
+                    </tr>
+                    </tbody>
+                </table>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <!-- <div class="col-md-12"> -->
+
+        <table class="table table-bordered"
+               style="width: 375px;float: right;margin-right: 15px;position: absolute;right: 0px;">
+            <thead>
+            <tr>
+                <td style="width:110px;padding: 5px 6px;font-weight: bold;">Notional Total</td>
+                <td style="width:110px;padding: 5px 6px;font-weight: bold;">RWA Total</td>
+                <td style="width:155px;padding: 5px 6px;font-weight: bold;">Expected Loss Total</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="color-01" style="width:110px;padding: 5px 6px;">{{ (Retail.TotalSum.notional|number:0)||
+                    'n/a '}}
+                </td>
+                <td class="color-01" style="width:110px;padding: 5px 6px;">{{ (Retail.TotalSum.RWA |number:0)||'n/a '}}
+                </td>
+                <td class="color-01" style="width:155px;padding: 5px 6px;">{{ (Retail.TotalSum.expected |number:0)||'n/a'}}
+                </td>
+            </tr>
+            </tbody>
+
+        </table>
+
+        <!-- </div> -->
+        <div class="col-md-12" style="margin-bottom:10px">
+            <button type="submit" class="btn btn-primary btn-sm" ng-click="ChangeView()"> Wholesale /
+                Retail
+            </button>
+            <button type="submit" class="btn btn-primary btn-sm" ng-click="RegulatoryEcon()"> Regulatory / Economic
+                Capital
+            </button>
+            <button type="submit" class="btn btn-primary btn-sm" ng-click="Calculate()"> Reset and Calculate RWA / EL
+            </button>
+        </div>
+        <div class="col-md-12" style="margin-bottom:10px">
+            <button type="submit" ng-click="FilterTable()" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>
+                Search
+            </button>
+            <a class="btn btn-default btn-sm" href="javascript:void(0);" ng-click="ResetFilter()"><i
+                    class="fa fa-refresh"></i> Reset</a>
+            <a href="javascript:void(0);" ng-click="saveToBookmark()" class="btn btn-default btn-sm"
+               ng-class="{'disabled' : isEmpty(QueryParams) }"> <i class="fa fa-save"></i> Save to Bookmark </a>
+            <a href="javascript:void(0);" ng-click="OpenModal()" class="btn btn-default btn-sm"><i
+                    class="glyphicon glyphicon-bookmark"></i> Open Bookmarks </a>
+            <a href="javascript:void(0);" ng-click="graph()" class="btn btn-default btn-sm "><i
+                    class="fa  fa-file-pdf-o"></i> Graphs </a>
+        </div>
+        <div class="col-md-12 dataTables_wrapper">
+
+            <div class="dt-toolbar no-padding">
+                <div class="spinner-indicator">
+                    <div class="v-loading-indicator second v-loading-indicator-delay"></div>
+                </div>
+            </div>
+            <div class="wrapper small ">
+
+                <table ng-float-head
+                       class="table table-bordered table-striped  table-hover  sortable"
+                       style="min-width: 0px; border: none; table-layout: auto;">
+                    <colgroup>
+                        <col style="width: 102px">
+                        <!-- Snapshot Date -->
+                        <col style="width: 85px">
+                        <!-- Treatment -->
+                        <col style="width: 100px">
+                        <!-- Asset Class -->
+                        <col style="width: 106px">
+                        <!-- Exposure Type -->
+
+                        <col style="width: 85px">
+                        <!--Correlation Factor -->
+                        <col style="width: 85px">
+                        <!--Confidence -->
+                        <col style="width: 85px">
+                        <!--K - Capital Req -->
+
+                        <col style="width: 85px">
+                        <!-- RWA Amount -->
+
+
+                        <col style="width: 150px">
+                        <!-- PD -->
+                        <col style="width: 85px">
+                        <!-- LGD -->
+                        <col style="width: 120px">
+                        <!-- EAD -->
+                        <col style="width: 85px">
+                        <!-- Expected Loss Amount -->
+
+                        <col style="width: 120px">
+                        <!-- Acc Type -->
+
+                        <col style="width: 185px">
+                        <!-- Customer -->
+                        <col style="width: 50px">
+                        <!--Geography -->
+                        <col style="width: 50px">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <!-- <th class="">ID</th> -->
+                        <th class="" style="border-left: none;">Snapshot Date</th>
+                        <th class="">Treatment</th>
+                        <th class="">Asset Class</th>
+                        <th class="">Exposure Type</th>
+
+                        <th class="">Correlation Factor</th>
+                        <th class="">Confidence</th>
+                        <th class="" style="padding-right: 20px;" header-popover header-img-url="resources/img/formulas/Capital_Requirement_Retail.png">K - Capital Req 
+                        </th>
+                        <th class="color-01" header-popover header-img-url="resources/img/formulas/RWA_Retail.png">RWA Amount</th>
+
+
+                        <th class="">PD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                        <th class="">LGD&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                        <th class="color-01">EAD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                        <th class="color-01" header-popover header-img-url="resources/img/formulas/Expected_Loss_Retail.png">Expected Loss Amount</th>
+
+
+                        <th class="">Account Type</th>
+                        <th class="">Customer</th>
+                        <th class="">Geography</th>
+                        <th>Scenario</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="row in Retail.list"
+                        ng-class="{ 'success' : row.$edit , 'danger' : row.newItem.$error}">
+
+                        <td>{{ row.snapshotDate }}</td>
+                        <td>{{ row.rwaTreatmentCode }}</td>
+                        <td>{{ row.exposureClassCode }}</td>
+                        <td>{{ row.exposureTypeCode }}</td>
+
+                        <td>{{row.correlation}}</td>
+                        <td>{{row.confidenceInterval}}</td>
+                        <td>{{row.kCapitalRequirementFactor}}</td>
+
+                        <td class="color-01">{{row.postSecuritizedRwaLcyAmt |
+                            number:0 }}
+                        </td>
+
+                        <td>{{ row.probabilityOfDefault }}</td>
+                        <td>{{ row.lossGivenDefault }}</td>
+                        <td class="color-01">{{ row.postSecuritizedEadLcyAmt |
+                            number:0 }}
+                        </td>
+                        <td class="color-01">
+                            <div ng-if="!row.$$loading">{{ row.postSecuritizationExpectedLossLcyAmt |
+                                number:0 }}
+                            </div>
+                            <div ng-if="row.$$loading">0</div>
+                        </td>
+
+                        <td>{{ row.account.accountTypeCode }}</td>
+                        <td>{{ row.account.customer.firstName+" "+row.account.customer.lastName }}</td>
+
+                        <td>{{ row.account.customer.provinceStateCode }}</td>
+                        <td>{{ row.scenario }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="md-modal md-effect-9 modal-width-75" id="retailGraphModal">
+        <div class="md-content">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" ng-click="closeGraphModal()"
+                            data-dismiss="modal" aria-hidden="true">
+                        <i class="fa fa-times"></i>
+                    </button>
+                    <div class="modal-title font-md">
+                        Measurement Sensitivity - RWA Amount / Expected Loss Amount
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div id="retail-chart" class="chart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <modal-bookmark control="focusinControl" callback="ApplyFilter(filter)"></modal-bookmark>
+</div>
+
+
+

@@ -1,0 +1,93 @@
+<div class="md-modal md-effect-10 " id="myModal">
+<style>
+._form {
+position: absolute;
+top:-195px;
+width: 65%;
+margin: 0 auto;
+left: 17%;
+-webkit-box-shadow: 0px 5px 8px 0px rgba(50, 50, 50, 0.5);
+-moz-box-shadow:    0px 5px 8px 0px rgba(50, 50, 50, 0.5);
+box-shadow:         0px 5px 8px 0px rgba(50, 50, 50, 0.5);
+transition: .5s;
+}
+.slide_form {
+    transition: 0.5s;
+    top: 0;
+}
+.overlayx {
+   position: absolute;
+   width: 100%;
+   height: 100%;
+}
+div.success {
+   background-color: #dff0d8;
+}
+   </style>
+<div class="md-content">
+   <div class="modal-content">
+      <div class="modal-header">
+         <button type="button" class="close" ng-click="CloseModal()" data-dismiss="modal" aria-hidden="true">
+         <i class="fa fa-times"></i>
+         </button>
+         <h4 class="modal-title" id="myModalLabel"><i class="fa fa-bookmark-o"></i> Bookmarks</h4>
+      </div>
+      <div class="modal-body" style="font-size: 15px;">
+         <div class="col-sm-4" style="margin-bottom:10px;padding-left: 0px;">
+            <div class="icon-addon addon-sm">
+               <input type="text" placeholder="Search" ng-model="search.$" class="form-control">
+               <label for="email" class="glyphicon glyphicon-search" rel="tooltip" title="" data-original-title="email"></label>
+            </div>
+         </div>
+         <div style="overflow: auto; width: 100%; position:relative;border: 1px solid #e5e5e5;min-height: 300px;">
+            <div class="overlayx" ng-show="openSubForm"></div>
+            <div class="_form well no-padding" ng-class="{'slide_form' : openSubForm }" style="border-top: none;">
+               <form action="" class="smart-form " ng-submit="Save()">
+                  <fieldset>
+                     <section>
+                        <p><span ng-show="bookmark.$$new">Create new</span><span ng-hide="bookmark.$$new">Edit</span> bookmark</p>
+                     </section>
+                     <section>
+                        <label class="input" ng-class="{'state-error' : bookmark.$$error}"> <i class="icon-append fa fa-question-circle"></i>
+                        <input type="text" placeholder="Enter bookmark name" ng-model="bookmark.bookmarkName">
+                        <b class="tooltip tooltip-bottom-right">
+                        <i class="fa fa-warning txt-color-teal"></i> 
+                        You can find this bookmark by seaching for this name </b> 
+                        </label>
+                     </section>
+                     <section>
+                        <label class="input state-disabled">
+                           <input type="text" ng-model="bookmark.txtUrlPath" disabled="disabled">
+                           <!--  <div class="note">
+                              Query string for f
+                              </div> -->
+                        </label>
+                     </section>
+                     <section style="float: right;">
+                        <a ng-click="Save()" class="btn btn-xs btn-success"  href="javascript:void(0);"><span class="fa fa-save"></span>  Save</a>
+                        <a class="btn btn-danger btn-xs" href="javascript:void(0);" ng-hide="bookmark.$$new" ng-click="Delete(bookmark)"><i class="fa fa-trash-o"></i> Delete</a>
+                        <a class="btn btn-default btn-xs" href="javascript:void(0);" ng-click="Cancel()"><i class="fa fa-times"></i> Cancel</a>
+                     </section>
+                  </fieldset>
+               </form>
+            </div>
+            <div class="dataTables_wrapper">
+               <div class="dt-toolbar no-padding">
+                  <div class="spinner-indicator"  ng-if="loading" style="top: 100px; display:block">
+                        <div class="v-loading-indicator second v-loading-indicator-delay"></div>
+                  </div>
+               </div>
+            </div>
+            <div style="overflow: auto; width: 100%;max-height:350px;" >
+
+               <div class=" demo-icon-font" style="padding:5px 10px;" ng-repeat="data in bookmarks | filter:search" ng-class="{'success':data.$highlight}"> 
+                  <a href="" ng-click="LoadFilter(data.txtUrlPath)" style="font-size:18px;">{{ data.bookmarkName  || "empty"  }} </a> 
+                  <span class="text-muted" style="font-size:10px;"> {{ data.txtUrlPath }}</span> 
+                  <a href="" ng-click="Edit(data)" style="float:right;padding-top:3px"> <i class="fa fa-edit"></i> </a>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+</div>

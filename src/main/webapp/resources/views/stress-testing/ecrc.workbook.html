@@ -1,0 +1,27 @@
+<div class="row">
+    <div class="col-md-12">
+        <h3 style="margin: 10px 0;">Capital Adequacy - Balance Sheet</h3>
+        <iframe src="https://onedrive.live.com/embed?cid=C483EC8771154F73&resid=C483EC8771154F73%21260&authkey=ANcnJPVylwxEqDc&em=2&wdAllowInteractivity=False&AllowTyping=True&ActiveCell='ICAAP%20Summary'!B3&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True" style="width: 100%;" id="iframeID" frameBorder="0" scrolling="no">
+          <p>Your browser does not support iframes.</p>
+        </iframe>
+
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        function setHeight() {
+            windowHeight = $(window).innerHeight();
+            $('#iframeID').css('min-height', windowHeight-175);
+            
+        };
+
+        setHeight();
+
+        $(window).resize(function() {
+            setHeight();
+        });
+    });
+
+</script>  

@@ -1,0 +1,55 @@
+/*--------------- Filter Form Overriding --------------*/
+
+.filter-forms .form-horizontal .form-group {
+    margin-left: 0px;
+    margin-right: 10px;
+    float: left;
+    margin-bottom: 10px;
+}
+
+.filter-forms .form-horizontal .control-label {
+    text-align: left;
+}
+
+.filter-forms .form-horizontal .control-label {
+    width: 100%;
+    /*background: antiquewhite;*/
+    /*float: left;
+    */
+    padding-right: 5px;
+    padding-left: 0px;
+    padding-top: 0px;
+}
+
+.filter-forms .form-horizontal .input-sm, .input-sm {
+    padding: 5px 5px;
+}
+
+
+
+
+
+.filter-forms .form-horizontal .form-control {
+    width: 150px;
+    margin-right: 10px;
+}
+
+/*--------------- END Filter Form Overriding --------------*/
+
+.filter-forms .has-success {
+    border-color: #468847;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+}
+
+.jarviswidget-color-blue .nav-tabs li:not(.active) a, .jarviswidget-color-blue > header > .jarviswidget-ctrls a {
+    color: #333 !important;
+}
+
+#divSmallBoxes {
+    z-index: 99999;
+}
+
+.form-horizontal .checkbox, .form-horizontal .checkbox-inline, .form-horizontal .control-label, .form-horizontal .radio, .form-horizontal .radio-inline {
+    padding-top: 5px;
+}

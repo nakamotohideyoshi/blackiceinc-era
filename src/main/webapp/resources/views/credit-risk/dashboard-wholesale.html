@@ -1,0 +1,364 @@
+<div ng-controller="WholesaleController">
+<div class="row">  
+    <div class="col-md-12" style="margin-bottom: 20px;">
+        <div class="table-responsive">
+            <table class="table  smart-form">
+                <tbody>
+                <tr>
+                    <td>
+                        <div class="lb">Credit Risk</div>
+                        <div class="fm">
+                            <label class="select has-success"> 
+                                <select class="input-sm"
+                                        ng-model="mode"
+                                        ng-change="ChangeView(mode)">
+                                    <option value="wholesale">Wholesale</option>
+                                    <option value="retail">Retail</option>
+                                </select> <i></i>
+                            </label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="lb">Scenario</div>
+                        <div class="fm">
+                            <label class="select" ng-class="{ 'has-success' : QueryParams.scenario }"> 
+                                <select class="form-control input-sm"
+                                        ng-model="QueryParams.scenario"
+                                        ng-change="FilterTable()">
+                                    <option value="RC">RC</option>
+                                    <option value="EC">EC</option>
+                                </select> <i></i>
+                            </label>
+                        </div>
+                    </td>
+                     <td>
+                        <div class="lb">Asset Class</div>
+                        <div class="fm">
+                            <label class="select"
+                                   ng-class="{ 'has-success' : QueryParams.asset_class }">
+                                <select class="form-control input-sm"
+                                        ng-model="QueryParams.asset_class" ng-change="FilterTable()"
+                                        ng-options="o.reportAssetClassCode as o.reportAssetClassCode for o in filterOptions.asset_class">
+                                    <option value="">All</option>
+                                </select> <i></i>
+                            </label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="lb">Industry</div>
+                        <div class="fm">
+                            <label class="select"
+                                   ng-class="{ 'has-success' : QueryParams.sic_code }"> 
+                                <select class="form-control input-sm" 
+                                        ng-model="QueryParams.sic_code"
+                                        ng-change="FilterTable()"
+                                        ng-options="o.sicCode as o.sicShortDesc for o in filterOptions.industry">
+                                    <option value="">All</option>
+                                </select> <i></i>
+                            </label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="lb">Geography</div>
+                        <div class="fm">
+                            <label class="select"
+                                   ng-class="{ 'has-success' : QueryParams.geography }">
+                                <select class="form-control input-sm"
+                                        ng-model="QueryParams.geography" 
+                                        ng-change="FilterTable()"
+                                        ng-options="o.id.countryCode as o.countryShortDesc for o in filterOptions.geography">
+                                    <option value="">All</option>
+                                </select> <i></i>
+                            </label>
+                        </div>
+                    </td> <!---->
+                </tr>
+                 <tr>
+                    <td>
+                        <div class="lb">Snaphot Date</div>
+                        <div class="fm">
+                            <label class="select"
+                                   ng-class="{ 'has-success' : QueryParams.snapshot_date }">
+                                <select class="form-control input-sm"
+                                        ng-model="QueryParams.snapshot_date" 
+                                        ng-change="FilterTable()"
+                                        ng-options="o.snapshotDate as o.snapshotDate for o in filterOptions.snapshotDate">
+                                </select> <i></i>
+                            </label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="lb">Treatment</div>
+                        <div class="fm">
+                            <label class="select"
+                                   ng-class="{ 'has-success' : QueryParams.treatment }">
+                                <select class="form-control input-sm"
+                                        data-ng-model="QueryParams.treatment"
+                                        data-ng-change="FilterTable()"
+                                        ng-options="o.rwaTreatmentCode as o.rwaTreatmentCode for o in filterOptions.treatment">
+                                </select><i></i>
+                            </label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="lb">Exposure Type</div>
+                        <div class="fm">
+                            <label class="select"
+                                   ng-class="{ 'has-success' : QueryParams.exposure_type }">
+                                <select class="form-control input-sm"
+                                        ng-model="QueryParams.exposure_type" ng-change="FilterTable()"
+                                        ng-options="o.exposureTypeCode as o.exposureTypeCode for o in filterOptions.exposure_type">
+                                    <option value="">All</option>
+                                </select> <i></i>
+                            </label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="lb" style="margin-top: 5px;'">Risk Rating</div>
+                        <div class="fm" style="position: absolute; margin-left: 5px;">
+                            <label class="select" style="width: 54px; float: left" ng-class="{ 'has-success' : QueryParams.risk_rating_from }">
+                                <select class="form-control input-sm"
+                                        ng-model="QueryParams.risk_rating_from"
+                                        ng-change="FilterTable()"
+                                        ng-options="o.range as o.range for o in filterOptions.risk_rating | filter:riskRatingUpperboundFilter(QueryParams.risk_rating_to)">
+                                    <option value="">All</option>
+                                </select> <i></i>
+                            </label> 
+                            <label class="select" style="width: 14px; float: left; margin-left: 7px; margin-top: 5px;"> - </label> 
+                            <label class="select" style="width: 54px; float: left" ng-class="{ 'has-success' : QueryParams.risk_rating_to }">
+                                <select class="form-control input-sm"
+                                        ng-model="QueryParams.risk_rating_to"
+                                        ng-change="FilterTable()"
+                                        ng-options="o.range as o.range for o in filterOptions.risk_rating | filter:riskRatingLowerboundFilter(QueryParams.risk_rating_from)">
+                                    <option value="">All</option>
+                                </select> <i></i>
+                        </label>
+                        </div>
+                    </td>
+                    <td></td> <!---->
+                </tr>
+
+                </tbody>
+            </table>
+            <div class="col-sm-4 no-padding" style="width: 600px;">
+                <div class="form-group" style="margin-top: 20px">
+                    <label class="col-md-2 control-label" style="width: 90px; text-align: right; padding-right: 2px;">Loan Size</label>
+
+                    <div class="col-md-8" style="width: 370px;">
+                        <input ng-model="value" type="text" id="mySlider1" slider options="options"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <!-- <div class="col-md-12"> -->
+    <table class="table table-bordered"
+           style="width: 375px;float: right;margin-right: 15px;position: absolute;right: 0px;">
+        <thead>
+        <tr>
+            <td style="width:110px;padding: 5px 6px;font-weight: bold;">Notional Total</td>
+            <td style="width:110px;padding: 5px 6px;font-weight: bold;">RWA Total</td>
+            <td style="width:155px;padding: 5px 6px;font-weight: bold;">Expected Loss Total</td>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr>
+            <td class="color-01" style="width:110px;padding: 5px 6px;" >{{ (TotalSum.notionalTotal |number:0)|| 'n/a '}}
+            </td>
+            <td class="color-01" style="width:110px;padding: 5px 6px;">{{ (TotalSum.rcAndEcTotal |number:0)||'n/a '}}
+            </td>
+            <td class="color-01" style="width:155px;padding: 5px 6px;">{{ (TotalSum.expectedLossTotal|number:0) ||' n/a '}}
+            </td>
+        </tr>
+        </tbody>
+
+    </table>
+
+    <!-- </div> -->
+    <div class="col-md-12" style="margin-bottom:10px">
+        <button type="submit" class="btn btn-primary btn-sm" ng-click="ChangeView()" > Wholesale /
+            Retail
+        </button>
+        <button type="submit" class="btn btn-primary btn-sm" ng-click="RegulatoryEcon()"> Regulatory / Economic
+            Capital
+        </button>
+        <button type="submit" class="btn btn-primary btn-sm" ng-click="Calculate()"> Reset and Calculate RWA / EL
+        </button>
+    </div>
+    <div class="col-md-12" style="margin-bottom:10px">
+        <button type="submit" ng-click="FilterTable()" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>
+            Search
+        </button>
+        <a class="btn btn-default btn-sm" href="javascript:void(0);" ng-click="ResetFilter()">
+            <i class="fa fa-refresh"></i> Reset</a>
+        <a href="" ng-click="saveToBookmark()" class="btn btn-default btn-sm"  ng-class="{'disabled' : isEmpty(QueryParams) }"> 
+            <i class="fa fa-save"></i> Save to Bookmark </a>
+        <a href="" ng-click="OpenModal()" class="btn btn-default btn-sm">
+            <i class="glyphicon glyphicon-bookmark"></i> Open Bookmarks </a>
+        <a href="javascript:void(0);" ng-click="GenerateReport()" class="btn btn-default btn-sm ">
+            <i class="fa  fa-file-pdf-o"></i> Graphs </a>
+    </div>
+    <div class="col-md-12 dataTables_wrapper">
+
+        <div class="dt-toolbar no-padding">
+            <div class="spinner-indicator">
+                <div class="v-loading-indicator second v-loading-indicator-delay"></div>
+            </div>
+        </div>
+        <div class="wrapper small ">
+            <table ng-float-head
+                   class="table table-bordered table-striped  table-hover  sortable"
+                   style="min-width: 0px; border: none; table-layout: auto;">
+                <colgroup>
+                    <col style="width: 102px">
+                    <!-- Snapshot Date -->
+                    <col style="width: 85px">
+                    <!-- Treatment -->
+                    <col style="width: 100px">
+                    <!-- Asset Class -->
+                    <col style="width: 106px">
+                    <!-- Exposure Type -->
+
+
+                    <col style="width: 150px">
+                    <!-- PD -->
+                    <col style="width: 85px">
+                    <!-- LGD -->
+                    <col style="width: 120px">
+                    <!-- EAD -->
+                    <col style="width: 85px">
+                    <!-- Expected Loss Amount -->
+
+                    <col style="width: 85px">
+                    <!-- Effective Maturity -->
+                    <col style="width: 85px">
+                    <!-- Correlation Factor -->
+                    <col style="width: 85px">
+                    
+                    <!-- K - Capital Req -->
+                    <col style="width: 85px">
+
+                    <!-- RWA Amount -->
+                    <col style="width: 185px">
+
+                    <!-- Confidence -->
+                    <col style="width: 85px">
+                    <!-- Customer -->
+                    <col style="width: 85px">
+                    <!-- Facility -->
+                    <col style="width: 85px">
+                    <!-- Instrument -->
+
+                    <col style="width: 200px">
+                    <!-- Industry -->
+                    <col style="width: 85px">
+                    <!-- Geography -->
+                    <col style="width: 85px">
+                    <!-- Risk Rating -->
+                    <col style="width: 85px">
+                    <!-- Loan Size -->
+                    <col style="width:50px">
+                </colgroup>
+                <thead>
+                <tr>
+                    <!-- <th class="">ID</th> -->
+                    <th class="" style="border-left: none;">Snapshot Date</th>
+                    <th class="">Treatment</th>
+                    <th class="">Asset Class</th>
+                    <th class="">Exposure Type</th>
+
+
+                    <th class=""> {{ labelPDRW }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                    <th class=" ">LGD&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                    <th class="color-01" >EAD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                    <th class="color-01" >Expected Loss Amount</th>
+
+                    <th class=""  header-popover header-img-url="resources/img/formulas/Maturity_Adjustment_Wholesale.png">Effective Maturity</th>
+                    <th class="" header-popover header-img-url="resources/img/formulas/Correlation_Wholesale.png">
+                        Correlation Factor  
+                    </th>
+                  
+
+                    <th class="" header-popover header-img-url="resources/img/formulas/Capital_Requirement_Wholesale.png" >K - Capital Req</th>
+                    <th class="color-01" header-popover header-img-url="resources/img/formulas/RWA_Wholesale.png">RWA Amount</th>
+                    <th class="">Confidence</th>
+
+                    <th class="">Customer</th>
+                    <th class="">Facility</th>
+                    <th class="">Instrument</th>
+
+                    <th class="">Industry&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                    <th class="">Geography</th>
+                    <th class="">Risk Rating</th>
+                    <th class="">Loan Size</th>
+                    <th>Scenario</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="row in Wholesale.list"
+                    ng-class="{ 'success' : row.$edit , 'danger' : row.newItem.$error}">
+
+                    <td>{{ row.snapshotDate.snapshotDate }}</td>
+                    <td>{{ row.rwaTreatmentCode }}</td>
+                    <td>{{ row.reportAssetClassCode }}</td>
+                    <td>{{ row.exposureTypeCode }}</td>
+
+
+                    <td>{{ row.calculatedProbabilityOfDefault }}</td>
+                    <td>{{ row.calculatedLossGivenDefaultFactor }}</td>
+                    <td class="color-01">{{ row.exposureAtDefaultLcyAmt |
+                        number:0 }}
+                    </td>
+                    <td class="color-01">
+                        <div ng-if="!row.$$loading">{{ row.expectedLossLcyAmt |
+                            number:0 }}
+                        </div>
+                        <div ng-if="row.$$loading">0</div>
+                    </td>
+
+                    <td>{{ row.effectiveMaturityInYears }}</td>
+                    <td>{{ row.correlationFactor }}</td>
+                    
+
+
+                    <td>{{ row.kcapitalRequirementFactor }}</td>
+                    <td class="color-01">
+                        <div ng-if="!row.$$loading">{{ row.riskWeightedLcyAmt |
+                            number:0 }}
+                        </div>
+                        <div ng-if="row.$$loading">0</div>
+                    </td>
+                    <td>99.97</td>
+
+
+                    <td>{{ row.customer.customerName }}</td>
+                    <td>{{ row.facilityDelegated.facilityTypeCode }}</td>
+                    <td>{{ row.instrument.instrumentTypeCode }}</td>
+
+                    <td>{{ row.customer.sicCode.sicShortDesc }}</td>
+                    <td>{{ row.customer.countryCode.countryShortDesc }}</td>
+                    <td>{{ row.creditScore }}</td>
+                    <td>{{ row.exposureAtDefaultLcyAmt | number:0 }}</td>
+
+                    <td>{{ row.scenario}}</td>
+                    <!-- <td> <div ng-if="!row.$edit">{{ row.directiveParagraph.directiveParagraphNum }}</div></td>
+                                        <td>
+                                            <div ng-if="!row.$edit">{{ row.workStream.workStreamDescription }}</div></td>
+
+                                        <td>
+                                            <div ng-if="!row.$edit"> {{ row.assetClass.assetClassName }}</div> </td>
+
+                                        <td>
+                                            <div ng-if="!row.$edit"> {{ row.riskRatingSystem.riskRatingSystemName }}</div> </td> -->
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<modal-bookmark control="focusinControl" callback="ApplyFilter(filter)"></modal-bookmark>
+</div>

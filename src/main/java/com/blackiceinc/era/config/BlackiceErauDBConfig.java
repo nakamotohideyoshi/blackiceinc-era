@@ -13,16 +13,18 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableAsync
 @EnableTransactionManagement
 @PropertySource({ "classpath:persistence-blackicedb-erau.properties" })
-@ComponentScan({ "com.blackiceinc.era.persistence.erau" })
+//@ComponentScan({ "com.blackiceinc.era.persistence.erau" })
 @EnableJpaRepositories(basePackages = "com.blackiceinc.era.persistence.erau.repository", 
 entityManagerFactoryRef = "blackiceDbErauEntityManager", 
 transactionManagerRef = "blackiceDbErauTransactionManager")
@@ -63,6 +65,14 @@ public class BlackiceErauDBConfig {
 
 		return dataSource;
 	}
+	
+  @Bean(name="blackiceDbErauTransactionManager")
+  public PlatformTransactionManager transactionManager() {
+      final JpaTransactionManager transactionManager = new JpaTransactionManager();
+      transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
+
+      return transactionManager;
+  }
 
 	final Properties additionalProperties() {
 		final Properties hibernateProperties = new Properties();

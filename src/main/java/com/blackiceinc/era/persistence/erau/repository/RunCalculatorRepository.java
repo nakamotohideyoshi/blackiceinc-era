@@ -3,8 +3,9 @@ package com.blackiceinc.era.persistence.erau.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.blackiceinc.era.persistence.erau.model.RunCalculator;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface RunCalculatorRepository extends JpaRepository<RunCalculator,Long> {
+public interface RunCalculatorRepository extends JpaRepository<RunCalculator,Long>, JpaSpecificationExecutor<RunCalculator> {
 
 	
 

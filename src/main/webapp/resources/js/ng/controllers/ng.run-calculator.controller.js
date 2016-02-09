@@ -1,7 +1,10 @@
 angular.module('ng.run-calculator.controller', [])
     .controller('RunCalculatorController', ['$scope', 'RunCalculatorService', 'Util', '$routeParams',
         function ($scope, RunCalculatorService, Util, $routeParams) {
-        
+            var CONSTANT_snapshotDate = 'snapshotDate';
+            var CONSTANT_loadJobNbr = 'loadJobNbr';
+            var CONSTANT_scenarioId = 'scenarioId';
+
     		var filtersDefault = {};
     		$scope.filters={};
     		
@@ -14,7 +17,6 @@ angular.module('ng.run-calculator.controller', [])
     		
     		$scope.getRunCalculators = function(params) {
     			RunCalculatorService.getAll(params).then(function(response){
-    				console.log("Succesful first request!");
     				$scope.RunCalculator.list = response.content;
     				$scope.loading = false;
     				$scope.RunCalculator.totalElements = response.totalElements;
@@ -22,6 +24,33 @@ angular.module('ng.run-calculator.controller', [])
                     $scope.RunCalculator.numberOfElements = response.numberOfElements;
     			});
     		};
+
+    		$scope.filterTable = function() {
+    		    Util.removeNulls($scope.filters);
+                var params = {};
+
+                var snapshotDate = $scope.filters.snapshotDate;
+                var loadJobNbr = $scope.filters.loadJobNbr;
+                var scenarioId = $scope.filters.scenarioId;
+
+                params.length=$scope.pageLength;
+                params.page = $scope.currentPage - 1;
+
+                if (snapshotDate){
+                    params[ CONSTANT_snapshotDate ] = snapshotDate;
+                }
+
+                if (loadJobNbr){
+                    params[ CONSTANT_loadJobNbr ] = loadJobNbr;
+                }
+
+                if (scenarioId){
+                    params[ CONSTANT_scenarioId ] = scenarioId;
+                }
+
+                $scope.loading=true;
+                $scope.getRunCalculators( params );
+    		}
     		
     		$scope.RunCalculator.Add = function() {
 //    			if (!$scope.filters.directive || !$scope.filters.runDate) {
@@ -35,7 +64,7 @@ angular.module('ng.run-calculator.controller', [])
             };
             
             RunCalculatorService.filterOptions().then(function(response){
-            	$scope.filterOptions = Util.parseFilterOption( response );
+            	$scope.filterOptions = response;
             	angular.copy($scope.filters, filtersDefault);
             	window.filter = $scope.filterOptions;
             });

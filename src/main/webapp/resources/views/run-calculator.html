@@ -44,21 +44,30 @@
 							<fieldset>
 								<div class="form-group">
 									<label class="control-label">Run Date</label>
-									<select class="form-control input-sm">
+									<select class="form-control input-sm"
+											ng-options="o for o in filterOptions.snapshotDate"
+											ng-model="filters.snapshotDate"
+											ng-disabled="loading">
 		                            	<option value="">All</option>
 									</select>
 								</div>
 								
 								<div class="form-group">
 									<label class="control-label">Load Nbr</label>
-									<select class="form-control input-sm">
+									<select class="form-control input-sm"
+											ng-options="o for o in filterOptions.loadJobNbr"
+											ng-model="filters.loadJobNbr"
+											ng-disabled="loading">
 		                            	<option value="">All</option>
 									</select>
 								</div>
 								
 								<div class="form-group">
 									<label class="control-label">Scenario</label>
-									<select class="form-control input-sm">
+									<select class="form-control input-sm"
+											ng-options="o for o in filterOptions.scenarioId"
+											ng-model="filters.scenarioId"
+											ng-disabled="loading">
 		                            	<option value="">All</option>
 									</select>
 								</div>

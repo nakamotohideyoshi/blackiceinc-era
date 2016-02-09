@@ -1,12 +1,16 @@
 package com.blackiceinc.era.web.rest;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import com.blackiceinc.era.persistence.erau.model.MeasurementSensitivity;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,14 +88,61 @@ public class RunCalculatorResource {
 	        return ResponseEntity.ok().build();
 	    }
 	
-	@RequestMapping(value = "/filter-options", method = RequestMethod.GET)
+	@RequestMapping(value = "/runCalculator/filter-options", method = RequestMethod.GET)
     @ResponseBody
     public JSONObject getFilterOptions(HttpServletRequest request) {
 		JSONObject result = new JSONObject();
-		
-		measurementSensitivityRepository.findAll();
+
+		List<Date> snapshotDateList = new ArrayList<>();
+		List<BigDecimal>  loadJobNbrList = new ArrayList<>();
+		List<String>  scenarioIdList = new ArrayList<>();
+		for (MeasurementSensitivity ms:generateDummyMeasurementData()){
+			if (!snapshotDateList.contains(ms.getSnapshotDate())){
+				snapshotDateList.add(ms.getSnapshotDate());
+			}
+
+			if (!loadJobNbrList.contains(ms.getLoadJobNbr())){
+				loadJobNbrList.add(ms.getLoadJobNbr());
+			}
+
+			if (!scenarioIdList.contains(ms.getScenarioId())){
+				scenarioIdList.add(ms.getScenarioId());
+			}
+		}
+
+		result.put("snapshotDate", snapshotDateList);
+		result.put("loadJobNbr", loadJobNbrList);
+		result.put("scenarioId", scenarioIdList);
+
+//		measurementSensitivityRepository.findAll();
 		
 		return result;
+	}
+
+	private List<MeasurementSensitivity> generateDummyMeasurementData() {
+		List<MeasurementSensitivity> result = new ArrayList<MeasurementSensitivity>();
+
+		result.add(createMeasurementSensitivity(new Date(116, 0, 1), new BigDecimal(1), "scen1"));
+		result.add(createMeasurementSensitivity(new Date(116, 1, 1), new BigDecimal(2), "scen2"));
+		result.add(createMeasurementSensitivity(new Date(116, 1, 1), new BigDecimal(3), "scen2"));
+		result.add(createMeasurementSensitivity(new Date(116, 2, 1), new BigDecimal(3), "scen3"));
+		result.add(createMeasurementSensitivity(new Date(116, 3, 1), new BigDecimal(4), "scen4"));
+		result.add(createMeasurementSensitivity(new Date(116, 4, 1), new BigDecimal(4), "scen4"));
+		result.add(createMeasurementSensitivity(new Date(116, 5, 1), new BigDecimal(10), "scen5"));
+		result.add(createMeasurementSensitivity(new Date(116, 6, 1), new BigDecimal(10), "scen6"));
+		result.add(createMeasurementSensitivity(new Date(116, 7, 1), new BigDecimal(11), "scen7"));
+		result.add(createMeasurementSensitivity(new Date(116, 8, 1), new BigDecimal(13), "scen7"));
+
+		return result;
+	}
+
+	private MeasurementSensitivity createMeasurementSensitivity(Date date, BigDecimal jobNbr, String scenarioId){
+		MeasurementSensitivity ms1 = new MeasurementSensitivity();
+		ms1.setSnapshotDate(date);
+		ms1.setLoadJobNbr(jobNbr);
+		ms1.setScenarioId(scenarioId);
+
+		return ms1;
 	}
 	
 }

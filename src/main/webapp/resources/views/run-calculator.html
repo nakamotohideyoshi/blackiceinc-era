@@ -1,18 +1,27 @@
 <style type="text/css">
-/* .form-group .filter-label {
-	position: relative;
-	display: inline-block;
-}
+	.wrapper.small {
+		height: 400px;
+		border: 1px solid #ccc;
+	}
 
-.form-group .filter-input {
-	position: relative;
-	display: inline-block;
-	margin-right: 15px
-}
+	.wrapper {
+		overflow: auto;
+		position: relative;
+	}
 
-.form-group {
-	float: left;
-} */
+	.floatThead-container table{
+		border-left: none;
+	}
+	table.sortable thead .sorting {
+		background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATAgMAAAAPPt5fAAAACVBMVEUAAADIyMjl5eVIBBP/AAAAAXRSTlMAQObYZgAAAClJREFUCNdjwAYEwGQKiGDsBJFsTA5AUoJhAqZaiDhEDVg9RC/MHEwAANsMA91AQfd/AAAAAElFTkSuQmCC) no-repeat center right;
+	}
+
+	.wrapper table.table td {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		vertical-align: middle;
+	}
 </style>
 
 <!-- widget grid -->
@@ -71,14 +80,15 @@
 					<div class="row">
 						<div class="col-xs-12 no-padding ">
 							<div class="col-xs-12 dataTables_wrapper">
+							
 								<div class="dt-toolbar no-padding" >
-		                           <div class="spinner-indicator" style="display:block;">
+		                           <div class="spinner-indicator" ng-if="loading" style="display:block;">
 		                              <div class="v-loading-indicator second v-loading-indicator-delay"></div>
 		                           </div>
 		                        </div>
 							
 								<div class="dt-toolbar no-padding">
-		                           <div class="spinner-indicator" style="display:block;">
+		                           <div class="spinner-indicator" ng-if="RunCalculator.list.length==0" style="display:block;">
 		                              <div class="empty-text">No Run Calculations Found</div>
 		                           </div>
 		                        </div>
@@ -96,7 +106,7 @@
 								        </colgroup>
 								        <thead>
 								        	<tr>
-												<th><input type="checkbox" > </th>
+												<th><input type="checkbox" ng-change="RunCalculator.MasterCheckbox(RunCalculator.$masterCheck)" ng-model="RunCalculator.$masterCheck" > </th>
 												<th class="" >Run Date</th>
 												<th class="" >Load #</th>
 												<th class="" >Scenario</th>
@@ -104,21 +114,21 @@
 											</tr>
 								        </thead>
 								        <tbody style="font-size: 13px !important;">
-								        	<tr>
+								        	<tr ng-repeat="row in RunCalculator.list" ng-class="{ 'success' : row.$edit , 'danger' : row.$error, 'success':row.$checked,'hide':row.$deleted}">
 								        		<td>
-													<input type="checkbox" class="">
+													<input ng-model="row.$checked" type="checkbox" class="">
 								                </td>
 								                <td>
-													<div>value 1</div>
+													<div> {{ row.snapshotDate }}</div>
 												</td>
 												<td>
-													<div>value 2</div>
+													<div> {{ row.loadJobNbr }}</div>
 												</td>
 												<td>
-													<div>value 3</div>
+													<div> {{ row.scenarioId }}</div>
 												</td>
 												<td>
-													<div>value 4</div>
+													<div> {{ row.status }}</div>
 												</td>
 								        	</tr>
 								        </tbody>
@@ -131,17 +141,17 @@
 					<!-- GRID END -->
 					
 					<!-- Pagination -->
-					<div class="ngFooterPanel"  style="height: 57px;">
+					<div class="ngFooterPanel" ng-class="{'ui-widget-content': jqueryUITheme, 'ui-corner-bottom': jqueryUITheme}"  ng-style="footerStyle()" style="height: 57px;">
 						<div class="ngTotalSelectContainer">
-					        <div class="ngFooterTotalItems ngNoMultiSelect" >
-					            <span class="ngLabel">Total Items: 1000 :)</span><span class="ngLabel ng-hide">(Showing Items: 25)</span>
+					        <div class="ngFooterTotalItems ngNoMultiSelect" ng-class="{'ngNoMultiSelect': !multiSelect}">
+					            <span class="ngLabel">Total Items: {{RunCalculator.totalElements}}</span><span ng-show="filterText.length > 0" class="ngLabel ng-hide">(Showing Items: 25)</span>
 					        </div>
 						</div>
 						
-						<div class="ngPagerContainer ngNoMultiSelect" style="float: right; margin-top: 10px;">
+						<div class="ngPagerContainer ngNoMultiSelect" style="float: right; margin-top: 10px;" ng-class="{'ngNoMultiSelect': !multiSelect}">
 							<div style="float:left; margin-right: 10px;" class="ngRowCountPicker">
 					            <span style="float: left; margin-top: 3px;" class="ngLabel">Page Size:</span>
-					            <select style="float: left;height: 27px; width: 100px">
+					            <select style="float: left;height: 27px; width: 100px" ng-model="pageLength">
 					            	<option class="" value="10">10</option>
 					                <option class="" value="25">25</option>
 					                <option class="" value="50">50</option>
@@ -152,27 +162,27 @@
 					            </select>
 					        </div>
 							<div style="float:left; margin-right: 10px; line-height:25px;" class="ngPagerControl">
-					            <button class="ngPagerButton" ng-click="pageToFirst()" title="First Page" disabled="disabled">
+					            <button class="ngPagerButton" ng-click="pageToFirst()" ng-disabled="cantPageBackward()" title="First Page" disabled="disabled">
 					            	<div class="ngPagerFirstTriangle">
 					            		<div class="ngPagerFirstBar"></div>
 					            	</div>
 					            </button>
 
-					            <button class="ngPagerButton" ng-click="pageBackward()" title="Previous Page" disabled="disabled">
+					            <button class="ngPagerButton" ng-click="pageBackward()" ng-disabled="cantPageBackward()" title="Previous Page" disabled="disabled">
 					            	<div class="ngPagerFirstTriangle ngPagerPrevTriangle"></div>
 					            </button>
 
 					            <input class="ngPagerCurrent" min="1" max="537" type="number"
-					            		style="width:50px; height: 24px; margin-top: 1px; padding: 0 4px;" >
-					            <span class="ngGridMaxPagesNumber" >/ 200 :) </span>
+					            		style="width:50px; height: 24px; margin-top: 1px; padding: 0 4px;" ng-model="currentPage">
+					            <span class="ngGridMaxPagesNumber" ng-show="maxPages() > 0">/ {{ RunCalculator.totalPages }} </span>
 
 
 
-					            <button class="ngPagerButton" title="Next Page">
+					            <button class="ngPagerButton" ng-click="pageForward()" ng-disabled="cantPageForward()" title="Next Page">
 					            	<div class="ngPagerLastTriangle ngPagerNextTriangle"></div>
 					            </button>
 
-					            <button class="ngPagerButton" ng-click="pageToLast()" title="Last Page">
+					            <button class="ngPagerButton" ng-click="pageToLast()" ng-disabled="cantPageToLast()" title="Last Page">
 					            	<div class="ngPagerLastTriangle">
 					            		<div class="ngPagerLastBar"></div>
 					            	</div>
@@ -183,13 +193,13 @@
 					<!-- Pagination END -->
 					
 					<div style="position: relative;bottom: 28px;left: 8px;">
-						<div class="btn btn-xs btn-danger" tooltip-popup-delay="1000" tooltip="Delete" ng-click="Assessment.Delete()"
+						<div class="btn btn-xs btn-danger" tooltip-popup-delay="1000" tooltip="Delete" ng-click="RunCalculator.Delete()"
 							         ><span class="fa fa-trash-o" ></span></div>
-				         <div class="btn btn-xs btn-primary"  ng-click="Assessment.Add()"><span class="fa fa-plus"></span> Add</div>
-				         <div class="btn btn-xs btn-success"  ng-click="Assessment.Save()" 	><span class="fa fa-save"></span>  Save</div>
-				         <div class="btn btn-xs btn-default"  ng-click="Assessment.Cancel()" ><span class="fa fa-times"></span>  Cancel</div>
+				         <div class="btn btn-xs btn-primary"  ng-click="RunCalculator.Add()"><span class="fa fa-plus"></span> Add</div>
+				         <div class="btn btn-xs btn-success"  ng-click="RunCalculator.Save()" ng-show="RunCalculator.$isDisabled"><span class="fa fa-save"></span>  Save</div>
+				         <div class="btn btn-xs btn-default"  ng-click="RunCalculator.Cancel()" ng-show="RunCalculator.$isDisabled"><span class="fa fa-times"></span>  Cancel</div>
 
-				         <i class="fa fa-refresh fa-spin "></i>
+				         <i ng-if="Assessment.$saving" class="fa fa-refresh fa-spin "></i>
 					</div>
 					
 				</div>

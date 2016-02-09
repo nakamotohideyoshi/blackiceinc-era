@@ -4,11 +4,15 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +21,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.blackiceinc.era.persistence.erau.model.RunCalculator;
+import com.blackiceinc.era.persistence.erau.repository.MeasurementSensitivityRepository;
 import com.blackiceinc.era.persistence.erau.repository.RunCalculatorRepository;
 
 @RestController
@@ -31,17 +37,23 @@ public class RunCalculatorResource {
 	@Autowired
     private RunCalculatorRepository runCalculatorRepository;
 	
-	@RequestMapping(value = "/runCalculators",
+	@Autowired
+	private MeasurementSensitivityRepository measurementSensitivityRepository;
+	
+	@RequestMapping(value = "/runCalculator",
 	        method = RequestMethod.GET,
 	        produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<RunCalculator>> getAll(@RequestParam(value = "page", required = false) Integer page,
+	public ResponseEntity<Page<RunCalculator>> getAll(@RequestParam(value = "page", required = false) Integer page,
 	        @RequestParam(value = "length", required = false) Integer length){
 		
-		
-		List<RunCalculator> findAll = null;
+        /** Check to see if the queryParam contains "page" & "length" if not set default values **/
+        int pageNumber = (page!=null) ? page : 0;
+        int pageSize = (length!=null) ? length : 25;
+        
+		Page<RunCalculator> findAll = null;
 		try{
 			
-			findAll = runCalculatorRepository.findAll();	
+			findAll = runCalculatorRepository.findAll(new PageRequest(pageNumber, pageSize));	
 		}catch(Exception ex){
 			log.error("DB Exception", ex);
 		}
@@ -49,7 +61,7 @@ public class RunCalculatorResource {
 		return new ResponseEntity<>(findAll, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/runCalculators",
+	@RequestMapping(value = "/runCalculator",
 	        method = RequestMethod.POST,
 	        produces = MediaType.APPLICATION_JSON_VALUE)
 	    public ResponseEntity<RunCalculator> create(@Valid @RequestBody RunCalculator runCalculator) throws URISyntaxException {
@@ -63,7 +75,7 @@ public class RunCalculatorResource {
 	            .body(result);
 	    }
 	
-	@RequestMapping(value = "/runCalculators/{id}",
+	@RequestMapping(value = "/runCalculator/{id}",
 	        method = RequestMethod.DELETE,
 	        produces = MediaType.APPLICATION_JSON_VALUE)
 	    public ResponseEntity<Void> delete(@PathVariable Long id) {
@@ -71,5 +83,15 @@ public class RunCalculatorResource {
 	        runCalculatorRepository.delete(id);
 	        return ResponseEntity.ok().build();
 	    }
+	
+	@RequestMapping(value = "/filter-options", method = RequestMethod.GET)
+    @ResponseBody
+    public JSONObject getFilterOptions(HttpServletRequest request) {
+		JSONObject result = new JSONObject();
+		
+		measurementSensitivityRepository.findAll();
+		
+		return result;
+	}
 	
 }

@@ -77,6 +77,11 @@ angular.module('app.services', [])
 				    	delete obj[i];
 				return obj;
 			},
+			parseFilterOption : function(data) {
+				for (var i = 0; i < data.directive.length; i++)
+                 	data.directive[i].type = data.directive[i].directiveType.txtDirectiveTypeName;
+                return data;
+			},
 			isEmpty:function(obj) {
 			    for(var prop in obj) {
 			        if(obj.hasOwnProperty(prop))
@@ -264,6 +269,17 @@ angular.module('app.services', [])
 			getRetailFilters : function(){
 				return CustomHttp.get( 'api/filter/retail' , {}, true);
 			},
+		});
+	})
+	
+	.service('RunCalculatorService', function(CustomHttp){
+		return({
+			filterOptions : function(params) {
+				return CustomHttp.get( 'api/runCalculator/filter-options' , params || {}, true);
+			},
+			getAll : function(params) {
+				return CustomHttp.get('api/runCalculator?' + $.param(params), {});
+			}
 		});
 	})
 

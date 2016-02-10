@@ -5,26 +5,33 @@ import com.blackiceinc.era.persistence.erau.model.RunCalculator;
 import com.blackiceinc.era.persistence.erau.repository.MeasurementSensitivityRepository;
 import com.blackiceinc.era.persistence.erau.repository.RunCalculatorRepository;
 import com.blackiceinc.era.persistence.erau.specifications.RunCalculatorSpecificationsBuilder;
+import com.blackiceinc.era.web.rest.model.DeleteResponse;
+import com.blackiceinc.era.web.rest.model.FailedCRUDResponseObj;
+import com.blackiceinc.era.web.rest.model.Response;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api")
@@ -80,24 +87,120 @@ public class RunCalculatorResource {
     @RequestMapping(value = "/runCalculator",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RunCalculator> create(@Valid @RequestBody RunCalculator runCalculator) throws URISyntaxException {
+    public ResponseEntity<Response> create(@Valid @RequestBody RunCalculator runCalculator) throws URISyntaxException {
         log.debug("REST request to save RunCalculator : {}", runCalculator);
+
+        Response res = new Response();
         if (runCalculator.getId() != null) {
-//	            return ResponseEntity.badRequest().header("Failure", "A new workEntry cannot already have an ID").body(null);
+            res.setMessage("A new Run Calculator cannot already have an ID");
+            return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
         }
 
-        RunCalculator result = runCalculatorRepository.save(runCalculator);
-        return ResponseEntity.created(new URI("/api/workEntrys/" + result.getId()))
-                .body(result);
+        try{
+            RunCalculator savedEntity = runCalculatorRepository.save(runCalculator);
+            res.setContent(savedEntity);
+            res.setTotalElements(runCalculatorRepository.count());
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        }catch(DataIntegrityViolationException ex){
+            res.setMessage("Cannot Add Duplicate Entries : A Record With These Values Already Exists.");
+            return new ResponseEntity<>(res, HttpStatus.CONFLICT);
+        } catch(ConstraintViolationException ex){
+            res.setMessage(getValidationExceptionMessages(ex));
+            return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
+        }
     }
 
-    @RequestMapping(value = "/runCalculator/{id}",
+    private String getValidationExceptionMessages(ConstraintViolationException validationException) {
+        validationException.printStackTrace();
+        Set<String> messages = new HashSet();
+        Set<ConstraintViolation<?>> stack = validationException.getConstraintViolations();
+        StringBuilder errorMessages = new StringBuilder();
+        for (ConstraintViolation<?> constraintViolation : stack) {
+            messages.add(constraintViolation.getMessage());
+        }
+        for (String message : messages) {
+            errorMessages.append(message).append(",");
+        }
+        errorMessages.replace(errorMessages.length()-1, errorMessages.length(), "");
+        return errorMessages.toString();
+    }
+
+    @RequestMapping(value = "/runCalculator",
             method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        log.debug("REST request to delete RunCalculator : {}", id);
-        runCalculatorRepository.delete(id);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Response> deleteData(@RequestParam String idListStr) {
+        DeleteResponse res = new DeleteResponse();
+        String[] idList = idListStr.split("\\|");
+        HttpStatus returnStatus = HttpStatus.OK;
+
+        for (String id : idList) {
+            try {
+                runCalculatorRepository.delete(Long.parseLong(id));
+                res.modifyDeleteSuccessResultMap(id, true);
+            }catch (NumberFormatException ex) {
+                res.addFailedDeleteRecord(new FailedCRUDResponseObj(id, "Invalid number formatting"));
+                res.modifyDeleteSuccessResultMap(id, false);
+                returnStatus = HttpStatus.NOT_FOUND;
+            }catch (EmptyResultDataAccessException ex) {
+                res.addFailedDeleteRecord(new FailedCRUDResponseObj(id, "Data with id=" + id + " does not exist."));
+                res.modifyDeleteSuccessResultMap(id, false);
+                returnStatus = HttpStatus.NOT_FOUND;
+            }catch (DataIntegrityViolationException ex) {
+                res.addFailedDeleteRecord(new FailedCRUDResponseObj(id, "Cannot Be Deleted Due To Foreign Key Constraint."));
+                res.modifyDeleteSuccessResultMap(id, false);
+                returnStatus = HttpStatus.CONFLICT;
+            }
+        }
+
+        res.setTotalElements(runCalculatorRepository.count());
+        return new ResponseEntity<Response>(res, returnStatus);
+    }
+
+    @RequestMapping(value = "/runCalculator/check", method = RequestMethod.GET)
+    public  @ResponseBody
+    HttpEntity<Map<String, Object>> checkIfExists(@RequestParam LinkedHashMap<String, String> allRequestParams) {
+        Page<RunCalculator> pageable;
+        int pageNumber = (allRequestParams.containsKey("page")) ? Integer.parseInt(allRequestParams.get("page")) : 0;
+        int pageSize = (allRequestParams.containsKey("length")) ? Integer.parseInt(allRequestParams.get("length")) : 1;
+        allRequestParams.remove("page");
+        allRequestParams.remove("length");
+        String hashKey = null;
+        if (allRequestParams.containsKey("hashKey")) {
+            hashKey = allRequestParams.get("hashKey");
+            allRequestParams.remove("hashKey");
+        }
+
+        Date snapshotDate = (allRequestParams.containsKey("snapshotDate")) ? Date.valueOf(allRequestParams.get("snapshotDate")) : null;
+        BigDecimal loadJobNbr = (allRequestParams.containsKey("loadJobNbr")) ? BigDecimal.valueOf(Long.valueOf(allRequestParams.get("loadJobNbr"))) : null;
+        String scenarioId = (allRequestParams.containsKey("scenarioId")) ? allRequestParams.get("scenarioId") : null;
+
+        RunCalculatorSpecificationsBuilder builder = new RunCalculatorSpecificationsBuilder();
+        if (snapshotDate!=null){
+            builder.with("snapshotDate", ":", snapshotDate, "", "");
+        }
+
+        if (loadJobNbr!=null){
+            builder.with("loadJobNbr", ":", loadJobNbr, "", "");
+        }
+
+        if (scenarioId!=null){
+            builder.with("scenarioId", ":", scenarioId, "", "");
+        }
+
+        Specification<RunCalculator> specRunCalculator = builder.build();
+
+        pageable = runCalculatorRepository.findAll(specRunCalculator, new PageRequest(pageNumber, pageSize));
+
+        Map<String, Object> msg = new HashMap<String, Object>();
+        if (pageable.getNumberOfElements() == 0) {
+            msg.put("exists", false);
+        } else {
+            msg.put("exists", true);
+        }
+        msg.put("content", pageable.getContent());
+        msg.put("hashKey", hashKey);
+
+        return new ResponseEntity<Map<String, Object>>(msg, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/runCalculator/filter-options", method = RequestMethod.GET)

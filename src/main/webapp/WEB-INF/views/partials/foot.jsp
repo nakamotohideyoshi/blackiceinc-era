@@ -34,6 +34,7 @@
 <script src="resources/js/bootstrap/bootstrap.min.js"></script>
 
 <script src="resources/js/plugin/jquery.floatThead.js"></script>
+<script src="resources/js/plugin/scrolltop/jquery.scrollTo.min.js"></script>
 
 <script src="resources/js/notification/SmartNotification.min.js"></script>
 <script src="resources/js/smartwidgets/jarvis.widget.min.js"></script>

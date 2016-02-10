@@ -77,8 +77,8 @@
 	                     				<i class="fa fa-search"></i> Search</button>
 	                     			<a class="btn btn-default btn-sm ng-binding" href="javascript:void(0);" ng-click="resetFilter()" >
 	                     				<i class="fa fa-refresh"></i> Reset</a>
-	                             	<a class="btn btn-primary" href="javascript:void(0);" >Run Calculator</a>
-									<a class="btn btn-primary" href="javascript:void(0);" >Close Run</a>
+	                             	<a class="btn btn-primary" href="javascript:void(0);" ng-class="{'disabled' : disableBtnRunCalculator}" ng-click="RunSelectedCalculator()">Run Calculator</a>
+									<a class="btn btn-primary" href="javascript:void(0);" ng-class="{'disabled' : disableBtnCloseRun}" ng-click="CloseSelectedRun()">Close Run</a>
 	                           </div>
 								
 							</fieldset>
@@ -125,19 +125,25 @@
 								        <tbody style="font-size: 13px !important;">
 								        	<tr ng-repeat="row in RunCalculator.list" ng-class="{ 'success' : row.$edit , 'danger' : row.$error, 'success':row.$checked,'hide':row.$deleted}">
 								        		<td>
-													<input ng-model="row.$checked" type="checkbox" class="">
+													<input ng-model="row.$checked"
+														   ng-change="setRunCalculationBtnsAvailability()"
+														   type="checkbox" class="">
 								                </td>
 								                <td>
-													<div> {{ row.snapshotDate }}</div>
+													<div ng-if="!row.$edit"> {{ row.snapshotDate }}</div>
+													<div ng-if="row.$edit"> {{ row.newItem.snapshotDate }}</div>
 												</td>
 												<td>
-													<div> {{ row.loadJobNbr }}</div>
+													<div ng-if="!row.$edit"> {{ row.loadJobNbr }}</div>
+													<div ng-if="row.$edit"> {{ row.newItem.loadJobNbr }}</div>
 												</td>
 												<td>
-													<div> {{ row.scenarioId }}</div>
+													<div ng-if="!row.$edit"> {{ row.scenarioId }}</div>
+													<div ng-if="row.$edit"> {{ row.newItem.scenarioId }}</div>
 												</td>
 												<td>
-													<div> {{ row.status }}</div>
+													<div ng-if="!row.$edit"> {{ row.status }}</div>
+													<div ng-if="row.$edit"> {{ row.newItem.status }}</div>
 												</td>
 								        	</tr>
 								        </tbody>

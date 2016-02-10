@@ -71,9 +71,15 @@ public class RunCalculator {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
+
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.JSON_STYLE).build();
+		return "RunCalculator{" +
+				"id=" + id +
+				", snapshotDate=" + snapshotDate +
+				", loadJobNbr=" + loadJobNbr +
+				", scenarioId='" + scenarioId + '\'' +
+				", status='" + status + '\'' +
+				'}';
 	}
 }

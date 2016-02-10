@@ -67,7 +67,52 @@ angular.module('app.services', [])
 
 		return sharedService;
 	}])
-	
+
+	.factory('VNotificationService', ['$rootScope', function($rootScope) {
+        var VNotification = {};
+        var defaultTimeout = 3000;
+        VNotification.message = '';
+
+        VNotification.info = function(msg, timeout) {
+            this.message = msg;
+            this.timeout = timeout || defaultTimeout;
+            $rootScope.$broadcast('vNotificationInfo');
+        };
+
+        VNotification.success = function(msg, timeout) {
+            this.message = msg;
+            this.timeout = timeout || defaultTimeout;
+            $rootScope.$broadcast('vNotificationSuccess');
+        };
+
+        VNotification.failure = function(msg, timeout, header) {
+            this.message = msg;
+            if(header) this.header = header;
+            this.timeout = timeout || defaultTimeout;
+            $rootScope.$broadcast('vNotificationFailure');
+            this.header = null;
+        };
+
+        VNotification.error = function(msg, timeout) {
+            this.message = msg;
+            this.timeout = timeout || defaultTimeout;
+            $rootScope.$broadcast('vNotificationError');
+        };
+
+        VNotification.warning = function(msg, timeout) {
+            this.message = msg;
+            this.timeout = timeout || defaultTimeout;
+            $rootScope.$broadcast('vNotificationWarning');
+        };
+        VNotification.clear = function() {
+            $rootScope.$broadcast('vNotificationClear');
+        };
+
+
+
+        return VNotification;
+    }])
+
 	.factory('Util', function(){
 
 		return {
@@ -279,7 +324,16 @@ angular.module('app.services', [])
 			},
 			getAll : function(params) {
 				return CustomHttp.get('api/runCalculator?' + $.param(params), {});
-			}
+			},
+			generateCheck : function(params) {
+			    return CustomHttp.get('api/runCalculator/check', params);
+			},
+			create : function(data) {
+			    return CustomHttp.post('api/runCalculator', data);
+			},
+			remove : function( idArray ) {
+                return CustomHttp.remove('api/runCalculator', idArray);
+            }
 		});
 	})
 
@@ -338,11 +392,11 @@ angular.module('app.services', [])
 		}
 		function remove(url, idArray) {
 			if(idArray) {
-				var jsonString = JSON.stringify(idArray);
+//				var jsonString = JSON.stringify(idArray);
 				var request =  $http({
 					method: 'DELETE',
 					url: url,
-					params: {idList : jsonString}
+					params: idArray
 				});
 			} else {
 				var request = $http({

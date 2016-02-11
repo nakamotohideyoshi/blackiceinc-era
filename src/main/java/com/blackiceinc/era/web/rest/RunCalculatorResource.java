@@ -12,8 +12,10 @@ import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -30,6 +32,7 @@ import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.*;
 import java.sql.Date;
 import java.util.*;
 
@@ -45,6 +48,9 @@ public class RunCalculatorResource {
 
     @Autowired
     private MeasurementSensitivityRepository measurementSensitivityRepository;
+
+    @Autowired
+    private Environment env;
 
     @RequestMapping(value = "/runCalculator",
             method = RequestMethod.GET,
@@ -210,6 +216,19 @@ public class RunCalculatorResource {
         Response res = new Response();
 
         // execute PL/SQL procedure
+
+        try{
+            runCalculatorRepository.runCalculatorStoredProcedure(runCalculator.getScenarioId(),
+                    runCalculator.getLoadJobNbr().intValue(), runCalculator.getSnapshotDate());
+        }catch(InvalidDataAccessResourceUsageException ex){
+            log.error("Error executing PL/SQL procedure", ex);
+            res.setMessage("Error executing PL/SQL procedure.");
+            return new ResponseEntity<>(res, HttpStatus.EXPECTATION_FAILED);
+        }
+
+//        runCalculatorRepository.runCalculatorStoredProcedureTest(runCalculator.getScenarioId(),
+//                runCalculator.getLoadJobNbr().intValue(), runCalculator.getSnapshotDate());
+
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
@@ -243,6 +262,24 @@ public class RunCalculatorResource {
         List<Date> snapshotDateList = new ArrayList<>();
         List<BigDecimal> loadJobNbrList = new ArrayList<>();
         List<String> scenarioIdList = new ArrayList<>();
+
+        try{
+
+//            fillFilterFromMeasurementSensetivityDB(snapshotDateList, loadJobNbrList, scenarioIdList);
+            fillFilterWithDummyData(snapshotDateList, loadJobNbrList, scenarioIdList);
+
+        }catch (Exception ex){
+            log.error("Error while pulling measurement sensitivity data from database", ex);
+        }
+
+        result.put("snapshotDate", snapshotDateList);
+        result.put("loadJobNbr", loadJobNbrList);
+        result.put("scenarioId", scenarioIdList);
+
+        return result;
+    }
+
+    private void fillFilterWithDummyData(List<Date> snapshotDateList, List<BigDecimal> loadJobNbrList, List<String> scenarioIdList) {
         for (MeasurementSensitivity ms : generateDummyMeasurementData()) {
             if (!snapshotDateList.contains(ms.getSnapshotDate())) {
                 snapshotDateList.add(ms.getSnapshotDate());
@@ -256,14 +293,38 @@ public class RunCalculatorResource {
                 scenarioIdList.add(ms.getScenarioId());
             }
         }
+    }
 
-        result.put("snapshotDate", snapshotDateList);
-        result.put("loadJobNbr", loadJobNbrList);
-        result.put("scenarioId", scenarioIdList);
+    private void fillFilterFromMeasurementSensetivityDB(List<Date> snapshotDateList, List<BigDecimal> loadJobNbrList, List<String> scenarioIdList) throws SQLException {
+        Connection conn = DriverManager.getConnection(
+                env.getProperty("jdbc.url"),
+                env.getProperty("jdbc.user"),
+                env.getProperty("jdbc.pass"));
+        conn.setAutoCommit(false);
 
-//		measurementSensitivityRepository.findAll();
+        Statement stmt = conn.createStatement();
 
-        return result;
+        long start = System.currentTimeMillis();
+        log.info("Starting taking MEASUREMENT_SENSITIVITY data");
+        ResultSet resultSet = stmt.executeQuery("select DISTINCT SNAPSHOT_DATE, LOAD_JOB_NBR, SCENARIO_ID from MEASUREMENT_SENSITIVITY");
+        log.info("MEASUREMENT_SENSITIVITY data took {} ms", System.currentTimeMillis() - start);
+        while (resultSet.next()) {
+            Date snapshotDate = resultSet.getDate("SNAPSHOT_DATE");
+            BigDecimal loadJobNbr = resultSet.getBigDecimal("LOAD_JOB_NBR");
+            String scenarioId = resultSet.getString("SCENARIO_ID");
+
+            if (!snapshotDateList.contains(snapshotDate)) {
+                snapshotDateList.add(snapshotDate);
+            }
+
+            if (!loadJobNbrList.contains(loadJobNbr)) {
+                loadJobNbrList.add(loadJobNbr);
+            }
+
+            if (!scenarioIdList.contains(scenarioId)) {
+                scenarioIdList.add(scenarioId);
+            }
+        }
     }
 
     private List<MeasurementSensitivity> generateDummyMeasurementData() {

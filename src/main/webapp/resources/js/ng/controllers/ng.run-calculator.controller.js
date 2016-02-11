@@ -1,6 +1,6 @@
 angular.module('ng.run-calculator.controller', [])
-    .controller('RunCalculatorController', ['$scope', 'RunCalculatorService', 'Util', '$routeParams', 'VNotificationService', 'ConfirmService',
-        function ($scope, RunCalculatorService, Util, $routeParams, VNotificationService, ConfirmService) {
+    .controller('RunCalculatorController', ['$scope', '$timeout', 'RunCalculatorService', 'Util', '$routeParams', 'VNotificationService', '$location', 'ConfirmService',
+        function ($scope, $timeout, RunCalculatorService, Util, $routeParams, VNotificationService, $location, ConfirmService) {
             var CONSTANT_id = 'id';
             var CONSTANT_snapshotDate = 'snapshotDate';
             var CONSTANT_loadJobNbr = 'loadJobNbr';
@@ -9,9 +9,10 @@ angular.module('ng.run-calculator.controller', [])
 
     		var filtersDefault = {};
     		$scope.filters={};
-    		
-    		$scope.pageLength =  parseInt(25);
-    		$scope.currentPage = parseInt(1);
+
+    		var initializing = true;
+    		$scope.pageLength =  parseInt($location.search().length ||  25);
+    		$scope.currentPage = parseInt($location.search().page ||  1);
     		
     		$scope.loading=true;
     		$scope.disableBtnRunCalculator = true;
@@ -186,7 +187,9 @@ angular.module('ng.run-calculator.controller', [])
 
                         if(isError) continue;
 
+                        $scope.RunCalculator.$saving = true;
                         RunCalculatorService.generateCheck(params).then(function(response){
+                              $scope.RunCalculator.$saving = false;
                               $scope.AssignError(response.hashKey, response.exists);
                               if(!response.exists) {
                                   count--;
@@ -200,7 +203,10 @@ angular.module('ng.run-calculator.controller', [])
                             if(count === 0) {
                                 for (var i = 0; i < $scope.RunCalculator.list.length; i++) {
                                     if($scope.RunCalculator.list[i].$new) {
+                                        $scope.RunCalculator.$saving = true;
                                         RunCalculatorService.create($scope.RunCalculator.list[i].newItem).then(function(response){
+                                            $scope.RunCalculator.totalElements = response.totalElements;
+                                            $scope.RunCalculator.$saving = false;
                                             $scope.RunCalculator.list.unshift(response.content);
                                             $scope.RunCalculator.Cancel();
                                         });
@@ -220,7 +226,9 @@ angular.module('ng.run-calculator.controller', [])
     		        for (var i= $scope.RunCalculator.list.length; i--;) {
     		            if($scope.RunCalculator.list[i].$checked) {
                             $scope.RunCalculator.list[i].$deleted = true;
-                            idListStr += $scope.RunCalculator.list[i][ CONSTANT_id ] +'|';
+                            if ($scope.RunCalculator.list[i][ CONSTANT_id ]) {
+                              idListStr += $scope.RunCalculator.list[i][ CONSTANT_id ] +'|';
+                            }
                         }
     		        }
 
@@ -228,7 +236,8 @@ angular.module('ng.run-calculator.controller', [])
 
     		        if( idListStr ) {
     		            $scope.RunCalculator.$saving = true;
-                        RunCalculatorService.remove( { idListStr: idListStr } ).then(function(){
+                        RunCalculatorService.remove( { idListStr: idListStr } ).then(function(response){
+                            $scope.RunCalculator.totalElements = response.totalElements;
                             $scope.RunCalculator.$saving = false;
                             $scope.RunCalculator.Cancel(true);
                         });
@@ -275,7 +284,9 @@ angular.module('ng.run-calculator.controller', [])
 
     		    var checkedRow;
                 for (var i = 0; i < $scope.RunCalculator.list.length; i++) {
-                    if($scope.RunCalculator.list[i].$checked) {
+                    if(!$scope.RunCalculator.list[i].$deleted
+                            &&!$scope.RunCalculator.list[i].$new
+                            && $scope.RunCalculator.list[i].$checked) {
                        if (checkedRow){
                             result = false;
                             break;
@@ -319,7 +330,76 @@ angular.module('ng.run-calculator.controller', [])
                 for (var i= $scope.RunCalculator.list.length; i--;)
                     $scope.RunCalculator.list[i].$checked = masterCheck;
             };
-            
+
+            $scope.maxRows = function () {
+                var data_length = ($scope.RunCalculator.list) ? $scope.RunCalculator.list.length : $scope.pageLength;
+                var ret = Math.max($scope.RunCalculator.totalElements, data_length);
+                return ret;
+            };
+
+
+            $scope.maxPages = function () {
+                if($scope.maxRows() === 0) {
+                    return 1;
+                }
+                return Math.ceil($scope.maxRows() / $scope.pageLength);
+            };
+
+            $scope.pageForward = function () {
+                $scope.currentPage += 1;
+            };
+
+            $scope.pageBackward = function () {
+                $scope.currentPage -= 1;
+            };
+
+            $scope.pageToLast = function () {
+                $scope.currentPage = $scope.RunCalculator.totalPages;
+            };
+
+            $scope.pageToFirst = function () {
+                $scope.currentPage = 1;
+            };
+
+            $scope.cantPageForward = function() {
+                var curPage = $scope.currentPage;
+                var maxPages = $scope.maxPages();
+                var data_length = ($scope.RunCalculator.list) ? $scope.RunCalculator.list.length : $scope.pageLength;
+                if ($scope.RunCalculator.totalElements > 0) {
+                    return curPage >= maxPages;
+                } else {
+                    return data_length < 1;
+                }
+            };
+
+            $scope.cantPageToLast = function() {
+                if ($scope.RunCalculator.totalElements > 0) {
+                    return $scope.cantPageForward();
+                } else {
+                    return true;
+                }
+            };
+
+            $scope.cantPageBackward = function() {
+                var curPage = $scope.currentPage;
+                return curPage <= 1;
+            };
+
+            /**
+             * Table pagination controllers
+             * @type {Boolean}
+             */
+            $scope.$watchGroup(['currentPage', 'pageLength'], function() {
+                if (initializing) {
+                    $timeout(function() { initializing = false; });
+                } else {
+                    //console.log('page changed to ' + $scope.currentPage);
+                    $location.search('page', $scope.currentPage);
+                    $location.search('length', $scope.pageLength);
+                    $scope.filterTable();
+                }
+            });
+
             RunCalculatorService.filterOptions().then(function(response){
             	$scope.filterOptions = response;
             	angular.copy($scope.filters, filtersDefault);

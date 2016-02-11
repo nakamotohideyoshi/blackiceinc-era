@@ -79,7 +79,7 @@
 									   ng-class="{'disabled' : loading}"
 									   ng-click="resetFilter()" >
 	                     				<i class="fa fa-refresh"></i> Reset</a>
-	                             	<a class="btn btn-primary" href="javascript:void(0);" ng-class="{'disabled' : disableBtnRunCalculator}" ng-click="RunSelectedCalculator()">Run Calculator</a>
+	                             	<a class="btn btn-primary" href="javascript:void(0);" ng-class="{'disabled' : disableBtnRunCalculator }" ng-click="RunSelectedCalculator()">Run Calculator</a>
 									<a class="btn btn-primary" href="javascript:void(0);" ng-class="{'disabled' : disableBtnCloseRun}" ng-click="CloseSelectedRun()">Close Run</a>
 	                           </div>
 								
@@ -216,7 +216,7 @@
 				         <div class="btn btn-xs btn-success"  ng-click="RunCalculator.Save()" ng-show="RunCalculator.$isDisabled"><span class="fa fa-save"></span>  Save</div>
 				         <div class="btn btn-xs btn-default"  ng-click="RunCalculator.Cancel()" ng-show="RunCalculator.$isDisabled"><span class="fa fa-times"></span>  Cancel</div>
 
-				         <i ng-if="Assessment.$saving" class="fa fa-refresh fa-spin "></i>
+				         <i ng-if="RunCalculator.$saving" class="fa fa-refresh fa-spin "></i>
 					</div>
 					
 				</div>

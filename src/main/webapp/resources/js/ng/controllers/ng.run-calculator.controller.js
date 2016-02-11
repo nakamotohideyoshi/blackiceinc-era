@@ -258,6 +258,12 @@ angular.module('ng.run-calculator.controller', [])
                 });
     		};
 
+    		$scope.resetFilter = function() {
+    		    $scope.filters = {};
+                angular.copy(filtersDefault, $scope.filters);
+                $scope.filterTable();
+    		}
+
             $scope.setRunCalculationBtnsAvailability = function() {
                 var enabled = shouldCalculationBtnsBeEnabled();
                 $scope.disableBtnRunCalculator = !enabled;

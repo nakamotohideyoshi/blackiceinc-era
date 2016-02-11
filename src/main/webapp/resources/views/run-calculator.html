@@ -73,9 +73,11 @@
 								</div>
 								
 								<div class="form-group" style="clear:both">
-									<button ng-click="filterTable()" class="btn btn-primary btn-sm ng-binding">
+									<button ng-click="filterTable()" class="btn btn-primary btn-sm ng-binding" ng-class="{'disabled' : loading}">
 	                     				<i class="fa fa-search"></i> Search</button>
-	                     			<a class="btn btn-default btn-sm ng-binding" href="javascript:void(0);" ng-click="resetFilter()" >
+	                     			<a class="btn btn-default btn-sm ng-binding" href="javascript:void(0);"
+									   ng-class="{'disabled' : loading}"
+									   ng-click="resetFilter()" >
 	                     				<i class="fa fa-refresh"></i> Reset</a>
 	                             	<a class="btn btn-primary" href="javascript:void(0);" ng-class="{'disabled' : disableBtnRunCalculator}" ng-click="RunSelectedCalculator()">Run Calculator</a>
 									<a class="btn btn-primary" href="javascript:void(0);" ng-class="{'disabled' : disableBtnCloseRun}" ng-click="CloseSelectedRun()">Close Run</a>

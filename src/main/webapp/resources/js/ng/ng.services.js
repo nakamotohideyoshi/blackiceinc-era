@@ -333,6 +333,12 @@ angular.module('app.services', [])
 			},
 			remove : function( idArray ) {
                 return CustomHttp.remove('api/runCalculator', idArray);
+            },
+            runCalculation: function(data) {
+                return CustomHttp.post('api/runCalculator/runCalculation', data);
+            },
+            closeCalculation: function(id) {
+                return CustomHttp.post('api/runCalculator/closeCalculation/'+id, {});
             }
 		});
 	})

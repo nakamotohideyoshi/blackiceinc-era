@@ -37,6 +37,7 @@ import java.util.*;
 @RequestMapping("/api")
 public class RunCalculatorResource {
 
+    public static final String STATUS_CLOSED = "Closed";
     private final Logger log = LoggerFactory.getLogger(RunCalculatorResource.class);
 
     @Autowired
@@ -201,6 +202,37 @@ public class RunCalculatorResource {
         msg.put("hashKey", hashKey);
 
         return new ResponseEntity<Map<String, Object>>(msg, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "runCalculator/runCalculation", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Response> runCalculation(@Valid @RequestBody RunCalculator runCalculator){
+        Response res = new Response();
+
+        // execute PL/SQL procedure
+        return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "runCalculator/closeCalculation/{id}", method = RequestMethod.POST)
+    public ResponseEntity<Response> closeCalculation(@PathVariable Long id){
+        Response res = new Response();
+
+        try{
+            RunCalculator runCalculator = runCalculatorRepository.findOne(id);
+            if (!STATUS_CLOSED.equals(runCalculator.getStatus())){
+                runCalculator.setStatus(STATUS_CLOSED);
+                RunCalculator savedEntity = runCalculatorRepository.save(runCalculator);
+                res.setContent(savedEntity);
+            } else {
+                res.setMessage("Calculation already closed!");
+                return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
+            }
+        }catch (EmptyResultDataAccessException ex) {
+            res.setMessage("Data does not exist.");
+            return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/runCalculator/filter-options", method = RequestMethod.GET)

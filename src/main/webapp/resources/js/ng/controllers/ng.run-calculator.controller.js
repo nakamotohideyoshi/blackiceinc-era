@@ -237,11 +237,25 @@ angular.module('ng.run-calculator.controller', [])
     		};
 
     		$scope.RunSelectedCalculator = function() {
-
+                var checkedRow = getFirstCheckedRow();
+                $scope.loading = true;
+                RunCalculatorService.runCalculation( checkedRow ).then(function(){
+                    $scope.loading = false;
+                });
     		};
 
     		$scope.CloseSelectedRun = function() {
-
+                var checkedRow = getFirstCheckedRow();
+                $scope.loading = true;
+                RunCalculatorService.closeCalculation( checkedRow.id ).then(function(response){
+                    for (var i = 0; i < $scope.RunCalculator.list.length; i++) {
+                        if($scope.RunCalculator.list[i].id === checkedRow.id ) {
+                            $scope.RunCalculator.list[i] = response.content;
+                        }
+                    }
+                    $scope.loading = false;
+                    $scope.setRunCalculationBtnsAvailability();
+                });
     		};
 
             $scope.setRunCalculationBtnsAvailability = function() {
@@ -276,6 +290,14 @@ angular.module('ng.run-calculator.controller', [])
 
                 return result;
     		};
+
+    		getFirstCheckedRow = function() {
+    		    for (var i = 0; i < $scope.RunCalculator.list.length; i++) {
+                    if($scope.RunCalculator.list[i].$checked) {
+                        return $scope.RunCalculator.list[i];
+                    }
+                }
+    		}
 
     		// function will highlight errored rows
             $scope.AssignError = function(hashKey, bool) {

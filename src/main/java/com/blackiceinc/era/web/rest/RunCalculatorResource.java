@@ -30,7 +30,6 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import java.math.BigDecimal;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.*;
 import java.sql.Date;
@@ -265,8 +264,8 @@ public class RunCalculatorResource {
 
         try{
 
-//            fillFilterFromMeasurementSensetivityDB(snapshotDateList, loadJobNbrList, scenarioIdList);
-            fillFilterWithDummyData(snapshotDateList, loadJobNbrList, scenarioIdList);
+            fillFilterFromMeasurementSensitivityDB(snapshotDateList, loadJobNbrList, scenarioIdList);
+//            fillFilterWithDummyData(snapshotDateList, loadJobNbrList, scenarioIdList);
 
         }catch (Exception ex){
             log.error("Error while pulling measurement sensitivity data from database", ex);
@@ -295,7 +294,7 @@ public class RunCalculatorResource {
         }
     }
 
-    private void fillFilterFromMeasurementSensetivityDB(List<Date> snapshotDateList, List<BigDecimal> loadJobNbrList, List<String> scenarioIdList) throws SQLException {
+    private void fillFilterFromMeasurementSensitivityDB(List<Date> snapshotDateList, List<BigDecimal> loadJobNbrList, List<String> scenarioIdList) throws SQLException {
         Connection conn = DriverManager.getConnection(
                 env.getProperty("jdbc.url"),
                 env.getProperty("jdbc.user"),

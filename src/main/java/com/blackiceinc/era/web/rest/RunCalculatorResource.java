@@ -59,29 +59,13 @@ public class RunCalculatorResource {
                                                       @RequestParam(value = "snapshotDate", required = false) Date snapshotDate,
                                                       @RequestParam(value = "loadJobNbr", required = false) BigDecimal loadJobNbr,
                                                       @RequestParam(value = "scenarioId", required = false) String scenarioId) {
-
-        /** Check to see if the queryParam contains "page" & "length" if not set default values **/
-        int pageNumber = (page != null) ? page : 0;
-        int pageSize = (length != null) ? length : 25;
-
         Page<RunCalculator> findAll = null;
+
         try {
+            Specification<RunCalculator> specRunCalculator = getRunCalculatorSpecification(snapshotDate, loadJobNbr, scenarioId);
 
-            RunCalculatorSpecificationsBuilder builder = new RunCalculatorSpecificationsBuilder();
-            if (snapshotDate!=null){
-                builder.with("snapshotDate", ":", snapshotDate, "", "");
-            }
-
-            if (loadJobNbr!=null){
-                builder.with("loadJobNbr", ":", loadJobNbr, "", "");
-            }
-
-            if (scenarioId!=null){
-                builder.with("scenarioId", ":", scenarioId, "", "");
-            }
-
-            Specification<RunCalculator> specRunCalculator = builder.build();
-
+            int pageNumber = (page != null) ? page : 0;
+            int pageSize = (length != null) ? length : 25;
             findAll = runCalculatorRepository.findAll(specRunCalculator, new PageRequest(pageNumber, pageSize));
         } catch (Exception ex) {
             log.error("DB Exception", ex);
@@ -102,33 +86,18 @@ public class RunCalculatorResource {
             return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
         }
 
-        try{
+        try {
             RunCalculator savedEntity = runCalculatorRepository.save(runCalculator);
             res.setContent(savedEntity);
             res.setTotalElements(runCalculatorRepository.count());
             return new ResponseEntity<>(res, HttpStatus.OK);
-        }catch(DataIntegrityViolationException ex){
+        } catch (DataIntegrityViolationException ex) {
             res.setMessage("Cannot Add Duplicate Entries : A Record With These Values Already Exists.");
             return new ResponseEntity<>(res, HttpStatus.CONFLICT);
-        } catch(ConstraintViolationException ex){
+        } catch (ConstraintViolationException ex) {
             res.setMessage(getValidationExceptionMessages(ex));
             return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
         }
-    }
-
-    private String getValidationExceptionMessages(ConstraintViolationException validationException) {
-        validationException.printStackTrace();
-        Set<String> messages = new HashSet();
-        Set<ConstraintViolation<?>> stack = validationException.getConstraintViolations();
-        StringBuilder errorMessages = new StringBuilder();
-        for (ConstraintViolation<?> constraintViolation : stack) {
-            messages.add(constraintViolation.getMessage());
-        }
-        for (String message : messages) {
-            errorMessages.append(message).append(",");
-        }
-        errorMessages.replace(errorMessages.length()-1, errorMessages.length(), "");
-        return errorMessages.toString();
     }
 
     @RequestMapping(value = "/runCalculator",
@@ -143,15 +112,15 @@ public class RunCalculatorResource {
             try {
                 runCalculatorRepository.delete(Long.parseLong(id));
                 res.modifyDeleteSuccessResultMap(id, true);
-            }catch (NumberFormatException ex) {
+            } catch (NumberFormatException ex) {
                 res.addFailedDeleteRecord(new FailedCRUDResponseObj(id, "Invalid number formatting"));
                 res.modifyDeleteSuccessResultMap(id, false);
                 returnStatus = HttpStatus.NOT_FOUND;
-            }catch (EmptyResultDataAccessException ex) {
+            } catch (EmptyResultDataAccessException ex) {
                 res.addFailedDeleteRecord(new FailedCRUDResponseObj(id, "Data with id=" + id + " does not exist."));
                 res.modifyDeleteSuccessResultMap(id, false);
                 returnStatus = HttpStatus.NOT_FOUND;
-            }catch (DataIntegrityViolationException ex) {
+            } catch (DataIntegrityViolationException ex) {
                 res.addFailedDeleteRecord(new FailedCRUDResponseObj(id, "Cannot Be Deleted Due To Foreign Key Constraint."));
                 res.modifyDeleteSuccessResultMap(id, false);
                 returnStatus = HttpStatus.CONFLICT;
@@ -163,7 +132,8 @@ public class RunCalculatorResource {
     }
 
     @RequestMapping(value = "/runCalculator/check", method = RequestMethod.GET)
-    public  @ResponseBody
+    public
+    @ResponseBody
     HttpEntity<Map<String, Object>> checkIfExists(@RequestParam LinkedHashMap<String, String> allRequestParams) {
         Page<RunCalculator> pageable;
         int pageNumber = (allRequestParams.containsKey("page")) ? Integer.parseInt(allRequestParams.get("page")) : 0;
@@ -180,20 +150,7 @@ public class RunCalculatorResource {
         BigDecimal loadJobNbr = (allRequestParams.containsKey("loadJobNbr")) ? BigDecimal.valueOf(Long.valueOf(allRequestParams.get("loadJobNbr"))) : null;
         String scenarioId = (allRequestParams.containsKey("scenarioId")) ? allRequestParams.get("scenarioId") : null;
 
-        RunCalculatorSpecificationsBuilder builder = new RunCalculatorSpecificationsBuilder();
-        if (snapshotDate!=null){
-            builder.with("snapshotDate", ":", snapshotDate, "", "");
-        }
-
-        if (loadJobNbr!=null){
-            builder.with("loadJobNbr", ":", loadJobNbr, "", "");
-        }
-
-        if (scenarioId!=null){
-            builder.with("scenarioId", ":", scenarioId, "", "");
-        }
-
-        Specification<RunCalculator> specRunCalculator = builder.build();
+        Specification<RunCalculator> specRunCalculator = getRunCalculatorSpecification(snapshotDate, loadJobNbr, scenarioId);
 
         pageable = runCalculatorRepository.findAll(specRunCalculator, new PageRequest(pageNumber, pageSize));
 
@@ -211,33 +168,31 @@ public class RunCalculatorResource {
 
     @RequestMapping(value = "runCalculator/runCalculation", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<Response> runCalculation(@Valid @RequestBody RunCalculator runCalculator){
+    public ResponseEntity<Response> runCalculation(@Valid @RequestBody RunCalculator runCalculator) {
         Response res = new Response();
 
-        // execute PL/SQL procedure
-
-        try{
+        try {
+            // execute PL/SQL procedure
             runCalculatorRepository.runCalculatorStoredProcedure(runCalculator.getScenarioId(),
                     runCalculator.getLoadJobNbr().intValue(), runCalculator.getSnapshotDate());
-        }catch(InvalidDataAccessResourceUsageException ex){
+//        runCalculatorRepository.runCalculatorStoredProcedureTest(runCalculator.getScenarioId(),
+//                runCalculator.getLoadJobNbr().intValue(), runCalculator.getSnapshotDate());
+        } catch (InvalidDataAccessResourceUsageException ex) {
             log.error("Error executing PL/SQL procedure", ex);
             res.setMessage("Error executing PL/SQL procedure.");
             return new ResponseEntity<>(res, HttpStatus.EXPECTATION_FAILED);
         }
 
-//        runCalculatorRepository.runCalculatorStoredProcedureTest(runCalculator.getScenarioId(),
-//                runCalculator.getLoadJobNbr().intValue(), runCalculator.getSnapshotDate());
-
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
     @RequestMapping(value = "runCalculator/closeCalculation/{id}", method = RequestMethod.POST)
-    public ResponseEntity<Response> closeCalculation(@PathVariable Long id){
+    public ResponseEntity<Response> closeCalculation(@PathVariable Long id) {
         Response res = new Response();
 
-        try{
+        try {
             RunCalculator runCalculator = runCalculatorRepository.findOne(id);
-            if (!STATUS_CLOSED.equals(runCalculator.getStatus())){
+            if (!STATUS_CLOSED.equals(runCalculator.getStatus())) {
                 runCalculator.setStatus(STATUS_CLOSED);
                 RunCalculator savedEntity = runCalculatorRepository.save(runCalculator);
                 res.setContent(savedEntity);
@@ -245,7 +200,7 @@ public class RunCalculatorResource {
                 res.setMessage("Calculation already closed!");
                 return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
             }
-        }catch (EmptyResultDataAccessException ex) {
+        } catch (EmptyResultDataAccessException ex) {
             res.setMessage("Data does not exist.");
             return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
         }
@@ -262,12 +217,10 @@ public class RunCalculatorResource {
         List<BigDecimal> loadJobNbrList = new ArrayList<>();
         List<String> scenarioIdList = new ArrayList<>();
 
-        try{
-
+        try {
             fillFilterFromMeasurementSensitivityDB(snapshotDateList, loadJobNbrList, scenarioIdList);
 //            fillFilterWithDummyData(snapshotDateList, loadJobNbrList, scenarioIdList);
-
-        }catch (Exception ex){
+        } catch (Exception ex) {
             log.error("Error while pulling measurement sensitivity data from database", ex);
         }
 
@@ -352,4 +305,35 @@ public class RunCalculatorResource {
         return ms1;
     }
 
+    private Specification<RunCalculator> getRunCalculatorSpecification(@RequestParam(value = "snapshotDate", required = false) Date snapshotDate, @RequestParam(value = "loadJobNbr", required = false) BigDecimal loadJobNbr, @RequestParam(value = "scenarioId", required = false) String scenarioId) {
+        RunCalculatorSpecificationsBuilder builder = new RunCalculatorSpecificationsBuilder();
+        if (snapshotDate != null) {
+            builder.with("snapshotDate", ":", snapshotDate, "", "");
+        }
+
+        if (loadJobNbr != null) {
+            builder.with("loadJobNbr", ":", loadJobNbr, "", "");
+        }
+
+        if (scenarioId != null) {
+            builder.with("scenarioId", ":", scenarioId, "", "");
+        }
+
+        return builder.build();
+    }
+
+    private String getValidationExceptionMessages(ConstraintViolationException validationException) {
+        validationException.printStackTrace();
+        Set<String> messages = new HashSet();
+        Set<ConstraintViolation<?>> stack = validationException.getConstraintViolations();
+        StringBuilder errorMessages = new StringBuilder();
+        for (ConstraintViolation<?> constraintViolation : stack) {
+            messages.add(constraintViolation.getMessage());
+        }
+        for (String message : messages) {
+            errorMessages.append(message).append(",");
+        }
+        errorMessages.replace(errorMessages.length() - 1, errorMessages.length(), "");
+        return errorMessages.toString();
+    }
 }

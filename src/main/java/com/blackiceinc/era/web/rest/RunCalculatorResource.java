@@ -1,24 +1,19 @@
 package com.blackiceinc.era.web.rest;
 
-import com.blackiceinc.era.persistence.erau.model.MeasurementSensitivity;
 import com.blackiceinc.era.persistence.erau.model.RunCalculator;
 import com.blackiceinc.era.persistence.erau.repository.MeasurementSensitivityRepository;
 import com.blackiceinc.era.persistence.erau.repository.RunCalculatorRepository;
-import com.blackiceinc.era.persistence.erau.specifications.RunCalculatorSpecificationsBuilder;
+import com.blackiceinc.era.services.RunCalculatorService;
 import com.blackiceinc.era.web.rest.model.DeleteResponse;
 import com.blackiceinc.era.web.rest.model.FailedCRUDResponseObj;
 import com.blackiceinc.era.web.rest.model.Response;
-import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -46,10 +41,10 @@ public class RunCalculatorResource {
     private RunCalculatorRepository runCalculatorRepository;
 
     @Autowired
-    private MeasurementSensitivityRepository measurementSensitivityRepository;
+    private RunCalculatorService runCalculatorService;
 
     @Autowired
-    private Environment env;
+    private MeasurementSensitivityRepository measurementSensitivityRepository;
 
     @RequestMapping(value = "/runCalculator",
             method = RequestMethod.GET,
@@ -58,20 +53,12 @@ public class RunCalculatorResource {
                                                       @RequestParam(value = "length", required = false) Integer length,
                                                       @RequestParam(value = "snapshotDate", required = false) Date snapshotDate,
                                                       @RequestParam(value = "loadJobNbr", required = false) BigDecimal loadJobNbr,
-                                                      @RequestParam(value = "scenarioId", required = false) String scenarioId) {
-        Page<RunCalculator> findAll = null;
+                                                      @RequestParam(value = "scenarioId", required = false) String scenarioId) throws URISyntaxException  {
 
-        try {
-            Specification<RunCalculator> specRunCalculator = getRunCalculatorSpecification(snapshotDate, loadJobNbr, scenarioId);
+        Page<RunCalculator> runCalculators = runCalculatorService
+                .findRunCalculationByParams(page, length, snapshotDate, loadJobNbr, scenarioId);
 
-            int pageNumber = (page != null) ? page : 0;
-            int pageSize = (length != null) ? length : 25;
-            findAll = runCalculatorRepository.findAll(specRunCalculator, new PageRequest(pageNumber, pageSize));
-        } catch (Exception ex) {
-            log.error("DB Exception", ex);
-        }
-
-        return new ResponseEntity<>(findAll, HttpStatus.OK);
+        return new ResponseEntity<>(runCalculators, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/runCalculator",
@@ -103,7 +90,7 @@ public class RunCalculatorResource {
     @RequestMapping(value = "/runCalculator",
             method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Response> deleteData(@RequestParam String idListStr) {
+    public ResponseEntity<Response> deleteData(@RequestParam String idListStr) throws URISyntaxException {
         DeleteResponse res = new DeleteResponse();
         String[] idList = idListStr.split("\\|");
         HttpStatus returnStatus = HttpStatus.OK;
@@ -132,27 +119,18 @@ public class RunCalculatorResource {
     }
 
     @RequestMapping(value = "/runCalculator/check", method = RequestMethod.GET)
-    public
     @ResponseBody
-    HttpEntity<Map<String, Object>> checkIfExists(@RequestParam LinkedHashMap<String, String> allRequestParams) {
-        Page<RunCalculator> pageable;
-        int pageNumber = (allRequestParams.containsKey("page")) ? Integer.parseInt(allRequestParams.get("page")) : 0;
-        int pageSize = (allRequestParams.containsKey("length")) ? Integer.parseInt(allRequestParams.get("length")) : 1;
-        allRequestParams.remove("page");
-        allRequestParams.remove("length");
-        String hashKey = null;
-        if (allRequestParams.containsKey("hashKey")) {
-            hashKey = allRequestParams.get("hashKey");
-            allRequestParams.remove("hashKey");
-        }
-
+    public
+    HttpEntity<Map<String, Object>> checkIfExists(@RequestParam LinkedHashMap<String, String> allRequestParams) throws URISyntaxException {
+        int page = (allRequestParams.containsKey("page")) ? Integer.parseInt(allRequestParams.get("page")) : 0;
+        int length = (allRequestParams.containsKey("length")) ? Integer.parseInt(allRequestParams.get("length")) : 1;
+        String hashKey = allRequestParams.containsKey("hashKey")?allRequestParams.get("hashKey"):null;
         Date snapshotDate = (allRequestParams.containsKey("snapshotDate")) ? Date.valueOf(allRequestParams.get("snapshotDate")) : null;
         BigDecimal loadJobNbr = (allRequestParams.containsKey("loadJobNbr")) ? BigDecimal.valueOf(Long.valueOf(allRequestParams.get("loadJobNbr"))) : null;
         String scenarioId = (allRequestParams.containsKey("scenarioId")) ? allRequestParams.get("scenarioId") : null;
 
-        Specification<RunCalculator> specRunCalculator = getRunCalculatorSpecification(snapshotDate, loadJobNbr, scenarioId);
-
-        pageable = runCalculatorRepository.findAll(specRunCalculator, new PageRequest(pageNumber, pageSize));
+        Page<RunCalculator> pageable = runCalculatorService
+                .findRunCalculationByParams(page, length, snapshotDate, loadJobNbr, scenarioId);
 
         Map<String, Object> msg = new HashMap<String, Object>();
         if (pageable.getNumberOfElements() == 0) {
@@ -168,15 +146,15 @@ public class RunCalculatorResource {
 
     @RequestMapping(value = "runCalculator/runCalculation", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<Response> runCalculation(@Valid @RequestBody RunCalculator runCalculator) {
+    public ResponseEntity<Response> runCalculation(@Valid @RequestBody RunCalculator runCalculator) throws URISyntaxException {
         Response res = new Response();
 
         try {
             // execute PL/SQL procedure
             runCalculatorRepository.runCalculatorStoredProcedure(runCalculator.getScenarioId(),
                     runCalculator.getLoadJobNbr().intValue(), runCalculator.getSnapshotDate());
-//        runCalculatorRepository.runCalculatorStoredProcedureTest(runCalculator.getScenarioId(),
-//                runCalculator.getLoadJobNbr().intValue(), runCalculator.getSnapshotDate());
+            // runCalculatorRepository.runCalculatorStoredProcedureTest(runCalculator.getScenarioId(),
+            // runCalculator.getLoadJobNbr().intValue(), runCalculator.getSnapshotDate());
         } catch (InvalidDataAccessResourceUsageException ex) {
             log.error("Error executing PL/SQL procedure", ex);
             res.setMessage("Error executing PL/SQL procedure.");
@@ -187,7 +165,7 @@ public class RunCalculatorResource {
     }
 
     @RequestMapping(value = "runCalculator/closeCalculation/{id}", method = RequestMethod.POST)
-    public ResponseEntity<Response> closeCalculation(@PathVariable Long id) {
+    public ResponseEntity<Response> closeCalculation(@PathVariable Long id) throws URISyntaxException {
         Response res = new Response();
 
         try {
@@ -210,116 +188,8 @@ public class RunCalculatorResource {
 
     @RequestMapping(value = "/runCalculator/filter-options", method = RequestMethod.GET)
     @ResponseBody
-    public JSONObject getFilterOptions(HttpServletRequest request) {
-        JSONObject result = new JSONObject();
-
-        List<Date> snapshotDateList = new ArrayList<>();
-        List<BigDecimal> loadJobNbrList = new ArrayList<>();
-        List<String> scenarioIdList = new ArrayList<>();
-
-        try {
-            fillFilterFromMeasurementSensitivityDB(snapshotDateList, loadJobNbrList, scenarioIdList);
-//            fillFilterWithDummyData(snapshotDateList, loadJobNbrList, scenarioIdList);
-        } catch (Exception ex) {
-            log.error("Error while pulling measurement sensitivity data from database", ex);
-        }
-
-        result.put("snapshotDate", snapshotDateList);
-        result.put("loadJobNbr", loadJobNbrList);
-        result.put("scenarioId", scenarioIdList);
-
-        return result;
-    }
-
-    private void fillFilterWithDummyData(List<Date> snapshotDateList, List<BigDecimal> loadJobNbrList, List<String> scenarioIdList) {
-        for (MeasurementSensitivity ms : generateDummyMeasurementData()) {
-            if (!snapshotDateList.contains(ms.getSnapshotDate())) {
-                snapshotDateList.add(ms.getSnapshotDate());
-            }
-
-            if (!loadJobNbrList.contains(ms.getLoadJobNbr())) {
-                loadJobNbrList.add(ms.getLoadJobNbr());
-            }
-
-            if (!scenarioIdList.contains(ms.getScenarioId())) {
-                scenarioIdList.add(ms.getScenarioId());
-            }
-        }
-    }
-
-    private void fillFilterFromMeasurementSensitivityDB(List<Date> snapshotDateList, List<BigDecimal> loadJobNbrList, List<String> scenarioIdList) throws SQLException {
-        Connection conn = DriverManager.getConnection(
-                env.getProperty("jdbc.url"),
-                env.getProperty("jdbc.user"),
-                env.getProperty("jdbc.pass"));
-        conn.setAutoCommit(false);
-
-        Statement stmt = conn.createStatement();
-
-        long start = System.currentTimeMillis();
-        log.info("Starting taking MEASUREMENT_SENSITIVITY data");
-        ResultSet resultSet = stmt.executeQuery("select DISTINCT SNAPSHOT_DATE, LOAD_JOB_NBR, SCENARIO_ID from MEASUREMENT_SENSITIVITY");
-        log.info("MEASUREMENT_SENSITIVITY data took {} ms", System.currentTimeMillis() - start);
-        while (resultSet.next()) {
-            Date snapshotDate = resultSet.getDate("SNAPSHOT_DATE");
-            BigDecimal loadJobNbr = resultSet.getBigDecimal("LOAD_JOB_NBR");
-            String scenarioId = resultSet.getString("SCENARIO_ID");
-
-            if (!snapshotDateList.contains(snapshotDate)) {
-                snapshotDateList.add(snapshotDate);
-            }
-
-            if (!loadJobNbrList.contains(loadJobNbr)) {
-                loadJobNbrList.add(loadJobNbr);
-            }
-
-            if (!scenarioIdList.contains(scenarioId)) {
-                scenarioIdList.add(scenarioId);
-            }
-        }
-    }
-
-    private List<MeasurementSensitivity> generateDummyMeasurementData() {
-        List<MeasurementSensitivity> result = new ArrayList<MeasurementSensitivity>();
-
-        result.add(createMeasurementSensitivity(new Date(116, 0, 1), new BigDecimal(1), "scen1"));
-        result.add(createMeasurementSensitivity(new Date(116, 1, 1), new BigDecimal(2), "scen2"));
-        result.add(createMeasurementSensitivity(new Date(116, 1, 1), new BigDecimal(3), "scen2"));
-        result.add(createMeasurementSensitivity(new Date(116, 2, 1), new BigDecimal(3), "scen3"));
-        result.add(createMeasurementSensitivity(new Date(116, 3, 1), new BigDecimal(4), "scen4"));
-        result.add(createMeasurementSensitivity(new Date(116, 4, 1), new BigDecimal(4), "scen4"));
-        result.add(createMeasurementSensitivity(new Date(116, 5, 1), new BigDecimal(10), "scen5"));
-        result.add(createMeasurementSensitivity(new Date(116, 6, 1), new BigDecimal(10), "scen6"));
-        result.add(createMeasurementSensitivity(new Date(116, 7, 1), new BigDecimal(11), "scen7"));
-        result.add(createMeasurementSensitivity(new Date(116, 8, 1), new BigDecimal(13), "scen7"));
-
-        return result;
-    }
-
-    private MeasurementSensitivity createMeasurementSensitivity(Date date, BigDecimal jobNbr, String scenarioId) {
-        MeasurementSensitivity ms1 = new MeasurementSensitivity();
-        ms1.setSnapshotDate(date);
-        ms1.setLoadJobNbr(jobNbr);
-        ms1.setScenarioId(scenarioId);
-
-        return ms1;
-    }
-
-    private Specification<RunCalculator> getRunCalculatorSpecification(@RequestParam(value = "snapshotDate", required = false) Date snapshotDate, @RequestParam(value = "loadJobNbr", required = false) BigDecimal loadJobNbr, @RequestParam(value = "scenarioId", required = false) String scenarioId) {
-        RunCalculatorSpecificationsBuilder builder = new RunCalculatorSpecificationsBuilder();
-        if (snapshotDate != null) {
-            builder.with("snapshotDate", ":", snapshotDate, "", "");
-        }
-
-        if (loadJobNbr != null) {
-            builder.with("loadJobNbr", ":", loadJobNbr, "", "");
-        }
-
-        if (scenarioId != null) {
-            builder.with("scenarioId", ":", scenarioId, "", "");
-        }
-
-        return builder.build();
+    public Map<String, List> getFilterOptions(HttpServletRequest request) throws URISyntaxException, SQLException {
+        return runCalculatorService.getFilterOptions();
     }
 
     private String getValidationExceptionMessages(ConstraintViolationException validationException) {

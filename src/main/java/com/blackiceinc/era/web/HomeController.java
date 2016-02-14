@@ -25,8 +25,8 @@ public class HomeController {
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
 		
 		String formattedDate = dateFormat.format(date);
-//		CsrfToken token = (CsrfToken) request.getAttribute("_csrf");
-//	 	response.addCookie(new Cookie("XSRF-TOKEN", token.getToken()));
+		CsrfToken token = (CsrfToken) request.getAttribute("_csrf");
+	 	response.addCookie(new Cookie("XSRF-TOKEN", token.getToken()));
 		model.addAttribute("serverTime", formattedDate );
 		return "home";
 	}

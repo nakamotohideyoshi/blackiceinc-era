@@ -46,6 +46,7 @@ public class RunCalculatorServiceImpl implements RunCalculatorService {
         List<String> scenarioIdList = new ArrayList<>();
 
         fillFilterFromMeasurementSensitivityDB(snapshotDateList, loadJobNbrList, scenarioIdList);
+//        fillFilterWithDummyData(snapshotDateList, loadJobNbrList, scenarioIdList);
 
         filterOptions.put(SNAPSHOT_DATE, snapshotDateList);
         filterOptions.put(LOAD_JOB_NBR, loadJobNbrList);
@@ -138,16 +139,16 @@ public class RunCalculatorServiceImpl implements RunCalculatorService {
     private List<MeasurementSensitivity> generateDummyMeasurementData() {
         List<MeasurementSensitivity> result = new ArrayList<MeasurementSensitivity>();
 
-        result.add(createMeasurementSensitivity(new Date(116, 0, 1), new BigDecimal(1), "scen1"));
-        result.add(createMeasurementSensitivity(new Date(116, 1, 1), new BigDecimal(2), "scen2"));
-        result.add(createMeasurementSensitivity(new Date(116, 1, 1), new BigDecimal(3), "scen2"));
-        result.add(createMeasurementSensitivity(new Date(116, 2, 1), new BigDecimal(3), "scen3"));
-        result.add(createMeasurementSensitivity(new Date(116, 3, 1), new BigDecimal(4), "scen4"));
-        result.add(createMeasurementSensitivity(new Date(116, 4, 1), new BigDecimal(4), "scen4"));
-        result.add(createMeasurementSensitivity(new Date(116, 5, 1), new BigDecimal(10), "scen5"));
-        result.add(createMeasurementSensitivity(new Date(116, 6, 1), new BigDecimal(10), "scen6"));
-        result.add(createMeasurementSensitivity(new Date(116, 7, 1), new BigDecimal(11), "scen7"));
-        result.add(createMeasurementSensitivity(new Date(116, 8, 1), new BigDecimal(13), "scen7"));
+        result.add(createMeasurementSensitivity(new Date(116, 0, 1), new BigDecimal(1), "1"));
+        result.add(createMeasurementSensitivity(new Date(116, 1, 1), new BigDecimal(2), "2"));
+        result.add(createMeasurementSensitivity(new Date(116, 1, 1), new BigDecimal(3), "2"));
+        result.add(createMeasurementSensitivity(new Date(116, 2, 1), new BigDecimal(3), "3"));
+        result.add(createMeasurementSensitivity(new Date(116, 3, 1), new BigDecimal(4), "4"));
+        result.add(createMeasurementSensitivity(new Date(116, 4, 1), new BigDecimal(4), "4"));
+        result.add(createMeasurementSensitivity(new Date(116, 5, 1), new BigDecimal(10), "5"));
+        result.add(createMeasurementSensitivity(new Date(116, 6, 1), new BigDecimal(10), "6"));
+        result.add(createMeasurementSensitivity(new Date(116, 7, 1), new BigDecimal(11), "7"));
+        result.add(createMeasurementSensitivity(new Date(116, 8, 1), new BigDecimal(13), "7"));
 
         return result;
     }

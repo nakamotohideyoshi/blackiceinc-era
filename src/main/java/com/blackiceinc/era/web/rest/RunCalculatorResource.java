@@ -77,7 +77,7 @@ public class RunCalculatorResource {
             RunCalculator savedEntity = runCalculatorRepository.save(runCalculator);
             res.setContent(savedEntity);
             res.setTotalElements(runCalculatorRepository.count());
-            return new ResponseEntity<>(res, HttpStatus.OK);
+            return new ResponseEntity<>(res, HttpStatus.CREATED);
         } catch (DataIntegrityViolationException ex) {
             res.setMessage("Cannot Add Duplicate Entries : A Record With These Values Already Exists.");
             return new ResponseEntity<>(res, HttpStatus.CONFLICT);
@@ -118,7 +118,9 @@ public class RunCalculatorResource {
         return new ResponseEntity<Response>(res, returnStatus);
     }
 
-    @RequestMapping(value = "/runCalculator/check", method = RequestMethod.GET)
+    @RequestMapping(value = "/runCalculator/check",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public
     HttpEntity<Map<String, Object>> checkIfExists(@RequestParam LinkedHashMap<String, String> allRequestParams) throws URISyntaxException {
@@ -141,7 +143,7 @@ public class RunCalculatorResource {
         msg.put("content", pageable.getContent());
         msg.put("hashKey", hashKey);
 
-        return new ResponseEntity<Map<String, Object>>(msg, HttpStatus.OK);
+        return new ResponseEntity<>(msg, HttpStatus.OK);
     }
 
     @RequestMapping(value = "runCalculator/runCalculation", method = RequestMethod.POST)

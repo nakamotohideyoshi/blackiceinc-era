@@ -5,6 +5,7 @@ import com.blackiceinc.era.persistence.erau.model.RunCalculator;
 import com.blackiceinc.era.persistence.erau.repository.RunCalculatorRepository;
 import com.blackiceinc.era.services.RunCalculatorService;
 import com.blackiceinc.era.web.rest.RunCalculatorResource;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -20,20 +21,29 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import javax.annotation.PostConstruct;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasToString;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.hasValue;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -42,9 +52,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @IntegrationTest
 public class RunCalculatorResourceTest {
 
+    public static final Date DEFAULT_SNAPSHOT_DATE = new Date(Calendar.getInstance().getTimeInMillis());
+    public static final long DEFAULT_LOAD_JOB_NBR = 1l;
+    public static final String DEFAULT_SCENARIO_ID = "1";
     private MockMvc restRunCalculatorMockMvc;
 
-    @Autowired
+    @Mock
     private RunCalculatorRepository runCalculatorRepository;
 
     @Mock
@@ -52,6 +65,8 @@ public class RunCalculatorResourceTest {
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
+
+    private RunCalculator runCalculator;
 
     @PostConstruct
     public void setup() {
@@ -63,16 +78,20 @@ public class RunCalculatorResourceTest {
         this.restRunCalculatorMockMvc = MockMvcBuilders.standaloneSetup(runCalculatorResource).setMessageConverters(jacksonMessageConverter).build();
     }
 
+    @Before
+    public void initTest() {
+        runCalculator = new RunCalculator();
+        runCalculator.setSnapshotDate(DEFAULT_SNAPSHOT_DATE);
+        runCalculator.setLoadJobNbr(DEFAULT_LOAD_JOB_NBR);
+        runCalculator.setScenarioId(DEFAULT_SCENARIO_ID);
+    }
+
     @Test
     @Transactional
     public void getAllRunCalculator() throws Exception {
         ArrayList<RunCalculator> runCalculators = new ArrayList<>();
 
-        RunCalculator runCalculator = new RunCalculator();
         runCalculator.setId(1l);
-        runCalculator.setSnapshotDate(new Date(Calendar.getInstance().getTimeInMillis()));
-        runCalculator.setLoadJobNbr(1l);
-        runCalculator.setScenarioId("1");
         runCalculators.add(runCalculator);
 
 
@@ -88,6 +107,73 @@ public class RunCalculatorResourceTest {
                 .andExpect(jsonPath("$.content.[*].snapshotDate").value(hasItem(runCalculator.getSnapshotDate().toString())))
                 .andExpect(jsonPath("$.content.[*].loadJobNbr").value(hasItem(runCalculator.getLoadJobNbr().intValue())))
                 .andExpect(jsonPath("$.content.[*].scenarioId").value(hasItem(runCalculator.getScenarioId())));
+    }
+
+    @Test
+    @Transactional
+    public void createRunCalculator() throws Exception {
+        RunCalculator savedRunCalculator = createRunCalcObj(2l, DEFAULT_SNAPSHOT_DATE, DEFAULT_LOAD_JOB_NBR, DEFAULT_SCENARIO_ID);
+        when(runCalculatorRepository.save(runCalculator)).thenReturn(savedRunCalculator);
+
+        // Create the WorkEntry
+        MockHttpServletRequestBuilder response = post("/api/runCalculator");
+        ResultActions perform = restRunCalculatorMockMvc.perform(response
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(runCalculator)));
+        perform
+                .andExpect(status().isCreated());
+    }
+
+    @Test
+    @Transactional
+    public void deleteRunCalculator() throws Exception {
+        String idListStr = "1|2";
+
+        // Create the WorkEntry
+        ResultActions perform = restRunCalculatorMockMvc.perform(delete("/api/runCalculator").param("idListStr", idListStr))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.deleteSuccessResultMap.[*]").value(hasItem(true)));
+    }
+
+    @Test
+    @Transactional
+    public void checkIfRunCalculatorExists() throws Exception {
+        Page<RunCalculator> page = new PageImpl<RunCalculator>(new ArrayList<RunCalculator>());
+        when(runCalculatorService.findRunCalculationByParams(anyInt(), anyInt(), any(Date.class), any(BigDecimal.class),
+                anyString())).thenReturn(page);
+
+        restRunCalculatorMockMvc.perform(get("/api/runCalculator/check")
+                .param("hashKey", "object:104")
+                .param("snapshotDate", "2016-01-01")
+                .param("loadJobNbr", "1")
+                .param("scenarioId", "1"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.exists").value(eq(false)))
+                .andExpect(jsonPath("$.hashKey").value(is("object:104")));
+    }
+
+    @Test
+    @Transactional
+    public void runCalculatorProcedure() throws Exception {
+        // Create the WorkEntry
+        MockHttpServletRequestBuilder response = post("/api/runCalculator/runCalculation");
+        ResultActions perform = restRunCalculatorMockMvc.perform(response
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(runCalculator)));
+        perform
+                .andExpect(status().isOk());
+    }
+
+    private RunCalculator createRunCalcObj(Long id, Date snapshotDate, Long loadJobNbr, String scenarioId) {
+        RunCalculator runCalculator = new RunCalculator();
+        runCalculator.setId(id);
+        runCalculator.setSnapshotDate(snapshotDate);
+        runCalculator.setLoadJobNbr(loadJobNbr);
+        runCalculator.setScenarioId(scenarioId);
+
+        return runCalculator;
     }
 
 }

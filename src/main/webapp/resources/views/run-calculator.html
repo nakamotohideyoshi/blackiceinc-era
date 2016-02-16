@@ -246,8 +246,10 @@
 								   date-picker data-dateformat="yy-mm-dd"
 								   class="form-control"
 								   id="inputRunDate"
+								   name="inputRunDate"
 								   placeholder="Run Date"
 								   ng-model="newRunCalculator.snapshotDate"
+								   ng-class="{'invalid': !hideValidityStyle && newRunCalculatorForm.inputRunDate.$error.required}"
 							       required>
 						</div>
 					</div>
@@ -256,8 +258,10 @@
 						<div class="col-sm-10">
 							<input type="number" class="form-control"
 								   id="inputLoadJobNbr"
+								   name="inputLoadJobNbr"
 								   placeholder="Load Nbr"
 							       ng-model="newRunCalculator.loadJobNbr"
+								   ng-class="{'invalid': !hideValidityStyle && newRunCalculatorForm.inputLoadJobNbr.$error.required}"
 								   required>
 						</div>
 					</div>
@@ -266,8 +270,10 @@
 						<div class="col-sm-10">
 							<input type="text" class="form-control"
 								   id="inputScenario"
+								   name="inputScenario"
 								   placeholder="Scenario"
 								   ng-model="newRunCalculator.scenarioId"
+								   ng-class="{'invalid': !hideValidityStyle && newRunCalculatorForm.inputScenario.$error.required}"
 								   required>
 						</div>
 					</div>

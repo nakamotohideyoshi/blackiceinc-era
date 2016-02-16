@@ -246,6 +246,7 @@ angular.module('ng.run-calculator.controller', [])
     		};
 
     		$scope.addNewRunCalculator = function() {
+    		    $scope.hideValidityStyle = true;
                 $scope.newRunCalculator = {
                     id           : null,
                     snapshotDate : '',
@@ -262,35 +263,40 @@ angular.module('ng.run-calculator.controller', [])
             };
 
             $scope.saveRunCalculatorModal = function() {
-                var row = $scope.newRunCalculator;
+                if (!$scope.newRunCalculatorForm.$invalid) {
+                    var row = $scope.newRunCalculator;
 
-                $scope.RunCalculator.$saving = true;
-                RunCalculatorService.create($scope.newRunCalculator).then(function(response){
-                    $scope.RunCalculator.$saving = false;
-                    $scope.RunCalculator.totalElements = response.totalElements;
-                    var result = response.content;
-                    result.$checked = true;
-                    $scope.RunCalculator.list.unshift(response.content);
-                    $scope.closeRunCalculatorModal();
+                    $scope.RunCalculator.$saving = true;
+                    RunCalculatorService.create($scope.newRunCalculator).then(function(response){
+                        $scope.RunCalculator.$saving = false;
+                        $scope.RunCalculator.totalElements = response.totalElements;
+                        var result = response.content;
+                        result.$checked = true;
+                        $scope.RunCalculator.list.unshift(response.content);
+                        $scope.closeRunCalculatorModal();
 
-                    if ($scope.filterOptions.snapshotDate.indexOf(response.content.snapshotDate)==-1){
-                        $scope.filterOptions.snapshotDate.push(response.content.snapshotDate);
-                    }
+                        if ($scope.filterOptions.snapshotDate.indexOf(response.content.snapshotDate)==-1){
+                            $scope.filterOptions.snapshotDate.push(response.content.snapshotDate);
+                        }
 
-                    if ($scope.filterOptions.loadJobNbr.indexOf(response.content.loadJobNbr)==-1){
-                        $scope.filterOptions.loadJobNbr.push(response.content.loadJobNbr);
-                    }
+                        if ($scope.filterOptions.loadJobNbr.indexOf(response.content.loadJobNbr)==-1){
+                            $scope.filterOptions.loadJobNbr.push(response.content.loadJobNbr);
+                        }
 
-                    if ($scope.filterOptions.scenarioId.indexOf(response.content.scenarioId)==-1){
-                        $scope.filterOptions.scenarioId.push(response.content.scenarioId);
-                    }
+                        if ($scope.filterOptions.scenarioId.indexOf(response.content.scenarioId)==-1){
+                            $scope.filterOptions.scenarioId.push(response.content.scenarioId);
+                        }
 
-                    $scope.setRunCalculationBtnsAvailability();
+                        $scope.setRunCalculationBtnsAvailability();
 
-                }, function(response){
-                    $scope.RunCalculator.$saving = false;
-                    ConfirmService.open(response, null, true);
-                });
+                    }, function(response){
+                        $scope.RunCalculator.$saving = false;
+                        ConfirmService.open(response, null, true);
+                    });
+                }else{
+                    $scope.hideValidityStyle = false;
+                    ConfirmService.open('Please fill in required fields.', null, true);
+                }
 
             };
 

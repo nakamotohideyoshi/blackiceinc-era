@@ -159,9 +159,9 @@ public class RunCalculatorResource {
                     runCalculator.getLoadJobNbr().intValue(), runCalculator.getSnapshotDate());
             // runCalculatorRepository.runCalculatorStoredProcedureTest(runCalculator.getScenarioId(),
             // runCalculator.getLoadJobNbr().intValue(), runCalculator.getSnapshotDate());
-        } catch (InvalidDataAccessResourceUsageException ex) {
+        } catch (Exception ex){
             log.error("Error executing PL/SQL procedure", ex);
-            res.setMessage("Error executing PL/SQL procedure.");
+            res.setMessage("Error running calculation!");
             return new ResponseEntity<>(res, HttpStatus.EXPECTATION_FAILED);
         }
 

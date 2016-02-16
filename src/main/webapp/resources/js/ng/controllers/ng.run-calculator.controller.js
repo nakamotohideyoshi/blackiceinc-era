@@ -306,6 +306,9 @@ angular.module('ng.run-calculator.controller', [])
                 $scope.loading = true;
                 RunCalculatorService.runCalculation( checkedRow ).then(function(){
                     $scope.loading = false;
+                }, function(response){
+                    $scope.loading = false;
+                    ConfirmService.open(response, null, true);
                 });
     		};
 

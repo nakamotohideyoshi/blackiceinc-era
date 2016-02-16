@@ -34,7 +34,8 @@ import java.util.*;
 @RequestMapping("/api")
 public class RunCalculatorResource {
 
-    public static final String STATUS_CLOSED = "Closed";
+    private static final String STATUS_CLOSED = "Closed";
+    private static final String OPEN = "Open";
     private final Logger log = LoggerFactory.getLogger(RunCalculatorResource.class);
 
     @Autowired
@@ -74,12 +75,13 @@ public class RunCalculatorResource {
         }
 
         try {
+            runCalculator.setStatus(OPEN);
             RunCalculator savedEntity = runCalculatorRepository.save(runCalculator);
             res.setContent(savedEntity);
             res.setTotalElements(runCalculatorRepository.count());
             return new ResponseEntity<>(res, HttpStatus.CREATED);
         } catch (DataIntegrityViolationException ex) {
-            res.setMessage("Cannot Add Duplicate Entries : A Record With These Values Already Exists.");
+            res.setMessage("Cannot Add Duplicate Entries! A Record With These Values Already Exists.");
             return new ResponseEntity<>(res, HttpStatus.CONFLICT);
         } catch (ConstraintViolationException ex) {
             res.setMessage(getValidationExceptionMessages(ex));

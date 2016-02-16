@@ -58,6 +58,12 @@
     padding-top: 5px;
 }
 
+.invalid {
+    outline: none;
+    border-color: #db4437;
+    box-shadow: 0 0 10px #db4437;
+}
+
 .tab-footer {
     border-top: 1px solid #ccc;
 }

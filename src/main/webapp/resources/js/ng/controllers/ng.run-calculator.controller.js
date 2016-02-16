@@ -70,7 +70,7 @@ angular.module('ng.run-calculator.controller', [])
     			    loadJobNbr   : $scope.filters.loadJobNbr,
     			    scenarioId   : $scope.filters.scenarioId,
     			    status       : ''
-    			}
+    			};
 
     			$scope.RunCalculator.list.unshift({
     			    $edit: true, $new: true, newItem: newItem
@@ -214,7 +214,7 @@ angular.module('ng.run-calculator.controller', [])
                                 }
                             }
                             return;
-                        }
+                        };
 
                     }
                 }
@@ -244,6 +244,56 @@ angular.module('ng.run-calculator.controller', [])
     		        }
     		    });
     		};
+
+    		$scope.addNewRunCalculator = function() {
+                $scope.newRunCalculator = {
+                    id           : null,
+                    snapshotDate : '',
+                    loadJobNbr   : '',
+                    scenarioId   : '',
+                    status       : ''
+                };
+
+    		    angular.element('#runCalculatorModal').addClass('md-show');
+    		};
+
+    		$scope.closeRunCalculatorModal = function () {
+                angular.element('#runCalculatorModal').removeClass('md-show');
+            };
+
+            $scope.saveRunCalculatorModal = function() {
+                var row = $scope.newRunCalculator;
+
+                $scope.RunCalculator.$saving = true;
+                RunCalculatorService.create($scope.newRunCalculator).then(function(response){
+                    $scope.RunCalculator.$saving = false;
+                    $scope.RunCalculator.totalElements = response.totalElements;
+                    var result = response.content;
+                    result.$checked = true;
+                    $scope.RunCalculator.list.unshift(response.content);
+                    $scope.closeRunCalculatorModal();
+
+                    if ($scope.filterOptions.snapshotDate.indexOf(response.content.snapshotDate)==-1){
+                        $scope.filterOptions.snapshotDate.push(response.content.snapshotDate);
+                    }
+
+                    if ($scope.filterOptions.loadJobNbr.indexOf(response.content.loadJobNbr)==-1){
+                        $scope.filterOptions.loadJobNbr.push(response.content.loadJobNbr);
+                    }
+
+                    if ($scope.filterOptions.scenarioId.indexOf(response.content.scenarioId)==-1){
+                        $scope.filterOptions.scenarioId.push(response.content.scenarioId);
+                    }
+
+                    $scope.setRunCalculationBtnsAvailability();
+
+                }, function(response){
+                    $scope.RunCalculator.$saving = false;
+                    ConfirmService.open(response, null, true);
+                });
+
+            };
+
 
     		$scope.RunSelectedCalculator = function() {
                 var checkedRow = getFirstCheckedRow();

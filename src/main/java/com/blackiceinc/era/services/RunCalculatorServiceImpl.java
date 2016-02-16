@@ -45,7 +45,7 @@ public class RunCalculatorServiceImpl implements RunCalculatorService {
         List<BigDecimal> loadJobNbrList = new ArrayList<>();
         List<String> scenarioIdList = new ArrayList<>();
 
-        fillFilterFromMeasurementSensitivityDB(snapshotDateList, loadJobNbrList, scenarioIdList);
+        fillFilterFromRunCalculatorDB(snapshotDateList, loadJobNbrList, scenarioIdList);
 //        fillFilterWithDummyData(snapshotDateList, loadJobNbrList, scenarioIdList);
 
         filterOptions.put(SNAPSHOT_DATE, snapshotDateList);
@@ -104,7 +104,7 @@ public class RunCalculatorServiceImpl implements RunCalculatorService {
         }
     }
 
-    private void fillFilterFromMeasurementSensitivityDB(List<Date> snapshotDateList, List<BigDecimal> loadJobNbrList, List<String> scenarioIdList) throws SQLException {
+    private void fillFilterFromRunCalculatorDB(List<Date> snapshotDateList, List<BigDecimal> loadJobNbrList, List<String> scenarioIdList) throws SQLException {
         Connection conn = DriverManager.getConnection(
                 env.getProperty("jdbc.url"),
                 env.getProperty("jdbc.user"),
@@ -114,9 +114,9 @@ public class RunCalculatorServiceImpl implements RunCalculatorService {
         Statement stmt = conn.createStatement();
 
         long start = System.currentTimeMillis();
-        log.info("Starting taking MEASUREMENT_SENSITIVITY data");
-        ResultSet resultSet = stmt.executeQuery("select DISTINCT SNAPSHOT_DATE, LOAD_JOB_NBR, SCENARIO_ID from MEASUREMENT_SENSITIVITY");
-        log.info("MEASUREMENT_SENSITIVITY data took {} ms", System.currentTimeMillis() - start);
+        log.info("Starting taking distinct data from RUN_CALCULATOR");
+        ResultSet resultSet = stmt.executeQuery("select DISTINCT SNAPSHOT_DATE, LOAD_JOB_NBR, SCENARIO_ID from RUN_CALCULATOR");
+        log.info("distinct RUN_CALCULATOR data took {} ms", System.currentTimeMillis() - start);
         while (resultSet.next()) {
             Date snapshotDate = resultSet.getDate("SNAPSHOT_DATE");
             BigDecimal loadJobNbr = resultSet.getBigDecimal("LOAD_JOB_NBR");

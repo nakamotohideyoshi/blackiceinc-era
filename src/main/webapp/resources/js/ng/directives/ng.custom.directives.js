@@ -134,113 +134,139 @@ angular.module('app.custom', [])
     	  $scope.cancel = function () {
     	    $modalInstance.dismiss('cancel');
     	  };
-    	}])
-    	.directive('vNotification', ['$sce','$window','$timeout', 'VNotificationService',  function($sce, $window, $timeout, VNotificationService){
-    		return {
-    			restrict: 'A',
-    			template:'<div class="v-Notification tray dark small closable login-help v-Notification-animate-in v-position-bottom  v-position-center" '+
-    					'style="margin-left: 0px;margin-top: 0px;z-index: 20000;position: absolute;">' +
-    						'<div class="popupContent">' +
-    							'<div class="gwt-HTML">' +
-    								'<h1>{{NoticationHeader}}</h1>' +
-    								'<p ng-bind-html="NoticationMessage"></p>' +
-    							'</div>' +
-    						'<div>' +
-    					'</div>',
-    			link: function(scope, elem, attrs){
+    }])
+    .directive('vNotification', ['$sce','$window','$timeout', 'VNotificationService',  function($sce, $window, $timeout, VNotificationService){
+        return {
+            restrict: 'A',
+            template:'<div class="v-Notification tray dark small closable login-help v-Notification-animate-in v-position-bottom  v-position-center" '+
+                    'style="margin-left: 0px;margin-top: 0px;z-index: 20000;position: absolute;">' +
+                        '<div class="popupContent">' +
+                            '<div class="gwt-HTML">' +
+                                '<h1>{{NoticationHeader}}</h1>' +
+                                '<p ng-bind-html="NoticationMessage"></p>' +
+                            '</div>' +
+                        '<div>' +
+                    '</div>',
+            link: function(scope, elem, attrs){
 
-    				var firstChild = angular.element(elem[0].firstChild);
-    				var timer;
-    				var windowWidth = $window.innerWidth;
-    				scope.NoticationHeader = 'Info';
-    				scope.NoticationMessage = $sce.trustAsHtml( '<span> <b>Message body</b>. Hello World!</span>');
+                var firstChild = angular.element(elem[0].firstChild);
+                var timer;
+                var windowWidth = $window.innerWidth;
+                scope.NoticationHeader = 'Info';
+                scope.NoticationMessage = $sce.trustAsHtml( '<span> <b>Message body</b>. Hello World!</span>');
 
-    				firstChild.css({
-    					'overflow': 'visible',
-    					'visibility': 'hidden'
-    				});
+                firstChild.css({
+                    'overflow': 'visible',
+                    'visibility': 'hidden'
+                });
 
-                    var ismobile = (/iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(navigator.userAgent.toLowerCase()));
-                    if(ismobile) {
-                        // add this class "v-Notification-system v-position-bottom"
-                        firstChild.addClass('v-Notification-system v-position-bottom')
+                var ismobile = (/iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(navigator.userAgent.toLowerCase()));
+                if(ismobile) {
+                    // add this class "v-Notification-system v-position-bottom"
+                    firstChild.addClass('v-Notification-system v-position-bottom')
+                }
+
+                var show = function() {
+                    var clientWidth = elem.find('div')[0].clientWidth
+                    var windowWidth = $window.innerWidth;
+                    var width = (windowWidth/2) - (clientWidth/2);
+                    firstChild.css({
+                        'left' : width + 'px',
+                        'visibility' : 'visible'
+                    });
+                };
+
+                var hide = function(){
+                    firstChild.css('visibility', 'hidden');
+                };
+
+                //Event handler for resize notification when window changes width
+                // angular.element(window).bind('resize', function(event){
+                // 	if(windowWidth !== $window.innerWidth) {
+                // 		windowWidth = $window.innerWidth;
+                // 		show();
+                // 		scope.$apply();
+                // 	}
+                // });
+
+
+                // Event listener to close the notification
+                firstChild.bind('click', function(event){
+                    var x = event.pageX - firstChild.offset().left;
+                    var y = event.pageY - firstChild.offset().top;
+                    var width = elem.find('div')[0].clientWidth;
+                    if(x > (width - 50) && y < 50) {
+                        hide();
                     }
+                });
 
-    				var show = function() {
-    					var clientWidth = elem.find('div')[0].clientWidth
-    					var windowWidth = $window.innerWidth;
-    					var width = (windowWidth/2) - (clientWidth/2);
-    					firstChild.css({
-    						'left' : width + 'px',
-    						'visibility' : 'visible'
-    					});
-    				};
+                scope.$on('vNotificationInfo', function() {
+                    scope.NoticationHeader = 'Info';
+                    ToggleNotifcationClass('dark');
+                });
 
-    				var hide = function(){
-    					firstChild.css('visibility', 'hidden');
-    				};
+                scope.$on('vNotificationSuccess', function() {
+                    scope.NoticationHeader = 'Success';
+                    ToggleNotifcationClass('success');
+                });
 
-    				//Event handler for resize notification when window changes width
-    				// angular.element(window).bind('resize', function(event){
-    				// 	if(windowWidth !== $window.innerWidth) {
-    				// 		windowWidth = $window.innerWidth;
-    				// 		show();
-    				// 		scope.$apply();
-    				// 	}
-    				// });
+                scope.$on('vNotificationFailure', function() {
+                    scope.NoticationHeader = 'Failure';
+                    ToggleNotifcationClass('failure');
+                });
 
+                scope.$on('vNotificationError', function() {
+                    scope.NoticationHeader = 'Error';
+                    ToggleNotifcationClass('error');
+                });
+                scope.$on('vNotificationWarning', function() {
+                    scope.NoticationHeader = 'Warning';
+                    ToggleNotifcationClass('warning');
+                });
+                scope.$on('vNotificationClear', function() {
+                    hide();
+                });
 
-    				// Event listener to close the notification
-    				firstChild.bind('click', function(event){
-    					var x = event.pageX - firstChild.offset().left;
-    					var y = event.pageY - firstChild.offset().top;
-    					var width = elem.find('div')[0].clientWidth;
-    					if(x > (width - 50) && y < 50) {
-    						hide();
-    					}
-    				});
+                function ToggleNotifcationClass(_class) {
+                    scope.NoticationMessage = $sce.trustAsHtml(VNotificationService.message);
+                    if(VNotificationService.header)
+                        scope.NoticationHeader = VNotificationService.header
 
-    				scope.$on('vNotificationInfo', function() {
-    					scope.NoticationHeader = 'Info';
-    					ToggleNotifcationClass('dark');
-                	});
+                    firstChild.removeClass('dark success failure error warning').addClass(_class);
+                    $timeout.cancel(timer);
+                    hide();
+                    $timeout(show, 100);
+                    timer = $timeout(function(){
+                        hide();
+                    }, VNotificationService.timeout);
+                }
+            }
+        }
+    }])
+    .directive('datePicker', [function(){
+        return {
+            restrict: 'A',
+            link : function(scope, elem, attrs) {
 
-                	scope.$on('vNotificationSuccess', function() {
-                		scope.NoticationHeader = 'Success';
-                		ToggleNotifcationClass('success');
-                	});
+                if(attrs.readonly) return;
+                elem.datepicker({
+                    dateFormat : attrs.dateformat || 'yy-mm-dd',
+                    prevText : '<i class="fa fa-chevron-left"></i>',
+                    nextText : '<i class="fa fa-chevron-right"></i>',
+                });
 
-               		scope.$on('vNotificationFailure', function() {
-               			scope.NoticationHeader = 'Failure';
-                    	ToggleNotifcationClass('failure');
-                	});
-
-    				scope.$on('vNotificationError', function() {
-               			scope.NoticationHeader = 'Error';
-                    	ToggleNotifcationClass('error');
-                	});
-                	scope.$on('vNotificationWarning', function() {
-               			scope.NoticationHeader = 'Warning';
-                    	ToggleNotifcationClass('warning');
-                	});
-        			scope.$on('vNotificationClear', function() {
-               			hide();
-                	});
-
-               		function ToggleNotifcationClass(_class) {
-               			scope.NoticationMessage = $sce.trustAsHtml(VNotificationService.message);
-               			if(VNotificationService.header)
-               				scope.NoticationHeader = VNotificationService.header
-
-    					firstChild.removeClass('dark success failure error warning').addClass(_class);
-    					$timeout.cancel(timer);
-    					hide();
-    					$timeout(show, 100);
-                    	timer = $timeout(function(){
-                    		hide();
-                    	}, VNotificationService.timeout);
-               		}
-    			}
-    		}
-    	}])
+            }
+        }
+    }])
+    .directive('ngDateMask', [function(){
+        return {
+            restrict: 'A',
+            link : function(scope, elem, attrs) {
+                var mask = attrs['mask'] || 'error...', mask_placeholder = attrs['maskPlaceholder'] || 'X';
+                elem.mask(mask, {
+                    placeholder : mask_placeholder
+                });
+            }
+        }
+    }])
     ;

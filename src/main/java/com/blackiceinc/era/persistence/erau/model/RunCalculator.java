@@ -1,6 +1,8 @@
 package com.blackiceinc.era.persistence.erau.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.sql.Date;
 
 @Entity
@@ -25,12 +27,16 @@ public class RunCalculator {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
+    @NotNull
     @Column(name = "SNAPSHOT_DATE")
     private Date snapshotDate;
 
+    @NotNull
     @Column(name = "LOAD_JOB_NBR")
     private Long loadJobNbr;
 
+    @NotNull
+    @Size(min=1)
     @Column(name = "SCENARIO_ID")
     private String scenarioId;
 

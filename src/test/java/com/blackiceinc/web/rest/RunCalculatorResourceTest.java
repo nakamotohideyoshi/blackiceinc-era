@@ -42,6 +42,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasValue;
 import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -129,11 +130,13 @@ public class RunCalculatorResourceTest {
     public void deleteRunCalculator() throws Exception {
         String idListStr = "1|2";
 
+        doNothing().when(runCalculatorRepository).delete(anyLong());
+
         // Create the WorkEntry
-        ResultActions perform = restRunCalculatorMockMvc.perform(delete("/api/runCalculator").param("idListStr", idListStr))
+        restRunCalculatorMockMvc.perform(delete("/api/runCalculator").param("idListStr", idListStr))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.deleteSuccessResultMap.[*]").value(hasItem(true)));
+                .andExpect(jsonPath("$.deleteSuccessResultMap.1").value(is(true)));
     }
 
     @Test
@@ -150,7 +153,7 @@ public class RunCalculatorResourceTest {
                 .param("scenarioId", "1"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.exists").value(eq(false)))
+                .andExpect(jsonPath("$.exists").value(is(false)))
                 .andExpect(jsonPath("$.hashKey").value(is("object:104")));
     }
 

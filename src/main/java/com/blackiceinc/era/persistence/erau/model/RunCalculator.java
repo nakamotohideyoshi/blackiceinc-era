@@ -1,5 +1,11 @@
 package com.blackiceinc.era.persistence.erau.model;
 
+import com.blackiceinc.era.persistence.erau.model.util.CustomDateDeserializer;
+import com.blackiceinc.era.persistence.erau.model.util.CustomDateSerializer;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -28,6 +34,9 @@ public class RunCalculator {
     private Long id;
 
     @NotNull
+    @JsonSerialize(using = CustomDateSerializer.class)
+    @JsonDeserialize(using = CustomDateDeserializer.class)
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "UTC")
     @Column(name = "SNAPSHOT_DATE")
     private Date snapshotDate;
 

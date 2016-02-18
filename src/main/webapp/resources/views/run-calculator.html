@@ -9,9 +9,10 @@
 		position: relative;
 	}
 
-	.floatThead-container table{
+	.floatThead-container table {
 		border-left: none;
 	}
+
 	table.sortable thead .sorting {
 		background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATAgMAAAAPPt5fAAAACVBMVEUAAADIyMjl5eVIBBP/AAAAAXRSTlMAQObYZgAAAClJREFUCNdjwAYEwGQKiGDsBJFsTA5AUoJhAqZaiDhEDVg9RC/MHEwAANsMA91AQfd/AAAAAElFTkSuQmCC) no-repeat center right;
 	}
@@ -28,208 +29,188 @@
 <section id="widget-grid" class="">
 
 	<!-- row -->
-    <div class="row">
-    	<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12 sortable-grid ui-sortable">
-    		<!-- Widget ID (each widget will need unique ID)-->
-    		<div class="jarviswidget jarviswidget-color-blue" id="runcalc-wid-01" data-widget-deletebutton="false" data-widget-editbutton="false">
-    		
-    			<header>
+	<div class="row">
+		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12 sortable-grid ui-sortable">
+			<!-- Widget ID (each widget will need unique ID)-->
+			<div class="jarviswidget jarviswidget-color-blue" id="runcalc-wid-01" data-widget-deletebutton="false" data-widget-editbutton="false">
+
+				<header>
 					<span class="widget-icon"> <i class="fa fa-pencil-square-o"></i> </span>
-					<h2><strong>Run Calculator</strong></h2>				
+					<h2><strong>Run Calculator</strong></h2>
 				</header>
-				
+
 				<div class="widget-body filter-forms">
+
+					<!-- Filter options -->
 					<div class="row no-margin">
-						<form class="form-horizontal ng-pristine ng-valid" ng-submit="filterTable()" style="">
+						<form class="form-horizontal ng-pristine ng-valid" ng-submit="filterTable()" >
 							<fieldset>
 								<div class="form-group">
 									<label class="control-label">Run Date</label>
-									<select class="form-control input-sm"
-											ng-options="o for o in filterOptions.snapshotDate"
-											ng-model="filters.snapshotDate"
-											ng-disabled="loading">
-		                            	<option value="">All</option>
+									<select class="form-control input-sm" ng-options="o for o in Filter.filterOptions.snapshotDate" ng-model="Filter.filters.snapshotDate" ng-disabled="loading">
+										<option value="">All</option>
 									</select>
 								</div>
-								
+
 								<div class="form-group">
 									<label class="control-label">Load Nbr</label>
-									<select class="form-control input-sm"
-											ng-options="o for o in filterOptions.loadJobNbr"
-											ng-model="filters.loadJobNbr"
-											ng-disabled="loading">
-		                            	<option value="">All</option>
+									<select class="form-control input-sm" ng-options="o for o in Filter.filterOptions.loadJobNbr" ng-model="Filter.filters.loadJobNbr" ng-disabled="loading">
+										<option value="">All</option>
 									</select>
 								</div>
-								
+
 								<div class="form-group">
 									<label class="control-label">Scenario</label>
-									<select class="form-control input-sm"
-											ng-options="o for o in filterOptions.scenarioId"
-											ng-model="filters.scenarioId"
-											ng-disabled="loading">
-		                            	<option value="">All</option>
+									<select class="form-control input-sm" ng-options="o for o in Filter.filterOptions.scenarioId" ng-model="Filter.filters.scenarioId" ng-disabled="loading">
+										<option value="">All</option>
 									</select>
 								</div>
-								
+
 								<div class="form-group" style="clear:both">
 									<button ng-click="filterTable()" class="btn btn-primary btn-sm ng-binding" ng-class="{'disabled' : loading}">
-	                     				<i class="fa fa-search"></i> Search</button>
-	                     			<a class="btn btn-default btn-sm ng-binding" href="javascript:void(0);"
-									   ng-class="{'disabled' : loading}"
-									   ng-click="resetFilter()" >
-	                     				<i class="fa fa-refresh"></i> Reset</a>
-	                             	<a class="btn btn-primary" href="javascript:void(0);" ng-class="{'disabled' : disableBtnRunCalculator }" ng-click="RunSelectedCalculator()">Run Calculator</a>
-									<a class="btn btn-primary" href="javascript:void(0);" ng-class="{'disabled' : disableBtnCloseRun}" ng-click="CloseSelectedRun()">Close Run</a>
-	                           </div>
-								
+										<i class="fa fa-search"></i> Search</button>
+									<a class="btn btn-default btn-sm ng-binding" href="javascript:void(0);" ng-class="{'disabled' : loading}" ng-click="resetFilter()">
+										<i class="fa fa-refresh"></i> Reset</a>
+									<a class="btn btn-primary" href="javascript:void(0);" ng-class="{'disabled' : disableBtnRunCalculator }" ng-click="runSelectedCalculator()">Run Calculator</a>
+									<a class="btn btn-primary" href="javascript:void(0);" ng-class="{'disabled' : disableBtnCloseRun}" ng-click="closeSelectedRun()">Close Run</a>
+								</div>
+
 							</fieldset>
 						</form>
 					</div>
-					
+					<!-- Filter options END -->
+
 					<!-- GRID -->
 					<div class="row">
 						<div class="col-xs-12 no-padding ">
 							<div class="col-xs-12 dataTables_wrapper">
-							
-								<div class="dt-toolbar no-padding" >
-		                           <div class="spinner-indicator" ng-if="loading" style="display:block;">
-		                              <div class="v-loading-indicator second v-loading-indicator-delay"></div>
-		                           </div>
-		                        </div>
-							
+
 								<div class="dt-toolbar no-padding">
-		                           <div class="spinner-indicator" ng-if="RunCalculator.list.length==0" style="display:block;">
-		                              <div class="empty-text">No Run Calculations Found</div>
-		                           </div>
-		                        </div>
-		                        
-		                        <div grid-height offset="79" class="wrapper small ">
-		                        	<table ng-float-head
-	                           				class="table table-bordered table-striped table-condensed table-hover  sortable has-tickbox"
-	                           				style="min-width: 0px; border: none;table-layout: auto;">
-                           				<colgroup>
+									<div class="spinner-indicator" ng-if="loading" style="display:block;">
+										<div class="v-loading-indicator second v-loading-indicator-delay"></div>
+									</div>
+								</div>
+
+								<div class="dt-toolbar no-padding">
+									<div class="spinner-indicator" ng-if="RunCalculator.list.length==0" style="display:block;">
+										<div class="empty-text">No Run Calculations Found</div>
+									</div>
+								</div>
+
+								<div grid-height offset="79" class="wrapper small ">
+									<table ng-float-head class="table table-bordered table-striped table-condensed table-hover sortable has-tickbox" style="min-width: 0px; border: none; table-layout: auto;">
+										<colgroup>
 											<col style="width: 1%;">
-								            <col style="width: 10%">
-								            <col style="width: 10%;">
-								            <col style="width: 10%;">
-								            <col style="width: 10%;">
-								        </colgroup>
-								        <thead>
-								        	<tr>
-												<th><input type="checkbox" ng-change="RunCalculator.MasterCheckbox(RunCalculator.$masterCheck)" ng-model="RunCalculator.$masterCheck" > </th>
-												<th class="" >Run Date</th>
-												<th class="" >Load #</th>
-												<th class="" >Scenario</th>
-												<th class="" >Status</th>
+											<col style="width: 10%">
+											<col style="width: 10%;">
+											<col style="width: 10%;">
+											<col style="width: 10%;">
+										</colgroup>
+										<thead>
+											<tr>
+												<th>
+													<input type="checkbox" ng-change="RunCalculator.MasterCheckbox(RunCalculator.$masterCheck)" ng-model="RunCalculator.$masterCheck"> </th>
+												<th>Run Date</th>
+												<th>Load #</th>
+												<th>Scenario</th>
+												<th>Status</th>
 											</tr>
-								        </thead>
-								        <tbody style="font-size: 13px !important;">
-								        	<tr ng-repeat="row in RunCalculator.list" ng-class="{ 'success' : row.$edit , 'danger' : row.$error, 'success':row.$checked,'hide':row.$deleted}">
-								        		<td>
-													<input ng-model="row.$checked"
-														   ng-change="setRunCalculationBtnsAvailability()"
-														   type="checkbox" class="">
-								                </td>
-								                <td>
-													<div ng-if="!row.$edit"> {{ row.snapshotDate }}</div>
-													<div ng-if="row.$edit"> {{ row.newItem.snapshotDate }}</div>
+										</thead>
+										<tbody style="font-size: 13px !important;">
+											<tr ng-repeat="row in RunCalculator.list" ng-class="{ 'success':row.$checked }">
+												<td>
+													<input ng-model="row.$checked" ng-change="setRunCalculationBtnsAvailability()" type="checkbox" class="">
 												</td>
 												<td>
-													<div ng-if="!row.$edit"> {{ row.loadJobNbr }}</div>
-													<div ng-if="row.$edit"> {{ row.newItem.loadJobNbr }}</div>
+													<div>{{ row.snapshotDate }}</div>
 												</td>
 												<td>
-													<div ng-if="!row.$edit"> {{ row.scenarioId }}</div>
-													<div ng-if="row.$edit"> {{ row.newItem.scenarioId }}</div>
+													<div>{{ row.loadJobNbr }}</div>
 												</td>
 												<td>
-													<div ng-if="!row.$edit"> {{ row.status }}</div>
-													<div ng-if="row.$edit"> {{ row.newItem.status }}</div>
+													<div>{{ row.scenarioId }}</div>
 												</td>
-								        	</tr>
-								        </tbody>
-                        			</table>
-		                        </div>
-		                        
+												<td>
+													<div>{{ row.status }}</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+
 							</div>
 						</div>
 					</div>
 					<!-- GRID END -->
-					
+
 					<!-- Pagination -->
-					<div class="ngFooterPanel" ng-class="{'ui-widget-content': jqueryUITheme, 'ui-corner-bottom': jqueryUITheme}"  ng-style="footerStyle()" style="height: 57px;">
+					<div class="ngFooterPanel" ng-class="{'ui-widget-content': jqueryUITheme, 'ui-corner-bottom': jqueryUITheme}" ng-style="footerStyle()" style="height: 57px;">
 						<div class="ngTotalSelectContainer">
-					        <div class="ngFooterTotalItems ngNoMultiSelect" ng-class="{'ngNoMultiSelect': !multiSelect}">
-					            <span class="ngLabel">Total Items: {{RunCalculator.totalElements}}</span><span ng-show="filterText.length > 0" class="ngLabel ng-hide">(Showing Items: 25)</span>
-					        </div>
+							<div class="ngFooterTotalItems ngNoMultiSelect" ng-class="{'ngNoMultiSelect': !multiSelect}">
+								<span class="ngLabel">Total Items: {{ RunCalculator.totalElements }}</span><span ng-show="filterText.length > 0" class="ngLabel ng-hide">(Showing Items: 25)</span>
+							</div>
 						</div>
-						
+
 						<div class="ngPagerContainer ngNoMultiSelect" style="float: right; margin-top: 10px;" ng-class="{'ngNoMultiSelect': !multiSelect}">
 							<div style="float:left; margin-right: 10px;" class="ngRowCountPicker">
-					            <span style="float: left; margin-top: 3px;" class="ngLabel">Page Size:</span>
-					            <select style="float: left;height: 27px; width: 100px" ng-model="pageLength">
-					            	<option class="" value="10">10</option>
-					                <option class="" value="25">25</option>
-					                <option class="" value="50">50</option>
-					                <option class="" value="100">100</option>
-					                <option class="" value="250">250</option>
-					                <option class="" value="500">500</option>
-					                <option class="" value="1000">1000</option>
-					            </select>
-					        </div>
+								<span style="float: left; margin-top: 3px;" class="ngLabel">Page Size:</span>
+								<select style="float: left;height: 27px; width: 100px" ng-model="pageLength">
+									<option value="10">10</option>
+									<option value="25">25</option>
+									<option value="50">50</option>
+									<option value="100">100</option>
+									<option value="250">250</option>
+									<option value="500">500</option>
+									<option value="1000">1000</option>
+								</select>
+							</div>
 							<div style="float:left; margin-right: 10px; line-height:25px;" class="ngPagerControl">
-					            <button class="ngPagerButton" ng-click="pageToFirst()" ng-disabled="cantPageBackward()" title="First Page" disabled="disabled">
-					            	<div class="ngPagerFirstTriangle">
-					            		<div class="ngPagerFirstBar"></div>
-					            	</div>
-					            </button>
+								<button class="ngPagerButton" ng-click="pageToFirst()" ng-disabled="cantPageBackward()" title="First Page" disabled="disabled">
+									<div class="ngPagerFirstTriangle">
+										<div class="ngPagerFirstBar"></div>
+									</div>
+								</button>
 
-					            <button class="ngPagerButton" ng-click="pageBackward()" ng-disabled="cantPageBackward()" title="Previous Page" disabled="disabled">
-					            	<div class="ngPagerFirstTriangle ngPagerPrevTriangle"></div>
-					            </button>
+								<button class="ngPagerButton" ng-click="pageBackward()" ng-disabled="cantPageBackward()" title="Previous Page" disabled="disabled">
+									<div class="ngPagerFirstTriangle ngPagerPrevTriangle"></div>
+								</button>
 
-					            <input class="ngPagerCurrent" min="1" max="537" type="number"
-					            		style="width:50px; height: 24px; margin-top: 1px; padding: 0 4px;" ng-model="currentPage">
-					            <span class="ngGridMaxPagesNumber" ng-show="maxPages() > 0">/ {{ RunCalculator.totalPages }} </span>
+								<input class="ngPagerCurrent" min="1" max="537" type="number" style="width:50px; height: 24px; margin-top: 1px; padding: 0 4px;" ng-model="currentPage">
+								<span class="ngGridMaxPagesNumber" ng-show="maxPages() > 0">/ {{ RunCalculator.totalPages }} </span>
 
+								<button class="ngPagerButton" ng-click="pageForward()" ng-disabled="cantPageForward()" title="Next Page">
+									<div class="ngPagerLastTriangle ngPagerNextTriangle"></div>
+								</button>
 
-
-					            <button class="ngPagerButton" ng-click="pageForward()" ng-disabled="cantPageForward()" title="Next Page">
-					            	<div class="ngPagerLastTriangle ngPagerNextTriangle"></div>
-					            </button>
-
-					            <button class="ngPagerButton" ng-click="pageToLast()" ng-disabled="cantPageToLast()" title="Last Page">
-					            	<div class="ngPagerLastTriangle">
-					            		<div class="ngPagerLastBar"></div>
-					            	</div>
-					            </button>
-					        </div>
+								<button class="ngPagerButton" ng-click="pageToLast()" ng-disabled="cantPageToLast()" title="Last Page">
+									<div class="ngPagerLastTriangle">
+										<div class="ngPagerLastBar"></div>
+									</div>
+								</button>
+							</div>
 						</div>
 					</div>
 					<!-- Pagination END -->
-					
+
 					<div style="position: relative;bottom: 28px;left: 8px;">
-						<div class="btn btn-xs btn-danger" tooltip-popup-delay="1000" tooltip="Delete" ng-click="RunCalculator.Delete()"
-							         ><span class="fa fa-trash-o" ></span></div>
-				         <div class="btn btn-xs btn-primary"  ng-click="addNewRunCalculator()"><span class="fa fa-plus"></span> Add</div>
-				         <div class="btn btn-xs btn-success"  ng-click="RunCalculator.Save()" ng-show="RunCalculator.$isDisabled"><span class="fa fa-save"></span>  Save</div>
-				         <div class="btn btn-xs btn-default"  ng-click="RunCalculator.Cancel()" ng-show="RunCalculator.$isDisabled"><span class="fa fa-times"></span>  Cancel</div>
+						<div class="btn btn-xs btn-danger" tooltip-popup-delay="1000" tooltip="Delete" ng-click="RunCalculator.delete()"><span class="fa fa-trash-o"></span></div>
+						<div class="btn btn-xs btn-primary" ng-click="addNewRunCalculator()"><span class="fa fa-plus"></span> Add</div>
+						<div class="btn btn-xs btn-success" ng-click="RunCalculator.Save()" ng-show="RunCalculator.$isDisabled"><span class="fa fa-save"></span> Save</div>
+						<div class="btn btn-xs btn-default" ng-click="RunCalculator.Cancel()" ng-show="RunCalculator.$isDisabled"><span class="fa fa-times"></span> Cancel</div>
 					</div>
-					
+
 				</div>
-				
-    		</div>
-    	</article>
-    </div>
+
+			</div>
+		</article>
+	</div>
 </section>
 
 <div class="md-modal md-effect-7 modal-width-80" id="runCalculatorModal">
 	<div class="md-content">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" ng-click="closeRunCalculatorModal()" data-dismiss="modal" aria-hidden="true"><i
-						class="fa fa-times"></i></button>
+				<button type="button" class="close" ng-click="closeRunCalculatorModal()" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
 
 				<div class="modal-title font-md">
 					<span class="desc"><strong>Add new Run Calculator</strong></span>
@@ -241,49 +222,25 @@
 					<div class="form-group">
 						<label for="inputRunDate" class="col-sm-2 control-label">Run Date</label>
 						<div class="col-sm-10">
-							<input type="text"  ng-date-mask
-								   data-mask="9999-99-99"
-								   date-picker data-dateformat="yy-mm-dd"
-								   class="form-control"
-								   id="inputRunDate"
-								   name="inputRunDate"
-								   placeholder="Run Date"
-								   ng-model="newRunCalculator.snapshotDate"
-								   ng-class="{'invalid': !hideValidityStyle && newRunCalculatorForm.inputRunDate.$error.required}"
-							       required>
+							<input type="text" ng-date-mask data-mask="9999-99-99" date-picker data-dateformat="yy-mm-dd" class="form-control" id="inputRunDate" name="inputRunDate" placeholder="Run Date" ng-model="newRunCalculator.snapshotDate" ng-class="{'invalid': !hideValidityStyle && newRunCalculatorForm.inputRunDate.$error.required}"
+									required>
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="inputLoadJobNbr" class="col-sm-2 control-label">Load Nbr</label>
 						<div class="col-sm-10">
-							<input type="number" class="form-control"
-								   id="inputLoadJobNbr"
-								   name="inputLoadJobNbr"
-								   placeholder="Load Nbr"
-							       ng-model="newRunCalculator.loadJobNbr"
-								   ng-class="{'invalid': !hideValidityStyle && newRunCalculatorForm.inputLoadJobNbr.$error.required}"
-								   required>
+							<input type="number" class="form-control" id="inputLoadJobNbr" name="inputLoadJobNbr" placeholder="Load Nbr" ng-model="newRunCalculator.loadJobNbr" ng-class="{'invalid': !hideValidityStyle && newRunCalculatorForm.inputLoadJobNbr.$error.required}" required>
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="inputScenario" class="col-sm-2 control-label">Scenario</label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control"
-								   id="inputScenario"
-								   name="inputScenario"
-								   placeholder="Scenario"
-								   ng-model="newRunCalculator.scenarioId"
-								   ng-class="{'invalid': !hideValidityStyle && newRunCalculatorForm.inputScenario.$error.required}"
-								   required>
+							<input type="text" class="form-control" id="inputScenario" name="inputScenario" placeholder="Scenario" ng-model="newRunCalculator.scenarioId" ng-class="{'invalid': !hideValidityStyle && newRunCalculatorForm.inputScenario.$error.required}" required>
 						</div>
 					</div>
 					<div class="form-group">
-						<a class="btn btn-success btn-xs ng-binding col-sm-offset-2"
-						   href="javascript:void(0);"
-						   ng-click="saveRunCalculatorModal()">Save</a>
-						<a class="btn btn-default btn-xs ng-binding"
-						   href="javascript:void(0);"
-						   ng-click="closeRunCalculatorModal()">Cancel</a>
+						<a class="btn btn-success btn-xs ng-binding col-sm-offset-2" href="javascript:void(0);" ng-click="saveRunCalculatorModal()">Save</a>
+						<a class="btn btn-default btn-xs ng-binding" href="javascript:void(0);" ng-click="closeRunCalculatorModal()">Cancel</a>
 						<i ng-if="RunCalculator.$saving" class="fa fa-refresh fa-spin "></i>
 					</div>
 				</form>

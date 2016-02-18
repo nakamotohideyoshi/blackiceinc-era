@@ -5,14 +5,13 @@ import com.blackiceinc.era.persistence.erau.repository.MeasurementSensitivityRep
 import com.blackiceinc.era.persistence.erau.repository.RunCalculatorRepository;
 import com.blackiceinc.era.services.RunCalculatorService;
 import com.blackiceinc.era.web.rest.model.DeleteResponse;
-import com.blackiceinc.era.web.rest.model.FailedCRUDResponseObj;
+import com.blackiceinc.era.web.rest.model.CRUDResponseObj;
 import com.blackiceinc.era.web.rest.model.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -100,18 +99,15 @@ public class RunCalculatorResource {
         for (String id : idList) {
             try {
                 runCalculatorRepository.delete(Long.parseLong(id));
-                res.modifyDeleteSuccessResultMap(id, true);
+                res.addRecordResponse(new CRUDResponseObj(id, true));
             } catch (NumberFormatException ex) {
-                res.addFailedDeleteRecord(new FailedCRUDResponseObj(id, "Invalid number formatting"));
-                res.modifyDeleteSuccessResultMap(id, false);
+                res.addRecordResponse(new CRUDResponseObj(id, false, "Invalid number formatting"));
                 returnStatus = HttpStatus.NOT_FOUND;
             } catch (EmptyResultDataAccessException ex) {
-                res.addFailedDeleteRecord(new FailedCRUDResponseObj(id, "Data with id=" + id + " does not exist."));
-                res.modifyDeleteSuccessResultMap(id, false);
+                res.addRecordResponse(new CRUDResponseObj(id, false, "Data with id=" + id + " does not exist."));
                 returnStatus = HttpStatus.NOT_FOUND;
             } catch (DataIntegrityViolationException ex) {
-                res.addFailedDeleteRecord(new FailedCRUDResponseObj(id, "Cannot Be Deleted Due To Foreign Key Constraint."));
-                res.modifyDeleteSuccessResultMap(id, false);
+                res.addRecordResponse(new CRUDResponseObj(id, false, "Cannot Be Deleted Due To Foreign Key Constraint."));
                 returnStatus = HttpStatus.CONFLICT;
             }
         }

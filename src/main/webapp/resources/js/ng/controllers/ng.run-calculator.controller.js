@@ -235,11 +235,14 @@ angular.module('ng.run-calculator.controller', [])
     		        idListStr = idListStr.substring(0, idListStr.length - 1);
 
     		        if( idListStr ) {
-    		            $scope.RunCalculator.$saving = true;
+    		            $scope.loading = true;
                         RunCalculatorService.remove( { idListStr: idListStr } ).then(function(response){
                             $scope.RunCalculator.totalElements = response.totalElements;
-                            $scope.RunCalculator.$saving = false;
+                            $scope.loading = false;
                             $scope.RunCalculator.Cancel(true);
+                        }, function(response){
+                            $scope.loading = false;
+                            ConfirmService.open(response, null, true);
                         });
     		        }
     		    });

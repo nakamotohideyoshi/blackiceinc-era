@@ -51,7 +51,7 @@
 <script src="resources/js/plugin/html2canvas/html2canvas.js"></script>
 
 
-<script src="http://angular-file-upload.appspot.com/js/angular-file-upload-shim.js"></script>
+<script src="resources/js/libs/angular-file-upload-shim.js?_cacheuid=1.0.23"></script>
 
 <!-- AngularJS -->
 
@@ -70,7 +70,7 @@
 
 <script src="resources/js/ng/ng.app.js"></script>
 
-<script src="http://angular-file-upload.appspot.com/js/angular-file-upload.js"></script>
+<script src="resources/js/libs/angular-file-upload.js?_cacheuid=1.0.23"></script>
 
 <script src="resources/js/ng/controllers/ng.controllers.js"></script>
 <script src="resources/js/ng/controllers/ng.CreditRiskCTRL.js"></script>

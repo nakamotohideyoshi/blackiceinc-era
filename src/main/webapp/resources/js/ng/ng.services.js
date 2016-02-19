@@ -20,17 +20,17 @@ angular.module('app.services', [])
         return function (text, length, end) {
             if (isNaN(length))
                 length = 10;
- 
+
             if (end === undefined)
                 end = "...";
- 
+
             if (text.length <= length || text.length - end.length <= length) {
                 return text;
             }
             else {
                 return String(text).substring(0, length-end.length) + end;
             }
- 
+
         };
     })
 	.service('MessageService', function(){
@@ -117,8 +117,8 @@ angular.module('app.services', [])
 
 		return {
 			removeNulls : function(obj) {
-				for (var i in obj) 
-				 	if (obj[i] === null || obj[i] === undefined || obj[i]==="") 
+				for (var i in obj)
+				 	if (obj[i] === null || obj[i] === undefined || obj[i]==="")
 				    	delete obj[i];
 				return obj;
 			},
@@ -149,10 +149,10 @@ angular.module('app.services', [])
 			    for (var attrname in obj2) { obj3[attrname] = obj2[attrname]; }
 			    return obj3;
 			}
-			
+
 		};
 	})
-	
+
 	.service('D3graph', function(){
 		return {
 			generate:function(json_data, selector, type ) {
@@ -171,7 +171,7 @@ angular.module('app.services', [])
 
 	})
 
-	
+
 
 	.service('CustomHttp', function($q, $http) {
 		return ({
@@ -222,7 +222,7 @@ angular.module('app.services', [])
 					url: url
 				});
 			}
-		
+
 			return( request.then(handleSuccess, handleError) );
 		}
 		function handleError(response) {
@@ -257,7 +257,7 @@ angular.module('app.services', [])
 			getGraphData:function(params){
 				return CustomHttp.get('api/graph/wholesale', params || {})
 			}
-		
+
 		});
 
 		function getSumTotal(ajax_paramater) {
@@ -269,13 +269,13 @@ angular.module('app.services', [])
 			return( request.then(handleSuccess, handleError) );
 		}
 
-		
+
 		function handleError() {
 			if (
 				! angular.isObject( response.data ) ||
 				! response.data.message
 				) {
- 
+
 				return( $q.reject( "An unknown error occurred." ) );
 			}
 
@@ -316,7 +316,7 @@ angular.module('app.services', [])
 			},
 		});
 	})
-	
+
 	.service('RunCalculatorService', function(CustomHttp){
 		return({
 			filterOptions : function(params) {
@@ -340,6 +340,12 @@ angular.module('app.services', [])
             closeCalculation: function(id) {
                 return CustomHttp.post('api/runCalculator/closeCalculation/'+id, {});
             }
+		});
+	})
+
+	.service('CfgConfigurationService', function(CustomHttp){
+		return ({
+
 		});
 	})
 
@@ -410,7 +416,7 @@ angular.module('app.services', [])
 					url: url
 				});
 			}
-		
+
 			return( request.then(handleSuccess, handleError) );
 		}
 		function handleError(response) {
@@ -432,6 +438,3 @@ angular.module('app.services', [])
 			return( response.data );
 		}
 	})
-	
-
-

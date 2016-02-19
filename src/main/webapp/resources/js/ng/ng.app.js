@@ -1,7 +1,7 @@
 var smartApp = angular.module('smartApp', [
    'ngRoute',
    //'ngAnimate', // this is buggy, jarviswidget will not work with ngAnimate :(
-   'ui.bootstrap', 
+   'ui.bootstrap',
    'localytics.directives',
    'ng.modal.directives',
 
@@ -17,7 +17,7 @@ var smartApp = angular.module('smartApp', [
    'app.custom',
 
    'ngMockE2E',
-   'ngCookies', 
+   'ngCookies',
 
    // Controllers
    'ng.CreditRiskCTRL',
@@ -39,7 +39,7 @@ smartApp.config(['$routeProvider', '$provide', function($routeProvider, $provide
 			redirectTo: '/credit-risk'
 		})
 
-	.when('/', { 
+	.when('/', {
 		templateUrl: function($routeParams) {
 			return 'resources/views/dashboard.html';
 		},
@@ -47,7 +47,7 @@ smartApp.config(['$routeProvider', '$provide', function($routeProvider, $provide
 		reloadOnSearch: false
 	})
 
-    .when('/credit-risk', { 
+    .when('/credit-risk', {
       templateUrl: function($routeParams) {
         return 'resources/views/dashboard.html';
       },
@@ -55,28 +55,35 @@ smartApp.config(['$routeProvider', '$provide', function($routeProvider, $provide
       reloadOnSearch: false
     })
 
-    .when('/market-risk', { 
+    .when('/market-risk', {
       templateUrl: function($routeParams) {
         return 'resources/views/market-risk.html';
       },
       controller: 'MarketRiskController'
     })
 
-    .when('/operational-risk', { 
+    .when('/operational-risk', {
       templateUrl: function($routeParams) {
         return 'resources/views/operational-risk.html';
       },
       controller: 'OperationalRiskController'
     })
-    
-    .when('/run-calculator', { 
+
+    .when('/run-calculator', {
       templateUrl: function($routeParams) {
         return 'resources/views/run-calculator.html';
       },
       controller: 'RunCalculatorController'
     })
 
-    .when('/stress-testing-scen', { 
+    .when('/cfg-configuration', {
+      templateUrl: function($routeParams) {
+        return 'resources/views/cfg-configuration.html';
+      },
+      controller: 'CfgConfigurationController'
+    })
+
+    .when('/stress-testing-scen', {
       templateUrl: function($routeParams) {
         return 'resources/views/stress-testing-scen.html';
       },
@@ -89,28 +96,28 @@ smartApp.config(['$routeProvider', '$provide', function($routeProvider, $provide
 		}
 	})
 
-    .when('/stress-testing/imf', { 
+    .when('/stress-testing/imf', {
 	    templateUrl: function($routeParams) {
 	        return 'resources/views/stress-testing/imf.workbook.html?81';
 	  	},
 		controller: 'ImfMainController'
     })
 
-    .when('/stress-testing/liquidity', { 
+    .when('/stress-testing/liquidity', {
 	    templateUrl: function($routeParams) {
 	        return 'resources/views/stress-testing/liquidity.workbook.html?81';
 	  	},
 		controller: 'ImfMainController'
     })
 
-    .when('/stress-testing/icaap', { 
+    .when('/stress-testing/icaap', {
       templateUrl: function($routeParams) {
-        return 'resources/views/stress-testing/ecrc.workbook.html'; 
+        return 'resources/views/stress-testing/ecrc.workbook.html';
       },
       controller: 'ImfMainController'
     })
 
-	.when('/stress-testing/loanpricing', { 
+	.when('/stress-testing/loanpricing', {
       templateUrl: function($routeParams) {
         return 'resources/views/stress-testing/loanpricing.html';
       },
@@ -162,7 +169,7 @@ smartApp.run(function($httpBackend){
 	var filterOptions ={content: {
 			credit_risk : [ {db_type:'Wholesale', id:1 }, {db_type:'Retail', id:2}],
 			treatment : [ {rwaTreatmentCode:'AIRB', id:1, label:"label"}, {rwaTreatmentCode:'FIRB', id:2, label:"label2"},{rwaTreatmentCode:'STD', id:3, label:"label3"}],
-			asset_class : [ 
+			asset_class : [
 			               {"reportAssetClassCode":'CORP', id:1},
 			               {"reportAssetClassCode":'BANK', id:2},
 			               {"reportAssetClassCode":'PSE', id:3},
@@ -212,7 +219,7 @@ smartApp.run(function($httpBackend){
 			account_type : [{acc_type:"MTGE"},
 			                {acc_type:"CL"},
 			                {acc_type:"CC"}],
-			            asset_class : [ 
+			            asset_class : [
 			                           {asset_class:'HELOC', id:1},
 			                           {asset_class:'SMERET', id:2},
 			                           {asset_class:'ORET', id:3},

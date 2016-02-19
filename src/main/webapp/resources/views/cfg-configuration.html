@@ -1,0 +1,67 @@
+<style type="text/css">
+	.wrapper.small {
+		height: 400px;
+		border: 1px solid #ccc;
+	}
+
+	.wrapper {
+		overflow: auto;
+		position: relative;
+	}
+
+	.floatThead-container table {
+		border-left: none;
+	}
+
+	table.sortable thead .sorting {
+		background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATAgMAAAAPPt5fAAAACVBMVEUAAADIyMjl5eVIBBP/AAAAAXRSTlMAQObYZgAAAClJREFUCNdjwAYEwGQKiGDsBJFsTA5AUoJhAqZaiDhEDVg9RC/MHEwAANsMA91AQfd/AAAAAElFTkSuQmCC) no-repeat center right;
+	}
+
+	.wrapper table.table td {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		vertical-align: middle;
+	}
+</style>
+
+<!-- widget grid -->
+<section id="widget-grid" class="">
+
+	<!-- row -->
+	<div class="row">
+		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12 sortable-grid ui-sortable">
+			<!-- Widget ID (each widget will need unique ID)-->
+			<div class="jarviswidget jarviswidget-color-blue" id="cfg-config-wid-01" data-widget-deletebutton="false" data-widget-editbutton="false">
+
+				<header>
+					<span class="widget-icon"> <i class="fa fa-pencil-square-o"></i> </span>
+					<h2><strong>Configuration</strong></h2>
+				</header>
+
+				<div class="widget-body filter-forms">
+
+					<!-- Filter options -->
+					<div class="row no-margin">
+					</div>
+					<!-- Filter options END -->
+
+					<!-- GRID -->
+					<div class="row">
+					</div>
+					<!-- GRID END -->
+
+					<!-- Pagination -->
+					<div class="ngFooterPanel" ng-class="{'ui-widget-content': jqueryUITheme, 'ui-corner-bottom': jqueryUITheme}" ng-style="footerStyle()" style="height: 57px;">
+					</div>
+					<!-- Pagination END -->
+
+					<div style="position: relative;bottom: 28px;left: 8px;">
+					</div>
+
+				</div>
+
+			</div>
+		</article>
+	</div>
+</section>

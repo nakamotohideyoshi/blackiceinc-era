@@ -76,6 +76,7 @@
 <script src="resources/js/ng/controllers/ng.CreditRiskCTRL.js"></script>
 <script src="resources/js/ng/controllers/ng.run-calculator.controller.js"></script>
 <script src="resources/js/ng/controllers/ng.cfg-configuration.controller.js"></script>
+<script src="resources/js/ng/controllers/ng.account-settings.controller.js"></script>
 <script src="resources/js/ng/controllers/ng.TestingScenariosCTRL.js"></script>
 <script src="resources/js/ng/controllers/ng.RegulatoryReportCTRL.js"></script>
 <script src="resources/js/ng/controllers/ng.excelController.js"></script>

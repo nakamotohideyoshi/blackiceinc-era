@@ -349,6 +349,12 @@ angular.module('app.services', [])
 		});
 	})
 
+	.service('AccountSettingsService', function(CustomHttp){
+		return ({
+
+		});
+	})
+
 	.service("BookmarkService", function(CustomHttp){
 		var url = 'api/bookmarks/';
 		return ({

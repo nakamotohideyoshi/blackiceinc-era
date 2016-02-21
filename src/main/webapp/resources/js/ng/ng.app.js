@@ -83,6 +83,13 @@ smartApp.config(['$routeProvider', '$provide', function($routeProvider, $provide
       controller: 'CfgConfigurationController'
     })
 
+    .when('/account-settings', {
+      templateUrl: function($routeParams) {
+        return 'resources/views/account-settings.html';
+      },
+      controller: 'AccountSettingsController'
+    })
+
     .when('/stress-testing-scen', {
       templateUrl: function($routeParams) {
         return 'resources/views/stress-testing-scen.html';

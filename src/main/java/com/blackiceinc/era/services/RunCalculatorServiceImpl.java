@@ -23,12 +23,11 @@ import java.util.Map;
 @Service
 public class RunCalculatorServiceImpl implements RunCalculatorService {
 
+    public static final int PAGE_0 = 0;
+    public static final int PAGE_SIZE_25 = 25;
     private static final String SNAPSHOT_DATE = "snapshotDate";
     private static final String LOAD_JOB_NBR = "loadJobNbr";
     private static final String SCENARIO_ID = "scenarioId";
-    public static final int PAGE_0 = 0;
-    public static final int PAGE_SIZE_25 = 25;
-
     private final Logger log = LoggerFactory.getLogger(RunCalculatorServiceImpl.class);
 
     @Autowired
@@ -67,6 +66,31 @@ public class RunCalculatorServiceImpl implements RunCalculatorService {
         int pageSize = (length != null) ? length : PAGE_SIZE_25;
 
         return runCalculatorRepository.findAll(specRunCalculator, new PageRequest(pageNumber, pageSize));
+    }
+
+    @Override
+    public List<Date> getSnapshotDateOptions() throws SQLException {
+        List<Date> snapshotDateOptions = new ArrayList<>();
+
+        Connection conn = DriverManager.getConnection(
+                env.getProperty("jdbc.url"),
+                env.getProperty("jdbc.user"),
+                env.getProperty("jdbc.pass"));
+        conn.setAutoCommit(false);
+
+        Statement stmt = conn.createStatement();
+        long start = System.currentTimeMillis();
+        log.info("Starting taking distinct snapshotData MEASUREMENT_SENSITIVITY data");
+        ResultSet resultSet = stmt.executeQuery("select DISTINCT SNAPSHOT_DATE from MEASUREMENT_SENSITIVITY");
+        log.info("MEASUREMENT_SENSITIVITY data took {} ms", System.currentTimeMillis() - start);
+        while (resultSet.next()) {
+            Date snapshotDate = resultSet.getDate("SNAPSHOT_DATE");
+            if (!snapshotDateOptions.contains(snapshotDate)) {
+                snapshotDateOptions.add(snapshotDate);
+            }
+        }
+
+        return snapshotDateOptions;
     }
 
     private Specification<RunCalculator> getRunCalculatorSpecification(Date snapshotDate,

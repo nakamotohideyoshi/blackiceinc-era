@@ -222,8 +222,9 @@
 					<div class="form-group">
 						<label for="inputRunDate" class="col-sm-2 control-label">Run Date</label>
 						<div class="col-sm-10">
-							<input type="text" ng-date-mask data-mask="9999-99-99" date-picker data-dateformat="yy-mm-dd" class="form-control" id="inputRunDate" name="inputRunDate" placeholder="Run Date" ng-model="newRunCalculator.snapshotDate" ng-class="{'invalid': !hideValidityStyle && newRunCalculatorForm.inputRunDate.$error.required}"
-									required>
+								<select class="form-control input-sm" id="inputRunDate" name="inputRunDate" ng-options="o for o in Filter.snapshotDateOptions" ng-model="newRunCalculator.snapshotDate" ng-class="{'invalid': !hideValidityStyle && newRunCalculatorForm.inputRunDate.$error.required}" required>
+									<option value="">-- Select --</option>
+								</select>
 						</div>
 					</div>
 					<div class="form-group">

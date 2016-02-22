@@ -192,6 +192,12 @@ public class RunCalculatorResource {
         return runCalculatorService.getFilterOptions();
     }
 
+    @RequestMapping(value = "/runCalculator/snapshotDateOptions", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Date> getSnapshotDateOptions() throws SQLException {
+        return runCalculatorService.getSnapshotDateOptions();
+    }
+
     private String getValidationExceptionMessages(ConstraintViolationException validationException) {
         validationException.printStackTrace();
         Set<String> messages = new HashSet();

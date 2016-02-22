@@ -12,7 +12,8 @@ angular.module('ng.run-calculator.controller', [])
       $scope.Filter = {
         filterOptions: {},
         filtersDefault: {},
-        filters: {}
+        filters: {},
+        snapshotDateOptions: {}
       };
 
       var initializing = true;
@@ -172,6 +173,7 @@ angular.module('ng.run-calculator.controller', [])
         $scope.loading = true;
         RunCalculatorService.runCalculation(checkedRow).then(function() {
           $scope.loading = false;
+          ConfirmService.open("Calculation succesfully run.", null, true);
         }, function(response) {
           $scope.loading = false;
           ConfirmService.open(response, null, true);
@@ -318,6 +320,10 @@ angular.module('ng.run-calculator.controller', [])
       RunCalculatorService.filterOptions().then(function(response) {
         $scope.Filter.filterOptions = response;
         angular.copy($scope.Filter.filters, $scope.Filter.filtersDefault);
+      });
+
+      RunCalculatorService.snapshotDateOptions().then(function(response) {
+        $scope.Filter.snapshotDateOptions = response;
       });
 
       // Get all all run calculations

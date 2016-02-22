@@ -322,6 +322,9 @@ angular.module('app.services', [])
 			filterOptions : function(params) {
 				return CustomHttp.get( 'api/runCalculator/filter-options' , params || {}, true);
 			},
+			snapshotDateOptions : function(params) {
+				return CustomHttp.get( 'api/runCalculator/snapshotDateOptions' , params || {}, true);
+			},
 			getAll : function(params) {
 				return CustomHttp.get('api/runCalculator?' + $.param(params), {});
 			},

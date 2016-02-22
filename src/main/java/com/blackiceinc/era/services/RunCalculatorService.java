@@ -20,4 +20,6 @@ public interface RunCalculatorService {
                                                    Date snapshotDate,
                                                    BigDecimal loadJobNbr,
                                                    String scenarioId);
+
+    List<Date> getSnapshotDateOptions() throws SQLException;
 }

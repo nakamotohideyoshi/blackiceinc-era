@@ -22,6 +22,7 @@ var smartApp = angular.module('smartApp', [
    // Controllers
    'ng.CreditRiskCTRL',
    'ng.run-calculator.controller',
+   'ng.cfg-configuration.controller',
    'ng.maintenance-base.controller',
    'ng.TestingScenariosCTRL',
    'ng.RegulatoryReportCTRL',

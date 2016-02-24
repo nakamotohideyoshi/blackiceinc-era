@@ -348,7 +348,9 @@ angular.module('app.services', [])
 
 	.service('CfgConfigurationService', function(CustomHttp){
 		return ({
-
+			getAll : function(params) {
+				return CustomHttp.get('api/configuration?' + $.param(params), {});
+			}
 		});
 	})
 

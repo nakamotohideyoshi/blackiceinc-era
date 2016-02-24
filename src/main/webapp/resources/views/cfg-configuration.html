@@ -48,6 +48,55 @@
 
 					<!-- GRID -->
 					<div class="row">
+						<div class="col-xs-12 no-padding ">
+							<div class="col-xs-12 dataTables_wrapper">
+								<div class="dt-toolbar no-padding">
+									<div class="spinner-indicator" ng-if="loading" style="display:block;">
+										<div class="v-loading-indicator second v-loading-indicator-delay"></div>
+									</div>
+								</div>
+
+								<div class="dt-toolbar no-padding">
+									<div class="spinner-indicator" ng-if="Configuration.list.length==0" style="display:block;">
+										<div class="empty-text">No Configurations Found</div>
+									</div>
+								</div>
+
+								<div grid-height offset="79" class="wrapper small ">
+									<table ng-float-head class="table table-bordered table-striped table-condensed table-hover sortable has-tickbox" style="min-width: 0px; border: none; table-layout: auto;">
+										<colgroup>
+											<col style="width: 1%;">
+											<col style="width: 50%;">
+											<col style="width: 49%;">
+										</colgroup>
+										<thead>
+											<tr>
+												<th>
+													<input type="checkbox" ng-change="Configuration.MasterCheckbox(Configuration.$masterCheck)" ng-model="Configuration.$masterCheck"> </th>
+												<th>Version</th>
+												<th>Status</th>
+											</tr>
+										</thead>
+										<tbody style="font-size: 13px !important;">
+											<tr ng-repeat="row in Configuration.list" ng-class="{ 'success':row.$checked }">
+												<td>
+													<input ng-model="row.$checked" type="checkbox" class="">
+												</td>
+												<td>
+													<div>{{ row.name }}</div>
+												</td>
+												<td>
+													<div>{{ row.status }}</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+
+							</div>
+						</div>
+
+
 					</div>
 					<!-- GRID END -->
 

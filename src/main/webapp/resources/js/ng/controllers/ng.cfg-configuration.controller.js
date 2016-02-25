@@ -11,11 +11,7 @@ angular.module('ng.cfg-configuration.controller', [])
       $scope.loading = true;
 
       $scope.Configuration = {};
-
-      $scope.Configuration.MasterCheckbox = function(masterCheck) {
-        for (var i = $scope.Configuration.list.length; i--;)
-          $scope.Configuration.list[i].$checked = masterCheck;
-      };
+      $scope.ConfigurationModal = {};
 
       $scope.getConfigurations = function(params) {
         CfgConfigurationService.getAll(params).then(function(response) {
@@ -24,11 +20,43 @@ angular.module('ng.cfg-configuration.controller', [])
         });
       };
 
+      $scope.Configuration.MasterCheckbox = function(masterCheck) {
+        for (var i = $scope.Configuration.list.length; i--;)
+          $scope.Configuration.list[i].$checked = masterCheck;
+      };
+
+      $scope.Configuration.delete = function() {
+        ConfirmService.open('Are you sure you want to delete?', function() {
+
+        });
+      };
+
+      $scope.ConfigurationModal.openConfigurationModal = function() {
+        $scope.ConfigurationModal.hideValidityStyle = true;
+        $scope.ConfigurationModal.newConfiguration = {
+          id: null,
+          name: '',
+          documents: [],
+          status: ''
+        };
+
+        angular.element('#configurationModal').addClass('md-show');
+      };
+
+      $scope.ConfigurationModal.closeConfigurationModal = function() {
+        angular.element('#configurationModal').removeClass('md-show');
+      };
+
+      $scope.ConfigurationModal.saveConfiguration = function() {
+
+      };
+
       // Get all all configurations
       $scope.getConfigurations({
         length: $scope.pageLength,
         page: $scope.currentPage - 1
       });
+
 
     }
   ]);

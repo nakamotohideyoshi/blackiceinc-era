@@ -43,6 +43,25 @@
 
 					<!-- Filter options -->
 					<div class="row no-margin">
+						<form class="form-horizontal ng-pristine ng-valid" ng-submit="filterTable()">
+							<fieldset>
+
+								<div class="form-group">
+									<label class="control-label">Name</label>
+									<input class="form-control input-sm" ng-disabled="loading" placeholder="Type your search...">
+								</div>
+
+								<div class="form-group" style="clear:both;">
+									<button ng-click="filterTable()" class="btn btn-primary btn-sm ng-binding" ng-class="{'disabled' : loading}">
+										<i class="fa fa-search"></i> Search</button>
+									<a class="btn btn-default btn-sm ng-binding" href="javascript:void(0);" ng-class="{'disabled' : loading}" ng-click="resetFilter()">
+										<i class="fa fa-refresh"></i> Reset</a>
+									<a class="btn btn-primary" href="javascript:void(0);">Import</a>
+									<a class="btn btn-primary" href="javascript:void(0);">Export</a>
+								</div>
+
+							</fieldset>
+						</form>
 					</div>
 					<!-- Filter options END -->
 
@@ -106,6 +125,8 @@
 					<!-- Pagination END -->
 
 					<div style="position: relative;bottom: 28px;left: 8px;">
+						<div class="btn btn-xs btn-danger" tooltip-popup-delay="1000" tooltip="Delete" ng-click="Configuration.delete()"><span class="fa fa-trash-o"></span></div>
+						<div class="btn btn-xs btn-primary" ng-click="ConfigurationModal.openConfigurationModal()"><span class="fa fa-plus"></span> Add</div>
 					</div>
 
 				</div>
@@ -114,3 +135,40 @@
 		</article>
 	</div>
 </section>
+
+<!-- Add Configuration Modal -->
+<div class="md-modal md-effect-7 modal-width-80" id="configurationModal">
+	<div class="md-content">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" ng-click="ConfigurationModal.closeConfigurationModal()" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
+
+				<div class="modal-title font-md">
+					<span class="desc"><strong>Add new Configuration</strong></span>
+				</div>
+			</div>
+
+			<div class="modal-body">
+				<form name="newConfigurationForm" class="form-horizontal">
+					<div class="form-group">
+						<label for="inputName" class="col-sm-2 control-label">Name</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="inputName" name="inputName" ng-model="ConfigurationModal.newConfiguration.name" ng-class="{'invalid': !ConfigurationModal.hideValidityStyle && newConfigurationForm.inputName.$error.required}" required>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="exampleInputFile" class="col-sm-2 control-label">File input</label>
+						<input type="file" id="exampleInputFile">
+					</div>
+
+					<div class="form-group">
+						<a class="btn btn-success btn-xs ng-binding col-sm-offset-2" href="javascript:void(0);" ng-click="ConfigurationModal.saveConfiguration()">Save</a>
+						<a class="btn btn-default btn-xs ng-binding" href="javascript:void(0);" ng-click="ConfigurationModal.closeConfigurationModal()">Cancel</a>
+						<i ng-if="ConfigurationModal.$saving" class="fa fa-refresh fa-spin "></i>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

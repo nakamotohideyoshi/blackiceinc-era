@@ -150,9 +150,12 @@ public class RunCalculatorResource {
         Response res = new Response();
 
         try {
+            long start = System.currentTimeMillis();
+            log.info("Running procedure RUN_CALC for runCalculator : {}", runCalculator.toString());
             // execute PL/SQL procedure
             runCalculatorRepository.runCalculatorStoredProcedure(runCalculator.getScenarioId(),
                     runCalculator.getLoadJobNbr().intValue(), runCalculator.getSnapshotDate());
+            log.info("Procedure RUN_CALC for runCalculator : {} finished in {} ms", runCalculator.toString(), System.currentTimeMillis() - start);
             // runCalculatorRepository.runCalculatorStoredProcedureTest(runCalculator.getScenarioId(),
             // runCalculator.getLoadJobNbr().intValue(), runCalculator.getSnapshotDate());
         } catch (Exception ex){

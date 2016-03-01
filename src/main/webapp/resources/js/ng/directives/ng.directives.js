@@ -1,725 +1,737 @@
 // APP DIRECTIVES
 // main directives
 angular.module('app.main', [])
-	// initiate body
-	.directive('body', function() {
-		return {
-			restrict: 'E',
+  // initiate body
+  .directive('body', function() {
+    return {
+      restrict: 'E',
 
-			link: function(scope, element, attrs) {
-				element.on('click', 'a[href="#"], [data-toggle]', function(e) {
-					e.preventDefault();
-				});
-			}
-		};
-	})
-	.directive('cellColor', function() {
-		return {
-			restrict: 'A',
-			scope: {
-	            'condition': '='
-	        },
-			link: function(scope, element, attrs) {
-				scope.$watch('condition', function(condition){
-					if(condition['statusProjectID']) {
-						switch(condition['statusProjectID']) {
-					    case 1:
-					        element.addClass("color-green"); break;
-					    case 2:
-					        element.addClass("color-yellow"); break;
-					    case 3 :
-					        element.addClass("color-orange"); break;
-					    case 4:
-					        element.addClass("color-red"); break;
-					    case 5 :
-					        element.addClass("color-dark-red"); break;
-						}
-					} else if(condition['statusGapID']) {
-						switch(condition['statusGapID']) {
-					    case 1:
-					        element.addClass("color-green"); break;
-					    case 2:
-					        element.addClass("color-yellow"); break;
-					    case 3 :
-					        element.addClass("color-red"); break;
-					    case 4 || 5 :
-					        element.addClass("color-grey"); break;
-						}
-					} else if(condition['statusComplianceID']) {
-						switch(condition['statusComplianceID']) {
-					    case 1:
-					        element.addClass("color-green"); break;
-					    case 2:
-					        element.addClass("color-yellow"); break;
-					    case 3 :
-					        element.addClass("color-orange"); break;
-					    case 4:
-					        element.addClass("color-red"); break;
-					    case 5 :
-					        element.addClass("color-dark-red"); break;
-						}
-					}
-				});
-			}
-		}
-	})
-	.directive('headerPopover', function($position){
-		return {
-			restrict : 'A',
-			scope: {
-				'headerImgUrl' : '@headerImgUrl'
-			},
-			link: function(scope, element, attrs){
+      link: function(scope, element, attrs) {
+        element.on('click', 'a[href="#"], [data-toggle]', function(e) {
+          e.preventDefault();
+        });
+      }
+    };
+  })
+  .directive('cellColor', function() {
+    return {
+      restrict: 'A',
+      scope: {
+        'condition': '='
+      },
+      link: function(scope, element, attrs) {
+        scope.$watch('condition', function(condition) {
+          if (condition['statusProjectID']) {
+            switch (condition['statusProjectID']) {
+              case 1:
+                element.addClass("color-green");
+                break;
+              case 2:
+                element.addClass("color-yellow");
+                break;
+              case 3:
+                element.addClass("color-orange");
+                break;
+              case 4:
+                element.addClass("color-red");
+                break;
+              case 5:
+                element.addClass("color-dark-red");
+                break;
+            }
+          } else if (condition['statusGapID']) {
+            switch (condition['statusGapID']) {
+              case 1:
+                element.addClass("color-green");
+                break;
+              case 2:
+                element.addClass("color-yellow");
+                break;
+              case 3:
+                element.addClass("color-red");
+                break;
+              case 4 || 5:
+                element.addClass("color-grey");
+                break;
+            }
+          } else if (condition['statusComplianceID']) {
+            switch (condition['statusComplianceID']) {
+              case 1:
+                element.addClass("color-green");
+                break;
+              case 2:
+                element.addClass("color-yellow");
+                break;
+              case 3:
+                element.addClass("color-orange");
+                break;
+              case 4:
+                element.addClass("color-red");
+                break;
+              case 5:
+                element.addClass("color-dark-red");
+                break;
+            }
+          }
+        });
+      }
+    }
+  })
+  .directive('headerPopover', function($position) {
+    return {
+      restrict: 'A',
+      scope: {
+        'headerImgUrl': '@headerImgUrl'
+      },
+      link: function(scope, element, attrs) {
 
-				console.log(attrs.headerImgUrl)
-				var divID = 'thp_' + Math.random().toString(36).substring(10);
+        console.log(attrs.headerImgUrl)
+        var divID = 'thp_' + Math.random().toString(36).substring(10);
 
-				var fragment = create(
-					'<div class="popover top in fade table-header-popover" id="'+divID+'"  style="display: none; max-width: none">'
-						+ '<div class="arrow"></div>'
-						+ '<div class="popover-inner">'
-							+ '<div class="popover-content " > <img src="'+ attrs.headerImgUrl +'" style="height:60px"/></div>'
-						+ '</div>'
-					+'</div>');
+        var fragment = create(
+          '<div class="popover top in fade table-header-popover" id="' + divID + '"  style="display: none; max-width: none">' + '<div class="arrow"></div>' + '<div class="popover-inner">' + '<div class="popover-content " > <img src="' + attrs.headerImgUrl + '" style="height:60px"/></div>' + '</div>' + '</div>');
 
-				document.body.insertBefore(fragment, document.body.childNodes[0]);
-
-
-				var popoverDiv = angular.element('#'+divID);
-
-				element.bind('mouseover', function(event){
-					var tableHeader = event.target.getBoundingClientRect();
-	                var left = (event.clientX - event.offsetX) - ( popoverDiv.width() /2) +  (tableHeader.width/2);
-	                var top = (event.clientY - event.offsetY)-80;
-
-	                popoverDiv.css('top', top + 'px');
-	                popoverDiv.css('left', left  + 'px');
-	                console.log(tableHeader)
-				});
-
-				element.bind('mouseenter', function(event){
-					popoverDiv.show();
-				});
-				element.bind('mouseleave', function(event){
-					popoverDiv.hide();
-				});
+        document.body.insertBefore(fragment, document.body.childNodes[0]);
 
 
-				function create(htmlStr) {
-				    var frag = document.createDocumentFragment(),
-				        temp = document.createElement('div');
-				    temp.innerHTML = htmlStr;
-				    while (temp.firstChild) { 
-				        frag.appendChild(temp.firstChild);
-				    }
-				    return frag;
-				}
-			}
-		}
-	})
-	.factory('ribbon', ['$rootScope', function($rootScope) {
-		var ribbon = {
-			currentBreadcrumb: [],
-			updateBreadcrumb: function(crumbs) {
-				crumbs.push('Home');
-				var breadCrumb = crumbs.reverse();
-				ribbon.currentBreadcrumb = breadCrumb;
-				$rootScope.$broadcast('navItemSelected', breadCrumb);
-			}
-		};
+        var popoverDiv = angular.element('#' + divID);
 
-		return ribbon;
-	}])
+        element.bind('mouseover', function(event) {
+          var tableHeader = event.target.getBoundingClientRect();
+          var left = (event.clientX - event.offsetX) - (popoverDiv.width() / 2) + (tableHeader.width / 2);
+          var top = (event.clientY - event.offsetY) - 80;
 
-	.directive('action', function() {
-		return {
-			restrict: 'A',
-			link: function(scope, element, attrs) {
-				/*
-				 * SMART ACTIONS
-				 */
-				var smartActions = {
-	    
-				    // LOGOUT MSG 
-				    userLogout: function($this){
-				
-						// ask verification
-						$.SmartMessageBox({
-							title : "<i class='fa fa-sign-out txt-color-orangeDark'></i> Logout <span class='txt-color-orangeDark'><strong>" + $('#show-shortcut').text() + "</strong></span> ?",
-							content : $this.data('logout-msg') || "You can improve your security further after logging out by closing this opened browser",
-							buttons : '[No][Yes]'
-				
-						}, function(ButtonPressed) {
-							if (ButtonPressed == "Yes") {
-								$.root_.addClass('animated fadeOutUp');
-								setTimeout(logout, 1000);
-							}
-						});
-						function logout() {
-							window.location = $this.attr('href');
-						}
-				
-					},
+          popoverDiv.css('top', top + 'px');
+          popoverDiv.css('left', left + 'px');
+          console.log(tableHeader)
+        });
 
-					// RESET WIDGETS
-				    resetWidgets: function($this){
-						$.widresetMSG = $this.data('reset-msg');
-						
-						$.SmartMessageBox({
-							title : "<i class='fa fa-refresh' style='color:green'></i> Clear Local Storage",
-							content : $.widresetMSG || "Would you like to RESET all your saved widgets and clear LocalStorage?",
-							buttons : '[No][Yes]'
-						}, function(ButtonPressed) {
-							if (ButtonPressed == "Yes" && localStorage) {
-								localStorage.clear();
-								location.reload();
-							}
-				
-						});
-				    },
-				    
-				    // LAUNCH FULLSCREEN 
-				    launchFullscreen: function(element){
-				
-						if (!$.root_.hasClass("full-screen")) {
-					
-							$.root_.addClass("full-screen");
-					
-							if (element.requestFullscreen) {
-								element.requestFullscreen();
-							} else if (element.mozRequestFullScreen) {
-								element.mozRequestFullScreen();
-							} else if (element.webkitRequestFullscreen) {
-								element.webkitRequestFullscreen();
-							} else if (element.msRequestFullscreen) {
-								element.msRequestFullscreen();
-							}
-					
-						} else {
-							
-							$.root_.removeClass("full-screen");
-							
-							if (document.exitFullscreen) {
-								document.exitFullscreen();
-							} else if (document.mozCancelFullScreen) {
-								document.mozCancelFullScreen();
-							} else if (document.webkitExitFullscreen) {
-								document.webkitExitFullscreen();
-							}
-					
-						}
-				
-				   },
-				
-				   // MINIFY MENU
-				    minifyMenu: function($this){
-				    	if (!$.root_.hasClass("menu-on-top")){
-							$.root_.toggleClass("minified");
-							$.root_.removeClass("hidden-menu");
-							$('html').removeClass("hidden-menu-mobile-lock");
-							$this.effect("highlight", {}, 500);
-						}
-				    },
-				    
-				    // TOGGLE MENU 
-				    toggleMenu: function(){
-				    	if (!$.root_.hasClass("menu-on-top")){
-							$('html').toggleClass("hidden-menu-mobile-lock");
-							$.root_.toggleClass("hidden-menu");
-							$.root_.removeClass("minified");
-				    	} else if ( $.root_.hasClass("menu-on-top") && $.root_.hasClass("mobile-view-activated") ) {
-				    		$('html').toggleClass("hidden-menu-mobile-lock");
-							$.root_.toggleClass("hidden-menu");
-							$.root_.removeClass("minified");
-				    	}
-				    },     
-				
-				    // TOGGLE SHORTCUT 
-				    toggleShortcut: function(){
-				    	
-						if ($.shortcut_dropdown.is(":visible")) {
-							shortcut_buttons_hide();
-						} else {
-							shortcut_buttons_show();
-						}
-
-						// SHORT CUT (buttons that appear when clicked on user name)
-						$.shortcut_dropdown.find('a').click(function(e) {
-							e.preventDefault();
-							window.location = $(this).attr('href');
-							setTimeout(shortcut_buttons_hide, 300);
-					
-						});
-					
-						// SHORTCUT buttons goes away if mouse is clicked outside of the area
-						$(document).mouseup(function(e) {
-							if (!$.shortcut_dropdown.is(e.target) && $.shortcut_dropdown.has(e.target).length === 0) {
-								shortcut_buttons_hide();
-							}
-						});
-						
-						// SHORTCUT ANIMATE HIDE
-						function shortcut_buttons_hide() {
-							$.shortcut_dropdown.animate({
-								height : "hide"
-							}, 300, "easeOutCirc");
-							$.root_.removeClass('shortcut-on');
-					
-						}
-					
-						// SHORTCUT ANIMATE SHOW
-						function shortcut_buttons_show() {
-							$.shortcut_dropdown.animate({
-								height : "show"
-							}, 200, "easeOutCirc");
-							$.root_.addClass('shortcut-on');
-						}
-				
-				    }  
-				   
-				};
-				
-				var actionEvents = {
-					userLogout: function(e) {
-						smartActions.userLogout(element);
-					},
-					resetWidgets: function(e) {
-						smartActions.resetWidgets(element);
-					},
-					launchFullscreen: function(e) {
-						smartActions.launchFullscreen(document.documentElement);
-					},
-					minifyMenu: function(e) {
-						smartActions.minifyMenu(element);
-					},
-					toggleMenu: function(e) {
-						smartActions.toggleMenu();
-					},
-					toggleShortcut: function(e) {
-						smartActions.toggleShortcut();
-					}
-				};
-
-				if (angular.isDefined(attrs.action) && attrs.action != '') {
-					var actionEvent = actionEvents[attrs.action];
-					if (typeof actionEvent === 'function') {
-						element.on('click', function(e) {
-							actionEvent(e);
-							e.preventDefault();
-						});
-					}
-				}
-
-			}
-		};
-	})
-
-	.directive('header', function() {
-		return {
-			restrict: 'EA',
-			link: function(scope, element, attrs) {
-				// SHOW & HIDE MOBILE SEARCH FIELD
-				angular.element('#search-mobile').click(function() {
-					$.root_.addClass('search-mobile');
-				});
-
-				angular.element('#cancel-search-js').click(function() {
-					$.root_.removeClass('search-mobile');
-				});
-			}
-		};
-	})
-
-	.directive('ribbon', function() {
-		return {
-			restrict: 'A',
-			link: function(scope, element, attrs) {
-				element.append('<div class="demo"><span id="demo-setting"><i class="fa fa-cog txt-color-blueDark"></i></span> <form><legend class="no-padding margin-bottom-10">Layout Options</legend><section><label><input name="subscription" id="smart-fixed-header" type="checkbox" class="checkbox style-0"><span>Fixed Header</span></label><label><input type="checkbox" name="terms" id="smart-fixed-navigation" class="checkbox style-0"><span>Fixed Navigation</span></label><label><input type="checkbox" name="terms" id="smart-fixed-ribbon" class="checkbox style-0"><span>Fixed Ribbon</span></label><label><input type="checkbox" name="terms" id="smart-fixed-footer" class="checkbox style-0"><span>Fixed Footer</span></label><label><input type="checkbox" name="terms" id="smart-fixed-container" class="checkbox style-0"><span>Inside <b>.container</b> <div class="font-xs text-right">(non-responsive)</div></span></label><label style="display:block;"><input type="checkbox" id="smart-topmenu" class="checkbox style-0"><span>Menu on <b>top</b></span></label> <span id="smart-bgimages"></span></section><section><h6 class="margin-top-10 semi-bold margin-bottom-5">Clear Localstorage</h6><a href="javascript:void(0);" class="btn btn-xs btn-block btn-primary" id="reset-smart-widget"><i class="fa fa-refresh"></i> Factory Reset</a></section> <h6 class="margin-top-10 semi-bold margin-bottom-5">SmartAdmin Skins</h6><section id="smart-styles"><a href="javascript:void(0);" id="smart-style-0" data-skinlogo="img/logo.png" class="btn btn-block btn-xs txt-color-white margin-right-5" style="background-color:#4E463F;"><i class="fa fa-check fa-fw" id="skin-checked"></i>Smart Default</a><a href="javascript:void(0);" id="smart-style-1" data-skinlogo="img/logo-white.png" class="btn btn-block btn-xs txt-color-white" style="background:#3A4558;">Dark Elegance</a><a href="javascript:void(0);" id="smart-style-2" data-skinlogo="img/logo-blue.png" class="btn btn-xs btn-block txt-color-darken margin-top-5" style="background:#fff;">Ultra Light</a><a href="javascript:void(0);" id="smart-style-3" data-skinlogo="img/logo-pale.png" class="btn btn-xs btn-block txt-color-white margin-top-5" style="background:#f78c40">Google Skin</a></section></form> </div>');
-
-				// hide bg options
-				var smartbgimage = "<h6 class='margin-top-10 semi-bold'>Background</h6><img src='img/pattern/graphy-xs.png' data-htmlbg-url='img/pattern/graphy.png' width='22' height='22' class='margin-right-5 bordered cursor-pointer'><img src='img/pattern/tileable_wood_texture-xs.png' width='22' height='22' data-htmlbg-url='img/pattern/tileable_wood_texture.png' class='margin-right-5 bordered cursor-pointer'><img src='img/pattern/sneaker_mesh_fabric-xs.png' width='22' height='22' data-htmlbg-url='img/pattern/sneaker_mesh_fabric.png' class='margin-right-5 bordered cursor-pointer'><img src='img/pattern/nistri-xs.png' data-htmlbg-url='img/pattern/nistri.png' width='22' height='22' class='margin-right-5 bordered cursor-pointer'><img src='img/pattern/paper-xs.png' data-htmlbg-url='img/pattern/paper.png' width='22' height='22' class='bordered cursor-pointer'>";
-				$("#smart-bgimages")
-				    .fadeOut();
-
-				$('#demo-setting')
-				    .click(function () {
-				        //console.log('setting');
-				        $('#ribbon .demo')
-				            .toggleClass('activate');
-				    });
-				/*
-				 * FIXED HEADER
-				 */
-				$('input[type="checkbox"]#smart-fixed-header')
-				    .click(function () {
-				        if ($(this)
-				            .is(':checked')) {
-				            //checked
-				            $.root_.addClass("fixed-header");
-				        } else {
-				            //unchecked
-				            $('input[type="checkbox"]#smart-fixed-ribbon')
-				                .prop('checked', false);
-				            $('input[type="checkbox"]#smart-fixed-navigation')
-				                .prop('checked', false);
-
-				            $.root_.removeClass("fixed-header");
-				            $.root_.removeClass("fixed-navigation");
-				            $.root_.removeClass("fixed-ribbon");
-
-				        }
-				    });
-
-				/*
-				 * FIXED NAV
-				 */
-				$('input[type="checkbox"]#smart-fixed-navigation')
-				    .click(function () {
-				        if ($(this)
-				            .is(':checked')) {
-				            //checked
-				            $('input[type="checkbox"]#smart-fixed-header')
-				                .prop('checked', true);
-
-				            $.root_.addClass("fixed-header");
-				            $.root_.addClass("fixed-navigation");
-
-				            $('input[type="checkbox"]#smart-fixed-container')
-				                .prop('checked', false);
-				            $.root_.removeClass("container");
-
-				        } else {
-				            //unchecked
-				            $('input[type="checkbox"]#smart-fixed-ribbon')
-				                .prop('checked', false);
-				            $.root_.removeClass("fixed-navigation");
-				            $.root_.removeClass("fixed-ribbon");
-				        }
-				    });
-
-				/*
-				 * FIXED RIBBON
-				 */
-				$('input[type="checkbox"]#smart-fixed-ribbon')
-				    .click(function () {
-				        if ($(this)
-				            .is(':checked')) {
-
-				            //checked
-				            $('input[type="checkbox"]#smart-fixed-header')
-				                .prop('checked', true);
-				            $('input[type="checkbox"]#smart-fixed-navigation')
-				                .prop('checked', true);
-				            $('input[type="checkbox"]#smart-fixed-ribbon')
-				                .prop('checked', true);
-
-				            //apply
-				            $.root_.addClass("fixed-header");
-				            $.root_.addClass("fixed-navigation");
-				            $.root_.addClass("fixed-ribbon");
-
-				            $('input[type="checkbox"]#smart-fixed-container')
-				                .prop('checked', false);
-				            $.root_.removeClass("container");
-
-				        } else {
-				            //unchecked
-				            $.root_.removeClass("fixed-ribbon");
-				        }
-				    });
-
-				/*
-				 * RTL SUPPORT
-				 */
-				$('input[type="checkbox"]#smart-fixed-footer')
-				    .click(function () {
-				        if ($(this)
-				            .is(':checked')) {
-
-				            //checked
-				            $.root_.addClass("fixed-page-footer");
-
-				        } else {
-				            //unchecked
-				            $.root_.removeClass("fixed-page-footer");
-				        }
-				    });
+        element.bind('mouseenter', function(event) {
+          popoverDiv.show();
+        });
+        element.bind('mouseleave', function(event) {
+          popoverDiv.hide();
+        });
 
 
-				/*
-				 * RTL SUPPORT
-				 */
-				$('input[type="checkbox"]#smart-rtl')
-				    .click(function () {
-				        if ($(this)
-				            .is(':checked')) {
+        function create(htmlStr) {
+          var frag = document.createDocumentFragment(),
+            temp = document.createElement('div');
+          temp.innerHTML = htmlStr;
+          while (temp.firstChild) {
+            frag.appendChild(temp.firstChild);
+          }
+          return frag;
+        }
+      }
+    }
+  })
+  .factory('ribbon', ['$rootScope', function($rootScope) {
+    var ribbon = {
+      currentBreadcrumb: [],
+      updateBreadcrumb: function(crumbs) {
+        crumbs.push('Home');
+        var breadCrumb = crumbs.reverse();
+        ribbon.currentBreadcrumb = breadCrumb;
+        $rootScope.$broadcast('navItemSelected', breadCrumb);
+      }
+    };
 
-				            //checked
-				            $.root_.addClass("smart-rtl");
+    return ribbon;
+  }])
 
-				        } else {
-				            //unchecked
-				            $.root_.removeClass("smart-rtl");
-				        }
-				    });
+.directive('action', function() {
+  return {
+    restrict: 'A',
+    link: function(scope, element, attrs) {
+      /*
+       * SMART ACTIONS
+       */
+      var smartActions = {
 
-				/*
-				 * MENU ON TOP
-				 */
+        // LOGOUT MSG
+        userLogout: function($this) {
 
-				$('#smart-topmenu')
-				    .on('change', function (e) {
-				        if ($(this)
-				            .prop('checked')) {
-				            //window.location.href = '?menu=top';
-				            localStorage.setItem('sm-setmenu', 'top');
-				            location.reload();
-				        } else {
-				            //window.location.href = '?';
-				            localStorage.setItem('sm-setmenu', 'left');
-				            location.reload();
-				        }
-				    });
+          // ask verification
+          $.SmartMessageBox({
+            title: "<i class='fa fa-sign-out txt-color-orangeDark'></i> Logout <span class='txt-color-orangeDark'><strong>" + $('#show-shortcut').text() + "</strong></span> ?",
+            content: $this.data('logout-msg') || "You can improve your security further after logging out by closing this opened browser",
+            buttons: '[No][Yes]'
 
-				if (localStorage.getItem('sm-setmenu') == 'top') {
-				    $('#smart-topmenu')
-				        .prop('checked', true);
-				} else {
-				    $('#smart-topmenu')
-				        .prop('checked', false);
-				}
+          }, function(ButtonPressed) {
+            if (ButtonPressed == "Yes") {
+              $.root_.addClass('animated fadeOutUp');
+              setTimeout(logout, 1000);
+            }
+          });
 
-				/*
-				 * INSIDE CONTAINER
-				 */
-				$('input[type="checkbox"]#smart-fixed-container')
-				    .click(function () {
-				        if ($(this)
-				            .is(':checked')) {
-				            //checked
-				            $.root_.addClass("container");
+          function logout() {
+            window.location = $this.attr('href');
+          }
 
-				            $('input[type="checkbox"]#smart-fixed-ribbon')
-				                .prop('checked', false);
-				            $.root_.removeClass("fixed-ribbon");
+        },
 
-				            $('input[type="checkbox"]#smart-fixed-navigation')
-				                .prop('checked', false);
-				            $.root_.removeClass("fixed-navigation");
+        // RESET WIDGETS
+        resetWidgets: function($this) {
+          $.widresetMSG = $this.data('reset-msg');
 
-				            if (smartbgimage) {
-				                $("#smart-bgimages")
-				                    .append(smartbgimage)
-				                    .fadeIn(1000);
-				                $("#smart-bgimages img")
-				                    .bind("click", function () {
-				                        var $this = $(this);
-				                        var $html = $('html');
-				                        bgurl = ($this.data("htmlbg-url"));
-				                        $html.css("background-image", "url(" + bgurl + ")");
-				                    });
-				                smartbgimage = null;
-				            } else {
-				                $("#smart-bgimages")
-				                    .fadeIn(1000);
-				            }
+          $.SmartMessageBox({
+            title: "<i class='fa fa-refresh' style='color:green'></i> Clear Local Storage",
+            content: $.widresetMSG || "Would you like to RESET all your saved widgets and clear LocalStorage?",
+            buttons: '[No][Yes]'
+          }, function(ButtonPressed) {
+            if (ButtonPressed == "Yes" && localStorage) {
+              localStorage.clear();
+              location.reload();
+            }
 
-				        } else {
-				            //unchecked
-				            $.root_.removeClass("container");
-				            $("#smart-bgimages")
-				                .fadeOut();
-				        }
-				    });
+          });
+        },
 
-				/*
-				 * REFRESH WIDGET
-				 */
-				$("#reset-smart-widget")
-				    .bind("click", function () {
-				        $('#refresh')
-				            .click();
-				        return false;
-				    });
-				//$.root_.addClass("smart-style-1");
-				/*
-				 * STYLES
-				 */
-				// $("#smart-styles > a")
-				//    .on('click', function() {
-				//         var $this = $(this);
-				//         var $logo = $("#logo img");
-				//         $.root_.removeClassPrefix('smart-style')
-				//             .addClass($this.attr("id"));
-				//         $logo.attr('src', $this.data("skinlogo"));
-				//         $("#smart-styles > a #skin-checked")
-				//             .remove();
-				//         $this.prepend("<i class='fa fa-check fa-fw' id='skin-checked'></i>");
-				//     });
-			}
-		};
-	})
+        // LAUNCH FULLSCREEN
+        launchFullscreen: function(element) {
 
-	.controller('breadcrumbController', ['$scope', function($scope) {
-		$scope.breadcrumbs = [];
-		$scope.$on('navItemSelected', function(name, crumbs) {
-			$scope.setBreadcrumb(crumbs);
-		});
+          if (!$.root_.hasClass("full-screen")) {
 
-		$scope.setBreadcrumb = function(crumbs) {
-			$scope.breadcrumbs = crumbs;
-		};
-	}])
+            $.root_.addClass("full-screen");
 
-	.directive('breadcrumb', ['ribbon', 'localize', '$compile', function(ribbon, localize, $compile) {
-		return {
-			restrict: 'AE',
-			controller: 'breadcrumbController',
-			replace: true,
-			link: function(scope, element, attrs) {
-				scope.$watch('breadcrumbs', function(newVal, oldVal) {
-					if (newVal !== oldVal) {
-						// update DOM
-						scope.updateDOM();
-					}
-				});
-				scope.updateDOM = function() {
-					element.empty();
-					angular.forEach(scope.breadcrumbs, function(crumb) {
-						var li = angular.element('<li data-localize="' + crumb + '">' + crumb + '</li>');
-						li.text(localize.localizeText(crumb));
-						
-						$compile(li)(scope);
-						element.append(li);
-					});
-				};
-				
-				// set the current breadcrumb on load
-				scope.setBreadcrumb(ribbon.currentBreadcrumb);
-				scope.updateDOM();
-			},
-			template: '<ol class="breadcrumb"></ol>'
-		};
-	}])
-;
+            if (element.requestFullscreen) {
+              element.requestFullscreen();
+            } else if (element.mozRequestFullScreen) {
+              element.mozRequestFullScreen();
+            } else if (element.webkitRequestFullscreen) {
+              element.webkitRequestFullscreen();
+            } else if (element.msRequestFullscreen) {
+              element.msRequestFullscreen();
+            }
+
+          } else {
+
+            $.root_.removeClass("full-screen");
+
+            if (document.exitFullscreen) {
+              document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+              document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) {
+              document.webkitExitFullscreen();
+            }
+
+          }
+
+        },
+
+        // MINIFY MENU
+        minifyMenu: function($this) {
+          if (!$.root_.hasClass("menu-on-top")) {
+            $.root_.toggleClass("minified");
+            $.root_.removeClass("hidden-menu");
+            $('html').removeClass("hidden-menu-mobile-lock");
+            $this.effect("highlight", {}, 500);
+          }
+        },
+
+        // TOGGLE MENU
+        toggleMenu: function() {
+          if (!$.root_.hasClass("menu-on-top")) {
+            $('html').toggleClass("hidden-menu-mobile-lock");
+            $.root_.toggleClass("hidden-menu");
+            $.root_.removeClass("minified");
+          } else if ($.root_.hasClass("menu-on-top") && $.root_.hasClass("mobile-view-activated")) {
+            $('html').toggleClass("hidden-menu-mobile-lock");
+            $.root_.toggleClass("hidden-menu");
+            $.root_.removeClass("minified");
+          }
+        },
+
+        // TOGGLE SHORTCUT
+        toggleShortcut: function() {
+
+          if ($.shortcut_dropdown.is(":visible")) {
+            shortcut_buttons_hide();
+          } else {
+            shortcut_buttons_show();
+          }
+
+          // SHORT CUT (buttons that appear when clicked on user name)
+          $.shortcut_dropdown.find('a').click(function(e) {
+            e.preventDefault();
+            window.location = $(this).attr('href');
+            setTimeout(shortcut_buttons_hide, 300);
+
+          });
+
+          // SHORTCUT buttons goes away if mouse is clicked outside of the area
+          $(document).mouseup(function(e) {
+            if (!$.shortcut_dropdown.is(e.target) && $.shortcut_dropdown.has(e.target).length === 0) {
+              shortcut_buttons_hide();
+            }
+          });
+
+          // SHORTCUT ANIMATE HIDE
+          function shortcut_buttons_hide() {
+            $.shortcut_dropdown.animate({
+              height: "hide"
+            }, 300, "easeOutCirc");
+            $.root_.removeClass('shortcut-on');
+
+          }
+
+          // SHORTCUT ANIMATE SHOW
+          function shortcut_buttons_show() {
+            $.shortcut_dropdown.animate({
+              height: "show"
+            }, 200, "easeOutCirc");
+            $.root_.addClass('shortcut-on');
+          }
+
+        }
+
+      };
+
+      var actionEvents = {
+        userLogout: function(e) {
+          smartActions.userLogout(element);
+        },
+        resetWidgets: function(e) {
+          smartActions.resetWidgets(element);
+        },
+        launchFullscreen: function(e) {
+          smartActions.launchFullscreen(document.documentElement);
+        },
+        minifyMenu: function(e) {
+          smartActions.minifyMenu(element);
+        },
+        toggleMenu: function(e) {
+          smartActions.toggleMenu();
+        },
+        toggleShortcut: function(e) {
+          smartActions.toggleShortcut();
+        }
+      };
+
+      if (angular.isDefined(attrs.action) && attrs.action != '') {
+        var actionEvent = actionEvents[attrs.action];
+        if (typeof actionEvent === 'function') {
+          element.on('click', function(e) {
+            actionEvent(e);
+            e.preventDefault();
+          });
+        }
+      }
+
+    }
+  };
+})
+
+.directive('header', function() {
+  return {
+    restrict: 'EA',
+    link: function(scope, element, attrs) {
+      // SHOW & HIDE MOBILE SEARCH FIELD
+      angular.element('#search-mobile').click(function() {
+        $.root_.addClass('search-mobile');
+      });
+
+      angular.element('#cancel-search-js').click(function() {
+        $.root_.removeClass('search-mobile');
+      });
+    }
+  };
+})
+
+.directive('ribbon', function() {
+  return {
+    restrict: 'A',
+    link: function(scope, element, attrs) {
+      element.append('<div class="demo"><span id="demo-setting"><i class="fa fa-cog txt-color-blueDark"></i></span> <form><legend class="no-padding margin-bottom-10">Layout Options</legend><section><label><input name="subscription" id="smart-fixed-header" type="checkbox" class="checkbox style-0"><span>Fixed Header</span></label><label><input type="checkbox" name="terms" id="smart-fixed-navigation" class="checkbox style-0"><span>Fixed Navigation</span></label><label><input type="checkbox" name="terms" id="smart-fixed-ribbon" class="checkbox style-0"><span>Fixed Ribbon</span></label><label><input type="checkbox" name="terms" id="smart-fixed-footer" class="checkbox style-0"><span>Fixed Footer</span></label><label><input type="checkbox" name="terms" id="smart-fixed-container" class="checkbox style-0"><span>Inside <b>.container</b> <div class="font-xs text-right">(non-responsive)</div></span></label><label style="display:block;"><input type="checkbox" id="smart-topmenu" class="checkbox style-0"><span>Menu on <b>top</b></span></label> <span id="smart-bgimages"></span></section><section><h6 class="margin-top-10 semi-bold margin-bottom-5">Clear Localstorage</h6><a href="javascript:void(0);" class="btn btn-xs btn-block btn-primary" id="reset-smart-widget"><i class="fa fa-refresh"></i> Factory Reset</a></section> <h6 class="margin-top-10 semi-bold margin-bottom-5">SmartAdmin Skins</h6><section id="smart-styles"><a href="javascript:void(0);" id="smart-style-0" data-skinlogo="img/logo.png" class="btn btn-block btn-xs txt-color-white margin-right-5" style="background-color:#4E463F;"><i class="fa fa-check fa-fw" id="skin-checked"></i>Smart Default</a><a href="javascript:void(0);" id="smart-style-1" data-skinlogo="img/logo-white.png" class="btn btn-block btn-xs txt-color-white" style="background:#3A4558;">Dark Elegance</a><a href="javascript:void(0);" id="smart-style-2" data-skinlogo="img/logo-blue.png" class="btn btn-xs btn-block txt-color-darken margin-top-5" style="background:#fff;">Ultra Light</a><a href="javascript:void(0);" id="smart-style-3" data-skinlogo="img/logo-pale.png" class="btn btn-xs btn-block txt-color-white margin-top-5" style="background:#f78c40">Google Skin</a></section></form> </div>');
+
+      // hide bg options
+      var smartbgimage = "<h6 class='margin-top-10 semi-bold'>Background</h6><img src='img/pattern/graphy-xs.png' data-htmlbg-url='img/pattern/graphy.png' width='22' height='22' class='margin-right-5 bordered cursor-pointer'><img src='img/pattern/tileable_wood_texture-xs.png' width='22' height='22' data-htmlbg-url='img/pattern/tileable_wood_texture.png' class='margin-right-5 bordered cursor-pointer'><img src='img/pattern/sneaker_mesh_fabric-xs.png' width='22' height='22' data-htmlbg-url='img/pattern/sneaker_mesh_fabric.png' class='margin-right-5 bordered cursor-pointer'><img src='img/pattern/nistri-xs.png' data-htmlbg-url='img/pattern/nistri.png' width='22' height='22' class='margin-right-5 bordered cursor-pointer'><img src='img/pattern/paper-xs.png' data-htmlbg-url='img/pattern/paper.png' width='22' height='22' class='bordered cursor-pointer'>";
+      $("#smart-bgimages")
+        .fadeOut();
+
+      $('#demo-setting')
+        .click(function() {
+          //console.log('setting');
+          $('#ribbon .demo')
+            .toggleClass('activate');
+        });
+      /*
+       * FIXED HEADER
+       */
+      $('input[type="checkbox"]#smart-fixed-header')
+        .click(function() {
+          if ($(this)
+            .is(':checked')) {
+            //checked
+            $.root_.addClass("fixed-header");
+          } else {
+            //unchecked
+            $('input[type="checkbox"]#smart-fixed-ribbon')
+              .prop('checked', false);
+            $('input[type="checkbox"]#smart-fixed-navigation')
+              .prop('checked', false);
+
+            $.root_.removeClass("fixed-header");
+            $.root_.removeClass("fixed-navigation");
+            $.root_.removeClass("fixed-ribbon");
+
+          }
+        });
+
+      /*
+       * FIXED NAV
+       */
+      $('input[type="checkbox"]#smart-fixed-navigation')
+        .click(function() {
+          if ($(this)
+            .is(':checked')) {
+            //checked
+            $('input[type="checkbox"]#smart-fixed-header')
+              .prop('checked', true);
+
+            $.root_.addClass("fixed-header");
+            $.root_.addClass("fixed-navigation");
+
+            $('input[type="checkbox"]#smart-fixed-container')
+              .prop('checked', false);
+            $.root_.removeClass("container");
+
+          } else {
+            //unchecked
+            $('input[type="checkbox"]#smart-fixed-ribbon')
+              .prop('checked', false);
+            $.root_.removeClass("fixed-navigation");
+            $.root_.removeClass("fixed-ribbon");
+          }
+        });
+
+      /*
+       * FIXED RIBBON
+       */
+      $('input[type="checkbox"]#smart-fixed-ribbon')
+        .click(function() {
+          if ($(this)
+            .is(':checked')) {
+
+            //checked
+            $('input[type="checkbox"]#smart-fixed-header')
+              .prop('checked', true);
+            $('input[type="checkbox"]#smart-fixed-navigation')
+              .prop('checked', true);
+            $('input[type="checkbox"]#smart-fixed-ribbon')
+              .prop('checked', true);
+
+            //apply
+            $.root_.addClass("fixed-header");
+            $.root_.addClass("fixed-navigation");
+            $.root_.addClass("fixed-ribbon");
+
+            $('input[type="checkbox"]#smart-fixed-container')
+              .prop('checked', false);
+            $.root_.removeClass("container");
+
+          } else {
+            //unchecked
+            $.root_.removeClass("fixed-ribbon");
+          }
+        });
+
+      /*
+       * RTL SUPPORT
+       */
+      $('input[type="checkbox"]#smart-fixed-footer')
+        .click(function() {
+          if ($(this)
+            .is(':checked')) {
+
+            //checked
+            $.root_.addClass("fixed-page-footer");
+
+          } else {
+            //unchecked
+            $.root_.removeClass("fixed-page-footer");
+          }
+        });
+
+
+      /*
+       * RTL SUPPORT
+       */
+      $('input[type="checkbox"]#smart-rtl')
+        .click(function() {
+          if ($(this)
+            .is(':checked')) {
+
+            //checked
+            $.root_.addClass("smart-rtl");
+
+          } else {
+            //unchecked
+            $.root_.removeClass("smart-rtl");
+          }
+        });
+
+      /*
+       * MENU ON TOP
+       */
+
+      $('#smart-topmenu')
+        .on('change', function(e) {
+          if ($(this)
+            .prop('checked')) {
+            //window.location.href = '?menu=top';
+            localStorage.setItem('sm-setmenu', 'top');
+            location.reload();
+          } else {
+            //window.location.href = '?';
+            localStorage.setItem('sm-setmenu', 'left');
+            location.reload();
+          }
+        });
+
+      if (localStorage.getItem('sm-setmenu') == 'top') {
+        $('#smart-topmenu')
+          .prop('checked', true);
+      } else {
+        $('#smart-topmenu')
+          .prop('checked', false);
+      }
+
+      /*
+       * INSIDE CONTAINER
+       */
+      $('input[type="checkbox"]#smart-fixed-container')
+        .click(function() {
+          if ($(this)
+            .is(':checked')) {
+            //checked
+            $.root_.addClass("container");
+
+            $('input[type="checkbox"]#smart-fixed-ribbon')
+              .prop('checked', false);
+            $.root_.removeClass("fixed-ribbon");
+
+            $('input[type="checkbox"]#smart-fixed-navigation')
+              .prop('checked', false);
+            $.root_.removeClass("fixed-navigation");
+
+            if (smartbgimage) {
+              $("#smart-bgimages")
+                .append(smartbgimage)
+                .fadeIn(1000);
+              $("#smart-bgimages img")
+                .bind("click", function() {
+                  var $this = $(this);
+                  var $html = $('html');
+                  bgurl = ($this.data("htmlbg-url"));
+                  $html.css("background-image", "url(" + bgurl + ")");
+                });
+              smartbgimage = null;
+            } else {
+              $("#smart-bgimages")
+                .fadeIn(1000);
+            }
+
+          } else {
+            //unchecked
+            $.root_.removeClass("container");
+            $("#smart-bgimages")
+              .fadeOut();
+          }
+        });
+
+      /*
+       * REFRESH WIDGET
+       */
+      $("#reset-smart-widget")
+        .bind("click", function() {
+          $('#refresh')
+            .click();
+          return false;
+        });
+      //$.root_.addClass("smart-style-1");
+      /*
+       * STYLES
+       */
+      // $("#smart-styles > a")
+      //    .on('click', function() {
+      //         var $this = $(this);
+      //         var $logo = $("#logo img");
+      //         $.root_.removeClassPrefix('smart-style')
+      //             .addClass($this.attr("id"));
+      //         $logo.attr('src', $this.data("skinlogo"));
+      //         $("#smart-styles > a #skin-checked")
+      //             .remove();
+      //         $this.prepend("<i class='fa fa-check fa-fw' id='skin-checked'></i>");
+      //     });
+    }
+  };
+})
+
+.controller('breadcrumbController', ['$scope', function($scope) {
+  $scope.breadcrumbs = [];
+  $scope.$on('navItemSelected', function(name, crumbs) {
+    $scope.setBreadcrumb(crumbs);
+  });
+
+  $scope.setBreadcrumb = function(crumbs) {
+    $scope.breadcrumbs = crumbs;
+  };
+}])
+
+.directive('breadcrumb', ['ribbon', 'localize', '$compile', function(ribbon, localize, $compile) {
+  return {
+    restrict: 'AE',
+    controller: 'breadcrumbController',
+    replace: true,
+    link: function(scope, element, attrs) {
+      scope.$watch('breadcrumbs', function(newVal, oldVal) {
+        if (newVal !== oldVal) {
+          // update DOM
+          scope.updateDOM();
+        }
+      });
+      scope.updateDOM = function() {
+        element.empty();
+        angular.forEach(scope.breadcrumbs, function(crumb) {
+          var li = angular.element('<li data-localize="' + crumb + '">' + crumb + '</li>');
+          li.text(localize.localizeText(crumb));
+
+          $compile(li)(scope);
+          element.append(li);
+        });
+      };
+
+      // set the current breadcrumb on load
+      scope.setBreadcrumb(ribbon.currentBreadcrumb);
+      scope.updateDOM();
+    },
+    template: '<ol class="breadcrumb"></ol>'
+  };
+}]);
 
 // directives for localization
 angular.module('app.localize', [])
 
-	.factory('localize', ['$http', '$rootScope', '$window', function($http, $rootScope, $window){
-		var localize = {
-			currentLocaleData: {},
-			currentLang: {},
-			setLang: function(lang) {
-				$http({method: 'GET', url: localize.getLangUrl(lang), cache: false})
-				.success(function(data) {
-					localize.currentLocaleData = data;
-					localize.currentLang = lang;
-					$rootScope.$broadcast('localizeLanguageChanged');
-				}).error(function(data) {
-					console.log('Error updating language!');
-				});
-			},
-			getLangUrl: function(lang) {
-				return 'resources/js/langs/' + lang.langCode + '.js';
-			},
+.factory('localize', ['$http', '$rootScope', '$window', function($http, $rootScope, $window) {
+  var localize = {
+    currentLocaleData: {},
+    currentLang: {},
+    setLang: function(lang) {
+      $http({
+          method: 'GET',
+          url: localize.getLangUrl(lang),
+          cache: false
+        })
+        .success(function(data) {
+          localize.currentLocaleData = data;
+          localize.currentLang = lang;
+          $rootScope.$broadcast('localizeLanguageChanged');
+        }).error(function(data) {
+          console.log('Error updating language!');
+        });
+    },
+    getLangUrl: function(lang) {
+      return 'resources/js/langs/' + lang.langCode + '.js';
+    },
 
-			localizeText: function(sourceText) {
-				return localize.currentLocaleData[sourceText];
-			}
-		};
+    localizeText: function(sourceText) {
+      return localize.currentLocaleData[sourceText];
+    }
+  };
 
-		return localize;
-	}])
+  return localize;
+}])
 
-	.directive('localize', ['localize', function(localize) {
-		return {
-			restrict: 'A',
-			scope: {
-				sourceText: '@localize'
-			},
-			link: function(scope, element, attrs) {
-				scope.$on('localizeLanguageChanged', function() {
-					var localizedText = localize.localizeText(scope.sourceText);
-					if (element.is('input, textarea')) element.attr('placeholder', localizedText);
-					else element.text(localizedText);
-				});
-			}
-		};
-	}])
-;
+.directive('localize', ['localize', function(localize) {
+  return {
+    restrict: 'A',
+    scope: {
+      sourceText: '@localize'
+    },
+    link: function(scope, element, attrs) {
+      scope.$on('localizeLanguageChanged', function() {
+        var localizedText = localize.localizeText(scope.sourceText);
+        if (element.is('input, textarea')) element.attr('placeholder', localizedText);
+        else element.text(localizedText);
+      });
+    }
+  };
+}]);
 
 // directives for navigation
 angular.module('app.navigation', [])
-	.directive('navigation', ['$timeout', function($timeout) {
-		return {
-			restrict: 'AE',
-			controller: ['$scope', function($scope) {
+  .directive('navigation', ['$timeout', function($timeout) {
+    return {
+      restrict: 'AE',
+      controller: ['$scope', function($scope) {
 
-			}],
-			transclude: true,
-			replace: true,
-			link: function(scope, element, attrs) {
-				//if (!$topmenu) {
-				//	if (!null) {
-				//		element.first().jarvismenu({
-				//			accordion : true,
-				//			speed : $.menu_speed,
-				//			closedSign : '<em class="fa fa-plus-square-o"></em>',
-				//			openedSign : '<em class="fa fa-minus-square-o"></em>'
-				//		});
-				//	} else {
-				//		alert("Error - menu anchor does not exist");
-				//	}
-				//}
+      }],
+      transclude: true,
+      replace: true,
+      link: function(scope, element, attrs) {
+        //if (!$topmenu) {
+        //	if (!null) {
+        //		element.first().jarvismenu({
+        //			accordion : true,
+        //			speed : $.menu_speed,
+        //			closedSign : '<em class="fa fa-plus-square-o"></em>',
+        //			openedSign : '<em class="fa fa-minus-square-o"></em>'
+        //		});
+        //	} else {
+        //		alert("Error - menu anchor does not exist");
+        //	}
+        //}
 
-				// SLIMSCROLL FOR NAV
-				if ($.fn.slimScroll) {
-					element.slimScroll({
-				        height: '100%'
-				    });
-				}
+        // SLIMSCROLL FOR NAV
+        if ($.fn.slimScroll) {
+          element.slimScroll({
+            height: '100%'
+          });
+        }
 
-				scope.getElement = function() {
-					return element;
-				};
-				$timeout(function () {
-					element.first().jarvismenu({
-						accordion : true,
-						speed : $.menu_speed,
-						closedSign : '<em class="fa fa-plus-square-o"></em>',
-						openedSign : '<em class="fa fa-minus-square-o"></em>'
-					});
-				},1000);
+        scope.getElement = function() {
+          return element;
+        };
+        $timeout(function() {
+          element.first().jarvismenu({
+            accordion: true,
+            speed: $.menu_speed,
+            closedSign: '<em class="fa fa-plus-square-o"></em>',
+            openedSign: '<em class="fa fa-minus-square-o"></em>'
+          });
+        }, 1000);
 
-			},
-			template: '<nav><ul data-ng-transclude=""></ul></nav>'
-		};
-	}])
+      },
+      template: '<nav><ul data-ng-transclude=""></ul></nav>'
+    };
+  }])
 
-	.controller('NavGroupController', ['$scope', function($scope) {
-		$scope.active = false;
-		$scope.hasIcon = angular.isDefined($scope.icon);
-	    $scope.hasIconCaption = angular.isDefined($scope.iconCaption);
+.controller('NavGroupController', ['$scope', function($scope) {
+    $scope.active = false;
+    $scope.hasIcon = angular.isDefined($scope.icon);
+    $scope.hasIconCaption = angular.isDefined($scope.iconCaption);
 
-	    this.setActive = function(active) {
-	    	$scope.active = active;
-	    };
+    this.setActive = function(active) {
+      $scope.active = active;
+    };
 
-	}])
-	.directive('navGroup', function() {
-		return {
-			restrict: 'AE',
-			controller: 'NavGroupController',
-			transclude: true,
-			replace: true,
-			scope: {
-				icon: '@',
-				title: '@',
-				iconCaption: '@',
-				active: '=?'
-			},
-			template: '\
+  }])
+  .directive('navGroup', function() {
+    return {
+      restrict: 'AE',
+      controller: 'NavGroupController',
+      transclude: true,
+      replace: true,
+      scope: {
+        icon: '@',
+        title: '@',
+        iconCaption: '@',
+        active: '=?'
+      },
+      template: '\
 				<li data-ng-class="{active: active}">\
 					<a href="">\
 						<i data-ng-if="hasIcon" class="{{ icon }}"><em data-ng-if="hasIconCaption"> {{ iconCaption }} </em></i>\
@@ -728,95 +740,95 @@ angular.module('app.navigation', [])
 					<ul data-ng-transclude=""></ul>\
 				</li>',
 
-		};
-	})
+    };
+  })
 
-	.controller('NavItemController', ['$rootScope', '$scope', '$location', function($rootScope, $scope, $location) {
-		$scope.isChild = false;
-		$scope.active = false;
-		$scope.isActive = function (viewLocation) {
-	        $scope.active = viewLocation === $location.path();
-	        return $scope.active;
-	    };
+.controller('NavItemController', ['$rootScope', '$scope', '$location', function($rootScope, $scope, $location) {
+    $scope.isChild = false;
+    $scope.active = false;
+    $scope.isActive = function(viewLocation) {
+      $scope.active = viewLocation === $location.path();
+      return $scope.active;
+    };
 
-	    $scope.hasIcon = angular.isDefined($scope.icon);
-	    $scope.hasIconCaption = angular.isDefined($scope.iconCaption);
+    $scope.hasIcon = angular.isDefined($scope.icon);
+    $scope.hasIconCaption = angular.isDefined($scope.iconCaption);
 
-	    $scope.getItemUrl = function(view) {
-	    	if (angular.isDefined($scope.href)) return $scope.href;
-	    	if (!angular.isDefined(view)) return '';
-	    	return '#' + view;
-	    };
+    $scope.getItemUrl = function(view) {
+      if (angular.isDefined($scope.href)) return $scope.href;
+      if (!angular.isDefined(view)) return '';
+      return '#' + view;
+    };
 
-	    $scope.getItemTarget = function() {
-	    	return angular.isDefined($scope.target) ? $scope.target : '_self';
-	    };
+    $scope.getItemTarget = function() {
+      return angular.isDefined($scope.target) ? $scope.target : '_self';
+    };
 
-	}])
-	.directive('navItem', ['ribbon', '$window', function(ribbon, $window) {
-		return {
-			require: ['^navigation', '^?navGroup'],
-			restrict: 'AE',
-			controller: 'NavItemController',
-			scope: {
-				title: '@',
-				view: '@',
-				icon: '@',
-				iconCaption: '@',
-				href: '@',
-				target: '@'
-			},
-			link: function(scope, element, attrs, parentCtrls) {
+  }])
+  .directive('navItem', ['ribbon', '$window', function(ribbon, $window) {
+    return {
+      require: ['^navigation', '^?navGroup'],
+      restrict: 'AE',
+      controller: 'NavItemController',
+      scope: {
+        title: '@',
+        view: '@',
+        icon: '@',
+        iconCaption: '@',
+        href: '@',
+        target: '@'
+      },
+      link: function(scope, element, attrs, parentCtrls) {
 
-				var navCtrl = parentCtrls[0],
-					navgroupCtrl = parentCtrls[1];
+        var navCtrl = parentCtrls[0],
+          navgroupCtrl = parentCtrls[1];
 
-				//console.log(navgroupCtrl)
-				if(navgroupCtrl == null) {
-					return;
-				}
-				scope.$watch('active', function(newVal, oldVal) {
-					//console.log(navgroupCtrl);
-					if (newVal) {
-						if (angular.isDefined(navgroupCtrl)) navgroupCtrl.setActive(true);
-						$window.document.title = scope.title;
-						scope.setBreadcrumb();
-					} else {
-						if (angular.isDefined(navgroupCtrl)) navgroupCtrl.setActive(false);
-					}
-				});
+        //console.log(navgroupCtrl)
+        if (navgroupCtrl == null) {
+          return;
+        }
+        scope.$watch('active', function(newVal, oldVal) {
+          //console.log(navgroupCtrl);
+          if (newVal) {
+            if (angular.isDefined(navgroupCtrl)) navgroupCtrl.setActive(true);
+            $window.document.title = scope.title;
+            scope.setBreadcrumb();
+          } else {
+            if (angular.isDefined(navgroupCtrl)) navgroupCtrl.setActive(false);
+          }
+        });
 
-				scope.openParents = scope.isActive(scope.view);
-				scope.isChild = angular.isDefined(navgroupCtrl);
-				
-				scope.setBreadcrumb = function() {
-	    			var crumbs = [];
-	    			crumbs.push(scope.title);
-	    			// get parent menus
-					var test = element.parents('nav li').each(function() {
-						var el = angular.element(this);
-						var parent = el.find('.menu-item-parent:eq(0)');
-						crumbs.push(parent.data('localize').trim());
-						if (scope.openParents) {
-							// open menu on first load
-							parent.trigger('click');
-						}
-					});
-					// this should be only fired upon first load so let's set this to false now
-					scope.openParents = false;
-					ribbon.updateBreadcrumb(crumbs);
-	    		};
+        scope.openParents = scope.isActive(scope.view);
+        scope.isChild = angular.isDefined(navgroupCtrl);
 
-	    		element.on('click', 'a[href!="#"]', function() {
-	    			if ($.root_.hasClass('mobile-view-activated')) {
-	    				$.root_.removeClass('hidden-menu');
-	    			}
-	    		});
-				
-			},
-			transclude: true,
-			replace: true,
-			template: '\
+        scope.setBreadcrumb = function() {
+          var crumbs = [];
+          crumbs.push(scope.title);
+          // get parent menus
+          var test = element.parents('nav li').each(function() {
+            var el = angular.element(this);
+            var parent = el.find('.menu-item-parent:eq(0)');
+            crumbs.push(parent.data('localize').trim());
+            if (scope.openParents) {
+              // open menu on first load
+              parent.trigger('click');
+            }
+          });
+          // this should be only fired upon first load so let's set this to false now
+          scope.openParents = false;
+          ribbon.updateBreadcrumb(crumbs);
+        };
+
+        element.on('click', 'a[href!="#"]', function() {
+          if ($.root_.hasClass('mobile-view-activated')) {
+            $.root_.removeClass('hidden-menu');
+          }
+        });
+
+      },
+      transclude: true,
+      replace: true,
+      template: '\
 				<li data-ng-class="{active: isActive(view)}">\
 					<a href="{{ getItemUrl(view) }}" target="{{ getItemTarget() }}" title="{{ title }}">\
 						<i data-ng-if="hasIcon" class="{{ icon }}"><em data-ng-if="hasIconCaption"> {{ iconCaption }} </em></i>\
@@ -824,149 +836,148 @@ angular.module('app.navigation', [])
 						<span data-ng-transclude=""></span>\
 					</a>\
 				</li>'
-		};
-	}])
-;
+    };
+  }]);
 
 // directives for activity
 angular.module('app.activity', [])
-	.controller('ActivityController', ['$scope', '$http' , function($scope, $http) {
-		var ctrl = this,
-			items = ctrl.items = $scope.items = [];
+  .controller('ActivityController', ['$scope', '$http', function($scope, $http) {
+    var ctrl = this,
+      items = ctrl.items = $scope.items = [];
 
-		ctrl.loadItem = function(loadedItem, callback) {
-			angular.forEach(items, function(item) {
-		      	if (item.active && item !== loadedItem) {
-		        	item.active = false;
-		        	//item.onDeselect();
-		      	}
-		    });
+    ctrl.loadItem = function(loadedItem, callback) {
+      angular.forEach(items, function(item) {
+        if (item.active && item !== loadedItem) {
+          item.active = false;
+          //item.onDeselect();
+        }
+      });
 
-			loadedItem.active = true;
-			if (angular.isDefined(loadedItem.onLoad)) {
-				loadedItem.onLoad(loadedItem);
-			}
+      loadedItem.active = true;
+      if (angular.isDefined(loadedItem.onLoad)) {
+        loadedItem.onLoad(loadedItem);
+      }
 
-			$http.get(loadedItem.src).then(function(result) {
-				var content = result.data;
-				if (angular.isDefined(callback)) {
-					callback(content);
-				}
-			});
-		};
+      $http.get(loadedItem.src).then(function(result) {
+        var content = result.data;
+        if (angular.isDefined(callback)) {
+          callback(content);
+        }
+      });
+    };
 
-		ctrl.addItem = function(item) {
-			items.push(item);
-			if (!angular.isDefined(item.active)) {
-				// set the default
-				item.active = false;
-			} else if (item.active) {
-				ctrl.loadItem(item);
-			}
-		};
+    ctrl.addItem = function(item) {
+      items.push(item);
+      if (!angular.isDefined(item.active)) {
+        // set the default
+        item.active = false;
+      } else if (item.active) {
+        ctrl.loadItem(item);
+      }
+    };
 
-		ctrl.refresh = function(e) {
-			var btn = angular.element(e.currentTarget);
-			btn.button('loading');
+    ctrl.refresh = function(e) {
+      var btn = angular.element(e.currentTarget);
+      btn.button('loading');
 
-			if (angular.isDefined($scope.onRefresh)) {
-				$scope.onRefresh($scope, function() {
-					btn.button('reset');
-				});
-			} else {
-				btn.button('reset');
-			}
-		};
-	}])
+      if (angular.isDefined($scope.onRefresh)) {
+        $scope.onRefresh($scope, function() {
+          btn.button('reset');
+        });
+      } else {
+        btn.button('reset');
+      }
+    };
+  }])
 
-	.directive('activity', function() {
-		return {
-			restrict: 'AE',
-			replace: true,
-			transclude: true,
-			controller: 'ActivityController',
-			scope: {
-				onRefresh: '=onrefresh',
-			},
-			template: '<span data-ng-transclude=""></span>'
-		};
-	})
+.directive('activity', function() {
+  return {
+    restrict: 'AE',
+    replace: true,
+    transclude: true,
+    controller: 'ActivityController',
+    scope: {
+      onRefresh: '=onrefresh',
+    },
+    template: '<span data-ng-transclude=""></span>'
+  };
+})
 
-	.directive('activityButton', function() {
-		return {
-			restrict: 'AE',
-			require: '^activity',
-			replace: true,
-			transclude: true,
-			controller: function($scope) {
+.directive('activityButton', function() {
+  return {
+    restrict: 'AE',
+    require: '^activity',
+    replace: true,
+    transclude: true,
+    controller: function($scope) {
 
-			},
-			scope: {
-				icon: '@',
-				total: '='
-			},
-			template: '\
+    },
+    scope: {
+      icon: '@',
+      total: '='
+    },
+    template: '\
 					<span id="activity" class="activity-dropdown">\
 						<i ng-class="icon"></i>\
 						<b class="badge"> {{ total }} </b>\
 					</span>',
-			link: function(scope, element, attrs, activityCtrl) {
+    link: function(scope, element, attrs, activityCtrl) {
 
-				attrs.$observe('icon', function(value) {
-					if (!angular.isDefined(value))
-						scope.icon = 'fa fa-user';
-				});
+      attrs.$observe('icon', function(value) {
+        if (!angular.isDefined(value))
+          scope.icon = 'fa fa-user';
+      });
 
-				element.on('click', function(e) {
-					var $this = $(this);
+      element.on('click', function(e) {
+        var $this = $(this);
 
-					if ($this.find('.badge').hasClass('bg-color-red')) {
-						$this.find('.badge').removeClassPrefix('bg-color-');
-						$this.find('.badge').text("0");
-						// console.log("Ajax call for activity")
-					}
+        if ($this.find('.badge').hasClass('bg-color-red')) {
+          $this.find('.badge').removeClassPrefix('bg-color-');
+          $this.find('.badge').text("0");
+          // console.log("Ajax call for activity")
+        }
 
-					if (!$this.next('.ajax-dropdown').is(':visible')) {
-						$this.next('.ajax-dropdown').fadeIn(150);
-						$this.addClass('active');
-					} else {
-						$this.next('.ajax-dropdown').fadeOut(150);
-						$this.removeClass('active');
-					}
+        if (!$this.next('.ajax-dropdown').is(':visible')) {
+          $this.next('.ajax-dropdown').fadeIn(150);
+          $this.addClass('active');
+        } else {
+          $this.next('.ajax-dropdown').fadeOut(150);
+          $this.removeClass('active');
+        }
 
-					var mytest = $this.next('.ajax-dropdown').find('.btn-group > .active > input').attr('id');
-					//console.log(mytest)
+        var mytest = $this.next('.ajax-dropdown').find('.btn-group > .active > input').attr('id');
+        //console.log(mytest)
 
-					e.preventDefault();
-				});
+        e.preventDefault();
+      });
 
-				if (scope.total > 0) {
-					var $badge = element.find('.badge');
-					$badge.addClass("bg-color-red bounceIn animated");
-				}
-			}
-		};
-	})
+      if (scope.total > 0) {
+        var $badge = element.find('.badge');
+        $badge.addClass("bg-color-red bounceIn animated");
+      }
+    }
+  };
+})
 
-	.controller('ActivityContentController', ['$scope' , function($scope) {
-		var ctrl = this;
-		$scope.currentContent = '';
-		ctrl.loadContent = function(content) {
-			$scope.currentContent = content;
-		};
-	}])
+.controller('ActivityContentController', ['$scope', function($scope) {
+  var ctrl = this;
+  $scope.currentContent = '';
+  ctrl.loadContent = function(content) {
+    $scope.currentContent = content;
+  };
+}])
 
-	.directive('activityContent', ['$compile', function($compile) {
-		return {
-			restrict: 'AE',
-			transclude: true,
-			require: '^activity',
-			replace: true,
-			scope: {
-				footer: '=?'
-			},
-			controller: 'ActivityContentController',
-			template: '\
+.directive('activityContent', ['$compile', function($compile) {
+  return {
+    restrict: 'AE',
+    transclude: true,
+    require: '^activity',
+    replace: true,
+    scope: {
+      footer: '=?'
+    },
+    controller: 'ActivityContentController',
+    template: '\
 				<div class="ajax-dropdown">\
 					<div class="btn-group btn-group-justified" data-toggle="buttons" data-ng-transclude=""></div>\
 					<div class="ajax-notifications custom-scroll">\
@@ -982,236 +993,247 @@ angular.module('app.activity', [])
 						</button>\
 					</span>\
 				</div>',
-			link: function(scope, element, attrs, activityCtrl) {
-				scope.refresh = function(e) {
-					activityCtrl.refresh(e);
-				};
+    link: function(scope, element, attrs, activityCtrl) {
+      scope.refresh = function(e) {
+        activityCtrl.refresh(e);
+      };
 
-				scope.$watch('currentContent', function(newContent, oldContent) {
-					if (newContent !== oldContent) {
-						var el = element.find('.ajax-notifications').html(newContent);
-						$compile(el)(scope);
-					}
-				});
-			}
-		};
-	}])
+      scope.$watch('currentContent', function(newContent, oldContent) {
+        if (newContent !== oldContent) {
+          var el = element.find('.ajax-notifications').html(newContent);
+          $compile(el)(scope);
+        }
+      });
+    }
+  };
+}])
 
-	.directive('activityItem', function() {
-		return {
-			restrict: 'AE',
-			require: ['^activity', '^activityContent'],
-			scope: {
-				src: '=',
-				onLoad: '=onload',
-				active: '=?'
-			},
-			controller: function() {
+.directive('activityItem', function() {
+  return {
+    restrict: 'AE',
+    require: ['^activity', '^activityContent'],
+    scope: {
+      src: '=',
+      onLoad: '=onload',
+      active: '=?'
+    },
+    controller: function() {
 
-			},
-			transclude: true,
-			replace: true,
-			template: '\
+    },
+    transclude: true,
+    replace: true,
+    template: '\
 				<label class="btn btn-default" data-ng-click="loadItem()" ng-class="{active: active}">\
 					<input type="radio" name="activity">\
 					<span data-ng-transclude=""></span>\
 				</label>',
-			link: function(scope, element, attrs, parentCtrls) {
-				var activityCtrl = parentCtrls[0],
-					contentCtrl = parentCtrls[1];
+    link: function(scope, element, attrs, parentCtrls) {
+      var activityCtrl = parentCtrls[0],
+        contentCtrl = parentCtrls[1];
 
-				scope.$watch('active', function(active) {
-					if (active) {
-						activityCtrl.loadItem(scope, function(content) {
-							contentCtrl.loadContent(content);
-						});
-					}
-				});
-				activityCtrl.addItem(scope);
+      scope.$watch('active', function(active) {
+        if (active) {
+          activityCtrl.loadItem(scope, function(content) {
+            contentCtrl.loadContent(content);
+          });
+        }
+      });
+      activityCtrl.addItem(scope);
 
-				scope.loadItem = function() {
-					scope.active = true;
-				};
-			}
-		};
-	})
+      scope.loadItem = function() {
+        scope.active = true;
+      };
+    }
+  };
+})
 
 ;
 
 angular.module('app.smartui', [])
-	.directive('widgetGrid', function() {
-		return {
-			restrict: 'AE',
-			link: function(scope, element, attrs) {
-				scope.setup_widget_desktop = function() {
-					if ($.fn.jarvisWidgets && $.enableJarvisWidgets) {
-						element.jarvisWidgets({
-							grid : 'article',
-							widgets : '.jarviswidget',
-							localStorage : true,
-							deleteSettingsKey : '#deletesettingskey-options',
-							settingsKeyLabel : 'Reset settings?',
-							deletePositionKey : '#deletepositionkey-options',
-							positionKeyLabel : 'Reset position?',
-							sortable : true,
-							buttonsHidden : false,
-							// toggle button
-							toggleButton : true,
-							toggleClass : 'fa fa-minus | fa fa-plus',
-							toggleSpeed : 200,
-							onToggle : function() {
-							},
-							// delete btn
-							deleteButton : true,
-							deleteClass : 'fa fa-times',
-							deleteSpeed : 200,
-							onDelete : function() {
-							},
-							// edit btn
-							editButton : true,
-							editPlaceholder : '.jarviswidget-editbox',
-							editClass : 'fa fa-cog | fa fa-save',
-							editSpeed : 200,
-							onEdit : function() {
-							},
-							// color button
-							colorButton : true,
-							// full screen
-							fullscreenButton : true,
-							fullscreenClass : 'fa fa-expand | fa fa-compress',
-							fullscreenDiff : 3,
-							onFullscreen : function() {
-							},
-							// custom btn
-							customButton : false,
-							customClass : 'folder-10 | next-10',
-							customStart : function() {
-								alert('Hello you, this is a custom button...');
-							},
-							customEnd : function() {
-								alert('bye, till next time...');
-							},
-							// order
-							buttonOrder : '%refresh% %custom% %edit% %toggle% %fullscreen% %delete%',
-							opacity : 1.0,
-							dragHandle : '> header',
-							placeholderClass : 'jarviswidget-placeholder',
-							indicator : true,
-							indicatorTime : 600,
-							ajax : true,
-							timestampPlaceholder : '.jarviswidget-timestamp',
-							timestampFormat : 'Last update: %m%/%d%/%y% %h%:%i%:%s%',
-							refreshButton : true,
-							refreshButtonClass : 'fa fa-refresh',
-							labelError : 'Sorry but there was a error:',
-							labelUpdated : 'Last Update:',
-							labelRefresh : 'Refresh',
-							labelDelete : 'Delete widget:',
-							afterLoad : function() {
-							},
-							rtl : false, // best not to toggle this!
-							onChange : function() {
+  .directive('widgetGrid', function() {
+    return {
+      restrict: 'AE',
+      link: function(scope, element, attrs) {
+        scope.setup_widget_desktop = function() {
+          if ($.fn.jarvisWidgets && $.enableJarvisWidgets) {
+            element.jarvisWidgets({
+              grid: 'article',
+              widgets: '.jarviswidget',
+              localStorage: true,
+              deleteSettingsKey: '#deletesettingskey-options',
+              settingsKeyLabel: 'Reset settings?',
+              deletePositionKey: '#deletepositionkey-options',
+              positionKeyLabel: 'Reset position?',
+              sortable: true,
+              buttonsHidden: false,
+              // toggle button
+              toggleButton: true,
+              toggleClass: 'fa fa-minus | fa fa-plus',
+              toggleSpeed: 200,
+              onToggle: function() {},
+              // delete btn
+              deleteButton: true,
+              deleteClass: 'fa fa-times',
+              deleteSpeed: 200,
+              onDelete: function() {},
+              // edit btn
+              editButton: true,
+              editPlaceholder: '.jarviswidget-editbox',
+              editClass: 'fa fa-cog | fa fa-save',
+              editSpeed: 200,
+              onEdit: function() {},
+              // color button
+              colorButton: true,
+              // full screen
+              fullscreenButton: true,
+              fullscreenClass: 'fa fa-expand | fa fa-compress',
+              fullscreenDiff: 3,
+              onFullscreen: function() {},
+              // custom btn
+              customButton: false,
+              customClass: 'folder-10 | next-10',
+              customStart: function() {
+                alert('Hello you, this is a custom button...');
+              },
+              customEnd: function() {
+                alert('bye, till next time...');
+              },
+              // order
+              buttonOrder: '%refresh% %custom% %edit% %toggle% %fullscreen% %delete%',
+              opacity: 1.0,
+              dragHandle: '> header',
+              placeholderClass: 'jarviswidget-placeholder',
+              indicator: true,
+              indicatorTime: 600,
+              ajax: true,
+              timestampPlaceholder: '.jarviswidget-timestamp',
+              timestampFormat: 'Last update: %m%/%d%/%y% %h%:%i%:%s%',
+              refreshButton: true,
+              refreshButtonClass: 'fa fa-refresh',
+              labelError: 'Sorry but there was a error:',
+              labelUpdated: 'Last Update:',
+              labelRefresh: 'Refresh',
+              labelDelete: 'Delete widget:',
+              afterLoad: function() {},
+              rtl: false, // best not to toggle this!
+              onChange: function() {
 
-							},
-							onSave : function() {
+              },
+              onSave: function() {
 
-							},
-							ajaxnav : $.navAsAjax // declears how the localstorage should be saved (HTML or AJAX page)
+              },
+              ajaxnav: $.navAsAjax // declears how the localstorage should be saved (HTML or AJAX page)
 
-						});
-					}
-				};
+            });
+          }
+        };
 
-				scope.setup_widget_mobile = function() {
-					if ($.enableMobileWidgets && $.enableJarvisWidgets) {
-						scope.setup_widgets_desktop();
-					}
-				};
+        scope.setup_widget_mobile = function() {
+          if ($.enableMobileWidgets && $.enableJarvisWidgets) {
+            scope.setup_widgets_desktop();
+          }
+        };
 
-				if ($.device === "desktop") {
-					scope.setup_widget_desktop();
-				} else {
-					scope.setup_widget_mobile();
-				}
-				
-			}
-		};
-	})
+        if ($.device === "desktop") {
+          scope.setup_widget_desktop();
+        } else {
+          scope.setup_widget_mobile();
+        }
 
-	.directive('widget', function() {
-		return {
-			restrict: 'AE',
-			transclude: true,
-			replace: true,
-			template: '<div class="jarviswidget" data-ng-transclude=""></div>'
-		};
-	})
+      }
+    };
+  })
 
-	.directive('widgetHeader', function() {
-		return {
-			restrict: 'AE',
-			transclude: true,
-			replace: true,
-			scope: {
-				title: '@',
-				icon: '@'
-			},
-			template: '\
+.directive('widget', function() {
+  return {
+    restrict: 'AE',
+    transclude: true,
+    replace: true,
+    template: '<div class="jarviswidget" data-ng-transclude=""></div>'
+  };
+})
+
+.directive('widgetHeader', function() {
+  return {
+    restrict: 'AE',
+    transclude: true,
+    replace: true,
+    scope: {
+      title: '@',
+      icon: '@'
+    },
+    template: '\
 				<header>\
 					<span class="widget-icon"> <i data-ng-class="icon"></i> </span>\
 					<h2>{{ title }}</h2>\
 					<span data-ng-transclude></span>\
 				</header>'
-		};
-	})
+  };
+})
 
-	.directive('widgetToolbar', function() {
-		return {
-			restrict: 'AE',
-			transclude: true,
-			replace: true,
-			template: '<div class="widget-toolbar" data-ng-transclude=""></div>'
-		};
-	})
+.directive('widgetToolbar', function() {
+  return {
+    restrict: 'AE',
+    transclude: true,
+    replace: true,
+    template: '<div class="widget-toolbar" data-ng-transclude=""></div>'
+  };
+})
 
-	.directive('widgetEditbox', function() {
-		return {
-			restrict: 'AE', 
-			transclude: true, 
-			replace: true,
-			template: '<div class="jarviswidget-editbox" data-ng-transclude=""></div>'
-		};
-	})
+.directive('widgetEditbox', function() {
+  return {
+    restrict: 'AE',
+    transclude: true,
+    replace: true,
+    template: '<div class="jarviswidget-editbox" data-ng-transclude=""></div>'
+  };
+})
 
-	.directive('widgetBody', function() {
-		return {
-			restrict: 'AE',
-			transclude: true,
-			replace: true,
-			template: '<div data-ng-transclude=""></div>'
-		};
-	})
+.directive('widgetBody', function() {
+  return {
+    restrict: 'AE',
+    transclude: true,
+    replace: true,
+    template: '<div data-ng-transclude=""></div>'
+  };
+})
 
-	.directive('widgetBodyToolbar', function() {
-		return {
-			restrict: 'AE',
-			transclude: true,
-			replace: true,
-			scope: {
-				class: '@'
-			},
-			template: '<div class="widget-body-toolbar" data-ng-transclude=""></div>'
-		};
-	})
+.directive('widgetBodyToolbar', function() {
+  return {
+    restrict: 'AE',
+    transclude: true,
+    replace: true,
+    scope: {
+      class: '@'
+    },
+    template: '<div class="widget-body-toolbar" data-ng-transclude=""></div>'
+  };
+})
 
-	.directive('widgetContent', function() {
-		return {
-			restrict: 'AE',
-			transclude: true,
-			replace: true,
-			template: '<div class="widget-body" data-ng-transclude=""></div>'
-		};
-	});
+.directive('widgetContent', function() {
+  return {
+    restrict: 'AE',
+    transclude: true,
+    replace: true,
+    template: '<div class="widget-body" data-ng-transclude=""></div>'
+  };
+})
+
+.directive('fileModel', ['$parse', function($parse) {
+  return {
+    restrict: 'A',
+    link: function(scope, element, attrs) {
+      var model = $parse(attrs.fileModel);
+      var modelSetter = model.assign;
+
+      element.bind('change', function() {
+        scope.$apply(function() {
+          modelSetter(scope, element[0].files[0]);
+        });
+      });
+    }
+  };
+}]);
 
 
 
@@ -1222,10 +1244,12 @@ angular.module('app.smartui', [])
 
 angular.module('ui.bootstrap.pagination', [])
 
-.controller('PaginationController', ['$scope', '$attrs', '$parse', function ($scope, $attrs, $parse) {
+.controller('PaginationController', ['$scope', '$attrs', '$parse', function($scope, $attrs, $parse) {
   var self = this,
-      ngModelCtrl = { $setViewValue: angular.noop }, // nullModelCtrl
-      setNumPages = $attrs.numPages ? $parse($attrs.numPages).assign : angular.noop;
+    ngModelCtrl = {
+      $setViewValue: angular.noop
+    }, // nullModelCtrl
+    setNumPages = $attrs.numPages ? $parse($attrs.numPages).assign : angular.noop;
 
   this.init = function(ngModelCtrl_, config) {
     ngModelCtrl = ngModelCtrl_;
@@ -1255,13 +1279,13 @@ angular.module('ui.bootstrap.pagination', [])
   };
 
   $scope.selectPage = function(page) {
-    if ( $scope.page !== page && page > 0 && page <= $scope.totalPages) {
+    if ($scope.page !== page && page > 0 && page <= $scope.totalPages) {
       ngModelCtrl.$setViewValue(page);
       ngModelCtrl.$render();
     }
   };
 
-  $scope.getText = function( key ) {
+  $scope.getText = function(key) {
     return $scope[key + 'Text'] || self.config[key + 'Text'];
   };
   $scope.noPrevious = function() {
@@ -1278,7 +1302,7 @@ angular.module('ui.bootstrap.pagination', [])
   $scope.$watch('totalPages', function(value) {
     setNumPages($scope.$parent, value); // Readonly variable
 
-    if ( $scope.page > value ) {
+    if ($scope.page > value) {
       $scope.selectPage(value);
     } else {
       ngModelCtrl.$render();
@@ -1312,15 +1336,16 @@ angular.module('ui.bootstrap.pagination', [])
     templateUrl: 'resources/template/pagination/pagination.html',
     replace: true,
     link: function(scope, element, attrs, ctrls) {
-      var paginationCtrl = ctrls[0], ngModelCtrl = ctrls[1];
+      var paginationCtrl = ctrls[0],
+        ngModelCtrl = ctrls[1];
 
       if (!ngModelCtrl) {
-         return; // do nothing if no ng-model
+        return; // do nothing if no ng-model
       }
 
       // Setup configuration parameters
       var maxSize = angular.isDefined(attrs.maxSize) ? scope.$parent.$eval(attrs.maxSize) : paginationConfig.maxSize,
-          rotate = angular.isDefined(attrs.rotate) ? scope.$parent.$eval(attrs.rotate) : paginationConfig.rotate;
+        rotate = angular.isDefined(attrs.rotate) ? scope.$parent.$eval(attrs.rotate) : paginationConfig.rotate;
       scope.boundaryLinks = angular.isDefined(attrs.boundaryLinks) ? scope.$parent.$eval(attrs.boundaryLinks) : paginationConfig.boundaryLinks;
       scope.directionLinks = angular.isDefined(attrs.directionLinks) ? scope.$parent.$eval(attrs.directionLinks) : paginationConfig.directionLinks;
 
@@ -1346,19 +1371,20 @@ angular.module('ui.bootstrap.pagination', [])
         var pages = [];
 
         // Default page limits
-        var startPage = 1, endPage = totalPages;
-        var isMaxSized = ( angular.isDefined(maxSize) && maxSize < totalPages );
+        var startPage = 1,
+          endPage = totalPages;
+        var isMaxSized = (angular.isDefined(maxSize) && maxSize < totalPages);
 
         // recompute if maxSize
-        if ( isMaxSized ) {
-          if ( rotate ) {
+        if (isMaxSized) {
+          if (rotate) {
             // Current page is displayed in the middle of the visible ones
-            startPage = Math.max(currentPage - Math.floor(maxSize/2), 1);
-            endPage   = startPage + maxSize - 1;
+            startPage = Math.max(currentPage - Math.floor(maxSize / 2), 1);
+            endPage = startPage + maxSize - 1;
 
             // Adjust if limit is exceeded
             if (endPage > totalPages) {
-              endPage   = totalPages;
+              endPage = totalPages;
               startPage = endPage - maxSize + 1;
             }
           } else {
@@ -1377,13 +1403,13 @@ angular.module('ui.bootstrap.pagination', [])
         }
 
         // Add links to move between page sets
-        if ( isMaxSized && ! rotate ) {
-          if ( startPage > 1 ) {
+        if (isMaxSized && !rotate) {
+          if (startPage > 1) {
             var previousPageSet = makePage(startPage - 1, '...', false);
             pages.unshift(previousPageSet);
           }
 
-          if ( endPage < totalPages ) {
+          if (endPage < totalPages) {
             var nextPageSet = makePage(endPage + 1, '...', false);
             pages.push(nextPageSet);
           }
@@ -1402,6 +1428,3 @@ angular.module('ui.bootstrap.pagination', [])
     }
   };
 }]);
-
-
-

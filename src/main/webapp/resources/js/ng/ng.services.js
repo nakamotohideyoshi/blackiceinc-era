@@ -346,10 +346,27 @@ angular.module('app.services', [])
 		});
 	})
 
-	.service('CfgConfigurationService', function(CustomHttp){
+	.service('CfgConfigurationService', function($http, CustomHttp){
 		return ({
 			getAll : function(params) {
 				return CustomHttp.get('api/configuration?' + $.param(params), {});
+			},
+			save : function(params) {
+				var fd = new FormData();
+				fd.append('data', angular.toJson(params.configObj));
+        fd.append('file', params.file);
+        var request = $http.post("api/configuration", fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        });
+				return request;
+			},
+			remove : function( idArray ) {
+          return CustomHttp.remove('api/configuration', idArray);
+      },
+			download : function( id ) {
+				var request = $http.get('api/configuration/download?id='+id);
+				return request;
 			}
 		});
 	})

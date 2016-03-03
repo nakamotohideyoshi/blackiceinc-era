@@ -58,6 +58,25 @@ public class CfgProductTypeMapping {
     @Column(name = "REPAYMENT_PROPERTY")
     private String repaymentProperty;
 
+    public CfgProductTypeMapping(String productType, String tableName, String seniority, String contractType, String onOff, String fMainIndex, String fRecogExch, String fRated, String fOccu, String fCompleted, String fIndependantValuer, String fLegallyEnforce, String underlying, String eraContractType, Long seq, String repaymentProperty) {
+        this.productType = productType;
+        this.tableName = tableName;
+        this.seniority = seniority;
+        this.contractType = contractType;
+        this.onOff = onOff;
+        this.fMainIndex = fMainIndex;
+        this.fRecogExch = fRecogExch;
+        this.fRated = fRated;
+        this.fOccu = fOccu;
+        this.fCompleted = fCompleted;
+        this.fIndependantValuer = fIndependantValuer;
+        this.fLegallyEnforce = fLegallyEnforce;
+        this.underlying = underlying;
+        this.eraContractType = eraContractType;
+        this.seq = seq;
+        this.repaymentProperty = repaymentProperty;
+    }
+
     public String getProductType() {
         return productType;
     }

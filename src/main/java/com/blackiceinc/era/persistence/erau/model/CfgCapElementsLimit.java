@@ -31,6 +31,19 @@ public class CfgCapElementsLimit {
     @Column(name = "CONSO_AMT")
     private String consoAmt;
 
+    public CfgCapElementsLimit() {
+    }
+
+    public CfgCapElementsLimit(String limitType, String operator, Double threshold, String consoTable, String consoField, String consoFieldValue, String consoAmt) {
+        this.limitType = limitType;
+        this.operator = operator;
+        this.threshold = threshold;
+        this.consoTable = consoTable;
+        this.consoField = consoField;
+        this.consoFieldValue = consoFieldValue;
+        this.consoAmt = consoAmt;
+    }
+
     public String getLimitType() {
         return limitType;
     }

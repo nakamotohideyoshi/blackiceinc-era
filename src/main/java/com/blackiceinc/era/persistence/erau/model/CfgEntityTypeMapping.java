@@ -19,6 +19,12 @@ public class CfgEntityTypeMapping {
     @Column(name = "CUSTOMER_SUB_TYPE")
     private String customerSubType;
 
+    public CfgEntityTypeMapping(String eraEntityType, String customerType, String customerSubType) {
+        this.eraEntityType = eraEntityType;
+        this.customerType = customerType;
+        this.customerSubType = customerSubType;
+    }
+
     public String getEraEntityType() {
         return eraEntityType;
     }

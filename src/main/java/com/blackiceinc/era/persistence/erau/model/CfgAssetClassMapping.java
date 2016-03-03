@@ -19,6 +19,12 @@ public class CfgAssetClassMapping {
     @Column(name = "PRODUCT_TYPE")
     private String productType;
 
+    public CfgAssetClassMapping(String assetClass, String entityType, String productType) {
+        this.assetClass = assetClass;
+        this.entityType = entityType;
+        this.productType = productType;
+    }
+
     public String getAssetClass() {
         return assetClass;
     }

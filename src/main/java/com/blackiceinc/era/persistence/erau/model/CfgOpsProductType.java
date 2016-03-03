@@ -19,6 +19,15 @@ public class CfgOpsProductType {
     @Column(name = "OPS_BUS_INDICATOR")
     private String opsBusIndicator;
 
+    public CfgOpsProductType() {
+    }
+
+    public CfgOpsProductType(String opsProductType, String opsProductDesc, String opsBusIndicator) {
+        this.opsProductType = opsProductType;
+        this.opsProductDesc = opsProductDesc;
+        this.opsBusIndicator = opsBusIndicator;
+    }
+
     public String getOpsProductType() {
         return opsProductType;
     }

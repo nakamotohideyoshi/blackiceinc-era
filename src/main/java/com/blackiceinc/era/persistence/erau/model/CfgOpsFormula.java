@@ -16,6 +16,14 @@ public class CfgOpsFormula {
     @Column(name = "FORMULA")
     private String formula;
 
+    public CfgOpsFormula() {
+    }
+
+    public CfgOpsFormula(String basicIndicator, String formula) {
+        this.basicIndicator = basicIndicator;
+        this.formula = formula;
+    }
+
     public String getBasicIndicator() {
         return basicIndicator;
     }

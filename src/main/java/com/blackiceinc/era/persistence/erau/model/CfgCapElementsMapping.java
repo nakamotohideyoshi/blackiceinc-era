@@ -19,6 +19,15 @@ public class CfgCapElementsMapping {
     @Column(name = "NOTE")
     private String note;
 
+    public CfgCapElementsMapping() {
+    }
+
+    public CfgCapElementsMapping(String capElements, String glCode, String note) {
+        this.capElements = capElements;
+        this.glCode = glCode;
+        this.note = note;
+    }
+
     public String getCapElements() {
         return capElements;
     }

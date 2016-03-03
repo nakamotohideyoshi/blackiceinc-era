@@ -28,6 +28,15 @@ public class CfgCrmEligibility {
     @Column(name = "SEQ")
     private Long seq;
 
+    public CfgCrmEligibility(String eraEntityType, String eraProductType, String riskBucket, String riskWeight, String eligibility, Long seq) {
+        this.eraEntityType = eraEntityType;
+        this.eraProductType = eraProductType;
+        this.riskBucket = riskBucket;
+        this.riskWeight = riskWeight;
+        this.eligibility = eligibility;
+        this.seq = seq;
+    }
+
     public String getEraEntityType() {
         return eraEntityType;
     }

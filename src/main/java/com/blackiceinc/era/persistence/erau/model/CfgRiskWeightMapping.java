@@ -43,6 +43,20 @@ public class CfgRiskWeightMapping {
     @Column(name = "SEQ")
     private Long seq;
 
+    public CfgRiskWeightMapping(String assetClass, String eraNplCode, String yearOfEstablishment, String creditMeasure1, String creditMeasure1Beg, String creditMeasure1End, String creditMeasure2, String creditMeasure2Beg, String creditMeasure2End, Double riskWeight, Long seq) {
+        this.assetClass = assetClass;
+        this.eraNplCode = eraNplCode;
+        this.yearOfEstablishment = yearOfEstablishment;
+        this.creditMeasure1 = creditMeasure1;
+        this.creditMeasure1Beg = creditMeasure1Beg;
+        this.creditMeasure1End = creditMeasure1End;
+        this.creditMeasure2 = creditMeasure2;
+        this.creditMeasure2Beg = creditMeasure2Beg;
+        this.creditMeasure2End = creditMeasure2End;
+        this.riskWeight = riskWeight;
+        this.seq = seq;
+    }
+
     public String getAssetClass() {
         return assetClass;
     }

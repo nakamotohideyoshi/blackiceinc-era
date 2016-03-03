@@ -1,6 +1,5 @@
 package com.blackiceinc.era.services.excel.mapper;
 
-import com.blackiceinc.era.persistence.erau.model.CfgCompany;
 import com.blackiceinc.era.persistence.erau.model.CfgFinancialBook;
 import com.blackiceinc.era.persistence.erau.repository.CfgFinancialBookRepository;
 import org.apache.poi.ss.usermodel.Row;
@@ -14,26 +13,26 @@ import java.util.Iterator;
 import java.util.List;
 
 @Component
-public class CfgFinancialObjectMapper {
+public class CfgFinancialBookObjectMapper {
 
     CfgFinancialBookRepository cfgFinancialBookRepository;
 
     @Autowired
-    public CfgFinancialObjectMapper(CfgFinancialBookRepository cfgFinancialBookRepository){
+    public CfgFinancialBookObjectMapper(CfgFinancialBookRepository cfgFinancialBookRepository){
         this.cfgFinancialBookRepository = cfgFinancialBookRepository;
     }
 
-    public List<CfgFinancialBook> extractCfgFinancialBooks(XSSFSheet financialBookSheet) {
+    public List<CfgFinancialBook> extractData(XSSFSheet sheet) {
         List<CfgFinancialBook> result = new ArrayList<>();
 
         //Iterate through each rows one by one
-        Iterator<Row> rowIterator = financialBookSheet.iterator();
+        Iterator<Row> rowIterator = sheet.iterator();
         int rowIndex = 0;
         while (rowIterator.hasNext()) {
             Row row = rowIterator.next();
             // ignore first row since it's column names
             if (rowIndex > 0) {
-                result.add(createCfgFinancialBookObj(row));
+                result.add(createRow(row));
             }
 
             rowIndex++;
@@ -42,7 +41,7 @@ public class CfgFinancialObjectMapper {
         return result;
     }
 
-    private CfgFinancialBook createCfgFinancialBookObj(Row row) {
+    private CfgFinancialBook createRow(Row row) {
 
         CfgFinancialBook cfgFinancialBook = new CfgFinancialBook();
 
@@ -53,11 +52,12 @@ public class CfgFinancialObjectMapper {
         return cfgFinancialBook;
     }
 
-    public void importCfgFinancialBooks(XSSFSheet financialBookSheet) {
+    public void importData(XSSFSheet sheet) {
         List<CfgFinancialBook> all = cfgFinancialBookRepository.findAll();
+        ExcelUtils.removeAllRowsExceltFirstOne(sheet);
         int rowIndex = 1;
         for (CfgFinancialBook cfgFinancialBook:all){
-            XSSFRow row = financialBookSheet.createRow(rowIndex);
+            XSSFRow row = sheet.createRow(rowIndex);
             row.createCell(0).setCellValue(cfgFinancialBook.getBookCode());
             row.createCell(1).setCellValue(cfgFinancialBook.getBookDesc());
             row.createCell(2).setCellValue(cfgFinancialBook.getTradingFlag());

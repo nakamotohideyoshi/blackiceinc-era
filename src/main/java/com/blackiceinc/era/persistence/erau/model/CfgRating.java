@@ -25,6 +25,14 @@ public class CfgRating {
     @Column(name = "RISK_BUCKET")
     private Long riskBucket;
 
+    public CfgRating(String agencyCode, String rating, String qualifying, String longShort, Long riskBucket) {
+        this.agencyCode = agencyCode;
+        this.rating = rating;
+        this.qualifying = qualifying;
+        this.longShort = longShort;
+        this.riskBucket = riskBucket;
+    }
+
     public String getAgencyCode() {
         return agencyCode;
     }

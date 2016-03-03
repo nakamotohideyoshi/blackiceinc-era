@@ -16,6 +16,11 @@ public class CfgNonPerformingMapping {
     @Column(name = "PERFORMING_STATUS")
     private String performingStatus;
 
+    public CfgNonPerformingMapping(String eraNplCode, String performingStatus) {
+        this.eraNplCode = eraNplCode;
+        this.performingStatus = performingStatus;
+    }
+
     public String getEraNplCode() {
         return eraNplCode;
     }

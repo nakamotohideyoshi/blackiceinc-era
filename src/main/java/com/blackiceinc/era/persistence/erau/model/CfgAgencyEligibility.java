@@ -19,6 +19,12 @@ public class CfgAgencyEligibility {
     @Column(name = "AGENCY_TYPE")
     private String agencyType;
 
+    public CfgAgencyEligibility(String agencyCode, String agencyDesc, String agencyType) {
+        this.agencyCode = agencyCode;
+        this.agencyDesc = agencyDesc;
+        this.agencyType = agencyType;
+    }
+
     public String getAgencyCode() {
         return agencyCode;
     }

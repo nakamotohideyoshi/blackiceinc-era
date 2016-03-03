@@ -19,6 +19,15 @@ public class CfgCapElements {
     @Column(name = "TYPE")
     private String type;
 
+    public CfgCapElements() {
+    }
+
+    public CfgCapElements(String capElements, String capElementsDesc, String type) {
+        this.capElements = capElements;
+        this.capElementsDesc = capElementsDesc;
+        this.type = type;
+    }
+
     public String getCapElements() {
         return capElements;
     }

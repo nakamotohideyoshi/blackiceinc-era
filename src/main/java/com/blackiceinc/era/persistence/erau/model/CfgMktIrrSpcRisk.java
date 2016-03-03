@@ -31,6 +31,16 @@ public class CfgMktIrrSpcRisk {
     @Column(name = "RISK_WEIGHT")
     private Double riskWeight;
 
+    public CfgMktIrrSpcRisk(String mktAssetClass, String issueRiskBucket, String issuerRiskBucket, String residualMaturityStart, String residualMaturityEnd, String instrumentGroup, Double riskWeight) {
+        this.mktAssetClass = mktAssetClass;
+        this.issueRiskBucket = issueRiskBucket;
+        this.issuerRiskBucket = issuerRiskBucket;
+        this.residualMaturityStart = residualMaturityStart;
+        this.residualMaturityEnd = residualMaturityEnd;
+        this.instrumentGroup = instrumentGroup;
+        this.riskWeight = riskWeight;
+    }
+
     public String getMktAssetClass() {
         return mktAssetClass;
     }

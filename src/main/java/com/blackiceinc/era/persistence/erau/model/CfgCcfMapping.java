@@ -28,6 +28,15 @@ public class CfgCcfMapping {
     @Column(name = "SEQ")
     private Long seq;
 
+    public CfgCcfMapping(String eraProductType, Double ccf, String unconditionallyCancelable, String maturityStart, String maturityEnd, Long seq) {
+        this.eraProductType = eraProductType;
+        this.ccf = ccf;
+        this.unconditionallyCancelable = unconditionallyCancelable;
+        this.maturityStart = maturityStart;
+        this.maturityEnd = maturityEnd;
+        this.seq = seq;
+    }
+
     public String getEraProductType() {
         return eraProductType;
     }

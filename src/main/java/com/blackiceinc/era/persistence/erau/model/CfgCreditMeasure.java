@@ -16,6 +16,11 @@ public class CfgCreditMeasure {
     @Column(name = "CREDIT_MEASURE_DESC")
     private String creditMeasureDesc;
 
+    public CfgCreditMeasure(String creditMeasure, String creditMeasureDesc) {
+        this.creditMeasure = creditMeasure;
+        this.creditMeasureDesc = creditMeasureDesc;
+    }
+
     public String getCreditMeasure() {
         return creditMeasure;
     }

@@ -16,6 +16,14 @@ public class CfgCapElementsType {
     @Column(name = "DESCRIPTION")
     private String description;
 
+    public CfgCapElementsType() {
+    }
+
+    public CfgCapElementsType(String capElementType, String description) {
+        this.capElementType = capElementType;
+        this.description = description;
+    }
+
     public String getCapElementType() {
         return capElementType;
     }

@@ -19,6 +19,15 @@ public class CfgCapElementsFormula {
     @Column(name = "FORMULA")
     private String formula;
 
+    public CfgCapElementsFormula() {
+    }
+
+    public CfgCapElementsFormula(String capElements, String description, String formula) {
+        this.capElements = capElements;
+        this.description = description;
+        this.formula = formula;
+    }
+
     public String getCapElements() {
         return capElements;
     }

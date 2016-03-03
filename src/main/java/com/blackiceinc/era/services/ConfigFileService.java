@@ -16,7 +16,4 @@ public interface ConfigFileService {
 
     void delete(long id);
 
-    void exportConfiguration(Long id) throws IOException, OpenXML4JException, SAXException;
-
-    void importConfiguration(Long id);
 }

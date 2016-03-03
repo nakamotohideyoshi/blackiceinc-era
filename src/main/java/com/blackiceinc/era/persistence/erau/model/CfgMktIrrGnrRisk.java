@@ -34,6 +34,17 @@ public class CfgMktIrrGnrRisk {
     @Column(name = "RISK_WEIGHT")
     private Double riskWeight;
 
+    public CfgMktIrrGnrRisk(String zoneCode, String bandCode, String currency, Long couponRateStart, Long couponRateEnd, Long maturityBandStart, Long maturityBandEnd, Double riskWeight) {
+        this.zoneCode = zoneCode;
+        this.bandCode = bandCode;
+        this.currency = currency;
+        this.couponRateStart = couponRateStart;
+        this.couponRateEnd = couponRateEnd;
+        this.maturityBandStart = maturityBandStart;
+        this.maturityBandEnd = maturityBandEnd;
+        this.riskWeight = riskWeight;
+    }
+
     public String getZoneCode() {
         return zoneCode;
     }

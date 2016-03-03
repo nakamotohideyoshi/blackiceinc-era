@@ -15,6 +15,11 @@ public class CfgAssetClass {
     @Column(name = "ERA_ASSET_CLASS_DESC")
     private String eraAssetClassDesc;
 
+    public CfgAssetClass(String eraAssetClass, String eraAssetClassDesc) {
+        this.eraAssetClass = eraAssetClass;
+        this.eraAssetClassDesc = eraAssetClassDesc;
+    }
+
     public String getEraAssetClass() {
         return eraAssetClass;
     }

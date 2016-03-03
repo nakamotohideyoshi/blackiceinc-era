@@ -28,6 +28,18 @@ public class CfgMktEqtSpc {
     @Column(name = "RISK_WEIGHT")
     private Double riskWeight;
 
+    public CfgMktEqtSpc() {
+    }
+
+    public CfgMktEqtSpc(String mktProductType, String underlying, String diversifiedEquity, String diversifiedIndex, String liquidEquity, Double riskWeight) {
+        this.mktProductType = mktProductType;
+        this.underlying = underlying;
+        this.diversifiedEquity = diversifiedEquity;
+        this.diversifiedIndex = diversifiedIndex;
+        this.liquidEquity = liquidEquity;
+        this.riskWeight = riskWeight;
+    }
+
     public String getMktProductType() {
         return mktProductType;
     }

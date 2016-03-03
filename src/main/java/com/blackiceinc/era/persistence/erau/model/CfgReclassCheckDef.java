@@ -28,6 +28,15 @@ public class CfgReclassCheckDef {
     @Column(name = "CURRENCY")
     private String currency;
 
+    public CfgReclassCheckDef(String checkDefNo, String description, String checkType, String operator, Double threshold, String currency) {
+        this.checkDefNo = checkDefNo;
+        this.description = description;
+        this.checkType = checkType;
+        this.operator = operator;
+        this.threshold = threshold;
+        this.currency = currency;
+    }
+
     public String getCheckDefNo() {
         return checkDefNo;
     }

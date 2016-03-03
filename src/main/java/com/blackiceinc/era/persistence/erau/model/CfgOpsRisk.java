@@ -16,6 +16,14 @@ public class CfgOpsRisk {
     @Column(name = "RISK_WEIGHT")
     private Double riskWeight;
 
+    public CfgOpsRisk() {
+    }
+
+    public CfgOpsRisk(String code, Double riskWeight) {
+        this.code = code;
+        this.riskWeight = riskWeight;
+    }
+
     public String getCode() {
         return code;
     }

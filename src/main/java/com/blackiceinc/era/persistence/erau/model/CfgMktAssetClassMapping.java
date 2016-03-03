@@ -19,6 +19,12 @@ public class CfgMktAssetClassMapping {
     @Column(name = "MKT_PRODUCT_TYPE")
     private String mktProductType;
 
+    public CfgMktAssetClassMapping(String mktAssetClass, String eraEntityType, String mktProductType) {
+        this.mktAssetClass = mktAssetClass;
+        this.eraEntityType = eraEntityType;
+        this.mktProductType = mktProductType;
+    }
+
     public String getMktAssetClass() {
         return mktAssetClass;
     }

@@ -16,6 +16,11 @@ public class CfgEntityType {
     @Column(name = "ENTITY_DESC")
     private String entityDesc;
 
+    public CfgEntityType(String eraEntityType, String entityDesc) {
+        this.eraEntityType = eraEntityType;
+        this.entityDesc = entityDesc;
+    }
+
     public String getEraEntityType() {
         return eraEntityType;
     }

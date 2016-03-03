@@ -31,6 +31,16 @@ public class CfgCrmHaircut {
     @Column(name = "SEQ")
     private Long seq;
 
+    public CfgCrmHaircut(String eraColType, String eraEntityType, String riskBucket, String minResidualMaturity, String maxResidualMaturity, Double haircut, Long seq) {
+        this.eraColType = eraColType;
+        this.eraEntityType = eraEntityType;
+        this.riskBucket = riskBucket;
+        this.minResidualMaturity = minResidualMaturity;
+        this.maxResidualMaturity = maxResidualMaturity;
+        this.haircut = haircut;
+        this.seq = seq;
+    }
+
     public String getEraColType() {
         return eraColType;
     }

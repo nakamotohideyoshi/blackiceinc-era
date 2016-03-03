@@ -31,6 +31,16 @@ public class CfgReclass {
     @Column(name = "ERA_PRODUCT_TYPE_OUT")
     private String eraProductTypeOut;
 
+    public CfgReclass(String checkNo, String description, String eraEntityTypeIn, String eraProductTypeIn, String check, String eraEntityTypeOut, String eraProductTypeOut) {
+        this.checkNo = checkNo;
+        this.description = description;
+        this.eraEntityTypeIn = eraEntityTypeIn;
+        this.eraProductTypeIn = eraProductTypeIn;
+        this.check = check;
+        this.eraEntityTypeOut = eraEntityTypeOut;
+        this.eraProductTypeOut = eraProductTypeOut;
+    }
+
     public String getCheckNo() {
         return checkNo;
     }

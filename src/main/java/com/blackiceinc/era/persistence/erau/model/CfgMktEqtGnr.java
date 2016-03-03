@@ -19,6 +19,15 @@ public class CfgMktEqtGnr {
     @Column(name = "RISK_WEIGHT")
     private Double riskWeight;
 
+    public CfgMktEqtGnr() {
+    }
+
+    public CfgMktEqtGnr(String mktProductType, String underlying, Double riskWeight) {
+        this.mktProductType = mktProductType;
+        this.underlying = underlying;
+        this.riskWeight = riskWeight;
+    }
+
     public String getMktProductType() {
         return mktProductType;
     }

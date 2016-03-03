@@ -22,6 +22,16 @@ public class CfgOpsProductTypeMapping {
     @Column(name = "DESCRIPTION")
     private String description;
 
+    public CfgOpsProductTypeMapping() {
+    }
+
+    public CfgOpsProductTypeMapping(String opsProductType, String opsGlCode, String opsVibCode, String description) {
+        this.opsProductType = opsProductType;
+        this.opsGlCode = opsGlCode;
+        this.opsVibCode = opsVibCode;
+        this.description = description;
+    }
+
     public String getOpsProductType() {
         return opsProductType;
     }

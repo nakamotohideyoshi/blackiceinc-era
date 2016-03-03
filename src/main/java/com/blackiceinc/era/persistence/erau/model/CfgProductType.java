@@ -19,6 +19,12 @@ public class CfgProductType {
     @Column(name = "ERA_PRODUCT_CATEGORY")
     private String eraProductCategory;
 
+    public CfgProductType(String eraProductType, String eraProductDesc, String eraProductCategory) {
+        this.eraProductType = eraProductType;
+        this.eraProductDesc = eraProductDesc;
+        this.eraProductCategory = eraProductCategory;
+    }
+
     public String getEraProductType() {
         return eraProductType;
     }

@@ -23,6 +23,13 @@ public class CfgCompanyDimensionConsolidation {
     @Column(name = "CONSO_PERCT")
     private Double consoPerct;
 
+    public CfgCompanyDimensionConsolidation(String companyCode, String entityCode, String consoMode, Double consoPerct) {
+        this.companyCode = companyCode;
+        this.entityCode = entityCode;
+        this.consoMode = consoMode;
+        this.consoPerct = consoPerct;
+    }
+
     public String getCompanyCode() {
         return companyCode;
     }

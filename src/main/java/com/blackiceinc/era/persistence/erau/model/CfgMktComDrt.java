@@ -16,6 +16,14 @@ public class CfgMktComDrt {
     @Column(name = "RISK_WEIGHT")
     private Double riskWeight;
 
+    public CfgMktComDrt() {
+    }
+
+    public CfgMktComDrt(String mktProductType, Double riskWeight) {
+        this.mktProductType = mktProductType;
+        this.riskWeight = riskWeight;
+    }
+
     public String getMktProductType() {
         return mktProductType;
     }

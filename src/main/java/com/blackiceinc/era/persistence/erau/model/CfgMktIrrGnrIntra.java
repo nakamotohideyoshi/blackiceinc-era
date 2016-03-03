@@ -19,6 +19,14 @@ public class CfgMktIrrGnrIntra {
     @Column(name = "RISK_WEIGHT")
     private Double riskWeight;
 
+    public CfgMktIrrGnrIntra(){}
+
+    public CfgMktIrrGnrIntra(String code, String zoneCode, Double riskWeight) {
+        this.code = code;
+        this.zoneCode = zoneCode;
+        this.riskWeight = riskWeight;
+    }
+
     public String getCode() {
         return code;
     }

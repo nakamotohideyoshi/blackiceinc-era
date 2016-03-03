@@ -16,6 +16,13 @@ public class CfgMktIrrGnrBand {
     @Column(name = "RISK_WEIGHT")
     private Double riskWeight;
 
+    public CfgMktIrrGnrBand(){}
+
+    public CfgMktIrrGnrBand(String code, Double riskWeight) {
+        this.code = code;
+        this.riskWeight = riskWeight;
+    }
+
     public String getCode() {
         return code;
     }

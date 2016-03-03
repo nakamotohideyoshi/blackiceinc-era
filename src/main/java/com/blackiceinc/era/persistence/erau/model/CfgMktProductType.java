@@ -19,6 +19,12 @@ public class CfgMktProductType {
     @Column(name = "MKT_PRODUCT_CATEGORY")
     private String mktProductCategory;
 
+    public CfgMktProductType(String mktProductType, String mktProductDesc, String mktProductCategory) {
+        this.mktProductType = mktProductType;
+        this.mktProductDesc = mktProductDesc;
+        this.mktProductCategory = mktProductCategory;
+    }
+
     public String getMktProductType() {
         return mktProductType;
     }

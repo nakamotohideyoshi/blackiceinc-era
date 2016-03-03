@@ -16,6 +16,11 @@ public class CfgMktAssetClass {
     @Column(name = "MKT_ASSET_CLASS_DESC")
     private String mktAssetClassDesc;
 
+    public CfgMktAssetClass(String mktAssetClass, String mktAssetClassDesc) {
+        this.mktAssetClass = mktAssetClass;
+        this.mktAssetClassDesc = mktAssetClassDesc;
+    }
+
     public String getMktAssetClass() {
         return mktAssetClass;
     }

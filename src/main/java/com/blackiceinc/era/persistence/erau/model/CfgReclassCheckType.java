@@ -25,6 +25,14 @@ public class CfgReclassCheckType {
     @Column(name = "AMT_FIELD")
     private String amtField;
 
+    public CfgReclassCheckType(String checkType, String checkDescription, String whereClause, String consoField, String amtField) {
+        this.checkType = checkType;
+        this.checkDescription = checkDescription;
+        this.whereClause = whereClause;
+        this.consoField = consoField;
+        this.amtField = amtField;
+    }
+
     public String getCheckType() {
         return checkType;
     }

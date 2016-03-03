@@ -1,8 +1,8 @@
 package com.blackiceinc.era.services.excel.mapper;
 
-import com.blackiceinc.era.persistence.erau.model.CfgFinancialBook;
 import com.blackiceinc.era.persistence.erau.model.CfgMktIrrGnrInter;
 import com.blackiceinc.era.persistence.erau.repository.CfgMktIrrGnrInterRepository;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -46,9 +46,43 @@ public class CfgMktIrrGnrInterObjectMapper {
 
         CfgMktIrrGnrInter cfgMktIrrGnrInter = new CfgMktIrrGnrInter();
 
-        cfgMktIrrGnrInter.setCode(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
-        cfgMktIrrGnrInter.setZoneCode1(row.getCell(1) != null ? row.getCell(1).getStringCellValue() : null);
-        cfgMktIrrGnrInter.setZoneCode2(row.getCell(2) != null ? row.getCell(2).getStringCellValue() : null);
+        Cell cell0 = row.getCell(0);
+        if (cell0!=null){
+            switch (cell0.getCellType()){
+                case Cell.CELL_TYPE_NUMERIC:
+                    cfgMktIrrGnrInter.setCode(cell0 != null ? String.valueOf((long)cell0.getNumericCellValue()) : null);
+                    break;
+                case Cell.CELL_TYPE_STRING:
+                    cfgMktIrrGnrInter.setCode(cell0 != null ? cell0.getStringCellValue() : null);
+                    break;
+            }
+        }
+
+        Cell cell1 = row.getCell(1);
+        if (cell1!=null){
+            switch (cell1.getCellType()){
+                case Cell.CELL_TYPE_NUMERIC:
+                    cfgMktIrrGnrInter.setZoneCode1(cell1 != null ? String.valueOf((long)cell1.getNumericCellValue()) : null);
+                    break;
+                case Cell.CELL_TYPE_STRING:
+                    cfgMktIrrGnrInter.setZoneCode1(cell1 != null ? cell1.getStringCellValue() : null);
+                    break;
+            }
+        }
+
+
+        Cell cell2 = row.getCell(2);
+        if (cell2!=null){
+            switch (cell2.getCellType()){
+                case Cell.CELL_TYPE_NUMERIC:
+                    cfgMktIrrGnrInter.setZoneCode2(cell2 != null ? String.valueOf((long)cell2.getNumericCellValue()) : null);
+                    break;
+                case Cell.CELL_TYPE_STRING:
+                    cfgMktIrrGnrInter.setZoneCode2(cell2 != null ? cell2.getStringCellValue() : null);
+                    break;
+            }
+        }
+
         cfgMktIrrGnrInter.setRiskWeight(row.getCell(3) != null ? row.getCell(3).getNumericCellValue() : null);
 
         return cfgMktIrrGnrInter;
@@ -56,7 +90,7 @@ public class CfgMktIrrGnrInterObjectMapper {
 
     public void importData(XSSFSheet sheet) {
         List<CfgMktIrrGnrInter> all = cfgMktIrrGnrInterRepository.findAll();
-        ExcelUtils.removeAllRowsExceltFirstOne(sheet);
+        ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
         for (CfgMktIrrGnrInter cfgMktIrrGnrInter:all){
             XSSFRow row = sheet.createRow(rowIndex);

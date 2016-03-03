@@ -37,6 +37,10 @@ public class CfgCrmEligibility {
         this.seq = seq;
     }
 
+    public CfgCrmEligibility() {
+
+    }
+
     public String getEraEntityType() {
         return eraEntityType;
     }

@@ -293,6 +293,13 @@ public class ConfigurationExportImportServiceImplTest {
     @Test
     public void testImportConfiguration() throws UnsupportedEncodingException {
         URL resource = getClass().getResource("/VIB_ERA_Configuration v1.11_for_export.xlsx");
+        createMocksForImportTest(resource);
+
+
+        configurationExportImportService.importConfiguration(1L);
+    }
+
+    private void createMocksForImportTest(URL resource) throws UnsupportedEncodingException {
         mockConfigFile(resource);
 
         mockFinancialBookRepo();
@@ -357,9 +364,6 @@ public class ConfigurationExportImportServiceImplTest {
         mockCapElementsLimitRepo();
         mockCapElementsMappingRepo();
         mockCapElementsFormulaRepo();
-
-
-        configurationExportImportService.importConfiguration(1L);
     }
 
     private void mockCapElementsFormulaRepo() {

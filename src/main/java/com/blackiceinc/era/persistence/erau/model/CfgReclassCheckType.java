@@ -33,6 +33,10 @@ public class CfgReclassCheckType {
         this.amtField = amtField;
     }
 
+    public CfgReclassCheckType() {
+
+    }
+
     public String getCheckType() {
         return checkType;
     }

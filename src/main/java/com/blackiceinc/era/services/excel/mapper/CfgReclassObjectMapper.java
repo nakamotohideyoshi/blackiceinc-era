@@ -1,6 +1,5 @@
 package com.blackiceinc.era.services.excel.mapper;
 
-import com.blackiceinc.era.persistence.erau.model.CfgFinancialBook;
 import com.blackiceinc.era.persistence.erau.model.CfgReclass;
 import com.blackiceinc.era.persistence.erau.repository.CfgReclassRepository;
 import org.apache.poi.ss.usermodel.Row;
@@ -46,28 +45,30 @@ public class CfgReclassObjectMapper {
 
         CfgReclass cfgReclass = new CfgReclass();
 
-        cfgReclass.setDescription(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
-        cfgReclass.setEraEntityTypeIn(row.getCell(1) != null ? row.getCell(1).getStringCellValue() : null);
-        cfgReclass.setEraProductTypeIn(row.getCell(2) != null ? row.getCell(2).getStringCellValue() : null);
-        cfgReclass.setCheck(row.getCell(3) != null ? row.getCell(3).getStringCellValue() : null);
-        cfgReclass.setEraEntityTypeOut(row.getCell(4) != null ? row.getCell(4).getStringCellValue() : null);
-        cfgReclass.setEraProductTypeOut(row.getCell(5) != null ? row.getCell(5).getStringCellValue() : null);
+        cfgReclass.setCheckNo(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
+        cfgReclass.setDescription(row.getCell(1) != null ? row.getCell(1).getStringCellValue() : null);
+        cfgReclass.setEraEntityTypeIn(row.getCell(2) != null ? row.getCell(2).getStringCellValue() : null);
+        cfgReclass.setEraProductTypeIn(row.getCell(3) != null ? row.getCell(3).getStringCellValue() : null);
+        cfgReclass.setCheck(row.getCell(4) != null ? row.getCell(4).getStringCellValue() : null);
+        cfgReclass.setEraEntityTypeOut(row.getCell(5) != null ? row.getCell(5).getStringCellValue() : null);
+        cfgReclass.setEraProductTypeOut(row.getCell(6) != null ? row.getCell(6).getStringCellValue() : null);
 
         return cfgReclass;
     }
 
     public void importData(XSSFSheet sheet) {
         List<CfgReclass> all = cfgReclassRepository.findAll();
-        ExcelUtils.removeAllRowsExceltFirstOne(sheet);
+        ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
         for (CfgReclass cfgReclass:all){
             XSSFRow row = sheet.createRow(rowIndex);
-            row.createCell(0).setCellValue(cfgReclass.getDescription());
-            row.createCell(1).setCellValue(cfgReclass.getEraEntityTypeIn());
-            row.createCell(2).setCellValue(cfgReclass.getEraProductTypeIn());
-            row.createCell(3).setCellValue(cfgReclass.getCheck());
-            row.createCell(4).setCellValue(cfgReclass.getEraEntityTypeOut());
-            row.createCell(5).setCellValue(cfgReclass.getEraProductTypeOut());
+            row.createCell(0).setCellValue(cfgReclass.getCheckNo());
+            row.createCell(1).setCellValue(cfgReclass.getDescription());
+            row.createCell(2).setCellValue(cfgReclass.getEraEntityTypeIn());
+            row.createCell(3).setCellValue(cfgReclass.getEraProductTypeIn());
+            row.createCell(4).setCellValue(cfgReclass.getCheck());
+            row.createCell(5).setCellValue(cfgReclass.getEraEntityTypeOut());
+            row.createCell(6).setCellValue(cfgReclass.getEraProductTypeOut());
 
             rowIndex++;
         }

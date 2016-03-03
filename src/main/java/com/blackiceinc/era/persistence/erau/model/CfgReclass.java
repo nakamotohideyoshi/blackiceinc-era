@@ -41,6 +41,10 @@ public class CfgReclass {
         this.eraProductTypeOut = eraProductTypeOut;
     }
 
+    public CfgReclass() {
+
+    }
+
     public String getCheckNo() {
         return checkNo;
     }

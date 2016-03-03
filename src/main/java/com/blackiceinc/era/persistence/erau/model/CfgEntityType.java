@@ -21,6 +21,10 @@ public class CfgEntityType {
         this.entityDesc = entityDesc;
     }
 
+    public CfgEntityType() {
+
+    }
+
     public String getEraEntityType() {
         return eraEntityType;
     }

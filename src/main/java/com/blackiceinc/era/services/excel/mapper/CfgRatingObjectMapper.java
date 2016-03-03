@@ -1,6 +1,5 @@
 package com.blackiceinc.era.services.excel.mapper;
 
-import com.blackiceinc.era.persistence.erau.model.CfgFinancialBook;
 import com.blackiceinc.era.persistence.erau.model.CfgRating;
 import com.blackiceinc.era.persistence.erau.repository.CfgRatingRepository;
 import org.apache.poi.ss.usermodel.Row;
@@ -50,14 +49,16 @@ public class CfgRatingObjectMapper {
         cfgRating.setRating(row.getCell(1) != null ? row.getCell(1).getStringCellValue() : null);
         cfgRating.setQualifying(row.getCell(2) != null ? row.getCell(2).getStringCellValue() : null);
         cfgRating.setLongShort(row.getCell(3) != null ? row.getCell(3).getStringCellValue() : null);
-        cfgRating.setRiskBucket(row.getCell(4) != null ? Long.valueOf(row.getCell(4).getStringCellValue()) : null);
+
+
+        cfgRating.setRiskBucket(row.getCell(4) != null ? Long.valueOf((long)row.getCell(4).getNumericCellValue()) : null);
 
         return cfgRating;
     }
 
     public void importData(XSSFSheet sheet) {
         List<CfgRating> all = cfgRatingRepository.findAll();
-        ExcelUtils.removeAllRowsExceltFirstOne(sheet);
+        ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
         for (CfgRating cfgRating:all){
             XSSFRow row = sheet.createRow(rowIndex);

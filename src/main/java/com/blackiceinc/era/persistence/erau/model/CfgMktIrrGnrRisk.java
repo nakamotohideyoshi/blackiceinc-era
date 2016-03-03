@@ -45,6 +45,10 @@ public class CfgMktIrrGnrRisk {
         this.riskWeight = riskWeight;
     }
 
+    public CfgMktIrrGnrRisk() {
+
+    }
+
     public String getZoneCode() {
         return zoneCode;
     }

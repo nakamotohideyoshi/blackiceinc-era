@@ -57,6 +57,10 @@ public class CfgRiskWeightMapping {
         this.seq = seq;
     }
 
+    public CfgRiskWeightMapping() {
+
+    }
+
     public String getAssetClass() {
         return assetClass;
     }

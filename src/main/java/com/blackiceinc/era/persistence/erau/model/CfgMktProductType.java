@@ -25,6 +25,10 @@ public class CfgMktProductType {
         this.mktProductCategory = mktProductCategory;
     }
 
+    public CfgMktProductType() {
+
+    }
+
     public String getMktProductType() {
         return mktProductType;
     }

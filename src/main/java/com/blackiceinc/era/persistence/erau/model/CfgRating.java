@@ -33,6 +33,10 @@ public class CfgRating {
         this.riskBucket = riskBucket;
     }
 
+    public CfgRating() {
+
+    }
+
     public String getAgencyCode() {
         return agencyCode;
     }

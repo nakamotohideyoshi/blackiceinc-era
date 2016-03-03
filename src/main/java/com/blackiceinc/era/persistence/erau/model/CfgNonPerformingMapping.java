@@ -21,6 +21,10 @@ public class CfgNonPerformingMapping {
         this.performingStatus = performingStatus;
     }
 
+    public CfgNonPerformingMapping() {
+
+    }
+
     public String getEraNplCode() {
         return eraNplCode;
     }

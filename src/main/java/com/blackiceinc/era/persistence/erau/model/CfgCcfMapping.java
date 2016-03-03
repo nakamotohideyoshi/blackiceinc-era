@@ -37,6 +37,10 @@ public class CfgCcfMapping {
         this.seq = seq;
     }
 
+    public CfgCcfMapping() {
+
+    }
+
     public String getEraProductType() {
         return eraProductType;
     }

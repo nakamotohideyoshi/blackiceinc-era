@@ -21,6 +21,10 @@ public class CfgCreditMeasure {
         this.creditMeasureDesc = creditMeasureDesc;
     }
 
+    public CfgCreditMeasure() {
+
+    }
+
     public String getCreditMeasure() {
         return creditMeasure;
     }

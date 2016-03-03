@@ -1,9 +1,8 @@
 package com.blackiceinc.era.services.excel.mapper;
 
 import com.blackiceinc.era.persistence.erau.model.CfgCrmHaircut;
-import com.blackiceinc.era.persistence.erau.model.CfgFinancialBook;
 import com.blackiceinc.era.persistence.erau.repository.CfgCrmHaircutRepository;
-import com.blackiceinc.era.persistence.erau.repository.CfgFinancialBookRepository;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -49,9 +48,46 @@ public class CfgCrmHaircutObjectMapper {
 
         cfgCrmHaircut.setEraColType(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
         cfgCrmHaircut.setEraEntityType(row.getCell(1) != null ? row.getCell(1).getStringCellValue() : null);
-        cfgCrmHaircut.setRiskBucket(row.getCell(2) != null ? row.getCell(2).getStringCellValue() : null);
-        cfgCrmHaircut.setMinResidualMaturity(row.getCell(3) != null ? row.getCell(3).getStringCellValue() : null);
-        cfgCrmHaircut.setMaxResidualMaturity(row.getCell(4) != null ? row.getCell(4).getStringCellValue() : null);
+
+        Cell cell2 = row.getCell(2);
+        if (cell2!=null){
+            switch (cell2.getCellType()){
+                case Cell.CELL_TYPE_NUMERIC:
+                    cfgCrmHaircut.setRiskBucket(cell2 != null ? String.valueOf((int)cell2.getNumericCellValue()) : null);
+                    break;
+                case Cell.CELL_TYPE_STRING:
+                    cfgCrmHaircut.setRiskBucket(cell2 != null ? cell2.getStringCellValue() : null);
+                    break;
+            }
+        }
+
+
+        Cell cell3 = row.getCell(3);
+        if (cell3!=null){
+            switch (cell3.getCellType()){
+                case Cell.CELL_TYPE_NUMERIC:
+                    cfgCrmHaircut.setMinResidualMaturity(cell3 != null ? String.valueOf((int)cell3.getNumericCellValue()) : null);
+                    break;
+                case Cell.CELL_TYPE_STRING:
+                    cfgCrmHaircut.setMinResidualMaturity(cell3 != null ? cell3.getStringCellValue() : null);
+                    break;
+            }
+        }
+
+
+        Cell cell4 = row.getCell(4);
+        if (cell4!=null){
+            switch (cell4.getCellType()){
+                case Cell.CELL_TYPE_NUMERIC:
+                    cfgCrmHaircut.setMaxResidualMaturity(cell4 != null ? String.valueOf((int)cell4.getNumericCellValue()) : null);
+                    break;
+                case Cell.CELL_TYPE_STRING:
+                    cfgCrmHaircut.setMaxResidualMaturity(cell4 != null ? cell4.getStringCellValue() : null);
+                    break;
+            }
+        }
+
+
         cfgCrmHaircut.setHaircut(row.getCell(5) != null ? row.getCell(5).getNumericCellValue() : null);
 
         return cfgCrmHaircut;
@@ -59,7 +95,7 @@ public class CfgCrmHaircutObjectMapper {
 
     public void importData(XSSFSheet sheet) {
         List<CfgCrmHaircut> all = cfgCrmHaircutRepository.findAll();
-        ExcelUtils.removeAllRowsExceltFirstOne(sheet);
+        ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
         for (CfgCrmHaircut cfgCrmHaircut:all){
             XSSFRow row = sheet.createRow(rowIndex);

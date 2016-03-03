@@ -25,6 +25,10 @@ public class CfgProductType {
         this.eraProductCategory = eraProductCategory;
     }
 
+    public CfgProductType() {
+
+    }
+
     public String getEraProductType() {
         return eraProductType;
     }

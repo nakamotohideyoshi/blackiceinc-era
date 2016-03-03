@@ -1,8 +1,8 @@
 package com.blackiceinc.era.services.excel.mapper;
 
 import com.blackiceinc.era.persistence.erau.model.CfgCcfMapping;
-import com.blackiceinc.era.persistence.erau.model.CfgFinancialBook;
 import com.blackiceinc.era.persistence.erau.repository.CfgCcfMappingRepository;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -49,16 +49,39 @@ public class CfgCcfMappingObjectMapper {
         cfgCcfMapping.setEraProductType(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
         cfgCcfMapping.setCcf(row.getCell(1) != null ? row.getCell(1).getNumericCellValue() : null);
         cfgCcfMapping.setUnconditionallyCancelable(row.getCell(2) != null ? row.getCell(2).getStringCellValue() : null);
-        cfgCcfMapping.setMaturityStart(row.getCell(3) != null ? row.getCell(3).getStringCellValue() : null);
-        cfgCcfMapping.setMaturityEnd(row.getCell(4) != null ? row.getCell(4).getStringCellValue() : null);
-        cfgCcfMapping.setSeq(row.getCell(5) != null ? Long.valueOf(row.getCell(5).getStringCellValue()) : null);
+
+        Cell cell3 = row.getCell(3);
+        if (cell3!=null){
+            switch(cell3.getCellType()){
+                case Cell.CELL_TYPE_NUMERIC:
+                    cfgCcfMapping.setMaturityStart(cell3 != null ? String.valueOf((int)cell3.getNumericCellValue()) : null);
+                    break;
+                case Cell.CELL_TYPE_STRING:
+                    cfgCcfMapping.setMaturityStart(cell3 != null ? cell3.getStringCellValue() : null);
+                    break;
+            }
+        }
+
+        Cell cell4 = row.getCell(4);
+        if (cell4!=null){
+            switch (cell4.getCellType()){
+                case Cell.CELL_TYPE_NUMERIC:
+                    cfgCcfMapping.setMaturityStart(cell4 != null ? String.valueOf((int)cell4.getNumericCellValue()) : null);
+                    break;
+                case Cell.CELL_TYPE_STRING:
+                    cfgCcfMapping.setMaturityEnd(cell4 != null ? cell4.getStringCellValue() : null);
+                    break;
+            }
+        }
+
+        cfgCcfMapping.setSeq(row.getCell(5) != null ? (long)row.getCell(5).getNumericCellValue() : null);
 
         return cfgCcfMapping;
     }
 
     public void importData(XSSFSheet sheet) {
         List<CfgCcfMapping> all = cfgCcfMappingRepository.findAll();
-        ExcelUtils.removeAllRowsExceltFirstOne(sheet);
+        ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
         for (CfgCcfMapping cfgCcfMapping:all){
             XSSFRow row = sheet.createRow(rowIndex);

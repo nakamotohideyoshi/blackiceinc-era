@@ -1,8 +1,8 @@
 package com.blackiceinc.era.services.excel.mapper;
 
-import com.blackiceinc.era.persistence.erau.model.CfgFinancialBook;
 import com.blackiceinc.era.persistence.erau.model.CfgMktIrrGnrIntra;
 import com.blackiceinc.era.persistence.erau.repository.CfgMktIrrGnrIntraRepository;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -46,8 +46,31 @@ public class CfgMktIrrGnrIntraObjectMapper {
 
         CfgMktIrrGnrIntra cfgMktIrrGnrIntra = new CfgMktIrrGnrIntra();
 
-        cfgMktIrrGnrIntra.setCode(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
-        cfgMktIrrGnrIntra.setZoneCode(row.getCell(1) != null ? row.getCell(1).getStringCellValue() : null);
+        Cell cell0 = row.getCell(0);
+        if (cell0!=null){
+            switch (cell0.getCellType()){
+                case Cell.CELL_TYPE_NUMERIC:
+                    cfgMktIrrGnrIntra.setCode(cell0 != null ? String.valueOf((long)cell0.getNumericCellValue()) : null);
+                    break;
+                case Cell.CELL_TYPE_STRING:
+                    cfgMktIrrGnrIntra.setCode(cell0 != null ? cell0.getStringCellValue() : null);
+                    break;
+            }
+        }
+
+        Cell cell1 = row.getCell(1);
+        if (cell1!=null){
+            switch (cell1.getCellType()){
+                case Cell.CELL_TYPE_NUMERIC:
+                    cfgMktIrrGnrIntra.setZoneCode(cell1 != null ? String.valueOf((long)cell1.getNumericCellValue()) : null);
+                    break;
+                case Cell.CELL_TYPE_STRING:
+                    cfgMktIrrGnrIntra.setZoneCode(cell1 != null ? cell1.getStringCellValue() : null);
+                    break;
+            }
+        }
+
+
         cfgMktIrrGnrIntra.setRiskWeight(row.getCell(2) != null ? row.getCell(2).getNumericCellValue() : null);
 
         return cfgMktIrrGnrIntra;
@@ -55,7 +78,7 @@ public class CfgMktIrrGnrIntraObjectMapper {
 
     public void importData(XSSFSheet sheet) {
         List<CfgMktIrrGnrIntra> all = cfgMktIrrGnrIntraRepository.findAll();
-        ExcelUtils.removeAllRowsExceltFirstOne(sheet);
+        ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
         for (CfgMktIrrGnrIntra cfgMktIrrGnrIntra:all){
             XSSFRow row = sheet.createRow(rowIndex);

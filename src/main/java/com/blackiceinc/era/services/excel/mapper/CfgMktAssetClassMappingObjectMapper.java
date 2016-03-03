@@ -1,6 +1,5 @@
 package com.blackiceinc.era.services.excel.mapper;
 
-import com.blackiceinc.era.persistence.erau.model.CfgFinancialBook;
 import com.blackiceinc.era.persistence.erau.model.CfgMktAssetClassMapping;
 import com.blackiceinc.era.persistence.erau.repository.CfgMktAssetClassMappingRepository;
 import org.apache.poi.ss.usermodel.Row;
@@ -55,7 +54,7 @@ public class CfgMktAssetClassMappingObjectMapper {
 
     public void importData(XSSFSheet sheet) {
         List<CfgMktAssetClassMapping> all = cfgMktAssetClassMappingRepository.findAll();
-        ExcelUtils.removeAllRowsExceltFirstOne(sheet);
+        ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
         for (CfgMktAssetClassMapping cfgMktAssetClassMapping:all){
             XSSFRow row = sheet.createRow(rowIndex);

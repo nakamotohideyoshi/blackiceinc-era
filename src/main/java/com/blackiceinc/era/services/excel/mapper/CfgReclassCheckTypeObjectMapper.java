@@ -1,6 +1,5 @@
 package com.blackiceinc.era.services.excel.mapper;
 
-import com.blackiceinc.era.persistence.erau.model.CfgFinancialBook;
 import com.blackiceinc.era.persistence.erau.model.CfgReclassCheckType;
 import com.blackiceinc.era.persistence.erau.repository.CfgReclassCheckTypeRepository;
 import org.apache.poi.ss.usermodel.Row;
@@ -46,24 +45,27 @@ public class CfgReclassCheckTypeObjectMapper {
 
         CfgReclassCheckType cfgReclassCheckType = new CfgReclassCheckType();
 
-        cfgReclassCheckType.setCheckDescription(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
-        cfgReclassCheckType.setWhereClause(row.getCell(1) != null ? row.getCell(1).getStringCellValue() : null);
-        cfgReclassCheckType.setConsoField(row.getCell(2) != null ? row.getCell(2).getStringCellValue() : null);
-        cfgReclassCheckType.setAmtField(row.getCell(3) != null ? row.getCell(3).getStringCellValue() : null);
+        cfgReclassCheckType.setCheckType(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
+        cfgReclassCheckType.setCheckDescription(row.getCell(1) != null ? row.getCell(1).getStringCellValue() : null);
+        cfgReclassCheckType.setWhereClause(row.getCell(2) != null ? row.getCell(2).getStringCellValue() : null);
+        cfgReclassCheckType.setConsoField(row.getCell(3) != null ? row.getCell(3).getStringCellValue() : null);
+        cfgReclassCheckType.setAmtField(row.getCell(4) != null ? row.getCell(4).getStringCellValue() : null);
 
         return cfgReclassCheckType;
     }
 
     public void importData(XSSFSheet sheet) {
         List<CfgReclassCheckType> all = cfgReclassCheckTypeRepository.findAll();
-        ExcelUtils.removeAllRowsExceltFirstOne(sheet);
+        ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
         for (CfgReclassCheckType cfgReclassCheckType:all){
             XSSFRow row = sheet.createRow(rowIndex);
-            row.createCell(0).setCellValue(cfgReclassCheckType.getCheckDescription());
-            row.createCell(1).setCellValue(cfgReclassCheckType.getWhereClause());
-            row.createCell(2).setCellValue(cfgReclassCheckType.getConsoField());
-            row.createCell(3).setCellValue(cfgReclassCheckType.getAmtField());
+
+            row.createCell(0).setCellValue(cfgReclassCheckType.getCheckType());
+            row.createCell(1).setCellValue(cfgReclassCheckType.getCheckDescription());
+            row.createCell(2).setCellValue(cfgReclassCheckType.getWhereClause());
+            row.createCell(3).setCellValue(cfgReclassCheckType.getConsoField());
+            row.createCell(4).setCellValue(cfgReclassCheckType.getAmtField());
 
             rowIndex++;
         }

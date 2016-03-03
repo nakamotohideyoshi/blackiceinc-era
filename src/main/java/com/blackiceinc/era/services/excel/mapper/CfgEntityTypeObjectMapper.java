@@ -1,7 +1,6 @@
 package com.blackiceinc.era.services.excel.mapper;
 
 import com.blackiceinc.era.persistence.erau.model.CfgEntityType;
-import com.blackiceinc.era.persistence.erau.model.CfgFinancialBook;
 import com.blackiceinc.era.persistence.erau.repository.CfgEntityTypeRepository;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -54,7 +53,7 @@ public class CfgEntityTypeObjectMapper {
 
     public void importCfgCfgEntityTypes(XSSFSheet sheet) {
         List<CfgEntityType> all = cfgEntityTypeRepository.findAll();
-        ExcelUtils.removeAllRowsExceltFirstOne(sheet);
+        ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
         for (CfgEntityType cfgEntityType:all){
             XSSFRow row = sheet.createRow(rowIndex);

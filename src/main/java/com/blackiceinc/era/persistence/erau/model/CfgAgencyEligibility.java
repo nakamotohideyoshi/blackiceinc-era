@@ -25,6 +25,10 @@ public class CfgAgencyEligibility {
         this.agencyType = agencyType;
     }
 
+    public CfgAgencyEligibility() {
+
+    }
+
     public String getAgencyCode() {
         return agencyCode;
     }

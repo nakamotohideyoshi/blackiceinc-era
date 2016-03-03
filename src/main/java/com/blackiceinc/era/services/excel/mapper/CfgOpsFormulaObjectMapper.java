@@ -1,6 +1,5 @@
 package com.blackiceinc.era.services.excel.mapper;
 
-import com.blackiceinc.era.persistence.erau.model.CfgFinancialBook;
 import com.blackiceinc.era.persistence.erau.model.CfgOpsFormula;
 import com.blackiceinc.era.persistence.erau.repository.CfgOpsFormulaRepository;
 import org.apache.poi.ss.usermodel.Row;
@@ -54,7 +53,7 @@ public class CfgOpsFormulaObjectMapper {
 
     public void importData(XSSFSheet sheet) {
         List<CfgOpsFormula> all = cfgOpsFormulaRepository.findAll();
-        ExcelUtils.removeAllRowsExceltFirstOne(sheet);
+        ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
         for (CfgOpsFormula cfgOpsFormula:all){
             XSSFRow row = sheet.createRow(rowIndex);

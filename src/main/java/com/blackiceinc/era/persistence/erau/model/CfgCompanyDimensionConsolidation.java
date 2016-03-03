@@ -30,6 +30,10 @@ public class CfgCompanyDimensionConsolidation {
         this.consoPerct = consoPerct;
     }
 
+    public CfgCompanyDimensionConsolidation() {
+
+    }
+
     public String getCompanyCode() {
         return companyCode;
     }

@@ -25,6 +25,10 @@ public class CfgMktAssetClassMapping {
         this.mktProductType = mktProductType;
     }
 
+    public CfgMktAssetClassMapping() {
+
+    }
+
     public String getMktAssetClass() {
         return mktAssetClass;
     }

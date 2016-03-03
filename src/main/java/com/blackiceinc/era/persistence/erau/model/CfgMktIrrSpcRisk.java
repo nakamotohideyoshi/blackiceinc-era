@@ -41,6 +41,10 @@ public class CfgMktIrrSpcRisk {
         this.riskWeight = riskWeight;
     }
 
+    public CfgMktIrrSpcRisk() {
+
+    }
+
     public String getMktAssetClass() {
         return mktAssetClass;
     }

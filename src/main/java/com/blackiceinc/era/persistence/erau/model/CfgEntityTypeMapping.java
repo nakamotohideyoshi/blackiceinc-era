@@ -25,6 +25,10 @@ public class CfgEntityTypeMapping {
         this.customerSubType = customerSubType;
     }
 
+    public CfgEntityTypeMapping() {
+
+    }
+
     public String getEraEntityType() {
         return eraEntityType;
     }

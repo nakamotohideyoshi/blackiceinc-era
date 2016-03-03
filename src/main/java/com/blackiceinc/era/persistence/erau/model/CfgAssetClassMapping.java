@@ -25,6 +25,10 @@ public class CfgAssetClassMapping {
         this.productType = productType;
     }
 
+    public CfgAssetClassMapping() {
+
+    }
+
     public String getAssetClass() {
         return assetClass;
     }

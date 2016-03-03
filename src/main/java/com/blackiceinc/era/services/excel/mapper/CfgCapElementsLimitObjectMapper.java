@@ -1,7 +1,6 @@
 package com.blackiceinc.era.services.excel.mapper;
 
 import com.blackiceinc.era.persistence.erau.model.CfgCapElementsLimit;
-import com.blackiceinc.era.persistence.erau.model.CfgFinancialBook;
 import com.blackiceinc.era.persistence.erau.repository.CfgCapElementsLimitRepository;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -59,7 +58,7 @@ public class CfgCapElementsLimitObjectMapper {
 
     public void importData(XSSFSheet sheet) {
         List<CfgCapElementsLimit> all = cfgCapElementsLimitRepository.findAll();
-        ExcelUtils.removeAllRowsExceltFirstOne(sheet);
+        ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
         for (CfgCapElementsLimit cfgCapElementsLimit:all){
             XSSFRow row = sheet.createRow(rowIndex);

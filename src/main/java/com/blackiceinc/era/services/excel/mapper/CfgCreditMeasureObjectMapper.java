@@ -1,7 +1,6 @@
 package com.blackiceinc.era.services.excel.mapper;
 
 import com.blackiceinc.era.persistence.erau.model.CfgCreditMeasure;
-import com.blackiceinc.era.persistence.erau.model.CfgFinancialBook;
 import com.blackiceinc.era.persistence.erau.repository.CfgCreditMeasureRepository;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -54,7 +53,7 @@ public class CfgCreditMeasureObjectMapper {
 
     public void importData(XSSFSheet sheet) {
         List<CfgCreditMeasure> all = cfgCreditMeasureRepository.findAll();
-        ExcelUtils.removeAllRowsExceltFirstOne(sheet);
+        ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
         for (CfgCreditMeasure cfgCreditMeasure:all){
             XSSFRow row = sheet.createRow(rowIndex);

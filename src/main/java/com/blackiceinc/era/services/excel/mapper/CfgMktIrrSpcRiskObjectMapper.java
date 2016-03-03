@@ -1,6 +1,5 @@
 package com.blackiceinc.era.services.excel.mapper;
 
-import com.blackiceinc.era.persistence.erau.model.CfgFinancialBook;
 import com.blackiceinc.era.persistence.erau.model.CfgMktIrrSpcRisk;
 import com.blackiceinc.era.persistence.erau.repository.CfgMktIrrSpcRiskRepository;
 import org.apache.poi.ss.usermodel.Row;
@@ -59,17 +58,17 @@ public class CfgMktIrrSpcRiskObjectMapper {
 
     public void importData(XSSFSheet sheet) {
         List<CfgMktIrrSpcRisk> all = cfgMktIrrSpcRiskRepository.findAll();
-        ExcelUtils.removeAllRowsExceltFirstOne(sheet);
+        ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
         for (CfgMktIrrSpcRisk cfgMktIrrSpcRisk:all){
             XSSFRow row = sheet.createRow(rowIndex);
             row.createCell(0).setCellValue(cfgMktIrrSpcRisk.getMktAssetClass());
             row.createCell(1).setCellValue(cfgMktIrrSpcRisk.getIssueRiskBucket());
             row.createCell(2).setCellValue(cfgMktIrrSpcRisk.getIssuerRiskBucket());
-            row.createCell(2).setCellValue(cfgMktIrrSpcRisk.getResidualMaturityStart());
-            row.createCell(2).setCellValue(cfgMktIrrSpcRisk.getResidualMaturityEnd());
-            row.createCell(2).setCellValue(cfgMktIrrSpcRisk.getInstrumentGroup());
-            row.createCell(2).setCellValue(cfgMktIrrSpcRisk.getRiskWeight());
+            row.createCell(3).setCellValue(cfgMktIrrSpcRisk.getResidualMaturityStart());
+            row.createCell(4).setCellValue(cfgMktIrrSpcRisk.getResidualMaturityEnd());
+            row.createCell(5).setCellValue(cfgMktIrrSpcRisk.getInstrumentGroup());
+            row.createCell(6).setCellValue(cfgMktIrrSpcRisk.getRiskWeight());
 
             rowIndex++;
         }

@@ -1,6 +1,5 @@
 package com.blackiceinc.era.services.excel.mapper;
 
-import com.blackiceinc.era.persistence.erau.model.CfgFinancialBook;
 import com.blackiceinc.era.persistence.erau.model.CfgMktIrrGnrRisk;
 import com.blackiceinc.era.persistence.erau.repository.CfgMktIrrGnrRiskRepository;
 import org.apache.poi.ss.usermodel.Row;
@@ -46,13 +45,13 @@ public class CfgMktIrrGnrRiskObjectMapper {
 
         CfgMktIrrGnrRisk cfgMktIrrGnrRisk = new CfgMktIrrGnrRisk();
 
-        cfgMktIrrGnrRisk.setZoneCode(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
+        cfgMktIrrGnrRisk.setZoneCode(row.getCell(0) != null ? String.valueOf((int)row.getCell(0).getNumericCellValue()) : null);
         cfgMktIrrGnrRisk.setBandCode(row.getCell(1) != null ? row.getCell(1).getStringCellValue() : null);
         cfgMktIrrGnrRisk.setCurrency(row.getCell(2) != null ? row.getCell(2).getStringCellValue() : null);
-        cfgMktIrrGnrRisk.setCouponRateStart(row.getCell(3) != null ? Long.valueOf(row.getCell(3).getStringCellValue()) : null);
-        cfgMktIrrGnrRisk.setCouponRateEnd(row.getCell(4) != null ? Long.valueOf(row.getCell(4).getStringCellValue()) : null);
-        cfgMktIrrGnrRisk.setMaturityBandStart(row.getCell(5) != null ? Long.valueOf(row.getCell(5).getStringCellValue()) : null);
-        cfgMktIrrGnrRisk.setMaturityBandEnd(row.getCell(6) != null ? Long.valueOf(row.getCell(6).getStringCellValue()) : null);
+        cfgMktIrrGnrRisk.setCouponRateStart(row.getCell(3) != null ? (long)row.getCell(3).getNumericCellValue() : null);
+        cfgMktIrrGnrRisk.setCouponRateEnd(row.getCell(4) != null ? (long)row.getCell(4).getNumericCellValue() : null);
+        cfgMktIrrGnrRisk.setMaturityBandStart(row.getCell(5) != null ? (long)row.getCell(5).getNumericCellValue() : null);
+        cfgMktIrrGnrRisk.setMaturityBandEnd(row.getCell(6) != null ? (long)row.getCell(6).getNumericCellValue() : null);
         cfgMktIrrGnrRisk.setRiskWeight(row.getCell(7) != null ? row.getCell(7).getNumericCellValue() : null);
 
         return cfgMktIrrGnrRisk;
@@ -60,7 +59,7 @@ public class CfgMktIrrGnrRiskObjectMapper {
 
     public void importData(XSSFSheet sheet) {
         List<CfgMktIrrGnrRisk> all = cfgMktIrrGnrRiskRepository.findAll();
-        ExcelUtils.removeAllRowsExceltFirstOne(sheet);
+        ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
         for (CfgMktIrrGnrRisk cfgMktIrrGnrRisk:all){
             XSSFRow row = sheet.createRow(rowIndex);

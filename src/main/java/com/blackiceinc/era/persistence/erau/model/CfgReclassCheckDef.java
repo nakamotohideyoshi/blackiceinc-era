@@ -37,6 +37,10 @@ public class CfgReclassCheckDef {
         this.currency = currency;
     }
 
+    public CfgReclassCheckDef() {
+
+    }
+
     public String getCheckDefNo() {
         return checkDefNo;
     }

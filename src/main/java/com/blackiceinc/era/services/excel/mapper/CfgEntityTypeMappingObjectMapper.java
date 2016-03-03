@@ -54,7 +54,7 @@ public class CfgEntityTypeMappingObjectMapper {
 
     public void importCfgEntityTypeMappings(XSSFSheet sheet) {
         List<CfgEntityTypeMapping> all = cfgEntityTypeMappingRepository.findAll();
-        ExcelUtils.removeAllRowsExceltFirstOne(sheet);
+        ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
         for (CfgEntityTypeMapping cfgFcfgEntityTypeMappingnancialBook : all) {
             XSSFRow row = sheet.createRow(rowIndex);

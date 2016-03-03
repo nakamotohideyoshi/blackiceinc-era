@@ -1,7 +1,6 @@
 package com.blackiceinc.era.services.excel.mapper;
 
 import com.blackiceinc.era.persistence.erau.model.CfgAgencyEligibility;
-import com.blackiceinc.era.persistence.erau.model.CfgFinancialBook;
 import com.blackiceinc.era.persistence.erau.repository.CfgAgencyEligibilityRepository;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -55,7 +54,7 @@ public class CfgAgencyEligibilityObjectMapper {
 
     public void importData(XSSFSheet sheet) {
         List<CfgAgencyEligibility> all = cfgAgencyEligibilityRepository.findAll();
-        ExcelUtils.removeAllRowsExceltFirstOne(sheet);
+        ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
         for (CfgAgencyEligibility cfgAgencyEligibility:all){
             XSSFRow row = sheet.createRow(rowIndex);

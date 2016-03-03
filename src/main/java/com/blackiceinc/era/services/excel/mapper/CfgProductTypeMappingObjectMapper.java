@@ -1,6 +1,5 @@
 package com.blackiceinc.era.services.excel.mapper;
 
-import com.blackiceinc.era.persistence.erau.model.CfgFinancialBook;
 import com.blackiceinc.era.persistence.erau.model.CfgProductTypeMapping;
 import com.blackiceinc.era.persistence.erau.repository.CfgProductTypeMappingRepository;
 import org.apache.poi.ss.usermodel.Row;
@@ -60,14 +59,14 @@ public class CfgProductTypeMappingObjectMapper {
         cfgProductTypeMapping.setfIndependantValuer(row.getCell(10) != null ? row.getCell(10).getStringCellValue() : null);
         cfgProductTypeMapping.setfLegallyEnforce(row.getCell(11) != null ? row.getCell(11).getStringCellValue() : null);
         cfgProductTypeMapping.setUnderlying(row.getCell(12) != null ? row.getCell(12).getStringCellValue() : null);
-        cfgProductTypeMapping.setSeq(row.getCell(13) != null ? Long.valueOf(row.getCell(13).getStringCellValue()) : null);
+        cfgProductTypeMapping.setSeq(row.getCell(13) != null ? (long)row.getCell(13).getNumericCellValue() : null);
 
         return cfgProductTypeMapping;
     }
 
     public void importCfgProductTypeMappping(XSSFSheet sheet) {
         List<CfgProductTypeMapping> all = cfgProductTypeMappingRepository.findAll();
-        ExcelUtils.removeAllRowsExceltFirstOne(sheet);
+        ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
         for (CfgProductTypeMapping cfgFinancialBook:all){
             XSSFRow row = sheet.createRow(rowIndex);

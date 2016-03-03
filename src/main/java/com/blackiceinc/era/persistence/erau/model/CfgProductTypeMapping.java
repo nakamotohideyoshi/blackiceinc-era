@@ -77,6 +77,10 @@ public class CfgProductTypeMapping {
         this.repaymentProperty = repaymentProperty;
     }
 
+    public CfgProductTypeMapping() {
+
+    }
+
     public String getProductType() {
         return productType;
     }

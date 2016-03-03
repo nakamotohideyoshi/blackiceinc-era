@@ -1,8 +1,8 @@
 package com.blackiceinc.era.services.excel.mapper;
 
 import com.blackiceinc.era.persistence.erau.model.CfgCrmEligibility;
-import com.blackiceinc.era.persistence.erau.model.CfgFinancialBook;
 import com.blackiceinc.era.persistence.erau.repository.CfgCrmEligibilityRepository;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -19,7 +19,7 @@ public class CfgCrmEligibilityObjectMapper {
     CfgCrmEligibilityRepository cfgCrmEligibilityRepository;
 
     @Autowired
-    public CfgCrmEligibilityObjectMapper(CfgCrmEligibilityRepository cfgCrmEligibilityRepository){
+    public CfgCrmEligibilityObjectMapper(CfgCrmEligibilityRepository cfgCrmEligibilityRepository) {
         this.cfgCrmEligibilityRepository = cfgCrmEligibilityRepository;
     }
 
@@ -49,7 +49,19 @@ public class CfgCrmEligibilityObjectMapper {
         cfgCrmEligibility.setEraEntityType(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
         cfgCrmEligibility.setEraProductType(row.getCell(1) != null ? row.getCell(1).getStringCellValue() : null);
         cfgCrmEligibility.setRiskBucket(row.getCell(2) != null ? row.getCell(2).getStringCellValue() : null);
-        cfgCrmEligibility.setRiskWeight(row.getCell(3) != null ? row.getCell(3).getStringCellValue() : null);
+
+        Cell cell3 = row.getCell(3);
+        if (cell3 != null) {
+            switch (cell3.getCellType()) {
+                case Cell.CELL_TYPE_NUMERIC:
+                    cfgCrmEligibility.setRiskWeight(cell3 != null ? String.valueOf(cell3.getNumericCellValue()) : null);
+                    break;
+                case Cell.CELL_TYPE_STRING:
+                    cfgCrmEligibility.setRiskWeight(cell3 != null ? cell3.getStringCellValue() : null);
+                    break;
+            }
+        }
+
         cfgCrmEligibility.setEligibility(row.getCell(4) != null ? row.getCell(4).getStringCellValue() : null);
 
         return cfgCrmEligibility;
@@ -57,9 +69,9 @@ public class CfgCrmEligibilityObjectMapper {
 
     public void importData(XSSFSheet sheet) {
         List<CfgCrmEligibility> all = cfgCrmEligibilityRepository.findAll();
-        ExcelUtils.removeAllRowsExceltFirstOne(sheet);
+        ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
-        for (CfgCrmEligibility cfgCrmEligibility:all){
+        for (CfgCrmEligibility cfgCrmEligibility : all) {
             XSSFRow row = sheet.createRow(rowIndex);
             row.createCell(0).setCellValue(cfgCrmEligibility.getEraEntityType());
             row.createCell(1).setCellValue(cfgCrmEligibility.getEraProductType());

@@ -1,7 +1,6 @@
 package com.blackiceinc.era.services.excel.mapper;
 
 
-import com.blackiceinc.era.persistence.erau.model.CfgCompany;
 import com.blackiceinc.era.persistence.erau.model.CfgCompanyLinkage;
 import com.blackiceinc.era.persistence.erau.repository.CfgCompanyLinkageRepository;
 import org.apache.poi.ss.usermodel.Row;
@@ -55,7 +54,7 @@ public class CfgCompanyLinkageObjectMapper {
 
     public void importCfgCompanyLinkage(XSSFSheet companySheet) {
         List<CfgCompanyLinkage> all = cfgCompanyLinkageRepository.findAll();
-        ExcelUtils.removeAllRowsExceltFirstOne(companySheet);
+        ExcelUtils.removeAllRowsExcelFirstOne(companySheet);
         int rowIndex = 1;
         for (CfgCompanyLinkage cfgCompanyLinkage : all) {
             XSSFRow row = companySheet.createRow(rowIndex);

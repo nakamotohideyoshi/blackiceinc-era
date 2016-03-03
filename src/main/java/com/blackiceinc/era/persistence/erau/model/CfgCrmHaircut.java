@@ -41,6 +41,10 @@ public class CfgCrmHaircut {
         this.seq = seq;
     }
 
+    public CfgCrmHaircut() {
+
+    }
+
     public String getEraColType() {
         return eraColType;
     }

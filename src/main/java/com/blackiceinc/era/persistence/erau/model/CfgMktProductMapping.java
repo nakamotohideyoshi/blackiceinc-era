@@ -28,6 +28,9 @@ public class CfgMktProductMapping {
     @Column(name = "UNDERLYING_TYPE")
     private String underlyingType;
 
+    public CfgMktProductMapping() {
+    }
+
     public CfgMktProductMapping(String mktProductType, String contractType, String exchangedTraded, String instrumentType, String tableName, String underlyingType) {
         this.mktProductType = mktProductType;
         this.contractType = contractType;

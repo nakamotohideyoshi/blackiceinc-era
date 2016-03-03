@@ -1,6 +1,5 @@
 package com.blackiceinc.era.services.excel.mapper;
 
-import com.blackiceinc.era.persistence.erau.model.CfgFinancialBook;
 import com.blackiceinc.era.persistence.erau.model.CfgReclassCheckDef;
 import com.blackiceinc.era.persistence.erau.repository.CfgReclassCheckDefRepository;
 import org.apache.poi.ss.usermodel.Row;
@@ -58,7 +57,7 @@ public class CfgReclassCheckDefObjectMapper {
 
     public void importData(XSSFSheet sheet) {
         List<CfgReclassCheckDef> all = cfgReclassCheckDefRepository.findAll();
-        ExcelUtils.removeAllRowsExceltFirstOne(sheet);
+        ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
         for (CfgReclassCheckDef cfgReclassCheckDef:all){
             XSSFRow row = sheet.createRow(rowIndex);

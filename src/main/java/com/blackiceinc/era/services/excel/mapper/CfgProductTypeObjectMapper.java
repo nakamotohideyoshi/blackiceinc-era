@@ -1,6 +1,5 @@
 package com.blackiceinc.era.services.excel.mapper;
 
-import com.blackiceinc.era.persistence.erau.model.CfgFinancialBook;
 import com.blackiceinc.era.persistence.erau.model.CfgProductType;
 import com.blackiceinc.era.persistence.erau.repository.CfgProductTypeRepository;
 import org.apache.poi.ss.usermodel.Row;
@@ -55,7 +54,7 @@ public class CfgProductTypeObjectMapper {
 
     public void importCfgProductTypes(XSSFSheet sheet) {
         List<CfgProductType> all = cfgProductTypeRepository.findAll();
-        ExcelUtils.removeAllRowsExceltFirstOne(sheet);
+        ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
         for (CfgProductType cfgProductType:all){
             XSSFRow row = sheet.createRow(rowIndex);

@@ -1,8 +1,8 @@
 package com.blackiceinc.era.services.excel.mapper;
 
-import com.blackiceinc.era.persistence.erau.model.CfgFinancialBook;
 import com.blackiceinc.era.persistence.erau.model.CfgMktIrrGnrBand;
 import com.blackiceinc.era.persistence.erau.repository.CfgMktIrrGnrBandRepository;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -46,7 +46,18 @@ public class CfgMktIrrGnrBandObjectMapper {
 
         CfgMktIrrGnrBand cfgMktIrrGnrBand = new CfgMktIrrGnrBand();
 
-        cfgMktIrrGnrBand.setCode(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
+        Cell cell0 = row.getCell(0);
+        if (cell0!=null) {
+            switch (cell0.getCellType()){
+                case Cell.CELL_TYPE_NUMERIC:
+                    cfgMktIrrGnrBand.setCode(cell0 != null ? String.valueOf((long)cell0.getNumericCellValue()) : null);
+                    break;
+                case Cell.CELL_TYPE_STRING:
+                    cfgMktIrrGnrBand.setCode(cell0 != null ? cell0.getStringCellValue() : null);
+                    break;
+            }
+        }
+
         cfgMktIrrGnrBand.setRiskWeight(row.getCell(1) != null ? row.getCell(1).getNumericCellValue() : null);
 
         return cfgMktIrrGnrBand;
@@ -54,7 +65,7 @@ public class CfgMktIrrGnrBandObjectMapper {
 
     public void importData(XSSFSheet sheet) {
         List<CfgMktIrrGnrBand> all = cfgMktIrrGnrBandRepository.findAll();
-        ExcelUtils.removeAllRowsExceltFirstOne(sheet);
+        ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
         for (CfgMktIrrGnrBand cfgMktIrrGnrBand:all){
             XSSFRow row = sheet.createRow(rowIndex);

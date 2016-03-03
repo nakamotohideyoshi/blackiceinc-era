@@ -1,8 +1,8 @@
 package com.blackiceinc.era.services.excel.mapper;
 
-import com.blackiceinc.era.persistence.erau.model.CfgFinancialBook;
 import com.blackiceinc.era.persistence.erau.model.CfgOpsRisk;
 import com.blackiceinc.era.persistence.erau.repository.CfgOpsRiskRepository;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -46,7 +46,18 @@ public class CfgOpsRiskObjectMapper {
 
         CfgOpsRisk cfgOpsRisk = new CfgOpsRisk();
 
-        cfgOpsRisk.setCode(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
+        Cell cell0 = row.getCell(0);
+        if (cell0!=null){
+            switch (cell0.getCellType()){
+                case Cell.CELL_TYPE_NUMERIC:
+                    cfgOpsRisk.setCode(cell0 != null ? String.valueOf((long)cell0.getNumericCellValue()) : null);
+                    break;
+                case Cell.CELL_TYPE_STRING:
+                    cfgOpsRisk.setCode(cell0 != null ? cell0.getStringCellValue() : null);
+                    break;
+            }
+        }
+
         cfgOpsRisk.setRiskWeight(row.getCell(1) != null ? row.getCell(1).getNumericCellValue() : null);
 
         return cfgOpsRisk;
@@ -54,7 +65,7 @@ public class CfgOpsRiskObjectMapper {
 
     public void importData(XSSFSheet sheet) {
         List<CfgOpsRisk> all = cfgOpsRiskRepository.findAll();
-        ExcelUtils.removeAllRowsExceltFirstOne(sheet);
+        ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
         for (CfgOpsRisk cfgOpsRisk:all){
             XSSFRow row = sheet.createRow(rowIndex);

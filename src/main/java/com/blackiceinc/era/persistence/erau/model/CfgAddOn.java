@@ -22,6 +22,9 @@ public class CfgAddOn {
     @Column(name = "RISK_WEIGHT")
     private Double riskWeight;
 
+    public CfgAddOn() {
+    }
+
     public CfgAddOn(String eraProductType, Long maturityStart, Long maturityEnd, Double riskWeight) {
         this.eraProductType = eraProductType;
         this.maturityStart = maturityStart;

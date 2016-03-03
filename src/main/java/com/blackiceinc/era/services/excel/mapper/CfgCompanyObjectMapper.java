@@ -54,7 +54,7 @@ public class CfgCompanyObjectMapper {
 
     public void importCfgCompanies(XSSFSheet companySheet) {
         List<CfgCompany> all = cfgCompanyRepository.findAll();
-        ExcelUtils.removeAllRowsExceltFirstOne(companySheet);
+        ExcelUtils.removeAllRowsExcelFirstOne(companySheet);
         int rowIndex = 1;
         for (CfgCompany cfgFinancialBook : all) {
             XSSFRow row = companySheet.createRow(rowIndex);

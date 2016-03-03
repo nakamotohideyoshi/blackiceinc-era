@@ -1,7 +1,6 @@
 package com.blackiceinc.era.services.excel.mapper;
 
 import com.blackiceinc.era.persistence.erau.model.CfgCapElementsType;
-import com.blackiceinc.era.persistence.erau.model.CfgFinancialBook;
 import com.blackiceinc.era.persistence.erau.repository.CfgCapElementsTypeRepository;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -54,7 +53,7 @@ public class CfgCapElementsTypeObjectMapper {
 
     public void importData(XSSFSheet sheet) {
         List<CfgCapElementsType> all = cfgCapElementsTypeRepository.findAll();
-        ExcelUtils.removeAllRowsExceltFirstOne(sheet);
+        ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
         for (CfgCapElementsType cfgCapElementsType:all){
             XSSFRow row = sheet.createRow(rowIndex);

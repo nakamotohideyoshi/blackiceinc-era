@@ -1,6 +1,5 @@
 package com.blackiceinc.era.services.excel.mapper;
 
-import com.blackiceinc.era.persistence.erau.model.CfgCompany;
 import com.blackiceinc.era.persistence.erau.model.CfgCompanyDimension;
 import com.blackiceinc.era.persistence.erau.repository.CfgCompanyDimensionRepository;
 import org.apache.poi.ss.usermodel.Row;
@@ -52,7 +51,7 @@ public class CfgCompanyDimensionObjectMapper {
 
     public void importCfgCompanyDimension(XSSFSheet companyDimensionSheet) {
         List<CfgCompanyDimension> all = cfgCompanyDimensionRepository.findAll();
-        ExcelUtils.removeAllRowsExceltFirstOne(companyDimensionSheet);
+        ExcelUtils.removeAllRowsExcelFirstOne(companyDimensionSheet);
         int rowIndex = 1;
         for (CfgCompanyDimension cfgCompanyDimension : all) {
             XSSFRow row = companyDimensionSheet.createRow(rowIndex);

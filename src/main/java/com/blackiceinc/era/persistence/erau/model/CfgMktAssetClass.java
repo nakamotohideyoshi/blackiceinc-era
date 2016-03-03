@@ -21,6 +21,10 @@ public class CfgMktAssetClass {
         this.mktAssetClassDesc = mktAssetClassDesc;
     }
 
+    public CfgMktAssetClass() {
+
+    }
+
     public String getMktAssetClass() {
         return mktAssetClass;
     }

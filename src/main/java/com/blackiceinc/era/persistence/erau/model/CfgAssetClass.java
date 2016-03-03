@@ -20,6 +20,10 @@ public class CfgAssetClass {
         this.eraAssetClassDesc = eraAssetClassDesc;
     }
 
+    public CfgAssetClass() {
+
+    }
+
     public String getEraAssetClass() {
         return eraAssetClass;
     }

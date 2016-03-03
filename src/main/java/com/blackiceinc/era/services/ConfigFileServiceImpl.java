@@ -2,9 +2,6 @@ package com.blackiceinc.era.services;
 
 import com.blackiceinc.era.persistence.erau.model.ConfigFile;
 import com.blackiceinc.era.persistence.erau.repository.ConfigFileRepository;
-import com.blackiceinc.era.services.excel.mapper.CfgCompanyLinkageObjectMapper;
-import com.blackiceinc.era.services.excel.mapper.CfgCompanyObjectMapper;
-import com.blackiceinc.era.services.excel.mapper.CfgFinancialBookObjectMapper;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +12,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Calendar;
 
@@ -30,20 +28,11 @@ public class ConfigFileServiceImpl implements ConfigFileService {
     @Value("${storage-path}")
     private String storagePath;
 
-
-    private CfgFinancialBookObjectMapper cfgFinancialBookObjectMapper;
-    private CfgCompanyObjectMapper cfgCompanyObjectMapper;
-    private CfgCompanyLinkageObjectMapper cfgCompanyLinkageObjectMapper;
-
     private ConfigFileRepository configFileRepository;
 
     @Autowired
-    public ConfigFileServiceImpl(ConfigFileRepository configFileRepository, CfgFinancialBookObjectMapper cfgFinancialBookObjectMapper,
-                                 CfgCompanyObjectMapper cfgCompanyObjectMapper, CfgCompanyLinkageObjectMapper cfgCompanyLinkageObjectMapper) {
+    public ConfigFileServiceImpl(ConfigFileRepository configFileRepository) {
         this.configFileRepository = configFileRepository;
-        this.cfgFinancialBookObjectMapper = cfgFinancialBookObjectMapper;
-        this.cfgCompanyObjectMapper = cfgCompanyObjectMapper;
-        this.cfgCompanyLinkageObjectMapper = cfgCompanyLinkageObjectMapper;
     }
 
     @Override

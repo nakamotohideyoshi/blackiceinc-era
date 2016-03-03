@@ -8,12 +8,14 @@ import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.xml.sax.SAXException;
 
 import java.io.*;
 import java.net.URLDecoder;
 import java.util.List;
 
+@Service
 public class ConfigurationExportImportServiceImpl implements ConfigurationExportImportService {
     public static final String FINANCIAL_BOOK = "FINANCIAL_BOOK";
     public static final String COMPANY = "COMPANY";
@@ -222,170 +224,6 @@ public class ConfigurationExportImportServiceImpl implements ConfigurationExport
         ConfigFile configFile = configFileRepository.findOne(id);
 
         try {
-            FileInputStream file = new FileInputStream(new File(configFile.getFilePath()));
-            //Create Workbook instance holding reference to .xlsx file
-            XSSFWorkbook workbook = new XSSFWorkbook(file);
-
-            XSSFSheet financialBookSheet = workbook.getSheet(FINANCIAL_BOOK);
-            List<CfgFinancialBook> cfgFinancialBookList = cfgFinancialBookObjectMapper.extractData(financialBookSheet);
-
-            XSSFSheet companySheet = workbook.getSheet(COMPANY);
-            List<CfgCompany> cfgCompaniesList = cfgCompanyObjectMapper.extractCfgCompanies(companySheet);
-
-            XSSFSheet companyLinkageSheet = workbook.getSheet(COMPANY_LINKAGE);
-            List<CfgCompanyLinkage> cfgCompaniesLinkageList = cfgCompanyLinkageObjectMapper.extractCfgCompanyLinkage(companyLinkageSheet);
-
-            XSSFSheet companyDimensionSheet = workbook.getSheet(COMPANY_DIMENSION);
-            List<CfgCompanyDimension> cfgCompanyDimensions = cfgCompanyDimensionObjectMapper.extractCfgCompanyDimensions(companyDimensionSheet);
-
-            XSSFSheet companyDimensionConsolidationSheet = workbook.getSheet(COMPANY_DIMENSION_CONSOLIDATION);
-            List<CfgCompanyDimensionConsolidation> cfgCompanyDimensionConsolidations = cfgCompanyDimensionConsolidationObjectMapper.extractCfgCompanyDimensionsConsolidation(companyDimensionConsolidationSheet);
-
-
-            XSSFSheet entityTypeSheet = workbook.getSheet(ENTITY_TYPE);
-            List<CfgEntityType> cfgEntityTypes = cfgEntityTypeObjectMapper.extractCfgEntityTypes(entityTypeSheet);
-
-            XSSFSheet entityTypeMappingSheet = workbook.getSheet(ENTITY_TYPE_MAPPING);
-            List<CfgEntityTypeMapping> cfgEntityTypeMappings = cfgEntityTypeMappingObjectMapper.extractCfgEntityTypeMappings(entityTypeMappingSheet);
-
-
-            XSSFSheet productTypeSheet = workbook.getSheet(PRODUCT_TYPE);
-            List<CfgProductType> cfgProductTypes = cfgProductTypeObjectMapper.extractCfgProductTypes(productTypeSheet);
-
-            XSSFSheet productTypeMappingSheet = workbook.getSheet(PRODUCT_TYPE_MAPPING);
-            List<CfgProductTypeMapping> cfgProductTypeMappings = cfgProductTypeMappingObjectMapper.extractCfgProductTypeMappping(productTypeMappingSheet);
-
-
-            XSSFSheet assetClassSheet = workbook.getSheet(ASSET_CLASS);
-            List<CfgAssetClass> cfgAssetClass = cfgAssetClassObjectMapper.extractCfgAssetClass(assetClassSheet);
-
-            XSSFSheet assetClassMappingSheet = workbook.getSheet(ASSET_CLASS_MAPPING);
-            List<CfgAssetClassMapping> cfgAssetClassMappings = cfgAssetClassMappingObjectMapper.extractCfgAssetClassMapping(assetClassMappingSheet);
-
-
-            XSSFSheet nonPerformingMappingSheet = workbook.getSheet(NON_PERFORMING_MAPPING);
-            List<CfgNonPerformingMapping> cfgNonPerformingMappings = cfgNonPerformingMappingObjectMapper.extractData(nonPerformingMappingSheet);
-
-
-            XSSFSheet agencyEligibilitySheet = workbook.getSheet(AGENCY_ELIGIBILITY);
-            List<CfgAgencyEligibility> cfgAgencyEligibility = cfgAgencyEligibilityObjectMapper.extractData(agencyEligibilitySheet);
-
-
-            XSSFSheet ratingSheet = workbook.getSheet(RATING);
-            List<CfgRating> cfgRatings = cfgRatingObjectMapper.extractData(ratingSheet);
-
-
-            XSSFSheet creditMeasureSheet = workbook.getSheet(CREDIT_MEASURE);
-            List<CfgCreditMeasure> cfgCreditMeasures = cfgCreditMeasureObjectMapper.extractData(creditMeasureSheet);
-
-
-            XSSFSheet riskWeightMappingSheet = workbook.getSheet(RISK_WEIGHT_MAPPING);
-            List<CfgRiskWeightMapping> cfgRiskWeightMappings = cfgRiskWeightMappingObjectMapper.extractData(riskWeightMappingSheet);
-
-            XSSFSheet ccfMappingSheet = workbook.getSheet(CCF_MAPPING);
-            List<CfgCcfMapping> cfgCcfMappings = cfgCcfMappingObjectMapper.extractData(ccfMappingSheet);
-
-            XSSFSheet addOnSheet = workbook.getSheet(ADD_ON);
-            List<CfgAddOn> cfgAddOns = cfgAddOnObjectMapper.extractData(addOnSheet);
-
-            XSSFSheet crmEligibilitySheet = workbook.getSheet(CRM_ELIGIBILITY);
-            List<CfgCrmEligibility> cfgCrmEligibilities = cfgCrmEligibilityObjectMapper.extractData(crmEligibilitySheet);
-
-            XSSFSheet crmHaircutSheet = workbook.getSheet(CRM_HAIRCUT);
-            List<CfgCrmHaircut> cfgCrmHaircuts = cfgCrmHaircutObjectMapper.extractData(crmHaircutSheet);
-
-            XSSFSheet reclassSheet = workbook.getSheet(RECLASS);
-            List<CfgReclass> cfgReclasses = cfgReclassObjectMapper.extractData(reclassSheet);
-
-            XSSFSheet reclassCheckDefSheet = workbook.getSheet(RECLASS_CHECK_DEF);
-            List<CfgReclassCheckDef> cfgReclassCheckDefs = cfgReclassCheckDefObjectMapper.extractData(reclassCheckDefSheet);
-
-            XSSFSheet reclassCheckTypeSheet = workbook.getSheet(RECLASS_CHECK_TYPE);
-            List<CfgReclassCheckType> cfgReclassCheckTypes = cfgReclassCheckTypeObjectMapper.extractData(reclassCheckTypeSheet);
-
-            XSSFSheet mktProductTypeSheet = workbook.getSheet(MKT_PRODUCT_TYPE);
-            List<CfgMktProductType> cfgMktProductTypes = cfgMktProductTypeObjectMapper.extractData(mktProductTypeSheet);
-
-            XSSFSheet mktProductMappingSheet = workbook.getSheet(MKT_PRODUCT_MAPPING);
-            List<CfgMktProductMapping> cfgMktProductMappings = cfgMktProductMappingObjectMapper.extractData(mktProductMappingSheet);
-
-            XSSFSheet mktAssetClassSheet = workbook.getSheet(MKT_ASSET_CLASS);
-            List<CfgMktAssetClass> cfgMktAssetClasses = cfgMktAssetClassObjectMapper.extractData(mktAssetClassSheet);
-
-            XSSFSheet mktAssetClassMappingSheet = workbook.getSheet(MKT_ASSET_CLASS_MAPPING);
-            List<CfgMktAssetClassMapping> cfgMktAssetClassMappings = cfgMktAssetClassMappingObjectMapper.extractData(mktAssetClassMappingSheet);
-
-            XSSFSheet mktIrrSpcRiskSheet = workbook.getSheet(MKT_IRR_SPC_RISK);
-            List<CfgMktIrrSpcRisk> cfgMktIrrSpcRisks = cfgMktIrrSpcRiskObjectMapper.extractData(mktIrrSpcRiskSheet);
-
-            XSSFSheet mktIrrGnrRiskSheet = workbook.getSheet(MKT_IRR_GNR_RISK);
-            List<CfgMktIrrGnrRisk> cfgMktIrrGnrRisks = cfgMktIrrGnrRiskObjectMapper.extractData(mktIrrGnrRiskSheet);
-
-            XSSFSheet mktIrrGnrBandSheet = workbook.getSheet(MKT_IRR_GNR_BAND);
-            List<CfgMktIrrGnrBand> cfgMktIrrGnrBands = cfgMktIrrGnrBandObjectMapper.extractData(mktIrrGnrBandSheet);
-
-            XSSFSheet mktIrrGnrIntraSheet = workbook.getSheet(MKT_IRR_GNR_INTRA);
-            List<CfgMktIrrGnrIntra> cfgMktIrrGnrIntras = cfgMktIrrGnrIntraObjectMapper.extractData(mktIrrGnrIntraSheet);
-
-            XSSFSheet mktIrrGnrInterSheet = workbook.getSheet(MKT_IRR_GNR_INTER);
-            List<CfgMktIrrGnrInter> cfgMktIrrGnrInters = cfgMktIrrGnrInterObjectMapper.extractData(mktIrrGnrInterSheet);
-
-            XSSFSheet mktEqtSpcSheet = workbook.getSheet(MKT_EQT_SPC);
-            List<CfgMktEqtSpc> cfgMktEqtSpcs = cfgMktEqtSpcObjectMapper.extractData(mktEqtSpcSheet);
-
-            XSSFSheet mktEqtGnrSheet = workbook.getSheet(MKT_EQT_GNR);
-            List<CfgMktEqtGnr> cfgMktEqtGnrs = cfgMktEqtGnrObjectMapper.extractData(mktEqtGnrSheet);
-
-            XSSFSheet mktComDrtSheet = workbook.getSheet(MKT_COM_DRT);
-            List<CfgMktComDrt> cfgMktComDrts = cfgMktComDrtObjectMapper.extractData(mktComDrtSheet);
-
-            XSSFSheet mktComOthSheet = workbook.getSheet(MKT_COM_OTH);
-            List<CfgMktComOth> cfgMktComOths = cfgMktComOthObjectMapper.extractData(mktComOthSheet);
-
-            XSSFSheet mktFxSheet = workbook.getSheet(MKT_FX);
-            List<CfgMktFx> cfgMktFxes = cfgMktFxObjectMapper.extractData(mktFxSheet);
-
-            XSSFSheet opsProductTypeSheet = workbook.getSheet(OPS_PRODUCT_TYPE);
-            List<CfgOpsProductType> cfgOpsProductTypes = cfgOpsProductTypeObjectMapper.extractData(opsProductTypeSheet);
-
-            XSSFSheet opsProductTypeMappingSheet = workbook.getSheet(OPS_PRODUCT_TYPE_MAPPING);
-            List<CfgOpsProductTypeMapping> cfgOpsProductTypeMappings = cfgOpsProductTypeMappingObjectMapper.extractData(opsProductTypeMappingSheet);
-
-            XSSFSheet opsFormulaSheet = workbook.getSheet(OPS_FORMULA);
-            List<CfgOpsFormula> cfgOpsFormulas = cfgOpsFormulaObjectMapper.extractData(opsFormulaSheet);
-
-            XSSFSheet opsRiskSheet = workbook.getSheet(OPS_RISK);
-            List<CfgOpsRisk> cfgOpsRisks = cfgOpsRiskObjectMapper.extractData(opsRiskSheet);
-
-
-            XSSFSheet capElementsSheet = workbook.getSheet(CAP_ELEMENTS);
-            List<CfgCapElements> cfgCapElementses = cfgCapElementsObjectMapper.extractData(capElementsSheet);
-
-            XSSFSheet capElementsTypeSheet = workbook.getSheet(CAP_ELEMENTS_TYPE);
-            List<CfgCapElementsType> cfgCapElementsTypes = cfgCapElementsTypeObjectMapper.extractData(capElementsTypeSheet);
-
-            XSSFSheet capElementsLimitSheet = workbook.getSheet(CAP_ELEMENTS_LIMIT);
-            List<CfgCapElementsLimit> cfgCapElementsLimits = cfgCapElementsLimitObjectMapper.extractData(capElementsLimitSheet);
-
-            XSSFSheet capElementsMappingSheet = workbook.getSheet(CAP_ELEMENTS_MAPPING);
-            List<CfgCapElementsMapping> cfgCapElementsMappings = cfgCapElementsMappingObjectMapper.extractData(capElementsMappingSheet);
-
-            XSSFSheet capElementsFormulaSheet = workbook.getSheet(CAP_ELEMENTS_FORMULA);
-            List<CfgCapElementsFormula> cfgCapElementsFormulas = cfgCapElementsFormulaObjectMapper.extractData(capElementsFormulaSheet);
-
-            file.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void importConfiguration(Long id) {
-        ConfigFile configFile = configFileRepository.findOne(id);
-
-        try {
             FileInputStream file = new FileInputStream(new File(URLDecoder.decode(configFile.getFilePath(), CharEncoding.UTF_8)));
 
             //Create Workbook instance holding reference to .xlsx file
@@ -547,5 +385,172 @@ public class ConfigurationExportImportServiceImpl implements ConfigurationExport
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void importConfiguration(Long id) {
+        ConfigFile configFile = configFileRepository.findOne(id);
+
+        try {
+            FileInputStream file = new FileInputStream(new File(configFile.getFilePath()));
+            //Create Workbook instance holding reference to .xlsx file
+            XSSFWorkbook workbook = new XSSFWorkbook(file);
+
+            XSSFSheet financialBookSheet = workbook.getSheet(FINANCIAL_BOOK);
+            List<CfgFinancialBook> cfgFinancialBookList = cfgFinancialBookObjectMapper.extractData(financialBookSheet);
+
+            XSSFSheet companySheet = workbook.getSheet(COMPANY);
+            List<CfgCompany> cfgCompaniesList = cfgCompanyObjectMapper.extractCfgCompanies(companySheet);
+
+            XSSFSheet companyLinkageSheet = workbook.getSheet(COMPANY_LINKAGE);
+            List<CfgCompanyLinkage> cfgCompaniesLinkageList = cfgCompanyLinkageObjectMapper.extractCfgCompanyLinkage(companyLinkageSheet);
+
+            XSSFSheet companyDimensionSheet = workbook.getSheet(COMPANY_DIMENSION);
+            List<CfgCompanyDimension> cfgCompanyDimensions = cfgCompanyDimensionObjectMapper.extractCfgCompanyDimensions(companyDimensionSheet);
+
+            XSSFSheet companyDimensionConsolidationSheet = workbook.getSheet(COMPANY_DIMENSION_CONSOLIDATION);
+            List<CfgCompanyDimensionConsolidation> cfgCompanyDimensionConsolidations = cfgCompanyDimensionConsolidationObjectMapper.extractCfgCompanyDimensionsConsolidation(companyDimensionConsolidationSheet);
+
+
+            XSSFSheet entityTypeSheet = workbook.getSheet(ENTITY_TYPE);
+            List<CfgEntityType> cfgEntityTypes = cfgEntityTypeObjectMapper.extractCfgEntityTypes(entityTypeSheet);
+
+            XSSFSheet entityTypeMappingSheet = workbook.getSheet(ENTITY_TYPE_MAPPING);
+            List<CfgEntityTypeMapping> cfgEntityTypeMappings = cfgEntityTypeMappingObjectMapper.extractCfgEntityTypeMappings(entityTypeMappingSheet);
+
+
+            XSSFSheet productTypeSheet = workbook.getSheet(PRODUCT_TYPE);
+            List<CfgProductType> cfgProductTypes = cfgProductTypeObjectMapper.extractCfgProductTypes(productTypeSheet);
+
+            XSSFSheet productTypeMappingSheet = workbook.getSheet(PRODUCT_TYPE_MAPPING);
+            List<CfgProductTypeMapping> cfgProductTypeMappings = cfgProductTypeMappingObjectMapper.extractCfgProductTypeMappping(productTypeMappingSheet);
+
+
+            XSSFSheet assetClassSheet = workbook.getSheet(ASSET_CLASS);
+            List<CfgAssetClass> cfgAssetClass = cfgAssetClassObjectMapper.extractCfgAssetClass(assetClassSheet);
+
+            XSSFSheet assetClassMappingSheet = workbook.getSheet(ASSET_CLASS_MAPPING);
+            List<CfgAssetClassMapping> cfgAssetClassMappings = cfgAssetClassMappingObjectMapper.extractCfgAssetClassMapping(assetClassMappingSheet);
+
+
+            XSSFSheet nonPerformingMappingSheet = workbook.getSheet(NON_PERFORMING_MAPPING);
+            List<CfgNonPerformingMapping> cfgNonPerformingMappings = cfgNonPerformingMappingObjectMapper.extractData(nonPerformingMappingSheet);
+
+
+            XSSFSheet agencyEligibilitySheet = workbook.getSheet(AGENCY_ELIGIBILITY);
+            List<CfgAgencyEligibility> cfgAgencyEligibility = cfgAgencyEligibilityObjectMapper.extractData(agencyEligibilitySheet);
+
+
+            XSSFSheet ratingSheet = workbook.getSheet(RATING);
+            List<CfgRating> cfgRatings = cfgRatingObjectMapper.extractData(ratingSheet);
+
+
+            XSSFSheet creditMeasureSheet = workbook.getSheet(CREDIT_MEASURE);
+            List<CfgCreditMeasure> cfgCreditMeasures = cfgCreditMeasureObjectMapper.extractData(creditMeasureSheet);
+
+
+            XSSFSheet riskWeightMappingSheet = workbook.getSheet(RISK_WEIGHT_MAPPING);
+            List<CfgRiskWeightMapping> cfgRiskWeightMappings = cfgRiskWeightMappingObjectMapper.extractData(riskWeightMappingSheet);
+
+            XSSFSheet ccfMappingSheet = workbook.getSheet(CCF_MAPPING);
+            List<CfgCcfMapping> cfgCcfMappings = cfgCcfMappingObjectMapper.extractData(ccfMappingSheet);
+
+            XSSFSheet addOnSheet = workbook.getSheet(ADD_ON);
+            List<CfgAddOn> cfgAddOns = cfgAddOnObjectMapper.extractData(addOnSheet);
+
+            XSSFSheet crmEligibilitySheet = workbook.getSheet(CRM_ELIGIBILITY);
+            List<CfgCrmEligibility> cfgCrmEligibilities = cfgCrmEligibilityObjectMapper.extractData(crmEligibilitySheet);
+
+            XSSFSheet crmHaircutSheet = workbook.getSheet(CRM_HAIRCUT);
+            List<CfgCrmHaircut> cfgCrmHaircuts = cfgCrmHaircutObjectMapper.extractData(crmHaircutSheet);
+
+            XSSFSheet reclassSheet = workbook.getSheet(RECLASS);
+            List<CfgReclass> cfgReclasses = cfgReclassObjectMapper.extractData(reclassSheet);
+
+            XSSFSheet reclassCheckDefSheet = workbook.getSheet(RECLASS_CHECK_DEF);
+            List<CfgReclassCheckDef> cfgReclassCheckDefs = cfgReclassCheckDefObjectMapper.extractData(reclassCheckDefSheet);
+
+            XSSFSheet reclassCheckTypeSheet = workbook.getSheet(RECLASS_CHECK_TYPE);
+            List<CfgReclassCheckType> cfgReclassCheckTypes = cfgReclassCheckTypeObjectMapper.extractData(reclassCheckTypeSheet);
+
+            XSSFSheet mktProductTypeSheet = workbook.getSheet(MKT_PRODUCT_TYPE);
+            List<CfgMktProductType> cfgMktProductTypes = cfgMktProductTypeObjectMapper.extractData(mktProductTypeSheet);
+
+            XSSFSheet mktProductMappingSheet = workbook.getSheet(MKT_PRODUCT_MAPPING);
+            List<CfgMktProductMapping> cfgMktProductMappings = cfgMktProductMappingObjectMapper.extractData(mktProductMappingSheet);
+
+            XSSFSheet mktAssetClassSheet = workbook.getSheet(MKT_ASSET_CLASS);
+            List<CfgMktAssetClass> cfgMktAssetClasses = cfgMktAssetClassObjectMapper.extractData(mktAssetClassSheet);
+
+            XSSFSheet mktAssetClassMappingSheet = workbook.getSheet(MKT_ASSET_CLASS_MAPPING);
+            List<CfgMktAssetClassMapping> cfgMktAssetClassMappings = cfgMktAssetClassMappingObjectMapper.extractData(mktAssetClassMappingSheet);
+
+            XSSFSheet mktIrrSpcRiskSheet = workbook.getSheet(MKT_IRR_SPC_RISK);
+            List<CfgMktIrrSpcRisk> cfgMktIrrSpcRisks = cfgMktIrrSpcRiskObjectMapper.extractData(mktIrrSpcRiskSheet);
+
+            XSSFSheet mktIrrGnrRiskSheet = workbook.getSheet(MKT_IRR_GNR_RISK);
+            List<CfgMktIrrGnrRisk> cfgMktIrrGnrRisks = cfgMktIrrGnrRiskObjectMapper.extractData(mktIrrGnrRiskSheet);
+
+            XSSFSheet mktIrrGnrBandSheet = workbook.getSheet(MKT_IRR_GNR_BAND);
+            List<CfgMktIrrGnrBand> cfgMktIrrGnrBands = cfgMktIrrGnrBandObjectMapper.extractData(mktIrrGnrBandSheet);
+
+            XSSFSheet mktIrrGnrIntraSheet = workbook.getSheet(MKT_IRR_GNR_INTRA);
+            List<CfgMktIrrGnrIntra> cfgMktIrrGnrIntras = cfgMktIrrGnrIntraObjectMapper.extractData(mktIrrGnrIntraSheet);
+
+            XSSFSheet mktIrrGnrInterSheet = workbook.getSheet(MKT_IRR_GNR_INTER);
+            List<CfgMktIrrGnrInter> cfgMktIrrGnrInters = cfgMktIrrGnrInterObjectMapper.extractData(mktIrrGnrInterSheet);
+
+            XSSFSheet mktEqtSpcSheet = workbook.getSheet(MKT_EQT_SPC);
+            List<CfgMktEqtSpc> cfgMktEqtSpcs = cfgMktEqtSpcObjectMapper.extractData(mktEqtSpcSheet);
+
+            XSSFSheet mktEqtGnrSheet = workbook.getSheet(MKT_EQT_GNR);
+            List<CfgMktEqtGnr> cfgMktEqtGnrs = cfgMktEqtGnrObjectMapper.extractData(mktEqtGnrSheet);
+
+            XSSFSheet mktComDrtSheet = workbook.getSheet(MKT_COM_DRT);
+            List<CfgMktComDrt> cfgMktComDrts = cfgMktComDrtObjectMapper.extractData(mktComDrtSheet);
+
+            XSSFSheet mktComOthSheet = workbook.getSheet(MKT_COM_OTH);
+            List<CfgMktComOth> cfgMktComOths = cfgMktComOthObjectMapper.extractData(mktComOthSheet);
+
+            XSSFSheet mktFxSheet = workbook.getSheet(MKT_FX);
+            List<CfgMktFx> cfgMktFxes = cfgMktFxObjectMapper.extractData(mktFxSheet);
+
+            XSSFSheet opsProductTypeSheet = workbook.getSheet(OPS_PRODUCT_TYPE);
+            List<CfgOpsProductType> cfgOpsProductTypes = cfgOpsProductTypeObjectMapper.extractData(opsProductTypeSheet);
+
+            XSSFSheet opsProductTypeMappingSheet = workbook.getSheet(OPS_PRODUCT_TYPE_MAPPING);
+            List<CfgOpsProductTypeMapping> cfgOpsProductTypeMappings = cfgOpsProductTypeMappingObjectMapper.extractData(opsProductTypeMappingSheet);
+
+            XSSFSheet opsFormulaSheet = workbook.getSheet(OPS_FORMULA);
+            List<CfgOpsFormula> cfgOpsFormulas = cfgOpsFormulaObjectMapper.extractData(opsFormulaSheet);
+
+            XSSFSheet opsRiskSheet = workbook.getSheet(OPS_RISK);
+            List<CfgOpsRisk> cfgOpsRisks = cfgOpsRiskObjectMapper.extractData(opsRiskSheet);
+
+
+            XSSFSheet capElementsSheet = workbook.getSheet(CAP_ELEMENTS);
+            List<CfgCapElements> cfgCapElementses = cfgCapElementsObjectMapper.extractData(capElementsSheet);
+
+            XSSFSheet capElementsTypeSheet = workbook.getSheet(CAP_ELEMENTS_TYPE);
+            List<CfgCapElementsType> cfgCapElementsTypes = cfgCapElementsTypeObjectMapper.extractData(capElementsTypeSheet);
+
+            XSSFSheet capElementsLimitSheet = workbook.getSheet(CAP_ELEMENTS_LIMIT);
+            List<CfgCapElementsLimit> cfgCapElementsLimits = cfgCapElementsLimitObjectMapper.extractData(capElementsLimitSheet);
+
+            XSSFSheet capElementsMappingSheet = workbook.getSheet(CAP_ELEMENTS_MAPPING);
+            List<CfgCapElementsMapping> cfgCapElementsMappings = cfgCapElementsMappingObjectMapper.extractData(capElementsMappingSheet);
+
+            XSSFSheet capElementsFormulaSheet = workbook.getSheet(CAP_ELEMENTS_FORMULA);
+            List<CfgCapElementsFormula> cfgCapElementsFormulas = cfgCapElementsFormulaObjectMapper.extractData(capElementsFormulaSheet);
+
+            file.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
     }
 }

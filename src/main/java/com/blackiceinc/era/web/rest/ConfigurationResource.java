@@ -4,9 +4,11 @@ package com.blackiceinc.era.web.rest;
 import com.blackiceinc.era.persistence.erau.model.ConfigFile;
 import com.blackiceinc.era.persistence.erau.repository.ConfigFileRepository;
 import com.blackiceinc.era.services.ConfigFileService;
+import com.blackiceinc.era.services.ConfigurationExportImportService;
 import com.blackiceinc.era.web.rest.model.CRUDResponseObj;
 import com.blackiceinc.era.web.rest.model.DeleteResponse;
 import com.blackiceinc.era.web.rest.model.Response;
+import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,6 +39,9 @@ public class ConfigurationResource {
 
     @Autowired
     private ConfigFileService configFileService;
+
+    @Autowired
+    private ConfigurationExportImportService configurationExportImportService;
 
     @Autowired
     private ConfigFileRepository configFileRepository;
@@ -112,17 +118,19 @@ public class ConfigurationResource {
         log.debug("REST request to import ConfigFileDTO : {}", id);
 
         // import configuration and set status to 'CURRENT'
+        configurationExportImportService.importConfiguration(id);
 
         return ResponseEntity.ok().build();
     }
 
-    @RequestMapping(value = "/configuration/export",
+    @RequestMapping(value = "/configuration/{id}/export",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> exportConfig() {
+    public ResponseEntity<Void> exportConfig(@PathVariable Long id) throws OpenXML4JException, SAXException, IOException {
         log.debug("REST request to export current ConfigFileDTO");
 
         // export current ConfigFileDTO
+        configurationExportImportService.exportConfiguration(id);
 
         return ResponseEntity.ok().build();
     }

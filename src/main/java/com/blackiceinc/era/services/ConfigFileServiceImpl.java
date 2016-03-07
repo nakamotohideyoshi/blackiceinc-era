@@ -40,7 +40,7 @@ public class ConfigFileServiceImpl implements ConfigFileService {
         int pageNumber = (page != null) ? page : PAGE_0;
         int pageSize = (length != null) ? length : PAGE_SIZE_25;
 
-        Page<ConfigFile> byFileNameContaining = null;
+        Page<ConfigFile> byFileNameContaining;
         if (name != null && !name.isEmpty()) {
             byFileNameContaining = configFileRepository.findByFileNameContainingOrderByModifiedDesc(name, new PageRequest(pageNumber, pageSize));
         } else {

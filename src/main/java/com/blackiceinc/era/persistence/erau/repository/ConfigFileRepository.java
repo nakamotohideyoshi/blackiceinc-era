@@ -13,4 +13,6 @@ public interface ConfigFileRepository extends JpaRepository<ConfigFile, Long>, J
     Page<ConfigFile> findByFileNameContainingOrderByModifiedDesc(String fileName, Pageable pageable);
 
     Page<ConfigFile> findAllByOrderByModifiedDesc(Pageable pageable);
+
+    ConfigFile findOneByStatus(String current);
 }

@@ -5,6 +5,7 @@ import com.blackiceinc.era.persistence.erau.model.ConfigFile;
 import com.blackiceinc.era.persistence.erau.repository.ConfigFileRepository;
 import com.blackiceinc.era.services.ConfigFileService;
 import com.blackiceinc.era.services.ConfigurationExportImportService;
+import com.blackiceinc.era.services.ImportExportMessageProvider;
 import com.blackiceinc.era.web.rest.model.CRUDResponseObj;
 import com.blackiceinc.era.web.rest.model.DeleteResponse;
 import com.blackiceinc.era.web.rest.model.Response;
@@ -46,6 +47,9 @@ public class ConfigurationResource {
     @Autowired
     private ConfigFileRepository configFileRepository;
 
+    @Autowired
+    private ImportExportMessageProvider importExportMessageProvider;
+
     @RequestMapping(value = "/configuration",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -55,6 +59,8 @@ public class ConfigurationResource {
         log.debug("REST request to get all Configurations");
 
         Page<ConfigFile> configFiles = configFileService.findConfigFilesByParams(page, length, name);
+
+        importExportMessageProvider.addMessage("CONFIG");
 
         return new ResponseEntity<>(configFiles, HttpStatus.OK);
     }
@@ -112,25 +118,34 @@ public class ConfigurationResource {
     }
 
     @RequestMapping(value = "/configuration/{id}/import",
-            method = RequestMethod.PUT,
+            method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> importConfig(@PathVariable Long id) {
-        log.debug("REST request to import ConfigFileDTO : {}", id);
+    public ResponseEntity<Response> importConfig(@PathVariable Long id) {
+        log.info("REST request to import ConfigFile.id : {}", id);
+        long start = System.currentTimeMillis();
+        Response res = new Response();
+        try {
+            ConfigFile configFile = configFileRepository.findOne(id);
+            configurationExportImportService.importConfigurationFromFileIntoDb(configFile);
+        }catch (Exception ex){
+            log.error("Error making an import", ex);
+            res.setMessage("Error importing configuration!");
+            return new ResponseEntity<>(res, HttpStatus.EXPECTATION_FAILED);
+        }
 
-        // import configuration and set status to 'CURRENT'
-        configurationExportImportService.importConfiguration(id);
+        log.info("Final import of configFile.id : {} finished in {} ms", id, System.currentTimeMillis() - start);
 
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/configuration/{id}/export",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> exportConfig(@PathVariable Long id) throws OpenXML4JException, SAXException, IOException {
-        log.debug("REST request to export current ConfigFileDTO");
+        log.debug("REST request to import ConfigFile : {}", id);
 
         // export current ConfigFileDTO
-        configurationExportImportService.exportConfiguration(id);
+        configurationExportImportService.exportConfigurationFromDbIntoFile(id);
 
         return ResponseEntity.ok().build();
     }

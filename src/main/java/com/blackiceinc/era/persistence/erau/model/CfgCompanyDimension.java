@@ -1,34 +1,44 @@
 package com.blackiceinc.era.persistence.erau.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "CFG_COMPANY_DIMENSION")
 public class CfgCompanyDimension {
 
-    @Id
-    @Column(name = "COMPANY_CODE")
-    private String companyCode;
+    @EmbeddedId
+    private CfgCompanyDimensionKey cfgCompanyDimensionKey;
 
-    @Column(name = "FINANCIAL_BOOK")
-    private String financialBook;
+    public CfgCompanyDimension(CfgCompanyDimensionKey cfgCompanyDimensionKey) {
+        this.cfgCompanyDimensionKey = cfgCompanyDimensionKey;
+    }
+
+    public CfgCompanyDimension() {
+        this.cfgCompanyDimensionKey = new CfgCompanyDimensionKey();
+    }
+
+    public CfgCompanyDimension(String companyCode, String financialBook) {
+        this.cfgCompanyDimensionKey = new CfgCompanyDimensionKey();
+        this.cfgCompanyDimensionKey.setCompanyCode(companyCode);
+        this.cfgCompanyDimensionKey.setFinancialBook(financialBook);
+    }
+
 
     public String getCompanyCode() {
-        return companyCode;
+        return cfgCompanyDimensionKey.getCompanyCode();
     }
 
     public void setCompanyCode(String companyCode) {
-        this.companyCode = companyCode;
+        this.cfgCompanyDimensionKey.setCompanyCode(companyCode);
     }
 
     public String getFinancialBook() {
-        return financialBook;
+        return this.cfgCompanyDimensionKey.getFinancialBook();
     }
 
     public void setFinancialBook(String financialBook) {
-        this.financialBook = financialBook;
+        this.cfgCompanyDimensionKey.setFinancialBook(financialBook);
     }
+
+
 }

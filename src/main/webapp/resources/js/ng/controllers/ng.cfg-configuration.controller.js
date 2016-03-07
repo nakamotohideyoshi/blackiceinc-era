@@ -60,6 +60,38 @@ angular.module('ng.cfg-configuration.controller', [])
         $scope.getConfigurations(params);
       }
 
+      $scope.exportSelectedConfiguration = function() {
+        var checkedRow = getFirstCheckedRow();
+        $scope.loading = true;
+        CfgConfigurationService.export(checkedRow).then(function() {
+          $scope.loading = false;
+          ConfirmService.open("Export succesfully run.", null, true);
+        }, function(response) {
+          $scope.loading = false;
+          ConfirmService.open(response, null, true);
+        });
+      }
+
+      $scope.importSelectedConfiguration = function() {
+        var checkedRow = getFirstCheckedRow();
+        $scope.loading = true;
+        CfgConfigurationService.import(checkedRow).then(function() {
+          $scope.loading = false;
+          ConfirmService.open("Import succesfully run.", null, true);
+        }, function(response) {
+          $scope.loading = false;
+          ConfirmService.open(response, null, true);
+        });
+      }
+
+      getFirstCheckedRow = function() {
+        for (var i = 0; i < $scope.Configuration.list.length; i++) {
+          if ($scope.Configuration.list[i].$checked) {
+            return $scope.Configuration.list[i];
+          }
+        }
+      }
+
       // pagination functions begin
 
       $scope.maxRows = function() {

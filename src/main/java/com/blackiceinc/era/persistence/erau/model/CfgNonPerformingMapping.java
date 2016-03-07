@@ -1,43 +1,35 @@
 package com.blackiceinc.era.persistence.erau.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "CFG_NON_PERFORMING_MAPPING")
 public class CfgNonPerformingMapping {
 
-    @Id
-    @Column(name = "ERA_NPL_CODE")
-    private String eraNplCode;
-
-    @Column(name = "PERFORMING_STATUS")
-    private String performingStatus;
+    @EmbeddedId
+    private CfgNonPerformingMappingKey cfgNonPerformingMappingKey;
 
     public CfgNonPerformingMapping(String eraNplCode, String performingStatus) {
-        this.eraNplCode = eraNplCode;
-        this.performingStatus = performingStatus;
+        this.cfgNonPerformingMappingKey = new CfgNonPerformingMappingKey(eraNplCode, performingStatus);
     }
 
     public CfgNonPerformingMapping() {
-
+        this.cfgNonPerformingMappingKey = new CfgNonPerformingMappingKey();
     }
 
     public String getEraNplCode() {
-        return eraNplCode;
+        return this.cfgNonPerformingMappingKey.getEraNplCode();
     }
 
     public void setEraNplCode(String eraNplCode) {
-        this.eraNplCode = eraNplCode;
+        this.cfgNonPerformingMappingKey.setEraNplCode(eraNplCode);
     }
 
     public String getPerformingStatus() {
-        return performingStatus;
+        return this.cfgNonPerformingMappingKey.getPerformingStatus();
     }
 
     public void setPerformingStatus(String performingStatus) {
-        this.performingStatus = performingStatus;
+        this.cfgNonPerformingMappingKey.setPerformingStatus(performingStatus);
     }
 }

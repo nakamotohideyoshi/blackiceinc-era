@@ -29,6 +29,9 @@ public class ConfigurationExportImportServiceImplTest {
     private ConfigFileRepository configFileRepository;
 
     @Mock
+    private ImportConfigIntoDb importConfigIntoDb;
+
+    @Mock
     private CfgFinancialBookRepository cfgFinancialBookRepository;
     @Mock
     private CfgCompanyRepository cfgCompanyRepository;
@@ -70,7 +73,7 @@ public class ConfigurationExportImportServiceImplTest {
     private CfgRiskWeightMappingRepository cfgRiskWeightMappingRepository;
 
     @Mock
-    private CfgCcfMappingRepository cfgRiCfgCcfMappingRepository;
+    private CfgCcfMappingRepository cfgCcfMappingRepository;
 
     @Mock
     private CfgAddOnRepository cfgAddOnRepository;
@@ -225,7 +228,7 @@ public class ConfigurationExportImportServiceImplTest {
 
         cfgRiskWeightMappingObjectMapper = new CfgRiskWeightMappingObjectMapper(cfgRiskWeightMappingRepository);
 
-        cfgCcfMappingObjectMapper = new CfgCcfMappingObjectMapper(cfgRiCfgCcfMappingRepository);
+        cfgCcfMappingObjectMapper = new CfgCcfMappingObjectMapper(cfgCcfMappingRepository);
 
         cfgAddOnObjectMapper = new CfgAddOnObjectMapper(cfgAddOnRepository);
 
@@ -263,7 +266,7 @@ public class ConfigurationExportImportServiceImplTest {
         cfgCapElementsFormulaObjectMapper = new CfgCapElementsFormulaObjectMapper(cfgCapElementsFormulaRepository);
 
 
-        configurationExportImportService = new ConfigurationExportImportServiceImpl(configFileRepository,
+        configurationExportImportService = new ConfigurationExportImportServiceImpl(configFileRepository, importConfigIntoDb,
                 cfgFinancialBookObjectMapper, cfgCompanyObjectMapper, cfgCompanyLinkageObjectMapper,
                 cfgCompanyDimensionObjectMapper, cfgCompanyDimensionConsolidationObjectMapper,
                 cfgEntityTypeObjectMapper, cfgEntityTypeMappingObjectMapper, cfgProductTypeObjectMapper,
@@ -287,16 +290,17 @@ public class ConfigurationExportImportServiceImplTest {
 
         mockConfigFile(resource);
 
-        configurationExportImportService.exportConfiguration(1L);
+        configurationExportImportService.exportConfigurationFromDbIntoFile(1L);
     }
 
     @Test
-    public void testImportConfiguration() throws UnsupportedEncodingException {
+    public void testImportConfiguration() throws Exception {
         URL resource = getClass().getResource("/VIB_ERA_Configuration v1.11_for_export.xlsx");
         createMocksForImportTest(resource);
 
-
-        configurationExportImportService.importConfiguration(1L);
+        ConfigFile configFile = new ConfigFile();
+        configFile.setId(1L);
+        configurationExportImportService.importConfigurationFromFileIntoDb(configFile);
     }
 
     private void createMocksForImportTest(URL resource) throws UnsupportedEncodingException {
@@ -621,8 +625,8 @@ public class ConfigurationExportImportServiceImplTest {
     private void mockAddOnRepo() {
         List<CfgAddOn> cfgCcfMappings = new ArrayList<>();
 
-        cfgCcfMappings.add(new CfgAddOn("era_product_type_1", 1L, 5L, new Double(0.1)));
-        cfgCcfMappings.add(new CfgAddOn("era_product_type_2", 2L, 4L, new Double(0.2)));
+        cfgCcfMappings.add(new CfgAddOn("era_product_type_1", "1", "5", new Double(0.1)));
+        cfgCcfMappings.add(new CfgAddOn("era_product_type_2", "2", "4", new Double(0.2)));
 
         when(cfgAddOnRepository.findAll()).thenReturn(cfgCcfMappings);
     }
@@ -635,7 +639,7 @@ public class ConfigurationExportImportServiceImplTest {
         cfgCcfMappings.add(new CfgCcfMapping("era_product_type_2", new Double(3), "unconditionally_cancellable_2",
                 "maturity_start_2", "maturity_end_2", 300L));
 
-        when(cfgRiCfgCcfMappingRepository.findAll()).thenReturn(cfgCcfMappings);
+        when(cfgCcfMappingRepository.findAll()).thenReturn(cfgCcfMappings);
     }
 
     private void mockRiskWeightMappingRepo() {

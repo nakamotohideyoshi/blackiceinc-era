@@ -66,7 +66,10 @@ public class CfgRatingObjectMapper {
             row.createCell(1).setCellValue(cfgRating.getRating());
             row.createCell(2).setCellValue(cfgRating.getQualifying());
             row.createCell(3).setCellValue(cfgRating.getLongShort());
-            row.createCell(4).setCellValue(cfgRating.getRiskBucket());
+
+            if (cfgRating.getRiskBucket()!=null){
+                row.createCell(4).setCellValue(cfgRating.getRiskBucket());
+            }
 
             rowIndex++;
         }

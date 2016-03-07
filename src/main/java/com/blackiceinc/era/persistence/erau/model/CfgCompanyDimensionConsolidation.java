@@ -1,21 +1,14 @@
 package com.blackiceinc.era.persistence.erau.model;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "CFG_CMPNY_DIM_CONSOLIDATION")
 public class CfgCompanyDimensionConsolidation {
 
-    @Id
-    @Column(name = "COMPANY_CODE")
-    private String companyCode;
-
-    @Column(name = "ENTITY_CODE")
-    private String entityCode;
+    @EmbeddedId
+    private CfgCompanyDimensionConsolidationKey cfgCompanyDimensionConsolidationKey;
 
     @Column(name = "CONSO_MODE")
     private String consoMode;
@@ -24,30 +17,29 @@ public class CfgCompanyDimensionConsolidation {
     private Double consoPerct;
 
     public CfgCompanyDimensionConsolidation(String companyCode, String entityCode, String consoMode, Double consoPerct) {
-        this.companyCode = companyCode;
-        this.entityCode = entityCode;
+        this.cfgCompanyDimensionConsolidationKey = new CfgCompanyDimensionConsolidationKey(companyCode, entityCode);
         this.consoMode = consoMode;
         this.consoPerct = consoPerct;
     }
 
     public CfgCompanyDimensionConsolidation() {
-
+        this.cfgCompanyDimensionConsolidationKey = new CfgCompanyDimensionConsolidationKey();
     }
 
     public String getCompanyCode() {
-        return companyCode;
+        return cfgCompanyDimensionConsolidationKey.getCompanyCode();
     }
 
     public void setCompanyCode(String companyCode) {
-        this.companyCode = companyCode;
+        this.cfgCompanyDimensionConsolidationKey.setCompanyCode(companyCode);
     }
 
     public String getEntityCode() {
-        return entityCode;
+        return cfgCompanyDimensionConsolidationKey.getEntityCode();
     }
 
     public void setEntityCode(String entityCode) {
-        this.entityCode = entityCode;
+        this.cfgCompanyDimensionConsolidationKey.setEntityCode(entityCode);
     }
 
     public String getConsoMode() {

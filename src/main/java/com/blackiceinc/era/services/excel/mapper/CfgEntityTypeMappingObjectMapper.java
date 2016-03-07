@@ -56,13 +56,20 @@ public class CfgEntityTypeMappingObjectMapper {
         List<CfgEntityTypeMapping> all = cfgEntityTypeMappingRepository.findAll();
         ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
-        for (CfgEntityTypeMapping cfgFcfgEntityTypeMappingnancialBook : all) {
-            XSSFRow row = sheet.createRow(rowIndex);
-            row.createCell(0).setCellValue(cfgFcfgEntityTypeMappingnancialBook.getEraEntityType());
-            row.createCell(1).setCellValue(cfgFcfgEntityTypeMappingnancialBook.getCustomerType());
-            row.createCell(2).setCellValue(cfgFcfgEntityTypeMappingnancialBook.getCustomerSubType());
 
-            rowIndex++;
+        Iterator<CfgEntityTypeMapping> iterator = all.iterator();
+        while (iterator.hasNext()) {
+            CfgEntityTypeMapping cfgEntityTypeMapping = iterator.next();
+            if (cfgEntityTypeMapping!=null){
+                XSSFRow row = sheet.createRow(rowIndex);
+                if (cfgEntityTypeMapping.getEraEntityType() != null) {
+                    row.createCell(0).setCellValue(ExcelUtils.getStringValue(cfgEntityTypeMapping.getEraEntityType()));
+                }
+                row.createCell(1).setCellValue(ExcelUtils.getStringValue(cfgEntityTypeMapping.getCustomerType()));
+                row.createCell(2).setCellValue(ExcelUtils.getStringValue(cfgEntityTypeMapping.getCustomerSubType()));
+
+                rowIndex++;
+            }
         }
     }
 }

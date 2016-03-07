@@ -72,14 +72,16 @@ public class CfgCrmEligibilityObjectMapper {
         ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
         for (CfgCrmEligibility cfgCrmEligibility : all) {
-            XSSFRow row = sheet.createRow(rowIndex);
-            row.createCell(0).setCellValue(cfgCrmEligibility.getEraEntityType());
-            row.createCell(1).setCellValue(cfgCrmEligibility.getEraProductType());
-            row.createCell(2).setCellValue(cfgCrmEligibility.getRiskBucket());
-            row.createCell(3).setCellValue(cfgCrmEligibility.getRiskWeight());
-            row.createCell(4).setCellValue(cfgCrmEligibility.getEligibility());
+            if (cfgCrmEligibility!=null){
+                XSSFRow row = sheet.createRow(rowIndex);
+                row.createCell(0).setCellValue(cfgCrmEligibility.getEraEntityType());
+                row.createCell(1).setCellValue(cfgCrmEligibility.getEraProductType());
+                row.createCell(2).setCellValue(cfgCrmEligibility.getRiskBucket());
+                row.createCell(3).setCellValue(cfgCrmEligibility.getRiskWeight());
+                row.createCell(4).setCellValue(cfgCrmEligibility.getEligibility());
 
-            rowIndex++;
+                rowIndex++;
+            }
         }
     }
 }

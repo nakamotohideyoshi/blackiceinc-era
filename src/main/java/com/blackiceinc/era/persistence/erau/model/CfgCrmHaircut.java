@@ -1,29 +1,13 @@
 package com.blackiceinc.era.persistence.erau.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "CFG_CRM_HAIRCUT")
 public class CfgCrmHaircut {
 
-    @Id
-    @Column(name = "ERA_COL_TYPE")
-    private String eraColType;
-
-    @Column(name = "ERA_ENTITY_TYPE")
-    private String eraEntityType;
-
-    @Column(name = "RISK_BUCKET")
-    private String riskBucket;
-
-    @Column(name = "MIN_RESIDUAL_MATURITY")
-    private String minResidualMaturity;
-
-    @Column(name = "MAX_RESIDUAL_MATURITTY")
-    private String maxResidualMaturity;
+    @EmbeddedId
+    private CfgCrmHaircutKey cfgCrmHaircutKey;
 
     @Column(name = "HAIRCUT")
     private Double haircut;
@@ -32,57 +16,53 @@ public class CfgCrmHaircut {
     private Long seq;
 
     public CfgCrmHaircut(String eraColType, String eraEntityType, String riskBucket, String minResidualMaturity, String maxResidualMaturity, Double haircut, Long seq) {
-        this.eraColType = eraColType;
-        this.eraEntityType = eraEntityType;
-        this.riskBucket = riskBucket;
-        this.minResidualMaturity = minResidualMaturity;
-        this.maxResidualMaturity = maxResidualMaturity;
+        this.cfgCrmHaircutKey = new CfgCrmHaircutKey(eraColType, eraEntityType, riskBucket, minResidualMaturity, maxResidualMaturity);
         this.haircut = haircut;
         this.seq = seq;
     }
 
     public CfgCrmHaircut() {
-
+        this.cfgCrmHaircutKey = new CfgCrmHaircutKey();
     }
 
     public String getEraColType() {
-        return eraColType;
+        return this.cfgCrmHaircutKey.getEraColType();
     }
 
     public void setEraColType(String eraColType) {
-        this.eraColType = eraColType;
+        this.cfgCrmHaircutKey.setEraColType(eraColType);
     }
 
     public String getEraEntityType() {
-        return eraEntityType;
+        return this.cfgCrmHaircutKey.getEraEntityType();
     }
 
     public void setEraEntityType(String eraEntityType) {
-        this.eraEntityType = eraEntityType;
+        this.cfgCrmHaircutKey.setEraEntityType(eraEntityType);
     }
 
     public String getRiskBucket() {
-        return riskBucket;
+        return this.cfgCrmHaircutKey.getRiskBucket();
     }
 
     public void setRiskBucket(String riskBucket) {
-        this.riskBucket = riskBucket;
+        this.cfgCrmHaircutKey.setRiskBucket(riskBucket);
     }
 
     public String getMinResidualMaturity() {
-        return minResidualMaturity;
+        return this.cfgCrmHaircutKey.getMinResidualMaturity();
     }
 
     public void setMinResidualMaturity(String minResidualMaturity) {
-        this.minResidualMaturity = minResidualMaturity;
+        this.cfgCrmHaircutKey.setMinResidualMaturity(minResidualMaturity);
     }
 
     public String getMaxResidualMaturity() {
-        return maxResidualMaturity;
+        return this.cfgCrmHaircutKey.getMaxResidualMaturity();
     }
 
     public void setMaxResidualMaturity(String maxResidualMaturity) {
-        this.maxResidualMaturity = maxResidualMaturity;
+        this.cfgCrmHaircutKey.setMaxResidualMaturity(maxResidualMaturity);
     }
 
     public Double getHaircut() {

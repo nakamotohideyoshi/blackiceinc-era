@@ -3,6 +3,7 @@ package com.blackiceinc.era.web.rest;
 import com.blackiceinc.era.persistence.erau.model.RunCalculator;
 import com.blackiceinc.era.persistence.erau.repository.MeasurementSensitivityRepository;
 import com.blackiceinc.era.persistence.erau.repository.RunCalculatorRepository;
+import com.blackiceinc.era.services.ImportExportMessageProvider;
 import com.blackiceinc.era.services.RunCalculatorService;
 import com.blackiceinc.era.web.rest.model.DeleteResponse;
 import com.blackiceinc.era.web.rest.model.CRUDResponseObj;
@@ -46,6 +47,9 @@ public class RunCalculatorResource {
     @Autowired
     private MeasurementSensitivityRepository measurementSensitivityRepository;
 
+    @Autowired
+    private ImportExportMessageProvider importExportMessageProvider;
+
     @RequestMapping(value = "/runCalculator",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -57,6 +61,8 @@ public class RunCalculatorResource {
 
         Page<RunCalculator> runCalculators = runCalculatorService
                 .findRunCalculationByParams(page, length, snapshotDate, loadJobNbr, scenarioId);
+
+        importExportMessageProvider.addMessage("RUN CALC");
 
         return new ResponseEntity<>(runCalculators, HttpStatus.OK);
     }

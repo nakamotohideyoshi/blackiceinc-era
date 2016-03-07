@@ -66,10 +66,23 @@ public class CfgMktIrrGnrRiskObjectMapper {
             row.createCell(0).setCellValue(cfgMktIrrGnrRisk.getZoneCode());
             row.createCell(1).setCellValue(cfgMktIrrGnrRisk.getBandCode());
             row.createCell(2).setCellValue(cfgMktIrrGnrRisk.getCurrency());
-            row.createCell(3).setCellValue(cfgMktIrrGnrRisk.getCouponRateStart());
-            row.createCell(4).setCellValue(cfgMktIrrGnrRisk.getCouponRateEnd());
-            row.createCell(5).setCellValue(cfgMktIrrGnrRisk.getMaturityBandStart());
-            row.createCell(6).setCellValue(cfgMktIrrGnrRisk.getMaturityBandEnd());
+
+            if (cfgMktIrrGnrRisk.getCouponRateStart()!=null){
+                row.createCell(3).setCellValue(cfgMktIrrGnrRisk.getCouponRateStart());
+            }
+
+            if (cfgMktIrrGnrRisk.getCouponRateEnd()!=null){
+                row.createCell(4).setCellValue(cfgMktIrrGnrRisk.getCouponRateEnd());
+            }
+
+            if (cfgMktIrrGnrRisk.getMaturityBandStart()!=null){
+                row.createCell(5).setCellValue(cfgMktIrrGnrRisk.getMaturityBandStart());
+            }
+
+            if (cfgMktIrrGnrRisk.getMaturityBandEnd()!=null){
+                row.createCell(6).setCellValue(cfgMktIrrGnrRisk.getMaturityBandEnd());
+            }
+
             row.createCell(7).setCellValue(cfgMktIrrGnrRisk.getRiskWeight());
 
             rowIndex++;

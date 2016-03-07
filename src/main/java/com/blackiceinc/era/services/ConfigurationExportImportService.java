@@ -1,14 +1,11 @@
 package com.blackiceinc.era.services;
 
-import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
-import org.xml.sax.SAXException;
-
-import java.io.IOException;
+import com.blackiceinc.era.persistence.erau.model.ConfigFile;
 
 public interface ConfigurationExportImportService {
 
-    void exportConfiguration(Long id) throws IOException, OpenXML4JException, SAXException;
+    void exportConfigurationFromDbIntoFile(Long id);
 
-    void importConfiguration(Long id);
+    void importConfigurationFromFileIntoDb(ConfigFile configFile) throws Exception;
 
 }

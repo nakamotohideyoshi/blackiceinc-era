@@ -9,7 +9,6 @@ import javax.persistence.Table;
 @Table(name = "CFG_RISK_WEIGHT_MAPPING")
 public class CfgRiskWeightMapping {
 
-    @Id
     @Column(name = "ASSET_CLASS")
     private String assetClass;
 
@@ -40,6 +39,7 @@ public class CfgRiskWeightMapping {
     @Column(name = "RISK_WEIGHT")
     private Double riskWeight;
 
+    @Id
     @Column(name = "SEQ")
     private Long seq;
 

@@ -1,26 +1,13 @@
 package com.blackiceinc.era.persistence.erau.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "CFG_CRM_ELIGIBILITY")
 public class CfgCrmEligibility {
 
-    @Id
-    @Column(name = "ERA_ENTITY_TYPE")
-    private String eraEntityType;
-
-    @Column(name = "ERA_PRODUCT_TYPE")
-    private String eraProductType;
-
-    @Column(name = "RISK_BUCKET")
-    private String riskBucket;
-
-    @Column(name = "RISK_WEIGHT")
-    private String riskWeight;
+    @EmbeddedId
+    private CfgCrmEligibilityKey cfgCrmEligibilityKey;
 
     @Column(name = "ELIGIBILITY")
     private String eligibility;
@@ -29,48 +16,45 @@ public class CfgCrmEligibility {
     private Long seq;
 
     public CfgCrmEligibility(String eraEntityType, String eraProductType, String riskBucket, String riskWeight, String eligibility, Long seq) {
-        this.eraEntityType = eraEntityType;
-        this.eraProductType = eraProductType;
-        this.riskBucket = riskBucket;
-        this.riskWeight = riskWeight;
+        this.cfgCrmEligibilityKey = new CfgCrmEligibilityKey(eraEntityType, eraProductType, riskBucket, riskWeight);
         this.eligibility = eligibility;
         this.seq = seq;
     }
 
     public CfgCrmEligibility() {
-
+        this.cfgCrmEligibilityKey = new CfgCrmEligibilityKey();
     }
 
     public String getEraEntityType() {
-        return eraEntityType;
+        return this.cfgCrmEligibilityKey.getEraEntityType();
     }
 
     public void setEraEntityType(String eraEntityType) {
-        this.eraEntityType = eraEntityType;
+        this.cfgCrmEligibilityKey.setEraEntityType(eraEntityType);
     }
 
     public String getEraProductType() {
-        return eraProductType;
+        return this.cfgCrmEligibilityKey.getEraProductType();
     }
 
     public void setEraProductType(String eraProductType) {
-        this.eraProductType = eraProductType;
+        this.cfgCrmEligibilityKey.setEraProductType(eraProductType);
     }
 
     public String getRiskBucket() {
-        return riskBucket;
+        return this.cfgCrmEligibilityKey.getRiskBucket();
     }
 
     public void setRiskBucket(String riskBucket) {
-        this.riskBucket = riskBucket;
+        this.cfgCrmEligibilityKey.setRiskBucket(riskBucket);
     }
 
     public String getRiskWeight() {
-        return riskWeight;
+        return this.cfgCrmEligibilityKey.getRiskWeight();
     }
 
     public void setRiskWeight(String riskWeight) {
-        this.riskWeight = riskWeight;
+        this.cfgCrmEligibilityKey.setRiskWeight(riskWeight);
     }
 
     public String getEligibility() {

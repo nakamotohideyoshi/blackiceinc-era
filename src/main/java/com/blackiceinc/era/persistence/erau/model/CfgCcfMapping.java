@@ -9,7 +9,6 @@ import javax.persistence.Table;
 @Table(name = "CFG_CCF_MAPPING")
 public class CfgCcfMapping {
 
-    @Id
     @Column(name = "ERA_PRODUCT_TYPE")
     private String eraProductType;
 
@@ -25,6 +24,7 @@ public class CfgCcfMapping {
     @Column(name = "MATURITY_END")
     private String maturityEnd;
 
+    @Id
     @Column(name = "SEQ")
     private Long seq;
 

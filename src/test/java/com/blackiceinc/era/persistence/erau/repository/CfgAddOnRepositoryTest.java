@@ -25,8 +25,8 @@ public class CfgAddOnRepositoryTest {
     public void testSave(){
         CfgAddOn cfgAddOn = new CfgAddOn();
         cfgAddOn.setEraProductType("era_product_type");
-        cfgAddOn.setMaturityStart(1L);
-        cfgAddOn.setMaturityEnd(2L);
+        cfgAddOn.setMaturityStart("1");
+        cfgAddOn.setMaturityEnd("2");
         cfgAddOn.setRiskWeight(new Double(3));
 
         cfgAddOnRepository.save(cfgAddOn);

@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableAsync
-@EnableTransactionManagement
+//@EnableTransactionManagement
 @PropertySource({ "classpath:persistence-blackicedb-erau.properties" })
 //@ComponentScan({ "com.blackiceinc.era.persistence.erau" })
 @EnableJpaRepositories(basePackages = "com.blackiceinc.era.persistence.erau.repository", 

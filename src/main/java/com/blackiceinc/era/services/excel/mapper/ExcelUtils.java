@@ -36,4 +36,12 @@ public class ExcelUtils {
 
     }
 
+    public static String getStringValue(String value){
+        if (value==null){
+            return "";
+        }else{
+            return value;
+        }
+    }
+
 }

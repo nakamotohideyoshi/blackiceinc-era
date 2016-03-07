@@ -56,8 +56,8 @@
 										<i class="fa fa-search"></i> Search</button>
 									<a class="btn btn-default btn-sm ng-binding" href="javascript:void(0);" ng-class="{'disabled' : loading}" ng-click="resetFilter()">
 										<i class="fa fa-refresh"></i> Reset</a>
-									<a class="btn btn-primary" href="javascript:void(0);">Import</a>
-									<a class="btn btn-primary" href="javascript:void(0);">Export</a>
+									<a class="btn btn-primary" href="javascript:void(0);" ng-class="{'disabled' : loading}" ng-click="importSelectedConfiguration()">Import</a>
+									<a class="btn btn-primary" href="javascript:void(0);" ng-class="{'disabled' : loading}" ng-click="exportSelectedConfiguration()">Export</a>
 								</div>
 
 							</fieldset>

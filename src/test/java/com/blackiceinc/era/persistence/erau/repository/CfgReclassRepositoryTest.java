@@ -21,8 +21,29 @@ public class CfgReclassRepositoryTest {
     @Autowired
     private CfgReclassRepository cfgReclassRepository;
 
+    @Autowired
+    private CfgReclassDaoCustom cfgReclassDaoCustom;
+
     @Test
     public void testSave() {
+        CfgReclass cfgReclass = createDummyCfgReclassObj();
+
+        cfgReclassRepository.save(cfgReclass);
+    }
+
+    @Test
+    public void testInsert() {
+        CfgReclass cfgReclass = createDummyCfgReclassObj();
+
+        cfgReclassDaoCustom.insert(cfgReclass);
+
+//        cfgReclassRepository.insert(cfgReclass.getCheckNo(),cfgReclass.getDescription(),
+//                cfgReclass.getEraEntityTypeIn(), cfgReclass.getEraProductTypeIn(),
+//                cfgReclass.getCheck(), cfgReclass.getEraEntityTypeOut(),
+//                cfgReclass.getEraProductTypeOut());
+    }
+
+    private CfgReclass createDummyCfgReclassObj() {
         CfgReclass cfgReclass = new CfgReclass();
         cfgReclass.setCheckNo("check_no");
         cfgReclass.setDescription("description");
@@ -31,8 +52,7 @@ public class CfgReclassRepositoryTest {
         cfgReclass.setCheck("check");
         cfgReclass.setEraEntityTypeOut("era_entity_type_out");
         cfgReclass.setEraProductTypeOut("era_product_type_out");
-
-        cfgReclassRepository.save(cfgReclass);
+        return cfgReclass;
     }
 
 }

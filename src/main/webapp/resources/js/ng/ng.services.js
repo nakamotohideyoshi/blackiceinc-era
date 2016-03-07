@@ -367,6 +367,14 @@ angular.module('app.services', [])
 			download : function( id ) {
 				var request = $http.get('api/configuration/download?id='+id);
 				return request;
+			},
+			export : function(row) {
+				var request = $http.post('api/configuration/'+row.id+'/export');
+				return request;
+			},
+			import : function(row) {
+				var request = $http.post('api/configuration/'+row.id+'/import');
+				return request;
 			}
 		});
 	})

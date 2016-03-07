@@ -4,12 +4,13 @@ import com.blackiceinc.era.persistence.erau.model.*;
 import com.blackiceinc.era.persistence.erau.repository.ConfigFileRepository;
 import com.blackiceinc.era.services.excel.mapper.*;
 import org.apache.commons.codec.CharEncoding;
-import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.xml.sax.SAXException;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.*;
 import java.net.URLDecoder;
@@ -17,6 +18,12 @@ import java.util.List;
 
 @Service
 public class ConfigurationExportImportServiceImpl implements ConfigurationExportImportService {
+
+    private static final Logger log = LoggerFactory.getLogger(ConfigurationExportImportServiceImpl.class);
+
+    public static final String CURRENT = "CURRENT";
+    public static final String NULL = "NULL";
+
     public static final String FINANCIAL_BOOK = "FINANCIAL_BOOK";
     public static final String COMPANY = "COMPANY";
     public static final String COMPANY_LINKAGE = "COMPANY_LINKAGE";
@@ -63,6 +70,7 @@ public class ConfigurationExportImportServiceImpl implements ConfigurationExport
     public static final String CAP_ELEMENTS_LIMIT = "CAP_ELEMENTS_LIMIT";
     public static final String CAP_ELEMENTS_MAPPING = "CAP_ELEMENTS_MAPPING";
     public static final String CAP_ELEMENTS_FORMULA = "CAP_ELEMENTS_FORMULA";
+
 
     private final CfgFinancialBookObjectMapper cfgFinancialBookObjectMapper;
     private final CfgCompanyObjectMapper cfgCompanyObjectMapper;
@@ -130,9 +138,12 @@ public class ConfigurationExportImportServiceImpl implements ConfigurationExport
 
 
     private ConfigFileRepository configFileRepository;
+    private ImportConfigIntoDb importConfigIntoDb;
+
 
     @Autowired
     public ConfigurationExportImportServiceImpl(ConfigFileRepository configFileRepository,
+                                                ImportConfigIntoDb importConfigIntoDb,
                                                 CfgFinancialBookObjectMapper cfgFinancialBookObjectMapper,
                                                 CfgCompanyObjectMapper cfgCompanyObjectMapper,
                                                 CfgCompanyLinkageObjectMapper cfgCompanyLinkageObjectMapper,
@@ -156,6 +167,7 @@ public class ConfigurationExportImportServiceImpl implements ConfigurationExport
                                                 CfgReclassObjectMapper cfgReclassObjectMapper,
                                                 CfgReclassCheckDefObjectMapper cfgReclassCheckDefObjectMapper, CfgReclassCheckTypeObjectMapper cfgReclassCheckTypeObjectMapper, CfgMktProductTypeObjectMapper cfgMktProductTypeObjectMapper, CfgMktProductMappingObjectMapper cfgMktProductMappingObjectMapper, CfgMktAssetClassObjectMapper cfgMktAssetClassObjectMapper, CfgMktAssetClassMappingObjectMapper cfgMktAssetClassMappingObjectMapper, CfgMktIrrSpcRiskObjectMapper cfgMktIrrSpcRiskObjectMapper, CfgMktIrrGnrRiskObjectMapper cfgMktIrrGnrRiskObjectMapper, CfgMktIrrGnrBandObjectMapper cfgMktIrrGnrBandObjectMapper, CfgMktIrrGnrIntraObjectMapper cfgMktIrrGnrIntraObjectMapper, CfgMktIrrGnrInterObjectMapper cfgMktIrrGnrInterObjectMapper, CfgMktEqtSpcObjectMapper cfgMktEqtSpcObjectMapper, CfgMktEqtGnrObjectMapper cfgMktEqtGnrObjectMapper, CfgMktComDrtObjectMapper cfgMktComDrtObjectMapper, CfgMktComOthObjectMapper cfgMktComOthObjectMapper, CfgMktFxObjectMapper cfgMktFxObjectMapper, CfgOpsProductTypeObjectMapper cfgOpsProductTypeObjectMapper, CfgOpsProductTypeMappingObjectMapper cfgOpsProductTypeMappingObjectMapper, CfgOpsFormulaObjectMapper cfgOpsFormulaObjectMapper, CfgOpsRiskObjectMapper cfgOpsRiskObjectMapper, CfgCapElementsObjectMapper cfgCapElementsObjectMapper, CfgCapElementsTypeObjectMapper cfgCapElementsTypeObjectMapper, CfgCapElementsLimitObjectMapper cfgCapElementsLimitObjectMapper, CfgCapElementsMappingObjectMapper cfgCapElementsMappingObjectMapper, CfgCapElementsFormulaObjectMapper cfgCapElementsFormulaObjectMapper) {
         this.configFileRepository = configFileRepository;
+        this.importConfigIntoDb = importConfigIntoDb;
 
         this.cfgFinancialBookObjectMapper = cfgFinancialBookObjectMapper;
         this.cfgCompanyObjectMapper = cfgCompanyObjectMapper;
@@ -220,7 +232,10 @@ public class ConfigurationExportImportServiceImpl implements ConfigurationExport
     }
 
     @Override
-    public void exportConfiguration(Long id) throws IOException, OpenXML4JException, SAXException {
+    public void exportConfigurationFromDbIntoFile(Long id) {
+        log.info("Starting export for configFile with id : {}", id);
+        long start = System.currentTimeMillis();
+
         ConfigFile configFile = configFileRepository.findOne(id);
 
         try {
@@ -244,13 +259,11 @@ public class ConfigurationExportImportServiceImpl implements ConfigurationExport
             XSSFSheet companyDimensionConsolidationSheet = workbook.getSheet(COMPANY_DIMENSION_CONSOLIDATION);
             cfgCompanyDimensionConsolidationObjectMapper.importCfgCompanyDimensionConsolidation(companyDimensionConsolidationSheet);
 
-
             XSSFSheet entityTypeSheet = workbook.getSheet(ENTITY_TYPE);
             cfgEntityTypeObjectMapper.importCfgCfgEntityTypes(entityTypeSheet);
 
             XSSFSheet entityTypeMappingSheet = workbook.getSheet(ENTITY_TYPE_MAPPING);
             cfgEntityTypeMappingObjectMapper.importCfgEntityTypeMappings(entityTypeMappingSheet);
-
 
             XSSFSheet productTypeSheet = workbook.getSheet(PRODUCT_TYPE);
             cfgProductTypeObjectMapper.importCfgProductTypes(productTypeSheet);
@@ -258,13 +271,11 @@ public class ConfigurationExportImportServiceImpl implements ConfigurationExport
             XSSFSheet productTypeMappingSheet = workbook.getSheet(PRODUCT_TYPE_MAPPING);
             cfgProductTypeMappingObjectMapper.importCfgProductTypeMappping(productTypeMappingSheet);
 
-
             XSSFSheet assetClassSheet = workbook.getSheet(ASSET_CLASS);
             cfgAssetClassObjectMapper.importCfgAssetClass(assetClassSheet);
 
             XSSFSheet assetClassMappingSheet = workbook.getSheet(ASSET_CLASS_MAPPING);
             cfgAssetClassMappingObjectMapper.importCfgAssetClassMapping(assetClassMappingSheet);
-
 
             XSSFSheet nonPerformingMappingSheet = workbook.getSheet(NON_PERFORMING_MAPPING);
             cfgNonPerformingMappingObjectMapper.importData(nonPerformingMappingSheet);
@@ -272,13 +283,11 @@ public class ConfigurationExportImportServiceImpl implements ConfigurationExport
             XSSFSheet agencyEligibilitySheet = workbook.getSheet(AGENCY_ELIGIBILITY);
             cfgAgencyEligibilityObjectMapper.importData(agencyEligibilitySheet);
 
-
             XSSFSheet ratingSheet = workbook.getSheet(RATING);
             cfgRatingObjectMapper.importData(ratingSheet);
 
             XSSFSheet creditMeasureSheet = workbook.getSheet(CREDIT_MEASURE);
             cfgCreditMeasureObjectMapper.importData(creditMeasureSheet);
-
 
             XSSFSheet riskWeightMappingSheet = workbook.getSheet(RISK_WEIGHT_MAPPING);
             cfgRiskWeightMappingObjectMapper.importData(riskWeightMappingSheet);
@@ -380,16 +389,18 @@ public class ConfigurationExportImportServiceImpl implements ConfigurationExport
             workbook.write(out);
             out.close();
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            log.error("Error exporting configuration from db into configFile : {}", configFile.toString(), e);
         }
+
+        log.info("Export for configFile : {} finished in {} ms", configFile.toString(), System.currentTimeMillis() - start);
     }
 
     @Override
-    public void importConfiguration(Long id) {
-        ConfigFile configFile = configFileRepository.findOne(id);
+    @Transactional
+    public void importConfigurationFromFileIntoDb(ConfigFile configFile) throws Exception {
+        log.info("Starting import for configFile : {}", configFile.toString());
+        long start = System.currentTimeMillis();
 
         try {
             FileInputStream file = new FileInputStream(new File(configFile.getFilePath()));
@@ -398,159 +409,209 @@ public class ConfigurationExportImportServiceImpl implements ConfigurationExport
 
             XSSFSheet financialBookSheet = workbook.getSheet(FINANCIAL_BOOK);
             List<CfgFinancialBook> cfgFinancialBookList = cfgFinancialBookObjectMapper.extractData(financialBookSheet);
+            importConfigIntoDb.importCfgFinancialBook(cfgFinancialBookList);
 
             XSSFSheet companySheet = workbook.getSheet(COMPANY);
             List<CfgCompany> cfgCompaniesList = cfgCompanyObjectMapper.extractCfgCompanies(companySheet);
+            importConfigIntoDb.importCfgCompaniesList(cfgCompaniesList);
 
             XSSFSheet companyLinkageSheet = workbook.getSheet(COMPANY_LINKAGE);
             List<CfgCompanyLinkage> cfgCompaniesLinkageList = cfgCompanyLinkageObjectMapper.extractCfgCompanyLinkage(companyLinkageSheet);
+            importConfigIntoDb.importCfgCompanyLinkage(cfgCompaniesLinkageList);
 
             XSSFSheet companyDimensionSheet = workbook.getSheet(COMPANY_DIMENSION);
             List<CfgCompanyDimension> cfgCompanyDimensions = cfgCompanyDimensionObjectMapper.extractCfgCompanyDimensions(companyDimensionSheet);
+            importConfigIntoDb.importCfgCompanyDimensions(cfgCompanyDimensions);
 
             XSSFSheet companyDimensionConsolidationSheet = workbook.getSheet(COMPANY_DIMENSION_CONSOLIDATION);
             List<CfgCompanyDimensionConsolidation> cfgCompanyDimensionConsolidations = cfgCompanyDimensionConsolidationObjectMapper.extractCfgCompanyDimensionsConsolidation(companyDimensionConsolidationSheet);
-
+            importConfigIntoDb.importCfgCompanyDimensionConsolidations(cfgCompanyDimensionConsolidations);
 
             XSSFSheet entityTypeSheet = workbook.getSheet(ENTITY_TYPE);
             List<CfgEntityType> cfgEntityTypes = cfgEntityTypeObjectMapper.extractCfgEntityTypes(entityTypeSheet);
+            importConfigIntoDb.importCfgEntityTypes(cfgEntityTypes);
 
             XSSFSheet entityTypeMappingSheet = workbook.getSheet(ENTITY_TYPE_MAPPING);
             List<CfgEntityTypeMapping> cfgEntityTypeMappings = cfgEntityTypeMappingObjectMapper.extractCfgEntityTypeMappings(entityTypeMappingSheet);
-
+            importConfigIntoDb.importCfgEntityTypeMappings(cfgEntityTypeMappings);
 
             XSSFSheet productTypeSheet = workbook.getSheet(PRODUCT_TYPE);
             List<CfgProductType> cfgProductTypes = cfgProductTypeObjectMapper.extractCfgProductTypes(productTypeSheet);
+            importConfigIntoDb.importCfgProductTypes(cfgProductTypes);
 
             XSSFSheet productTypeMappingSheet = workbook.getSheet(PRODUCT_TYPE_MAPPING);
             List<CfgProductTypeMapping> cfgProductTypeMappings = cfgProductTypeMappingObjectMapper.extractCfgProductTypeMappping(productTypeMappingSheet);
-
+            importConfigIntoDb.importCfgProductTypeMappings(cfgProductTypeMappings);
 
             XSSFSheet assetClassSheet = workbook.getSheet(ASSET_CLASS);
             List<CfgAssetClass> cfgAssetClass = cfgAssetClassObjectMapper.extractCfgAssetClass(assetClassSheet);
+            importConfigIntoDb.importCfgAssetClass(cfgAssetClass);
 
             XSSFSheet assetClassMappingSheet = workbook.getSheet(ASSET_CLASS_MAPPING);
             List<CfgAssetClassMapping> cfgAssetClassMappings = cfgAssetClassMappingObjectMapper.extractCfgAssetClassMapping(assetClassMappingSheet);
+            importConfigIntoDb.importCfgAssetClassMappings(cfgAssetClassMappings);
 
 
             XSSFSheet nonPerformingMappingSheet = workbook.getSheet(NON_PERFORMING_MAPPING);
             List<CfgNonPerformingMapping> cfgNonPerformingMappings = cfgNonPerformingMappingObjectMapper.extractData(nonPerformingMappingSheet);
+            importConfigIntoDb.importCfgNonPerformingMappings(cfgNonPerformingMappings);
 
 
             XSSFSheet agencyEligibilitySheet = workbook.getSheet(AGENCY_ELIGIBILITY);
             List<CfgAgencyEligibility> cfgAgencyEligibility = cfgAgencyEligibilityObjectMapper.extractData(agencyEligibilitySheet);
+            importConfigIntoDb.importCfgAgencyEligibility(cfgAgencyEligibility);
 
 
             XSSFSheet ratingSheet = workbook.getSheet(RATING);
             List<CfgRating> cfgRatings = cfgRatingObjectMapper.extractData(ratingSheet);
+            importConfigIntoDb.importCfgRatings(cfgRatings);
 
 
             XSSFSheet creditMeasureSheet = workbook.getSheet(CREDIT_MEASURE);
             List<CfgCreditMeasure> cfgCreditMeasures = cfgCreditMeasureObjectMapper.extractData(creditMeasureSheet);
-
+            importConfigIntoDb.importCfgCreditMeasures(cfgCreditMeasures);
 
             XSSFSheet riskWeightMappingSheet = workbook.getSheet(RISK_WEIGHT_MAPPING);
             List<CfgRiskWeightMapping> cfgRiskWeightMappings = cfgRiskWeightMappingObjectMapper.extractData(riskWeightMappingSheet);
+            importConfigIntoDb.importCfgRiskWeightMappings(cfgRiskWeightMappings);
 
             XSSFSheet ccfMappingSheet = workbook.getSheet(CCF_MAPPING);
             List<CfgCcfMapping> cfgCcfMappings = cfgCcfMappingObjectMapper.extractData(ccfMappingSheet);
+            importConfigIntoDb.importCfgCcfMappings(cfgCcfMappings);
 
             XSSFSheet addOnSheet = workbook.getSheet(ADD_ON);
             List<CfgAddOn> cfgAddOns = cfgAddOnObjectMapper.extractData(addOnSheet);
+            importConfigIntoDb.importCfgAddOns(cfgAddOns);
 
             XSSFSheet crmEligibilitySheet = workbook.getSheet(CRM_ELIGIBILITY);
             List<CfgCrmEligibility> cfgCrmEligibilities = cfgCrmEligibilityObjectMapper.extractData(crmEligibilitySheet);
+            importConfigIntoDb.importCfgCrmEligibilities(cfgCrmEligibilities);
 
             XSSFSheet crmHaircutSheet = workbook.getSheet(CRM_HAIRCUT);
             List<CfgCrmHaircut> cfgCrmHaircuts = cfgCrmHaircutObjectMapper.extractData(crmHaircutSheet);
+            importConfigIntoDb.importCfgCrmHaircuts(cfgCrmHaircuts);
 
             XSSFSheet reclassSheet = workbook.getSheet(RECLASS);
             List<CfgReclass> cfgReclasses = cfgReclassObjectMapper.extractData(reclassSheet);
+            importConfigIntoDb.importCfgReclasses(cfgReclasses);
 
             XSSFSheet reclassCheckDefSheet = workbook.getSheet(RECLASS_CHECK_DEF);
             List<CfgReclassCheckDef> cfgReclassCheckDefs = cfgReclassCheckDefObjectMapper.extractData(reclassCheckDefSheet);
+            importConfigIntoDb.importCfgReclassCheckDefs(cfgReclassCheckDefs);
 
             XSSFSheet reclassCheckTypeSheet = workbook.getSheet(RECLASS_CHECK_TYPE);
             List<CfgReclassCheckType> cfgReclassCheckTypes = cfgReclassCheckTypeObjectMapper.extractData(reclassCheckTypeSheet);
+            importConfigIntoDb.importCfgReclassCheckTypes(cfgReclassCheckTypes);
 
             XSSFSheet mktProductTypeSheet = workbook.getSheet(MKT_PRODUCT_TYPE);
             List<CfgMktProductType> cfgMktProductTypes = cfgMktProductTypeObjectMapper.extractData(mktProductTypeSheet);
+            importConfigIntoDb.importCfgMktProductTypes(cfgMktProductTypes);
 
             XSSFSheet mktProductMappingSheet = workbook.getSheet(MKT_PRODUCT_MAPPING);
             List<CfgMktProductMapping> cfgMktProductMappings = cfgMktProductMappingObjectMapper.extractData(mktProductMappingSheet);
+            importConfigIntoDb.importCfgMktProductMappings(cfgMktProductMappings);
 
             XSSFSheet mktAssetClassSheet = workbook.getSheet(MKT_ASSET_CLASS);
             List<CfgMktAssetClass> cfgMktAssetClasses = cfgMktAssetClassObjectMapper.extractData(mktAssetClassSheet);
+            importConfigIntoDb.importCfgMktAssetClasses(cfgMktAssetClasses);
 
             XSSFSheet mktAssetClassMappingSheet = workbook.getSheet(MKT_ASSET_CLASS_MAPPING);
             List<CfgMktAssetClassMapping> cfgMktAssetClassMappings = cfgMktAssetClassMappingObjectMapper.extractData(mktAssetClassMappingSheet);
+            importConfigIntoDb.importCfgMktAssetClassMappings(cfgMktAssetClassMappings);
 
             XSSFSheet mktIrrSpcRiskSheet = workbook.getSheet(MKT_IRR_SPC_RISK);
             List<CfgMktIrrSpcRisk> cfgMktIrrSpcRisks = cfgMktIrrSpcRiskObjectMapper.extractData(mktIrrSpcRiskSheet);
+            importConfigIntoDb.importCfgMktIrrSpcRisks(cfgMktIrrSpcRisks);
 
             XSSFSheet mktIrrGnrRiskSheet = workbook.getSheet(MKT_IRR_GNR_RISK);
             List<CfgMktIrrGnrRisk> cfgMktIrrGnrRisks = cfgMktIrrGnrRiskObjectMapper.extractData(mktIrrGnrRiskSheet);
+            importConfigIntoDb.importCfgMktIrrGnrRisks(cfgMktIrrGnrRisks);
 
             XSSFSheet mktIrrGnrBandSheet = workbook.getSheet(MKT_IRR_GNR_BAND);
             List<CfgMktIrrGnrBand> cfgMktIrrGnrBands = cfgMktIrrGnrBandObjectMapper.extractData(mktIrrGnrBandSheet);
+            importConfigIntoDb.importCfgMktIrrGnrBands(cfgMktIrrGnrBands);
 
             XSSFSheet mktIrrGnrIntraSheet = workbook.getSheet(MKT_IRR_GNR_INTRA);
             List<CfgMktIrrGnrIntra> cfgMktIrrGnrIntras = cfgMktIrrGnrIntraObjectMapper.extractData(mktIrrGnrIntraSheet);
+            importConfigIntoDb.importCfgMktIrrGnrIntras(cfgMktIrrGnrIntras);
 
             XSSFSheet mktIrrGnrInterSheet = workbook.getSheet(MKT_IRR_GNR_INTER);
             List<CfgMktIrrGnrInter> cfgMktIrrGnrInters = cfgMktIrrGnrInterObjectMapper.extractData(mktIrrGnrInterSheet);
+            importConfigIntoDb.importCfgMktIrrGnrInters(cfgMktIrrGnrInters);
 
             XSSFSheet mktEqtSpcSheet = workbook.getSheet(MKT_EQT_SPC);
             List<CfgMktEqtSpc> cfgMktEqtSpcs = cfgMktEqtSpcObjectMapper.extractData(mktEqtSpcSheet);
+            importConfigIntoDb.importCfgMktEqtSpcs(cfgMktEqtSpcs);
 
             XSSFSheet mktEqtGnrSheet = workbook.getSheet(MKT_EQT_GNR);
             List<CfgMktEqtGnr> cfgMktEqtGnrs = cfgMktEqtGnrObjectMapper.extractData(mktEqtGnrSheet);
+            importConfigIntoDb.importCfgMktEqtGnrs(cfgMktEqtGnrs);
 
             XSSFSheet mktComDrtSheet = workbook.getSheet(MKT_COM_DRT);
             List<CfgMktComDrt> cfgMktComDrts = cfgMktComDrtObjectMapper.extractData(mktComDrtSheet);
+            importConfigIntoDb.importCfgMktComDrts(cfgMktComDrts);
 
             XSSFSheet mktComOthSheet = workbook.getSheet(MKT_COM_OTH);
             List<CfgMktComOth> cfgMktComOths = cfgMktComOthObjectMapper.extractData(mktComOthSheet);
+            importConfigIntoDb.importCfgMktComOths(cfgMktComOths);
 
             XSSFSheet mktFxSheet = workbook.getSheet(MKT_FX);
             List<CfgMktFx> cfgMktFxes = cfgMktFxObjectMapper.extractData(mktFxSheet);
+            importConfigIntoDb.importCfgMktFxes(cfgMktFxes);
 
             XSSFSheet opsProductTypeSheet = workbook.getSheet(OPS_PRODUCT_TYPE);
             List<CfgOpsProductType> cfgOpsProductTypes = cfgOpsProductTypeObjectMapper.extractData(opsProductTypeSheet);
+            importConfigIntoDb.importCfgOpsProductTypes(cfgOpsProductTypes);
 
             XSSFSheet opsProductTypeMappingSheet = workbook.getSheet(OPS_PRODUCT_TYPE_MAPPING);
             List<CfgOpsProductTypeMapping> cfgOpsProductTypeMappings = cfgOpsProductTypeMappingObjectMapper.extractData(opsProductTypeMappingSheet);
+            importConfigIntoDb.importCfgOpsProductTypeMappings(cfgOpsProductTypeMappings);
 
             XSSFSheet opsFormulaSheet = workbook.getSheet(OPS_FORMULA);
             List<CfgOpsFormula> cfgOpsFormulas = cfgOpsFormulaObjectMapper.extractData(opsFormulaSheet);
+            importConfigIntoDb.importCfgOpsFormulas(cfgOpsFormulas);
 
             XSSFSheet opsRiskSheet = workbook.getSheet(OPS_RISK);
             List<CfgOpsRisk> cfgOpsRisks = cfgOpsRiskObjectMapper.extractData(opsRiskSheet);
-
+            importConfigIntoDb.importCfgOpsRisks(cfgOpsRisks);
 
             XSSFSheet capElementsSheet = workbook.getSheet(CAP_ELEMENTS);
             List<CfgCapElements> cfgCapElementses = cfgCapElementsObjectMapper.extractData(capElementsSheet);
+            importConfigIntoDb.importCfgCapElementses(cfgCapElementses);
 
             XSSFSheet capElementsTypeSheet = workbook.getSheet(CAP_ELEMENTS_TYPE);
             List<CfgCapElementsType> cfgCapElementsTypes = cfgCapElementsTypeObjectMapper.extractData(capElementsTypeSheet);
+            importConfigIntoDb.importCfgCapElementsTypes(cfgCapElementsTypes);
 
             XSSFSheet capElementsLimitSheet = workbook.getSheet(CAP_ELEMENTS_LIMIT);
             List<CfgCapElementsLimit> cfgCapElementsLimits = cfgCapElementsLimitObjectMapper.extractData(capElementsLimitSheet);
+            importConfigIntoDb.importCfgCapElementsLimits(cfgCapElementsLimits);
 
             XSSFSheet capElementsMappingSheet = workbook.getSheet(CAP_ELEMENTS_MAPPING);
             List<CfgCapElementsMapping> cfgCapElementsMappings = cfgCapElementsMappingObjectMapper.extractData(capElementsMappingSheet);
+            importConfigIntoDb.importCfgCapElementsMappings(cfgCapElementsMappings);
 
             XSSFSheet capElementsFormulaSheet = workbook.getSheet(CAP_ELEMENTS_FORMULA);
             List<CfgCapElementsFormula> cfgCapElementsFormulas = cfgCapElementsFormulaObjectMapper.extractData(capElementsFormulaSheet);
+            importConfigIntoDb.importCfgCapElementsFormulas(cfgCapElementsFormulas);
 
             file.close();
+
+            ConfigFile oneByStatusCurrent = configFileRepository.findOneByStatus(CURRENT);
+            if (oneByStatusCurrent!=null){
+                oneByStatusCurrent.setStatus(NULL);
+                configFileRepository.save(oneByStatusCurrent);
+            }
+
+            configFile.setStatus(CURRENT);
+            configFileRepository.save(configFile);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-
+        log.info("Import for configFile : {} finished in {} ms", configFile.toString(), System.currentTimeMillis() - start);
 
     }
 }

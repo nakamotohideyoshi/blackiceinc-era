@@ -1,20 +1,16 @@
 package com.blackiceinc.era.persistence.erau.model;
 
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "CFG_RATING")
 public class CfgRating {
 
-    @Id
-    @Column(name = "AGENCY_CODE")
-    private String agencyCode;
-
-    @Column(name = "RATING")
-    private String rating;
+    @EmbeddedId
+    private CfgRatingKey cfgRatingKey;
 
     @Column(name = "QUALIFYING")
     private String qualifying;
@@ -26,31 +22,30 @@ public class CfgRating {
     private Long riskBucket;
 
     public CfgRating(String agencyCode, String rating, String qualifying, String longShort, Long riskBucket) {
-        this.agencyCode = agencyCode;
-        this.rating = rating;
+        this.cfgRatingKey = new CfgRatingKey(agencyCode, rating);
         this.qualifying = qualifying;
         this.longShort = longShort;
         this.riskBucket = riskBucket;
     }
 
     public CfgRating() {
-
+        this.cfgRatingKey = new CfgRatingKey();
     }
 
     public String getAgencyCode() {
-        return agencyCode;
+        return this.cfgRatingKey.getAgencyCode();
     }
 
     public void setAgencyCode(String agencyCode) {
-        this.agencyCode = agencyCode;
+        this.cfgRatingKey.setAgencyCode(agencyCode);
     }
 
     public String getRating() {
-        return rating;
+        return this.cfgRatingKey.getRating();
     }
 
     public void setRating(String rating) {
-        this.rating = rating;
+        this.cfgRatingKey.setRating(rating);
     }
 
     public String getQualifying() {

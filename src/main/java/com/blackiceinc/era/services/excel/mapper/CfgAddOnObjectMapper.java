@@ -23,7 +23,7 @@ public class CfgAddOnObjectMapper {
     CfgAddOnRepository cfgAddOnRepository;
 
     @Autowired
-    public CfgAddOnObjectMapper(CfgAddOnRepository cfgAddOnRepository){
+    public CfgAddOnObjectMapper(CfgAddOnRepository cfgAddOnRepository) {
         this.cfgAddOnRepository = cfgAddOnRepository;
     }
 
@@ -53,31 +53,31 @@ public class CfgAddOnObjectMapper {
         cfgAddOn.setEraProductType(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
 
         Cell cell1 = row.getCell(1);
-        if (cell1!=null){
-            switch (cell1.getCellType()){
+        if (cell1 != null) {
+            switch (cell1.getCellType()) {
                 case Cell.CELL_TYPE_NUMERIC:
-                    cfgAddOn.setMaturityStart(cell1 != null ? (long)cell1.getNumericCellValue() : null);
+                    cfgAddOn.setMaturityStart(String.valueOf((long) cell1.getNumericCellValue()));
                     break;
                 case Cell.CELL_TYPE_STRING:
-                    cfgAddOn.setMaturityStart(cell1 != null ? Long.valueOf(cell1.getStringCellValue()) : null);
-                break;
+                    cfgAddOn.setMaturityStart(cell1.getStringCellValue());
+                    break;
             }
         }
 
         Cell cell2 = row.getCell(2);
-        if (cell2!=null) {
-            switch (cell2.getCellType()){
+        if (cell2 != null) {
+            switch (cell2.getCellType()) {
                 case Cell.CELL_TYPE_NUMERIC:
-                    cfgAddOn.setMaturityEnd(cell2 != null ? (long)cell2.getNumericCellValue() : null);
+                    cfgAddOn.setMaturityEnd(String.valueOf((long) cell2.getNumericCellValue()));
                     break;
                 case Cell.CELL_TYPE_STRING:
-                    try{
-                        cfgAddOn.setMaturityEnd(cell2 != null ? Long.valueOf(cell2.getStringCellValue()) : null);
-                    }catch (NumberFormatException ex){
+                    try {
+                        cfgAddOn.setMaturityEnd(cell2.getStringCellValue());
+                    } catch (NumberFormatException ex) {
                         log.error("Error mapping excel value into database. Sheet : {}, row : {}, column : {}",
                                 row.getSheet().getSheetName(), row.getRowNum(), cell2.getColumnIndex(), ex);
                     }
-                break;
+                    break;
             }
         }
 
@@ -90,7 +90,7 @@ public class CfgAddOnObjectMapper {
         List<CfgAddOn> all = cfgAddOnRepository.findAll();
         ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
-        for (CfgAddOn cfgAddOn:all){
+        for (CfgAddOn cfgAddOn : all) {
             XSSFRow row = sheet.createRow(rowIndex);
             row.createCell(0).setCellValue(cfgAddOn.getEraProductType());
             row.createCell(1).setCellValue(cfgAddOn.getMaturityStart());

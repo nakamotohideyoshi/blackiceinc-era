@@ -1,59 +1,48 @@
 package com.blackiceinc.era.persistence.erau.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "CFG_ADD_ON")
 public class CfgAddOn {
 
-    @Id
-    @Column(name = "ERA_PRODUCT_TYPE")
-    private String eraProductType;
-
-    @Column(name = "MATURITY_START")
-    private Long maturityStart;
-
-    @Column(name = "MATURITY_END")
-    private Long maturityEnd;
+    @EmbeddedId
+    private CfgAddOnKey cfgAddOnKey;
 
     @Column(name = "RISK_WEIGHT")
     private Double riskWeight;
 
     public CfgAddOn() {
+        this.cfgAddOnKey = new CfgAddOnKey();
     }
 
-    public CfgAddOn(String eraProductType, Long maturityStart, Long maturityEnd, Double riskWeight) {
-        this.eraProductType = eraProductType;
-        this.maturityStart = maturityStart;
-        this.maturityEnd = maturityEnd;
+    public CfgAddOn(String eraProductType, String maturityStart, String maturityEnd, Double riskWeight) {
+        this.cfgAddOnKey = new CfgAddOnKey(eraProductType, maturityStart, maturityEnd);
         this.riskWeight = riskWeight;
     }
 
     public String getEraProductType() {
-        return eraProductType;
+        return this.cfgAddOnKey.getEraProductType();
     }
 
     public void setEraProductType(String eraProductType) {
-        this.eraProductType = eraProductType;
+        this.cfgAddOnKey.setEraProductType(eraProductType);
     }
 
-    public Long getMaturityStart() {
-        return maturityStart;
+    public String getMaturityStart() {
+        return this.cfgAddOnKey.getMaturityStart();
     }
 
-    public void setMaturityStart(Long maturityStart) {
-        this.maturityStart = maturityStart;
+    public void setMaturityStart(String maturityStart) {
+        this.cfgAddOnKey.setMaturityStart(maturityStart);
     }
 
-    public Long getMaturityEnd() {
-        return maturityEnd;
+    public String getMaturityEnd() {
+        return this.cfgAddOnKey.getMaturityEnd();
     }
 
-    public void setMaturityEnd(Long maturityEnd) {
-        this.maturityEnd = maturityEnd;
+    public void setMaturityEnd(String maturityEnd) {
+        this.cfgAddOnKey.setMaturityEnd(maturityEnd);
     }
 
     public Double getRiskWeight() {

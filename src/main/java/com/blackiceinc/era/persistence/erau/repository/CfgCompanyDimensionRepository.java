@@ -1,7 +1,13 @@
 package com.blackiceinc.era.persistence.erau.repository;
 
 import com.blackiceinc.era.persistence.erau.model.CfgCompanyDimension;
+import com.blackiceinc.era.persistence.erau.model.CfgCompanyDimensionKey;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 
-public interface CfgCompanyDimensionRepository extends JpaRepository<CfgCompanyDimension, String> {
+public interface CfgCompanyDimensionRepository extends JpaRepository<CfgCompanyDimension, CfgCompanyDimensionKey> {
+    @Modifying
+    @Query("delete from #{#entityName}")
+    void deleteAll();
 }

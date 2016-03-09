@@ -218,6 +218,15 @@
                 <spring.active.profile>dev_era</spring.active.profile>
             </properties>
         </profile>
+        <profile>
+            <id>onsite</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <spring.active.profile>onsite</spring.active.profile>
+            </properties>
+        </profile>
     </profiles>
 
 </project>

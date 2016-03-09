@@ -16,19 +16,9 @@
     var USER_ROLE = "${user_role}";
 </script>
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-<script>
-    if (!window.jQuery) {
-        document.write('<script src="resources/js/libs/jquery-2.0.2.min.js"><\/script>');
-    }
-</script>
+<script src="resources/js/libs/jquery-2.0.2.min.js"></script>
 
-<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-<script>
-    if (!window.jQuery.ui) {
-        document.write('<script src="resources/js/libs/jquery-ui-1.10.3.min.js"><\/script>');
-    }
-</script>
+<script src="resources/js/libs/jquery-ui-1.10.3.min.js"></script>
 
 <script src="resources/js/plugin/jquery-touch/jquery.ui.touch-punch.min.js"></script>
 <script src="resources/js/bootstrap/bootstrap.min.js"></script>
@@ -55,12 +45,12 @@
 
 <!-- AngularJS -->
 
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-cookies.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular-route.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular-animate.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular-sanitize.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular-mocks.js"></script>
+<script src="resources/js/libs/angular/1.3.5/angular.min.js"></script>
+<script src="resources/js/libs/angular/1.2.26/angular-cookies.min.js"></script>
+<script src="resources/js/libs/angular/1.3.5/angular-route.js"></script>
+<script src="resources/js/libs/angular/1.3.5/angular-animate.min.js"></script>
+<script src="resources/js/libs/angular/1.3.5/angular-sanitize.min.js"></script>
+<script src="resources/js/libs/angular/1.3.5/angular-mocks.js"></script>
 
 <script src="resources/js/libs/angular/ui-bootstrap-custom-tpls-0.11.0.js"></script>
 <script src="resources/js/plugin/xeditable.min.js"></script>

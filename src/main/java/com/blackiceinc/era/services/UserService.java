@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -47,6 +48,12 @@ public class UserService {
         User user = new User();
         user.setId(userDTO.getId());
         user.setUsername(userDTO.getUsername());
+
+        String role = userDTO.getRole();
+        Set<Role> roles = new HashSet<>();
+        roles.add(new Role(role));
+        user.setRoles(roles);
+
         long currentTimeMillis = System.currentTimeMillis();
         user.setModified(new Timestamp(currentTimeMillis));
         user.setCreated(new Timestamp(currentTimeMillis));
@@ -58,10 +65,7 @@ public class UserService {
         UserDTO userDTO = new UserDTO();
         userDTO.setId(user.getId());
         userDTO.setUsername(user.getUsername());
-        Set<Role> roles = user.getRoles();
-        Iterator<Role> roleIter = roles.iterator();
-        Role role = roleIter.next();
-        userDTO.setRole(role.getName());
+        userDTO.setRole(user.getRole());
         return userDTO;
     }
 }

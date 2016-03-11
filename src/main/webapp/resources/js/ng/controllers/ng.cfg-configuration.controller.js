@@ -269,7 +269,7 @@ angular.module('ng.cfg-configuration.controller', [])
 
           $scope.ConfigurationModal.closeConfigurationModal();
         }, function(response){
-          console.log("error tmn");
+          $scope.ConfigurationModal.$saving = false;
         });
       };
 

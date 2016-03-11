@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.sql.Timestamp;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 @Entity
@@ -80,6 +81,16 @@ public class User {
 
     public Set<Role> getRoles() {
         return roles;
+    }
+
+    public String getRole() {
+        if (roles!=null){
+            Iterator<Role> iterator = roles.iterator();
+            if (iterator.hasNext()) {
+                return iterator.next().getName();
+            }
+        }
+        return null;
     }
 
     public void setRoles(Set<Role> roles) {

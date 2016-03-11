@@ -381,7 +381,18 @@ angular.module('app.services', [])
 
 	.service('AccountSettingsService', function(CustomHttp){
 		return ({
-
+			getAll : function(params) {
+				return CustomHttp.get('api/user?' + $.param(params), {});
+			},
+			getRoles : function() {
+				return CustomHttp.get('api/user/roles');
+			},
+			save : function(data) {
+			    return CustomHttp.post('api/user', data);
+			},
+			remove : function( idArray ) {
+          return CustomHttp.remove('api/user', idArray);
+      },
 		});
 	})
 

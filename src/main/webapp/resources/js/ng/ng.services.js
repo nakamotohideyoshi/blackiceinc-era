@@ -387,8 +387,11 @@ angular.module('app.services', [])
 			getRoles : function() {
 				return CustomHttp.get('api/user/roles');
 			},
-			save : function(data) {
+			create : function(data) {
 			    return CustomHttp.post('api/user', data);
+			},
+			update : function(data) {
+				return CustomHttp.put('api/user', data);
 			},
 			remove : function( idArray ) {
           return CustomHttp.remove('api/user', idArray);

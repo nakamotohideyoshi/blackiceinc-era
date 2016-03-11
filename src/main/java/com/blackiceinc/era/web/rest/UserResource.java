@@ -64,7 +64,30 @@ public class UserResource {
             res.setTotalElements(userService.countUsers());
             return new ResponseEntity<>(res, HttpStatus.CREATED);
         } catch (DataIntegrityViolationException ex) {
-            res.setMessage("Cannot Add Duplicate Entries! A Record With These Values Already Exists.");
+            res.setMessage("Username already used.");
+            return new ResponseEntity<>(res, HttpStatus.CONFLICT);
+        }
+
+    }
+
+    @RequestMapping(value = "/user",
+            method = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Response> update(@Valid @RequestBody UserDTO userDTO) throws URISyntaxException {
+        log.debug("REST request to update User : {}", userDTO);
+
+        Response res = new Response();
+        if (userDTO.getId() == null) {
+            return create(userDTO);
+        }
+
+        try {
+            UserDTO savedEntity = userService.save(userDTO);
+            res.setContent(savedEntity);
+            res.setTotalElements(userService.countUsers());
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        } catch (DataIntegrityViolationException ex) {
+            res.setMessage("Username already used.");
             return new ResponseEntity<>(res, HttpStatus.CONFLICT);
         }
 

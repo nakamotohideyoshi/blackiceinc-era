@@ -8,41 +8,19 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Component
-public class CfgReclassObjectMapper {
+public class CfgReclassObjectMapper extends AbstractObjectMapper {
 
     CfgReclassRepository cfgReclassRepository;
 
     @Autowired
-    public CfgReclassObjectMapper(CfgReclassRepository cfgReclassRepository){
+    public CfgReclassObjectMapper(CfgReclassRepository cfgReclassRepository) {
         this.cfgReclassRepository = cfgReclassRepository;
     }
 
-    public List<CfgReclass> extractData(XSSFSheet sheet) {
-        List<CfgReclass> result = new ArrayList<>();
-
-        //Iterate through each rows one by one
-        Iterator<Row> rowIterator = sheet.iterator();
-        int rowIndex = 0;
-        while (rowIterator.hasNext()) {
-            Row row = rowIterator.next();
-            // ignore first row since it's column names
-            if (rowIndex > 0) {
-                result.add(createRow(row));
-            }
-
-            rowIndex++;
-        }
-
-        return result;
-    }
-
-    private CfgReclass createRow(Row row) {
-
+    CfgReclass createRow(Row row) {
         CfgReclass cfgReclass = new CfgReclass();
 
         cfgReclass.setCheckNo(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
@@ -60,15 +38,16 @@ public class CfgReclassObjectMapper {
         List<CfgReclass> all = cfgReclassRepository.findAll();
         ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
-        for (CfgReclass cfgReclass:all){
+        for (CfgReclass cfgReclass : all) {
             XSSFRow row = sheet.createRow(rowIndex);
-            row.createCell(0).setCellValue(cfgReclass.getCheckNo());
-            row.createCell(1).setCellValue(cfgReclass.getDescription());
-            row.createCell(2).setCellValue(cfgReclass.getEraEntityTypeIn());
-            row.createCell(3).setCellValue(cfgReclass.getEraProductTypeIn());
-            row.createCell(4).setCellValue(cfgReclass.getCheck());
-            row.createCell(5).setCellValue(cfgReclass.getEraEntityTypeOut());
-            row.createCell(6).setCellValue(cfgReclass.getEraProductTypeOut());
+
+            createCell(row, 0, cfgReclass.getCheckNo());
+            createCell(row, 1, cfgReclass.getDescription());
+            createCell(row, 2, cfgReclass.getEraEntityTypeIn());
+            createCell(row, 3, cfgReclass.getEraProductTypeIn());
+            createCell(row, 4, cfgReclass.getCheck());
+            createCell(row, 5, cfgReclass.getEraEntityTypeOut());
+            createCell(row, 6, cfgReclass.getEraProductTypeOut());
 
             rowIndex++;
         }

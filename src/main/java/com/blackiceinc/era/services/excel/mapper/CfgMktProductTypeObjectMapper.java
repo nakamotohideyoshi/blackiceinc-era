@@ -8,41 +8,19 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Component
-public class CfgMktProductTypeObjectMapper {
+public class CfgMktProductTypeObjectMapper extends AbstractObjectMapper {
 
     CfgMktProductTypeRepository cfgMktProductTypeRepository;
 
     @Autowired
-    public CfgMktProductTypeObjectMapper(CfgMktProductTypeRepository cfgMktProductTypeRepository){
+    public CfgMktProductTypeObjectMapper(CfgMktProductTypeRepository cfgMktProductTypeRepository) {
         this.cfgMktProductTypeRepository = cfgMktProductTypeRepository;
     }
 
-    public List<CfgMktProductType> extractData(XSSFSheet sheet) {
-        List<CfgMktProductType> result = new ArrayList<>();
-
-        //Iterate through each rows one by one
-        Iterator<Row> rowIterator = sheet.iterator();
-        int rowIndex = 0;
-        while (rowIterator.hasNext()) {
-            Row row = rowIterator.next();
-            // ignore first row since it's column names
-            if (rowIndex > 0) {
-                result.add(createRow(row));
-            }
-
-            rowIndex++;
-        }
-
-        return result;
-    }
-
-    private CfgMktProductType createRow(Row row) {
-
+    CfgMktProductType createRow(Row row) {
         CfgMktProductType cfgMktProductType = new CfgMktProductType();
 
         cfgMktProductType.setMktProductType(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
@@ -56,11 +34,12 @@ public class CfgMktProductTypeObjectMapper {
         List<CfgMktProductType> all = cfgMktProductTypeRepository.findAll();
         ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
-        for (CfgMktProductType cfgMktProductType:all){
+        for (CfgMktProductType cfgMktProductType : all) {
             XSSFRow row = sheet.createRow(rowIndex);
-            row.createCell(0).setCellValue(cfgMktProductType.getMktProductType());
-            row.createCell(1).setCellValue(cfgMktProductType.getMktProductDesc());
-            row.createCell(2).setCellValue(cfgMktProductType.getMktProductCategory());
+
+            createCell(row, 0, cfgMktProductType.getMktProductType());
+            createCell(row, 1, cfgMktProductType.getMktProductDesc());
+            createCell(row, 2, cfgMktProductType.getMktProductCategory());
 
             rowIndex++;
         }

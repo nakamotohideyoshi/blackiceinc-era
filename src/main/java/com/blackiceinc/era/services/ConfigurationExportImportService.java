@@ -6,6 +6,6 @@ public interface ConfigurationExportImportService {
 
     void exportConfigurationFromDbIntoFile(Long id);
 
-    void importConfigurationFromFileIntoDb(ConfigFile configFile) throws Exception;
+    ConfigFile importConfigurationFromFileIntoDb(ConfigFile configFile) throws Exception;
 
 }

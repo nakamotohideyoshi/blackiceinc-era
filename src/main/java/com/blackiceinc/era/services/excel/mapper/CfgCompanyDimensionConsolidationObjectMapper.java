@@ -8,39 +8,18 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Component
-public class CfgCompanyDimensionConsolidationObjectMapper {
+public class CfgCompanyDimensionConsolidationObjectMapper extends AbstractObjectMapper {
     private CfgCompanyDimensionConsolidationRepository cfgCompanyDimensionConsolidationRepository;
 
     @Autowired
-    public CfgCompanyDimensionConsolidationObjectMapper(CfgCompanyDimensionConsolidationRepository cfgCompanyDimensionConsolidationRepository){
+    public CfgCompanyDimensionConsolidationObjectMapper(CfgCompanyDimensionConsolidationRepository cfgCompanyDimensionConsolidationRepository) {
         this.cfgCompanyDimensionConsolidationRepository = cfgCompanyDimensionConsolidationRepository;
     }
 
-    public List<CfgCompanyDimensionConsolidation> extractCfgCompanyDimensionsConsolidation(XSSFSheet sheet) {
-        List<CfgCompanyDimensionConsolidation> result = new ArrayList<>();
-
-        // Iterate through each rows one by one
-        Iterator<Row> rowIterator = sheet.iterator();
-        int rowIndex = 0;
-        while (rowIterator.hasNext()) {
-            Row row = rowIterator.next();
-            // ignore first row since it's column names
-            if (rowIndex > 0) {
-                result.add(createCfgCompanyDimensionConsolidationObj(row));
-            }
-
-            rowIndex++;
-        }
-
-        return result;
-    }
-
-    private CfgCompanyDimensionConsolidation createCfgCompanyDimensionConsolidationObj(Row row) {
+    CfgCompanyDimensionConsolidation createRow(Row row) {
         CfgCompanyDimensionConsolidation cfgCompanyDimensionConsolidation = new CfgCompanyDimensionConsolidation();
 
         cfgCompanyDimensionConsolidation.setCompanyCode(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
@@ -51,16 +30,17 @@ public class CfgCompanyDimensionConsolidationObjectMapper {
         return cfgCompanyDimensionConsolidation;
     }
 
-    public void importCfgCompanyDimensionConsolidation(XSSFSheet sheet) {
+    public void importData(XSSFSheet sheet) {
         List<CfgCompanyDimensionConsolidation> all = cfgCompanyDimensionConsolidationRepository.findAll();
         ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
         for (CfgCompanyDimensionConsolidation cfgCompanyDimension : all) {
             XSSFRow row = sheet.createRow(rowIndex);
-            row.createCell(0).setCellValue(cfgCompanyDimension.getCompanyCode());
-            row.createCell(1).setCellValue(cfgCompanyDimension.getEntityCode());
-            row.createCell(2).setCellValue(cfgCompanyDimension.getConsoMode());
-            row.createCell(3).setCellValue(cfgCompanyDimension.getConsoPerct());
+
+            createCell(row, 0, cfgCompanyDimension.getCompanyCode());
+            createCell(row, 1, cfgCompanyDimension.getEntityCode());
+            createCell(row, 2, cfgCompanyDimension.getConsoMode());
+            createCell(row, 3, cfgCompanyDimension.getConsoPerct());
 
             rowIndex++;
         }

@@ -8,41 +8,19 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Component
-public class CfgMktEqtGnrObjectMapper {
+public class CfgMktEqtGnrObjectMapper extends AbstractObjectMapper {
 
     CfgMktEqtGnrRepository cfgMktEqtGnrRepository;
 
     @Autowired
-    public CfgMktEqtGnrObjectMapper(CfgMktEqtGnrRepository cfgMktEqtGnrRepository){
+    public CfgMktEqtGnrObjectMapper(CfgMktEqtGnrRepository cfgMktEqtGnrRepository) {
         this.cfgMktEqtGnrRepository = cfgMktEqtGnrRepository;
     }
 
-    public List<CfgMktEqtGnr> extractData(XSSFSheet sheet) {
-        List<CfgMktEqtGnr> result = new ArrayList<>();
-
-        //Iterate through each rows one by one
-        Iterator<Row> rowIterator = sheet.iterator();
-        int rowIndex = 0;
-        while (rowIterator.hasNext()) {
-            Row row = rowIterator.next();
-            // ignore first row since it's column names
-            if (rowIndex > 0) {
-                result.add(createRow(row));
-            }
-
-            rowIndex++;
-        }
-
-        return result;
-    }
-
-    private CfgMktEqtGnr createRow(Row row) {
-
+    CfgMktEqtGnr createRow(Row row) {
         CfgMktEqtGnr cfgMktEqtGnr = new CfgMktEqtGnr();
 
         cfgMktEqtGnr.setMktProductType(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
@@ -56,11 +34,12 @@ public class CfgMktEqtGnrObjectMapper {
         List<CfgMktEqtGnr> all = cfgMktEqtGnrRepository.findAll();
         ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
-        for (CfgMktEqtGnr cfgMktEqtGnr:all){
+        for (CfgMktEqtGnr cfgMktEqtGnr : all) {
             XSSFRow row = sheet.createRow(rowIndex);
-            row.createCell(0).setCellValue(cfgMktEqtGnr.getMktProductType());
-            row.createCell(1).setCellValue(cfgMktEqtGnr.getUnderlying());
-            row.createCell(2).setCellValue(cfgMktEqtGnr.getRiskWeight());
+
+            createCell(row, 0, cfgMktEqtGnr.getMktProductType());
+            createCell(row, 1, cfgMktEqtGnr.getUnderlying());
+            createCell(row, 2, cfgMktEqtGnr.getRiskWeight());
 
             rowIndex++;
         }

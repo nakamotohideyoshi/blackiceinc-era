@@ -8,40 +8,19 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Component
-public class CfgMktComDrtObjectMapper {
+public class CfgMktComDrtObjectMapper extends AbstractObjectMapper {
 
     CfgMktComDrtRepository cfgMktComDrtRepository;
 
     @Autowired
-    public CfgMktComDrtObjectMapper(CfgMktComDrtRepository cfgMktComDrtRepository){
+    public CfgMktComDrtObjectMapper(CfgMktComDrtRepository cfgMktComDrtRepository) {
         this.cfgMktComDrtRepository = cfgMktComDrtRepository;
     }
 
-    public List<CfgMktComDrt> extractData(XSSFSheet sheet) {
-        List<CfgMktComDrt> result = new ArrayList<>();
-
-        //Iterate through each rows one by one
-        Iterator<Row> rowIterator = sheet.iterator();
-        int rowIndex = 0;
-        while (rowIterator.hasNext()) {
-            Row row = rowIterator.next();
-            // ignore first row since it's column names
-            if (rowIndex > 0) {
-                result.add(createRow(row));
-            }
-
-            rowIndex++;
-        }
-
-        return result;
-    }
-
-    private CfgMktComDrt createRow(Row row) {
+    CfgMktComDrt createRow(Row row) {
 
         CfgMktComDrt cfgMktComDrt = new CfgMktComDrt();
 
@@ -55,10 +34,11 @@ public class CfgMktComDrtObjectMapper {
         List<CfgMktComDrt> all = cfgMktComDrtRepository.findAll();
         ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
-        for (CfgMktComDrt cfgMktComDrt:all){
+        for (CfgMktComDrt cfgMktComDrt : all) {
             XSSFRow row = sheet.createRow(rowIndex);
-            row.createCell(0).setCellValue(cfgMktComDrt.getMktProductType());
-            row.createCell(1).setCellValue(cfgMktComDrt.getRiskWeight());
+
+            createCell(row, 0, cfgMktComDrt.getMktProductType());
+            createCell(row, 1, cfgMktComDrt.getRiskWeight());
 
             rowIndex++;
         }

@@ -9,12 +9,10 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Component
-public class CfgCompanyObjectMapper {
+public class CfgCompanyObjectMapper extends AbstractObjectMapper {
 
     private CfgCompanyRepository cfgCompanyRepository;
 
@@ -23,26 +21,7 @@ public class CfgCompanyObjectMapper {
         this.cfgCompanyRepository = cfgCompanyRepository;
     }
 
-    public List<CfgCompany> extractCfgCompanies(XSSFSheet companySheet) {
-        List<CfgCompany> result = new ArrayList<>();
-
-        // Iterate through each rows one by one
-        Iterator<Row> rowIterator = companySheet.iterator();
-        int rowIndex = 0;
-        while (rowIterator.hasNext()) {
-            Row row = rowIterator.next();
-            // ignore first row since it's column names
-            if (rowIndex > 0) {
-                result.add(createCfgCompanyObj(row));
-            }
-
-            rowIndex++;
-        }
-
-        return result;
-    }
-
-    private CfgCompany createCfgCompanyObj(Row row) {
+    CfgCompany createRow(Row row) {
         CfgCompany cfgCompany = new CfgCompany();
 
         cfgCompany.setCompanyCode(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
@@ -52,15 +31,16 @@ public class CfgCompanyObjectMapper {
         return cfgCompany;
     }
 
-    public void importCfgCompanies(XSSFSheet companySheet) {
+    public void importData(XSSFSheet companySheet) {
         List<CfgCompany> all = cfgCompanyRepository.findAll();
         ExcelUtils.removeAllRowsExcelFirstOne(companySheet);
         int rowIndex = 1;
         for (CfgCompany cfgFinancialBook : all) {
             XSSFRow row = companySheet.createRow(rowIndex);
-            row.createCell(0).setCellValue(cfgFinancialBook.getCompanyCode());
-            row.createCell(1).setCellValue(cfgFinancialBook.getCompanyName());
-            row.createCell(2).setCellValue(cfgFinancialBook.getIncorporationCountry());
+
+            createCell(row, 0, cfgFinancialBook.getCompanyCode());
+            createCell(row, 1, cfgFinancialBook.getCompanyName());
+            createCell(row, 2, cfgFinancialBook.getIncorporationCountry());
 
             rowIndex++;
         }

@@ -8,40 +8,19 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Component
-public class CfgMktAssetClassObjectMapper {
+public class CfgMktAssetClassObjectMapper extends AbstractObjectMapper {
 
     CfgMktAssetClassRepository cfgMktAssetClassRepository;
 
     @Autowired
-    public CfgMktAssetClassObjectMapper(CfgMktAssetClassRepository cfgMktAssetClassRepository){
+    public CfgMktAssetClassObjectMapper(CfgMktAssetClassRepository cfgMktAssetClassRepository) {
         this.cfgMktAssetClassRepository = cfgMktAssetClassRepository;
     }
 
-    public List<CfgMktAssetClass> extractData(XSSFSheet sheet) {
-        List<CfgMktAssetClass> result = new ArrayList<>();
-
-        //Iterate through each rows one by one
-        Iterator<Row> rowIterator = sheet.iterator();
-        int rowIndex = 0;
-        while (rowIterator.hasNext()) {
-            Row row = rowIterator.next();
-            // ignore first row since it's column names
-            if (rowIndex > 0) {
-                result.add(createRow(row));
-            }
-
-            rowIndex++;
-        }
-
-        return result;
-    }
-
-    private CfgMktAssetClass createRow(Row row) {
+    CfgMktAssetClass createRow(Row row) {
 
         CfgMktAssetClass cfgMktAssetClass = new CfgMktAssetClass();
 
@@ -55,10 +34,11 @@ public class CfgMktAssetClassObjectMapper {
         List<CfgMktAssetClass> all = cfgMktAssetClassRepository.findAll();
         ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
-        for (CfgMktAssetClass cfgMktAssetClass:all){
+        for (CfgMktAssetClass cfgMktAssetClass : all) {
             XSSFRow row = sheet.createRow(rowIndex);
-            row.createCell(0).setCellValue(cfgMktAssetClass.getMktAssetClass());
-            row.createCell(1).setCellValue(cfgMktAssetClass.getMktAssetClassDesc());
+
+            createCell(row, 0, cfgMktAssetClass.getMktAssetClass());
+            createCell(row, 1, cfgMktAssetClass.getMktAssetClassDesc());
 
             rowIndex++;
         }

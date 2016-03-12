@@ -8,41 +8,19 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Component
-public class CfgMktIrrSpcRiskObjectMapper {
+public class CfgMktIrrSpcRiskObjectMapper extends AbstractObjectMapper {
 
     CfgMktIrrSpcRiskRepository cfgMktIrrSpcRiskRepository;
 
     @Autowired
-    public CfgMktIrrSpcRiskObjectMapper(CfgMktIrrSpcRiskRepository cfgMktIrrSpcRiskRepository){
+    public CfgMktIrrSpcRiskObjectMapper(CfgMktIrrSpcRiskRepository cfgMktIrrSpcRiskRepository) {
         this.cfgMktIrrSpcRiskRepository = cfgMktIrrSpcRiskRepository;
     }
 
-    public List<CfgMktIrrSpcRisk> extractData(XSSFSheet sheet) {
-        List<CfgMktIrrSpcRisk> result = new ArrayList<>();
-
-        //Iterate through each rows one by one
-        Iterator<Row> rowIterator = sheet.iterator();
-        int rowIndex = 0;
-        while (rowIterator.hasNext()) {
-            Row row = rowIterator.next();
-            // ignore first row since it's column names
-            if (rowIndex > 0) {
-                result.add(createRow(row));
-            }
-
-            rowIndex++;
-        }
-
-        return result;
-    }
-
-    private CfgMktIrrSpcRisk createRow(Row row) {
-
+    CfgMktIrrSpcRisk createRow(Row row) {
         CfgMktIrrSpcRisk cfgMktIrrSpcRisk = new CfgMktIrrSpcRisk();
 
         cfgMktIrrSpcRisk.setMktAssetClass(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
@@ -60,15 +38,16 @@ public class CfgMktIrrSpcRiskObjectMapper {
         List<CfgMktIrrSpcRisk> all = cfgMktIrrSpcRiskRepository.findAll();
         ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
-        for (CfgMktIrrSpcRisk cfgMktIrrSpcRisk:all){
+        for (CfgMktIrrSpcRisk cfgMktIrrSpcRisk : all) {
             XSSFRow row = sheet.createRow(rowIndex);
-            row.createCell(0).setCellValue(cfgMktIrrSpcRisk.getMktAssetClass());
-            row.createCell(1).setCellValue(cfgMktIrrSpcRisk.getIssueRiskBucket());
-            row.createCell(2).setCellValue(cfgMktIrrSpcRisk.getIssuerRiskBucket());
-            row.createCell(3).setCellValue(cfgMktIrrSpcRisk.getResidualMaturityStart());
-            row.createCell(4).setCellValue(cfgMktIrrSpcRisk.getResidualMaturityEnd());
-            row.createCell(5).setCellValue(cfgMktIrrSpcRisk.getInstrumentGroup());
-            row.createCell(6).setCellValue(cfgMktIrrSpcRisk.getRiskWeight());
+
+            createCell(row, 0, cfgMktIrrSpcRisk.getMktAssetClass());
+            createCell(row, 1, cfgMktIrrSpcRisk.getIssueRiskBucket());
+            createCell(row, 2, cfgMktIrrSpcRisk.getIssuerRiskBucket());
+            createCell(row, 3, cfgMktIrrSpcRisk.getResidualMaturityStart());
+            createCell(row, 4, cfgMktIrrSpcRisk.getResidualMaturityEnd());
+            createCell(row, 5, cfgMktIrrSpcRisk.getInstrumentGroup());
+            createCell(row, 6, cfgMktIrrSpcRisk.getRiskWeight());
 
             rowIndex++;
         }

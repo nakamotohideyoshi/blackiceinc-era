@@ -8,40 +8,19 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Component
-public class CfgCapElementsObjectMapper {
+public class CfgCapElementsObjectMapper extends AbstractObjectMapper {
 
     CfgCapElementsRepository cfgCapElementsRepository;
 
     @Autowired
-    public CfgCapElementsObjectMapper(CfgCapElementsRepository cfgCapElementsRepository){
+    public CfgCapElementsObjectMapper(CfgCapElementsRepository cfgCapElementsRepository) {
         this.cfgCapElementsRepository = cfgCapElementsRepository;
     }
 
-    public List<CfgCapElements> extractData(XSSFSheet sheet) {
-        List<CfgCapElements> result = new ArrayList<>();
-
-        //Iterate through each rows one by one
-        Iterator<Row> rowIterator = sheet.iterator();
-        int rowIndex = 0;
-        while (rowIterator.hasNext()) {
-            Row row = rowIterator.next();
-            // ignore first row since it's column names
-            if (rowIndex > 0) {
-                result.add(createRow(row));
-            }
-
-            rowIndex++;
-        }
-
-        return result;
-    }
-
-    private CfgCapElements createRow(Row row) {
+    CfgCapElements createRow(Row row) {
 
         CfgCapElements cfgCapElements = new CfgCapElements();
 
@@ -56,11 +35,12 @@ public class CfgCapElementsObjectMapper {
         List<CfgCapElements> all = cfgCapElementsRepository.findAll();
         ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
-        for (CfgCapElements cfgCapElements:all){
+        for (CfgCapElements cfgCapElements : all) {
             XSSFRow row = sheet.createRow(rowIndex);
-            row.createCell(0).setCellValue(cfgCapElements.getCapElements());
-            row.createCell(1).setCellValue(cfgCapElements.getCapElementsDesc());
-            row.createCell(2).setCellValue(cfgCapElements.getType());
+
+            createCell(row, 0, cfgCapElements.getCapElements());
+            createCell(row, 1, cfgCapElements.getCapElementsDesc());
+            createCell(row, 2, cfgCapElements.getType());
 
             rowIndex++;
         }

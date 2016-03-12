@@ -8,41 +8,19 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Component
-public class CfgMktEqtSpcObjectMapper {
+public class CfgMktEqtSpcObjectMapper extends AbstractObjectMapper {
 
     CfgMktEqtSpcRepository cfgMktEqtSpcRepository;
 
     @Autowired
-    public CfgMktEqtSpcObjectMapper(CfgMktEqtSpcRepository cfgMktEqtSpcRepository){
+    public CfgMktEqtSpcObjectMapper(CfgMktEqtSpcRepository cfgMktEqtSpcRepository) {
         this.cfgMktEqtSpcRepository = cfgMktEqtSpcRepository;
     }
 
-    public List<CfgMktEqtSpc> extractData(XSSFSheet sheet) {
-        List<CfgMktEqtSpc> result = new ArrayList<>();
-
-        //Iterate through each rows one by one
-        Iterator<Row> rowIterator = sheet.iterator();
-        int rowIndex = 0;
-        while (rowIterator.hasNext()) {
-            Row row = rowIterator.next();
-            // ignore first row since it's column names
-            if (rowIndex > 0) {
-                result.add(createRow(row));
-            }
-
-            rowIndex++;
-        }
-
-        return result;
-    }
-
-    private CfgMktEqtSpc createRow(Row row) {
-
+    CfgMktEqtSpc createRow(Row row) {
         CfgMktEqtSpc cfgMktEqtSpc = new CfgMktEqtSpc();
 
         cfgMktEqtSpc.setMktProductType(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
@@ -59,14 +37,15 @@ public class CfgMktEqtSpcObjectMapper {
         List<CfgMktEqtSpc> all = cfgMktEqtSpcRepository.findAll();
         ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
-        for (CfgMktEqtSpc cfgMktEqtSpc:all){
+        for (CfgMktEqtSpc cfgMktEqtSpc : all) {
             XSSFRow row = sheet.createRow(rowIndex);
-            row.createCell(0).setCellValue(cfgMktEqtSpc.getMktProductType());
-            row.createCell(1).setCellValue(cfgMktEqtSpc.getUnderlying());
-            row.createCell(2).setCellValue(cfgMktEqtSpc.getDiversifiedEquity());
-            row.createCell(3).setCellValue(cfgMktEqtSpc.getDiversifiedIndex());
-            row.createCell(4).setCellValue(cfgMktEqtSpc.getLiquidEquity());
-            row.createCell(5).setCellValue(cfgMktEqtSpc.getRiskWeight());
+
+            createCell(row, 0, cfgMktEqtSpc.getMktProductType());
+            createCell(row, 1, cfgMktEqtSpc.getUnderlying());
+            createCell(row, 2, cfgMktEqtSpc.getDiversifiedEquity());
+            createCell(row, 3, cfgMktEqtSpc.getDiversifiedIndex());
+            createCell(row, 4, cfgMktEqtSpc.getLiquidEquity());
+            createCell(row, 5, cfgMktEqtSpc.getRiskWeight());
 
             rowIndex++;
         }

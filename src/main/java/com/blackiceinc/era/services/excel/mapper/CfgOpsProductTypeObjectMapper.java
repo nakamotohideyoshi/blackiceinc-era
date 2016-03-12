@@ -10,8 +10,6 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Component
@@ -25,7 +23,6 @@ public class CfgOpsProductTypeObjectMapper extends AbstractObjectMapper {
     }
 
     CfgOpsProductType createRow(Row row) throws PrimaryColumnMappingException {
-
         CfgOpsProductType cfgOpsProductType = new CfgOpsProductType();
 
         Cell cell0 = row.getCell(0);
@@ -48,9 +45,10 @@ public class CfgOpsProductTypeObjectMapper extends AbstractObjectMapper {
         int rowIndex = 1;
         for (CfgOpsProductType cfgOpsProductType : all) {
             XSSFRow row = sheet.createRow(rowIndex);
-            row.createCell(0).setCellValue(cfgOpsProductType.getOpsProductType());
-            row.createCell(1).setCellValue(cfgOpsProductType.getOpsProductDesc());
-            row.createCell(2).setCellValue(cfgOpsProductType.getOpsBusIndicator());
+
+            createCell(row, 0, cfgOpsProductType.getOpsProductType());
+            createCell(row, 1, cfgOpsProductType.getOpsProductDesc());
+            createCell(row, 2, cfgOpsProductType.getOpsBusIndicator());
 
             rowIndex++;
         }

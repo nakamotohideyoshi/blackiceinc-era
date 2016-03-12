@@ -126,14 +126,13 @@ public class ConfigurationResource {
         Response res = new Response();
         try {
             ConfigFile configFile = configFileRepository.findOne(id);
-            configurationExportImportService.importConfigurationFromFileIntoDb(configFile);
-        }catch (Exception ex){
+            res.setContent(configurationExportImportService.importConfigurationFromFileIntoDb(configFile));
+            log.info("Final import of configFile.id : {} finished in {} ms", id, System.currentTimeMillis() - start);
+        } catch (Exception ex) {
             log.error("Error making an import", ex);
             res.setMessage("Error importing configuration!");
             return new ResponseEntity<>(res, HttpStatus.EXPECTATION_FAILED);
         }
-
-        log.info("Final import of configFile.id : {} finished in {} ms", id, System.currentTimeMillis() - start);
 
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
@@ -141,13 +140,19 @@ public class ConfigurationResource {
     @RequestMapping(value = "/configuration/{id}/export",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> exportConfig(@PathVariable Long id) throws OpenXML4JException, SAXException, IOException {
+    public ResponseEntity<Response> exportConfig(@PathVariable Long id) throws OpenXML4JException, SAXException, IOException {
         log.debug("REST request to import ConfigFile : {}", id);
+        Response res = new Response();
+        try {
+            // export current ConfigFileDTO
+            configurationExportImportService.exportConfigurationFromDbIntoFile(id);
+        } catch (Exception ex) {
+            log.error("Error making an export", ex);
+            res.setMessage("Error importing configuration!");
+            return new ResponseEntity<>(res, HttpStatus.EXPECTATION_FAILED);
+        }
 
-        // export current ConfigFileDTO
-        configurationExportImportService.exportConfigurationFromDbIntoFile(id);
-
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/configuration/download",

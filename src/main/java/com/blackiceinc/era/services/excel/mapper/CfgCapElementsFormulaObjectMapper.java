@@ -47,9 +47,10 @@ public class CfgCapElementsFormulaObjectMapper extends AbstractObjectMapper {
         int rowIndex = 1;
         for (CfgCapElementsFormula cfgCapElementsFormula : all) {
             XSSFRow row = sheet.createRow(rowIndex);
-            row.createCell(0).setCellValue(cfgCapElementsFormula.getCapElements());
-            row.createCell(1).setCellValue(cfgCapElementsFormula.getDescription());
-            row.createCell(2).setCellValue(cfgCapElementsFormula.getFormula());
+
+            createCell(row, 0,cfgCapElementsFormula.getCapElements() );
+            createCell(row, 1,cfgCapElementsFormula.getDescription() );
+            createCell(row, 2,cfgCapElementsFormula.getFormula() );
 
             rowIndex++;
         }

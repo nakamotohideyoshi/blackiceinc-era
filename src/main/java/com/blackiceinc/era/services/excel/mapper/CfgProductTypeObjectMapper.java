@@ -8,41 +8,19 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Component
-public class CfgProductTypeObjectMapper {
+public class CfgProductTypeObjectMapper extends AbstractObjectMapper {
 
     CfgProductTypeRepository cfgProductTypeRepository;
 
     @Autowired
-    public CfgProductTypeObjectMapper(CfgProductTypeRepository cfgProductTypeRepository){
+    public CfgProductTypeObjectMapper(CfgProductTypeRepository cfgProductTypeRepository) {
         this.cfgProductTypeRepository = cfgProductTypeRepository;
     }
 
-    public List<CfgProductType> extractCfgProductTypes(XSSFSheet sheet) {
-        List<CfgProductType> result = new ArrayList<>();
-
-        //Iterate through each rows one by one
-        Iterator<Row> rowIterator = sheet.iterator();
-        int rowIndex = 0;
-        while (rowIterator.hasNext()) {
-            Row row = rowIterator.next();
-            // ignore first row since it's column names
-            if (rowIndex > 0) {
-                result.add(createCfgProductTypeObj(row));
-            }
-
-            rowIndex++;
-        }
-
-        return result;
-    }
-
-    private CfgProductType createCfgProductTypeObj(Row row) {
-
+    CfgProductType createRow(Row row) {
         CfgProductType cfgProductType = new CfgProductType();
 
         cfgProductType.setEraProductType(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
@@ -52,15 +30,16 @@ public class CfgProductTypeObjectMapper {
         return cfgProductType;
     }
 
-    public void importCfgProductTypes(XSSFSheet sheet) {
+    public void importData(XSSFSheet sheet) {
         List<CfgProductType> all = cfgProductTypeRepository.findAll();
         ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
-        for (CfgProductType cfgProductType:all){
+        for (CfgProductType cfgProductType : all) {
             XSSFRow row = sheet.createRow(rowIndex);
-            row.createCell(0).setCellValue(cfgProductType.getEraProductType());
-            row.createCell(1).setCellValue(cfgProductType.getEraProductDesc());
-            row.createCell(2).setCellValue(cfgProductType.getEraProductCategory());
+
+            createCell(row, 0, cfgProductType.getEraProductType());
+            createCell(row, 1, cfgProductType.getEraProductDesc());
+            createCell(row, 2, cfgProductType.getEraProductCategory());
 
             rowIndex++;
         }

@@ -9,12 +9,10 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Component
-public class CfgCapElementsMappingObjectMapper {
+public class CfgCapElementsMappingObjectMapper extends AbstractObjectMapper {
 
     CfgCapElementsMappingRepository cfgCapElementsMappingRepository;
 
@@ -23,26 +21,7 @@ public class CfgCapElementsMappingObjectMapper {
         this.cfgCapElementsMappingRepository = cfgCapElementsMappingRepository;
     }
 
-    public List<CfgCapElementsMapping> extractData(XSSFSheet sheet) {
-        List<CfgCapElementsMapping> result = new ArrayList<>();
-
-        //Iterate through each rows one by one
-        Iterator<Row> rowIterator = sheet.iterator();
-        int rowIndex = 0;
-        while (rowIterator.hasNext()) {
-            Row row = rowIterator.next();
-            // ignore first row since it's column names
-            if (rowIndex > 0) {
-                result.add(createRow(row));
-            }
-
-            rowIndex++;
-        }
-
-        return result;
-    }
-
-    private CfgCapElementsMapping createRow(Row row) {
+    CfgCapElementsMapping createRow(Row row) {
 
         CfgCapElementsMapping cfgCapElementsMapping = new CfgCapElementsMapping();
 
@@ -72,9 +51,10 @@ public class CfgCapElementsMappingObjectMapper {
         int rowIndex = 1;
         for (CfgCapElementsMapping cfgCapElementsMapping : all) {
             XSSFRow row = sheet.createRow(rowIndex);
-            row.createCell(0).setCellValue(cfgCapElementsMapping.getCapElements());
-            row.createCell(1).setCellValue(cfgCapElementsMapping.getGlCode());
-            row.createCell(2).setCellValue(cfgCapElementsMapping.getNote());
+
+            createCell(row, 0, cfgCapElementsMapping.getCapElements());
+            createCell(row, 1, cfgCapElementsMapping.getGlCode());
+            createCell(row, 2, cfgCapElementsMapping.getNote());
 
             rowIndex++;
         }

@@ -2,57 +2,36 @@ package com.blackiceinc.era.services.excel.mapper;
 
 import com.blackiceinc.era.persistence.erau.model.CfgMktIrrGnrRisk;
 import com.blackiceinc.era.persistence.erau.repository.CfgMktIrrGnrRiskRepository;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Component
-public class CfgMktIrrGnrRiskObjectMapper {
+public class CfgMktIrrGnrRiskObjectMapper extends AbstractObjectMapper {
 
     CfgMktIrrGnrRiskRepository cfgMktIrrGnrRiskRepository;
 
     @Autowired
-    public CfgMktIrrGnrRiskObjectMapper(CfgMktIrrGnrRiskRepository cfgMktIrrGnrRiskRepository){
+    public CfgMktIrrGnrRiskObjectMapper(CfgMktIrrGnrRiskRepository cfgMktIrrGnrRiskRepository) {
         this.cfgMktIrrGnrRiskRepository = cfgMktIrrGnrRiskRepository;
     }
 
-    public List<CfgMktIrrGnrRisk> extractData(XSSFSheet sheet) {
-        List<CfgMktIrrGnrRisk> result = new ArrayList<>();
-
-        //Iterate through each rows one by one
-        Iterator<Row> rowIterator = sheet.iterator();
-        int rowIndex = 0;
-        while (rowIterator.hasNext()) {
-            Row row = rowIterator.next();
-            // ignore first row since it's column names
-            if (rowIndex > 0) {
-                result.add(createRow(row));
-            }
-
-            rowIndex++;
-        }
-
-        return result;
-    }
-
-    private CfgMktIrrGnrRisk createRow(Row row) {
-
+    CfgMktIrrGnrRisk createRow(Row row) {
         CfgMktIrrGnrRisk cfgMktIrrGnrRisk = new CfgMktIrrGnrRisk();
 
-        cfgMktIrrGnrRisk.setZoneCode(row.getCell(0) != null ? String.valueOf((int)row.getCell(0).getNumericCellValue()) : null);
-        cfgMktIrrGnrRisk.setBandCode(row.getCell(1) != null ? row.getCell(1).getStringCellValue() : null);
-        cfgMktIrrGnrRisk.setCurrency(row.getCell(2) != null ? row.getCell(2).getStringCellValue() : null);
-        cfgMktIrrGnrRisk.setCouponRateStart(row.getCell(3) != null ? (long)row.getCell(3).getNumericCellValue() : null);
-        cfgMktIrrGnrRisk.setCouponRateEnd(row.getCell(4) != null ? (long)row.getCell(4).getNumericCellValue() : null);
-        cfgMktIrrGnrRisk.setMaturityBandStart(row.getCell(5) != null ? (long)row.getCell(5).getNumericCellValue() : null);
-        cfgMktIrrGnrRisk.setMaturityBandEnd(row.getCell(6) != null ? (long)row.getCell(6).getNumericCellValue() : null);
-        cfgMktIrrGnrRisk.setRiskWeight(row.getCell(7) != null ? row.getCell(7).getNumericCellValue() : null);
+        cfgMktIrrGnrRisk.setZoneCode(getStringValue(row.getCell(0)));
+        cfgMktIrrGnrRisk.setBandCode(getStringValue(row.getCell(1)));
+        cfgMktIrrGnrRisk.setCurrency(getStringValue(row.getCell(2)));
+        cfgMktIrrGnrRisk.setCouponRateStart(getLongValue(row.getCell(3)));
+        cfgMktIrrGnrRisk.setCouponRateEnd(getLongValue(row.getCell(4)));
+        cfgMktIrrGnrRisk.setMaturityBandStart(getLongValue(row.getCell(5)));
+        cfgMktIrrGnrRisk.setMaturityBandEnd(getLongValue(row.getCell(6)));
+        cfgMktIrrGnrRisk.setRiskWeight(getDoubleValue(row.getCell(7)));
 
         return cfgMktIrrGnrRisk;
     }
@@ -61,29 +40,17 @@ public class CfgMktIrrGnrRiskObjectMapper {
         List<CfgMktIrrGnrRisk> all = cfgMktIrrGnrRiskRepository.findAll();
         ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
-        for (CfgMktIrrGnrRisk cfgMktIrrGnrRisk:all){
+        for (CfgMktIrrGnrRisk cfgMktIrrGnrRisk : all) {
             XSSFRow row = sheet.createRow(rowIndex);
-            row.createCell(0).setCellValue(cfgMktIrrGnrRisk.getZoneCode());
-            row.createCell(1).setCellValue(cfgMktIrrGnrRisk.getBandCode());
-            row.createCell(2).setCellValue(cfgMktIrrGnrRisk.getCurrency());
 
-            if (cfgMktIrrGnrRisk.getCouponRateStart()!=null){
-                row.createCell(3).setCellValue(cfgMktIrrGnrRisk.getCouponRateStart());
-            }
-
-            if (cfgMktIrrGnrRisk.getCouponRateEnd()!=null){
-                row.createCell(4).setCellValue(cfgMktIrrGnrRisk.getCouponRateEnd());
-            }
-
-            if (cfgMktIrrGnrRisk.getMaturityBandStart()!=null){
-                row.createCell(5).setCellValue(cfgMktIrrGnrRisk.getMaturityBandStart());
-            }
-
-            if (cfgMktIrrGnrRisk.getMaturityBandEnd()!=null){
-                row.createCell(6).setCellValue(cfgMktIrrGnrRisk.getMaturityBandEnd());
-            }
-
-            row.createCell(7).setCellValue(cfgMktIrrGnrRisk.getRiskWeight());
+            createCell(row, 0, cfgMktIrrGnrRisk.getZoneCode());
+            createCell(row, 1, cfgMktIrrGnrRisk.getBandCode());
+            createCell(row, 2, cfgMktIrrGnrRisk.getCurrency());
+            createCell(row, 3, cfgMktIrrGnrRisk.getCouponRateStart());
+            createCell(row, 4, cfgMktIrrGnrRisk.getCouponRateEnd());
+            createCell(row, 5, cfgMktIrrGnrRisk.getMaturityBandStart());
+            createCell(row, 6, cfgMktIrrGnrRisk.getMaturityBandEnd());
+            createCell(row, 7, cfgMktIrrGnrRisk.getRiskWeight());
 
             rowIndex++;
         }

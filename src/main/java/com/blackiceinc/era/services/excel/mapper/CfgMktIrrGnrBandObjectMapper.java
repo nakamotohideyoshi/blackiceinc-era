@@ -9,51 +9,29 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Component
-public class CfgMktIrrGnrBandObjectMapper {
+public class CfgMktIrrGnrBandObjectMapper extends AbstractObjectMapper {
 
     CfgMktIrrGnrBandRepository cfgMktIrrGnrBandRepository;
 
     @Autowired
-    public CfgMktIrrGnrBandObjectMapper(CfgMktIrrGnrBandRepository cfgMktIrrGnrBandRepository){
+    public CfgMktIrrGnrBandObjectMapper(CfgMktIrrGnrBandRepository cfgMktIrrGnrBandRepository) {
         this.cfgMktIrrGnrBandRepository = cfgMktIrrGnrBandRepository;
     }
 
-    public List<CfgMktIrrGnrBand> extractData(XSSFSheet sheet) {
-        List<CfgMktIrrGnrBand> result = new ArrayList<>();
-
-        //Iterate through each rows one by one
-        Iterator<Row> rowIterator = sheet.iterator();
-        int rowIndex = 0;
-        while (rowIterator.hasNext()) {
-            Row row = rowIterator.next();
-            // ignore first row since it's column names
-            if (rowIndex > 0) {
-                result.add(createRow(row));
-            }
-
-            rowIndex++;
-        }
-
-        return result;
-    }
-
-    private CfgMktIrrGnrBand createRow(Row row) {
-
+    CfgMktIrrGnrBand createRow(Row row) {
         CfgMktIrrGnrBand cfgMktIrrGnrBand = new CfgMktIrrGnrBand();
 
         Cell cell0 = row.getCell(0);
-        if (cell0!=null) {
-            switch (cell0.getCellType()){
+        if (cell0 != null) {
+            switch (cell0.getCellType()) {
                 case Cell.CELL_TYPE_NUMERIC:
-                    cfgMktIrrGnrBand.setCode(cell0 != null ? String.valueOf((long)cell0.getNumericCellValue()) : null);
+                    cfgMktIrrGnrBand.setCode(String.valueOf((long) cell0.getNumericCellValue()));
                     break;
                 case Cell.CELL_TYPE_STRING:
-                    cfgMktIrrGnrBand.setCode(cell0 != null ? cell0.getStringCellValue() : null);
+                    cfgMktIrrGnrBand.setCode(cell0.getStringCellValue());
                     break;
             }
         }
@@ -67,10 +45,11 @@ public class CfgMktIrrGnrBandObjectMapper {
         List<CfgMktIrrGnrBand> all = cfgMktIrrGnrBandRepository.findAll();
         ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
-        for (CfgMktIrrGnrBand cfgMktIrrGnrBand:all){
+        for (CfgMktIrrGnrBand cfgMktIrrGnrBand : all) {
             XSSFRow row = sheet.createRow(rowIndex);
-            row.createCell(0).setCellValue(cfgMktIrrGnrBand.getCode());
-            row.createCell(1).setCellValue(cfgMktIrrGnrBand.getRiskWeight());
+
+            createCell(row, 0, cfgMktIrrGnrBand.getCode());
+            createCell(row, 1, cfgMktIrrGnrBand.getRiskWeight());
 
             rowIndex++;
         }

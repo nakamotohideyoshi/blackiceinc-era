@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 
 @Component
-public class CfgAssetClassObjectMapper {
+public class CfgAssetClassObjectMapper extends AbstractObjectMapper{
 
     CfgAssetClassRepository cfgAssetClassRepository;
 
@@ -22,26 +22,7 @@ public class CfgAssetClassObjectMapper {
         this.cfgAssetClassRepository = cfgAssetClassRepository;
     }
 
-    public List<CfgAssetClass> extractCfgAssetClass(XSSFSheet sheet) {
-        List<CfgAssetClass> result = new ArrayList<>();
-
-        //Iterate through each rows one by one
-        Iterator<Row> rowIterator = sheet.iterator();
-        int rowIndex = 0;
-        while (rowIterator.hasNext()) {
-            Row row = rowIterator.next();
-            // ignore first row since it's column names
-            if (rowIndex > 0) {
-                result.add(createCfgAssetClass(row));
-            }
-
-            rowIndex++;
-        }
-
-        return result;
-    }
-
-    private CfgAssetClass createCfgAssetClass(Row row) {
+    CfgAssetClass createRow(Row row) {
 
         CfgAssetClass cfgAssetClass = new CfgAssetClass();
 
@@ -51,14 +32,15 @@ public class CfgAssetClassObjectMapper {
         return cfgAssetClass;
     }
 
-    public void importCfgAssetClass(XSSFSheet sheet) {
+    public void importData(XSSFSheet sheet) {
         List<CfgAssetClass> all = cfgAssetClassRepository.findAll();
         ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
         for (CfgAssetClass cfgAssetClass:all){
             XSSFRow row = sheet.createRow(rowIndex);
-            row.createCell(0).setCellValue(cfgAssetClass.getEraAssetClass());
-            row.createCell(1).setCellValue(cfgAssetClass.getEraAssetClassDesc());
+
+            createCell(row, 0, cfgAssetClass.getEraAssetClass());
+            createCell(row, 1, cfgAssetClass.getEraAssetClassDesc());
 
             rowIndex++;
         }

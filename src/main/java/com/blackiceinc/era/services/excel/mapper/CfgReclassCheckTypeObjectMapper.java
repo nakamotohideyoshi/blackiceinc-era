@@ -8,41 +8,19 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Component
-public class CfgReclassCheckTypeObjectMapper {
+public class CfgReclassCheckTypeObjectMapper extends AbstractObjectMapper {
 
     CfgReclassCheckTypeRepository cfgReclassCheckTypeRepository;
 
     @Autowired
-    public CfgReclassCheckTypeObjectMapper(CfgReclassCheckTypeRepository cfgReclassCheckTypeRepository){
+    public CfgReclassCheckTypeObjectMapper(CfgReclassCheckTypeRepository cfgReclassCheckTypeRepository) {
         this.cfgReclassCheckTypeRepository = cfgReclassCheckTypeRepository;
     }
 
-    public List<CfgReclassCheckType> extractData(XSSFSheet sheet) {
-        List<CfgReclassCheckType> result = new ArrayList<>();
-
-        //Iterate through each rows one by one
-        Iterator<Row> rowIterator = sheet.iterator();
-        int rowIndex = 0;
-        while (rowIterator.hasNext()) {
-            Row row = rowIterator.next();
-            // ignore first row since it's column names
-            if (rowIndex > 0) {
-                result.add(createRow(row));
-            }
-
-            rowIndex++;
-        }
-
-        return result;
-    }
-
-    private CfgReclassCheckType createRow(Row row) {
-
+    CfgReclassCheckType createRow(Row row) {
         CfgReclassCheckType cfgReclassCheckType = new CfgReclassCheckType();
 
         cfgReclassCheckType.setCheckType(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
@@ -58,14 +36,14 @@ public class CfgReclassCheckTypeObjectMapper {
         List<CfgReclassCheckType> all = cfgReclassCheckTypeRepository.findAll();
         ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
-        for (CfgReclassCheckType cfgReclassCheckType:all){
+        for (CfgReclassCheckType cfgReclassCheckType : all) {
             XSSFRow row = sheet.createRow(rowIndex);
 
-            row.createCell(0).setCellValue(cfgReclassCheckType.getCheckType());
-            row.createCell(1).setCellValue(cfgReclassCheckType.getCheckDescription());
-            row.createCell(2).setCellValue(cfgReclassCheckType.getWhereClause());
-            row.createCell(3).setCellValue(cfgReclassCheckType.getConsoField());
-            row.createCell(4).setCellValue(cfgReclassCheckType.getAmtField());
+            createCell(row, 0, cfgReclassCheckType.getCheckType());
+            createCell(row, 1, cfgReclassCheckType.getCheckDescription());
+            createCell(row, 2, cfgReclassCheckType.getWhereClause());
+            createCell(row, 3, cfgReclassCheckType.getConsoField());
+            createCell(row, 4, cfgReclassCheckType.getAmtField());
 
             rowIndex++;
         }

@@ -1,7 +1,6 @@
 package com.blackiceinc.era.services.excel.mapper;
 
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,28 +19,20 @@ public class ExcelUtils {
         List<Row> rowsToDelete = new ArrayList<>();
         int rowIndex = 0;
         Iterator<Row> rowIterator = sheet.rowIterator();
-        while (rowIterator.hasNext()){
+        while (rowIterator.hasNext()) {
             Row row = rowIterator.next();
 
-            if (rowIndex>0){
+            if (rowIndex > 0) {
                 rowsToDelete.add(row);
             }
 
             rowIndex++;
         }
 
-        for (Row row:rowsToDelete){
+        for (Row row : rowsToDelete) {
             sheet.removeRow(row);
         }
 
-    }
-
-    public static String getStringValue(String value){
-        if (value==null){
-            return "";
-        }else{
-            return value;
-        }
     }
 
 }

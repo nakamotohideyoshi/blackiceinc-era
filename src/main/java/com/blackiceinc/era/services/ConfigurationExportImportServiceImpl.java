@@ -19,11 +19,8 @@ import java.util.List;
 @Service
 public class ConfigurationExportImportServiceImpl implements ConfigurationExportImportService {
 
-    private static final Logger log = LoggerFactory.getLogger(ConfigurationExportImportServiceImpl.class);
-
     public static final String CURRENT = "CURRENT";
     public static final String NULL = "NULL";
-
     public static final String FINANCIAL_BOOK = "FINANCIAL_BOOK";
     public static final String COMPANY = "COMPANY";
     public static final String COMPANY_LINKAGE = "COMPANY_LINKAGE";
@@ -70,8 +67,7 @@ public class ConfigurationExportImportServiceImpl implements ConfigurationExport
     public static final String CAP_ELEMENTS_LIMIT = "CAP_ELEMENTS_LIMIT";
     public static final String CAP_ELEMENTS_MAPPING = "CAP_ELEMENTS_MAPPING";
     public static final String CAP_ELEMENTS_FORMULA = "CAP_ELEMENTS_FORMULA";
-
-
+    private static final Logger log = LoggerFactory.getLogger(ConfigurationExportImportServiceImpl.class);
     private final CfgFinancialBookObjectMapper cfgFinancialBookObjectMapper;
     private final CfgCompanyObjectMapper cfgCompanyObjectMapper;
     private final CfgCompanyLinkageObjectMapper cfgCompanyLinkageObjectMapper;
@@ -100,7 +96,7 @@ public class ConfigurationExportImportServiceImpl implements ConfigurationExport
 
     private CfgCcfMappingObjectMapper cfgCcfMappingObjectMapper;
 
-    private  CfgAddOnObjectMapper cfgAddOnObjectMapper;
+    private CfgAddOnObjectMapper cfgAddOnObjectMapper;
 
     private CfgCrmEligibilityObjectMapper cfgCrmEligibilityObjectMapper;
     private CfgCrmHaircutObjectMapper cfgCrmHaircutObjectMapper;
@@ -248,31 +244,31 @@ public class ConfigurationExportImportServiceImpl implements ConfigurationExport
             cfgFinancialBookObjectMapper.importData(financialBookSheet);
 
             XSSFSheet companySheet = workbook.getSheet(COMPANY);
-            cfgCompanyObjectMapper.importCfgCompanies(companySheet);
+            cfgCompanyObjectMapper.importData(companySheet);
 
             XSSFSheet companyLinkageSheet = workbook.getSheet(COMPANY_LINKAGE);
-            cfgCompanyLinkageObjectMapper.importCfgCompanyLinkage(companyLinkageSheet);
+            cfgCompanyLinkageObjectMapper.importData(companyLinkageSheet);
 
             XSSFSheet companyDimensionSheet = workbook.getSheet(COMPANY_DIMENSION);
-            cfgCompanyDimensionObjectMapper.importCfgCompanyDimension(companyDimensionSheet);
+            cfgCompanyDimensionObjectMapper.importData(companyDimensionSheet);
 
             XSSFSheet companyDimensionConsolidationSheet = workbook.getSheet(COMPANY_DIMENSION_CONSOLIDATION);
-            cfgCompanyDimensionConsolidationObjectMapper.importCfgCompanyDimensionConsolidation(companyDimensionConsolidationSheet);
+            cfgCompanyDimensionConsolidationObjectMapper.importData(companyDimensionConsolidationSheet);
 
             XSSFSheet entityTypeSheet = workbook.getSheet(ENTITY_TYPE);
-            cfgEntityTypeObjectMapper.importCfgCfgEntityTypes(entityTypeSheet);
+            cfgEntityTypeObjectMapper.importData(entityTypeSheet);
 
             XSSFSheet entityTypeMappingSheet = workbook.getSheet(ENTITY_TYPE_MAPPING);
-            cfgEntityTypeMappingObjectMapper.importCfgEntityTypeMappings(entityTypeMappingSheet);
+            cfgEntityTypeMappingObjectMapper.importData(entityTypeMappingSheet);
 
             XSSFSheet productTypeSheet = workbook.getSheet(PRODUCT_TYPE);
-            cfgProductTypeObjectMapper.importCfgProductTypes(productTypeSheet);
+            cfgProductTypeObjectMapper.importData(productTypeSheet);
 
             XSSFSheet productTypeMappingSheet = workbook.getSheet(PRODUCT_TYPE_MAPPING);
-            cfgProductTypeMappingObjectMapper.importCfgProductTypeMappping(productTypeMappingSheet);
+            cfgProductTypeMappingObjectMapper.importData(productTypeMappingSheet);
 
             XSSFSheet assetClassSheet = workbook.getSheet(ASSET_CLASS);
-            cfgAssetClassObjectMapper.importCfgAssetClass(assetClassSheet);
+            cfgAssetClassObjectMapper.importData(assetClassSheet);
 
             XSSFSheet assetClassMappingSheet = workbook.getSheet(ASSET_CLASS_MAPPING);
             cfgAssetClassMappingObjectMapper.importCfgAssetClassMapping(assetClassMappingSheet);
@@ -398,7 +394,7 @@ public class ConfigurationExportImportServiceImpl implements ConfigurationExport
 
     @Override
     @Transactional
-    public void importConfigurationFromFileIntoDb(ConfigFile configFile) throws Exception {
+    public ConfigFile importConfigurationFromFileIntoDb(ConfigFile configFile) throws Exception {
         log.info("Starting import for configFile : {}", configFile.toString());
         long start = System.currentTimeMillis();
 
@@ -412,60 +408,56 @@ public class ConfigurationExportImportServiceImpl implements ConfigurationExport
             importConfigIntoDb.importCfgFinancialBook(cfgFinancialBookList);
 
             XSSFSheet companySheet = workbook.getSheet(COMPANY);
-            List<CfgCompany> cfgCompaniesList = cfgCompanyObjectMapper.extractCfgCompanies(companySheet);
+            List<CfgCompany> cfgCompaniesList = cfgCompanyObjectMapper.extractData(companySheet);
             importConfigIntoDb.importCfgCompaniesList(cfgCompaniesList);
 
             XSSFSheet companyLinkageSheet = workbook.getSheet(COMPANY_LINKAGE);
-            List<CfgCompanyLinkage> cfgCompaniesLinkageList = cfgCompanyLinkageObjectMapper.extractCfgCompanyLinkage(companyLinkageSheet);
+            List<CfgCompanyLinkage> cfgCompaniesLinkageList = cfgCompanyLinkageObjectMapper.extractData(companyLinkageSheet);
             importConfigIntoDb.importCfgCompanyLinkage(cfgCompaniesLinkageList);
 
             XSSFSheet companyDimensionSheet = workbook.getSheet(COMPANY_DIMENSION);
-            List<CfgCompanyDimension> cfgCompanyDimensions = cfgCompanyDimensionObjectMapper.extractCfgCompanyDimensions(companyDimensionSheet);
+            List<CfgCompanyDimension> cfgCompanyDimensions = cfgCompanyDimensionObjectMapper.extractData(companyDimensionSheet);
             importConfigIntoDb.importCfgCompanyDimensions(cfgCompanyDimensions);
 
             XSSFSheet companyDimensionConsolidationSheet = workbook.getSheet(COMPANY_DIMENSION_CONSOLIDATION);
-            List<CfgCompanyDimensionConsolidation> cfgCompanyDimensionConsolidations = cfgCompanyDimensionConsolidationObjectMapper.extractCfgCompanyDimensionsConsolidation(companyDimensionConsolidationSheet);
+            List<CfgCompanyDimensionConsolidation> cfgCompanyDimensionConsolidations = cfgCompanyDimensionConsolidationObjectMapper.extractData(companyDimensionConsolidationSheet);
             importConfigIntoDb.importCfgCompanyDimensionConsolidations(cfgCompanyDimensionConsolidations);
 
             XSSFSheet entityTypeSheet = workbook.getSheet(ENTITY_TYPE);
-            List<CfgEntityType> cfgEntityTypes = cfgEntityTypeObjectMapper.extractCfgEntityTypes(entityTypeSheet);
+            List<CfgEntityType> cfgEntityTypes = cfgEntityTypeObjectMapper.extractData(entityTypeSheet);
             importConfigIntoDb.importCfgEntityTypes(cfgEntityTypes);
 
             XSSFSheet entityTypeMappingSheet = workbook.getSheet(ENTITY_TYPE_MAPPING);
-            List<CfgEntityTypeMapping> cfgEntityTypeMappings = cfgEntityTypeMappingObjectMapper.extractCfgEntityTypeMappings(entityTypeMappingSheet);
+            List<CfgEntityTypeMapping> cfgEntityTypeMappings = cfgEntityTypeMappingObjectMapper.extractData(entityTypeMappingSheet);
             importConfigIntoDb.importCfgEntityTypeMappings(cfgEntityTypeMappings);
 
             XSSFSheet productTypeSheet = workbook.getSheet(PRODUCT_TYPE);
-            List<CfgProductType> cfgProductTypes = cfgProductTypeObjectMapper.extractCfgProductTypes(productTypeSheet);
+            List<CfgProductType> cfgProductTypes = cfgProductTypeObjectMapper.extractData(productTypeSheet);
             importConfigIntoDb.importCfgProductTypes(cfgProductTypes);
 
             XSSFSheet productTypeMappingSheet = workbook.getSheet(PRODUCT_TYPE_MAPPING);
-            List<CfgProductTypeMapping> cfgProductTypeMappings = cfgProductTypeMappingObjectMapper.extractCfgProductTypeMappping(productTypeMappingSheet);
+            List<CfgProductTypeMapping> cfgProductTypeMappings = cfgProductTypeMappingObjectMapper.extractData(productTypeMappingSheet);
             importConfigIntoDb.importCfgProductTypeMappings(cfgProductTypeMappings);
 
             XSSFSheet assetClassSheet = workbook.getSheet(ASSET_CLASS);
-            List<CfgAssetClass> cfgAssetClass = cfgAssetClassObjectMapper.extractCfgAssetClass(assetClassSheet);
+            List<CfgAssetClass> cfgAssetClass = cfgAssetClassObjectMapper.extractData(assetClassSheet);
             importConfigIntoDb.importCfgAssetClass(cfgAssetClass);
 
             XSSFSheet assetClassMappingSheet = workbook.getSheet(ASSET_CLASS_MAPPING);
-            List<CfgAssetClassMapping> cfgAssetClassMappings = cfgAssetClassMappingObjectMapper.extractCfgAssetClassMapping(assetClassMappingSheet);
+            List<CfgAssetClassMapping> cfgAssetClassMappings = cfgAssetClassMappingObjectMapper.extractData(assetClassMappingSheet);
             importConfigIntoDb.importCfgAssetClassMappings(cfgAssetClassMappings);
-
 
             XSSFSheet nonPerformingMappingSheet = workbook.getSheet(NON_PERFORMING_MAPPING);
             List<CfgNonPerformingMapping> cfgNonPerformingMappings = cfgNonPerformingMappingObjectMapper.extractData(nonPerformingMappingSheet);
             importConfigIntoDb.importCfgNonPerformingMappings(cfgNonPerformingMappings);
 
-
             XSSFSheet agencyEligibilitySheet = workbook.getSheet(AGENCY_ELIGIBILITY);
             List<CfgAgencyEligibility> cfgAgencyEligibility = cfgAgencyEligibilityObjectMapper.extractData(agencyEligibilitySheet);
             importConfigIntoDb.importCfgAgencyEligibility(cfgAgencyEligibility);
 
-
             XSSFSheet ratingSheet = workbook.getSheet(RATING);
             List<CfgRating> cfgRatings = cfgRatingObjectMapper.extractData(ratingSheet);
             importConfigIntoDb.importCfgRatings(cfgRatings);
-
 
             XSSFSheet creditMeasureSheet = workbook.getSheet(CREDIT_MEASURE);
             List<CfgCreditMeasure> cfgCreditMeasures = cfgCreditMeasureObjectMapper.extractData(creditMeasureSheet);
@@ -598,20 +590,23 @@ public class ConfigurationExportImportServiceImpl implements ConfigurationExport
             file.close();
 
             ConfigFile oneByStatusCurrent = configFileRepository.findOneByStatus(CURRENT);
-            if (oneByStatusCurrent!=null){
+            if (oneByStatusCurrent != null) {
                 oneByStatusCurrent.setStatus(NULL);
                 configFileRepository.save(oneByStatusCurrent);
             }
 
             configFile.setStatus(CURRENT);
-            configFileRepository.save(configFile);
+            ConfigFile savedConfig = configFileRepository.save(configFile);
+
+            log.info("Import for configFile : {} finished in {} ms", configFile.toString(), System.currentTimeMillis() - start);
+
+            return savedConfig;
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            log.error("File not found!", e);
+            throw new Exception(e);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("IO Exception!", e);
+            throw new Exception(e);
         }
-
-        log.info("Import for configFile : {} finished in {} ms", configFile.toString(), System.currentTimeMillis() - start);
-
     }
 }

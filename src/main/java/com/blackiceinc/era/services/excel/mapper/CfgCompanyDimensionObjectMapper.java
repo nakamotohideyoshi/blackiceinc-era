@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 
 @Component
-public class CfgCompanyDimensionObjectMapper {
+public class CfgCompanyDimensionObjectMapper extends AbstractObjectMapper {
     private CfgCompanyDimensionRepository cfgCompanyDimensionRepository;
 
     @Autowired
@@ -21,26 +21,7 @@ public class CfgCompanyDimensionObjectMapper {
         this.cfgCompanyDimensionRepository = cfgCompanyDimensionRepository;
     }
 
-    public List<CfgCompanyDimension> extractCfgCompanyDimensions(XSSFSheet companySheet) {
-        List<CfgCompanyDimension> result = new ArrayList<>();
-
-        // Iterate through each rows one by one
-        Iterator<Row> rowIterator = companySheet.iterator();
-        int rowIndex = 0;
-        while (rowIterator.hasNext()) {
-            Row row = rowIterator.next();
-            // ignore first row since it's column names
-            if (rowIndex > 0) {
-                result.add(createCfgCompanyDimensionObj(row));
-            }
-
-            rowIndex++;
-        }
-
-        return result;
-    }
-
-    private CfgCompanyDimension createCfgCompanyDimensionObj(Row row) {
+    CfgCompanyDimension createRow(Row row) {
         CfgCompanyDimension cfgCompanyDimension = new CfgCompanyDimension();
 
         cfgCompanyDimension.setCompanyCode(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
@@ -49,14 +30,15 @@ public class CfgCompanyDimensionObjectMapper {
         return cfgCompanyDimension;
     }
 
-    public void importCfgCompanyDimension(XSSFSheet companyDimensionSheet) {
+    public void importData(XSSFSheet companyDimensionSheet) {
         List<CfgCompanyDimension> all = cfgCompanyDimensionRepository.findAll();
         ExcelUtils.removeAllRowsExcelFirstOne(companyDimensionSheet);
         int rowIndex = 1;
         for (CfgCompanyDimension cfgCompanyDimension : all) {
             XSSFRow row = companyDimensionSheet.createRow(rowIndex);
-            row.createCell(0).setCellValue(cfgCompanyDimension.getCompanyCode());
-            row.createCell(1).setCellValue(cfgCompanyDimension.getFinancialBook());
+
+            createCell(row, 0, cfgCompanyDimension.getCompanyCode());
+            createCell(row, 1, cfgCompanyDimension.getFinancialBook());
 
             rowIndex++;
         }

@@ -9,12 +9,10 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Component
-public class CfgCompanyLinkageObjectMapper {
+public class CfgCompanyLinkageObjectMapper extends AbstractObjectMapper {
 
     private CfgCompanyLinkageRepository cfgCompanyLinkageRepository;
 
@@ -23,26 +21,7 @@ public class CfgCompanyLinkageObjectMapper {
         this.cfgCompanyLinkageRepository = cfgCompanyLinkageRepository;
     }
 
-    public List<CfgCompanyLinkage> extractCfgCompanyLinkage(XSSFSheet companyLinkageSheet) {
-        List<CfgCompanyLinkage> result = new ArrayList<>();
-
-        // Iterate through each rows one by one
-        Iterator<Row> rowIterator = companyLinkageSheet.iterator();
-        int rowIndex = 0;
-        while (rowIterator.hasNext()) {
-            Row row = rowIterator.next();
-            // ignore first row since it's column names
-            if (rowIndex > 0) {
-                result.add(createCfgCompanyLinkageObj(row));
-            }
-
-            rowIndex++;
-        }
-
-        return result;
-    }
-
-    private CfgCompanyLinkage createCfgCompanyLinkageObj(Row row) {
+    CfgCompanyLinkage createRow(Row row) {
         CfgCompanyLinkage cfgCompanyLinkage = new CfgCompanyLinkage();
 
         cfgCompanyLinkage.setChildCode(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
@@ -52,15 +31,16 @@ public class CfgCompanyLinkageObjectMapper {
         return cfgCompanyLinkage;
     }
 
-    public void importCfgCompanyLinkage(XSSFSheet companySheet) {
+    public void importData(XSSFSheet companySheet) {
         List<CfgCompanyLinkage> all = cfgCompanyLinkageRepository.findAll();
         ExcelUtils.removeAllRowsExcelFirstOne(companySheet);
         int rowIndex = 1;
         for (CfgCompanyLinkage cfgCompanyLinkage : all) {
             XSSFRow row = companySheet.createRow(rowIndex);
-            row.createCell(0).setCellValue(cfgCompanyLinkage.getChildCode());
-            row.createCell(1).setCellValue(cfgCompanyLinkage.getMotherCode());
-            row.createCell(2).setCellValue(cfgCompanyLinkage.getLinkWeight());
+
+            createCell(row, 0, cfgCompanyLinkage.getChildCode());
+            createCell(row, 1, cfgCompanyLinkage.getMotherCode());
+            createCell(row, 2, cfgCompanyLinkage.getLinkWeight());
 
             rowIndex++;
         }

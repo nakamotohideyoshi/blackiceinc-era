@@ -13,35 +13,16 @@ import java.util.Iterator;
 import java.util.List;
 
 @Component
-public class CfgAssetClassMappingObjectMapper {
+public class CfgAssetClassMappingObjectMapper extends AbstractObjectMapper {
 
     CfgAssetClassMappingRepository cfgAssetClassMappingRepository;
 
     @Autowired
-    public CfgAssetClassMappingObjectMapper(CfgAssetClassMappingRepository cfgAssetClassMappingRepository){
+    public CfgAssetClassMappingObjectMapper(CfgAssetClassMappingRepository cfgAssetClassMappingRepository) {
         this.cfgAssetClassMappingRepository = cfgAssetClassMappingRepository;
     }
 
-    public List<CfgAssetClassMapping> extractCfgAssetClassMapping(XSSFSheet sheet) {
-        List<CfgAssetClassMapping> result = new ArrayList<>();
-
-        //Iterate through each rows one by one
-        Iterator<Row> rowIterator = sheet.iterator();
-        int rowIndex = 0;
-        while (rowIterator.hasNext()) {
-            Row row = rowIterator.next();
-            // ignore first row since it's column names
-            if (rowIndex > 0) {
-                result.add(createRow(row));
-            }
-
-            rowIndex++;
-        }
-
-        return result;
-    }
-
-    private CfgAssetClassMapping createRow(Row row) {
+    CfgAssetClassMapping createRow(Row row) {
 
         CfgAssetClassMapping cfgAssetClassMapping = new CfgAssetClassMapping();
 
@@ -56,11 +37,12 @@ public class CfgAssetClassMappingObjectMapper {
         List<CfgAssetClassMapping> all = cfgAssetClassMappingRepository.findAll();
         ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
-        for (CfgAssetClassMapping cfgAssetClassMapping:all){
+        for (CfgAssetClassMapping cfgAssetClassMapping : all) {
             XSSFRow row = sheet.createRow(rowIndex);
-            row.createCell(0).setCellValue(cfgAssetClassMapping.getAssetClass());
-            row.createCell(1).setCellValue(cfgAssetClassMapping.getEntityType());
-            row.createCell(2).setCellValue(cfgAssetClassMapping.getProductType());
+
+            createCell(row, 0, cfgAssetClassMapping.getAssetClass());
+            createCell(row, 1, cfgAssetClassMapping.getEntityType());
+            createCell(row, 2, cfgAssetClassMapping.getProductType());
 
             rowIndex++;
         }

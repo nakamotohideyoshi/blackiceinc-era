@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 
 @Component
-public class CfgAgencyEligibilityObjectMapper {
+public class CfgAgencyEligibilityObjectMapper extends AbstractObjectMapper {
 
     CfgAgencyEligibilityRepository cfgAgencyEligibilityRepository;
 
@@ -22,26 +22,7 @@ public class CfgAgencyEligibilityObjectMapper {
         this.cfgAgencyEligibilityRepository = cfgAgencyEligibilityRepository;
     }
 
-    public List<CfgAgencyEligibility> extractData(XSSFSheet sheet) {
-        List<CfgAgencyEligibility> result = new ArrayList<>();
-
-        //Iterate through each rows one by one
-        Iterator<Row> rowIterator = sheet.iterator();
-        int rowIndex = 0;
-        while (rowIterator.hasNext()) {
-            Row row = rowIterator.next();
-            // ignore first row since it's column names
-            if (rowIndex > 0) {
-                result.add(createRow(row));
-            }
-
-            rowIndex++;
-        }
-
-        return result;
-    }
-
-    private CfgAgencyEligibility createRow(Row row) {
+    CfgAgencyEligibility createRow(Row row) {
 
         CfgAgencyEligibility cfgAgencyEligibility = new CfgAgencyEligibility();
 
@@ -58,9 +39,10 @@ public class CfgAgencyEligibilityObjectMapper {
         int rowIndex = 1;
         for (CfgAgencyEligibility cfgAgencyEligibility:all){
             XSSFRow row = sheet.createRow(rowIndex);
-            row.createCell(0).setCellValue(cfgAgencyEligibility.getAgencyCode());
-            row.createCell(1).setCellValue(cfgAgencyEligibility.getAgencyDesc());
-            row.createCell(2).setCellValue(cfgAgencyEligibility.getAgencyType());
+
+            createCell(row, 0, cfgAgencyEligibility.getAgencyCode());
+            createCell(row, 1, cfgAgencyEligibility.getAgencyDesc());
+            createCell(row, 2, cfgAgencyEligibility.getAgencyType());
 
             rowIndex++;
         }

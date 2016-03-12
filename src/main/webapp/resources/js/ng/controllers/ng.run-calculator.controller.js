@@ -62,7 +62,7 @@ angular.module('ng.run-calculator.controller', [])
 
                 $scope.loading = true;
                 $scope.getRunCalculators(params);
-            }
+            };
 
             $scope.RunCalculator.delete = function () {
                 ConfirmService.open('Are you sure you want to delete?', function () {

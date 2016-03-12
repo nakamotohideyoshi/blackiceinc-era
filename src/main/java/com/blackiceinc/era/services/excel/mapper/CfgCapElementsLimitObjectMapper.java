@@ -8,40 +8,19 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Component
-public class CfgCapElementsLimitObjectMapper {
+public class CfgCapElementsLimitObjectMapper extends AbstractObjectMapper {
 
     CfgCapElementsLimitRepository cfgCapElementsLimitRepository;
 
     @Autowired
-    public CfgCapElementsLimitObjectMapper(CfgCapElementsLimitRepository cfgCapElementsLimitRepository){
+    public CfgCapElementsLimitObjectMapper(CfgCapElementsLimitRepository cfgCapElementsLimitRepository) {
         this.cfgCapElementsLimitRepository = cfgCapElementsLimitRepository;
     }
 
-    public List<CfgCapElementsLimit> extractData(XSSFSheet sheet) {
-        List<CfgCapElementsLimit> result = new ArrayList<>();
-
-        //Iterate through each rows one by one
-        Iterator<Row> rowIterator = sheet.iterator();
-        int rowIndex = 0;
-        while (rowIterator.hasNext()) {
-            Row row = rowIterator.next();
-            // ignore first row since it's column names
-            if (rowIndex > 0) {
-                result.add(createRow(row));
-            }
-
-            rowIndex++;
-        }
-
-        return result;
-    }
-
-    private CfgCapElementsLimit createRow(Row row) {
+    CfgCapElementsLimit createRow(Row row) {
 
         CfgCapElementsLimit cfgCapElementsLimit = new CfgCapElementsLimit();
 
@@ -60,15 +39,16 @@ public class CfgCapElementsLimitObjectMapper {
         List<CfgCapElementsLimit> all = cfgCapElementsLimitRepository.findAll();
         ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
-        for (CfgCapElementsLimit cfgCapElementsLimit:all){
+        for (CfgCapElementsLimit cfgCapElementsLimit : all) {
             XSSFRow row = sheet.createRow(rowIndex);
-            row.createCell(0).setCellValue(cfgCapElementsLimit.getLimitType());
-            row.createCell(1).setCellValue(cfgCapElementsLimit.getOperator());
-            row.createCell(2).setCellValue(cfgCapElementsLimit.getThreshold());
-            row.createCell(3).setCellValue(cfgCapElementsLimit.getConsoTable());
-            row.createCell(4).setCellValue(cfgCapElementsLimit.getConsoField());
-            row.createCell(5).setCellValue(cfgCapElementsLimit.getConsoFieldValue());
-            row.createCell(6).setCellValue(cfgCapElementsLimit.getConsoAmt());
+
+            createCell(row, 0, cfgCapElementsLimit.getLimitType());
+            createCell(row, 1, cfgCapElementsLimit.getOperator());
+            createCell(row, 2, cfgCapElementsLimit.getThreshold());
+            createCell(row, 3, cfgCapElementsLimit.getConsoTable());
+            createCell(row, 4, cfgCapElementsLimit.getConsoField());
+            createCell(row, 5, cfgCapElementsLimit.getConsoFieldValue());
+            createCell(row, 6, cfgCapElementsLimit.getConsoAmt());
 
             rowIndex++;
         }

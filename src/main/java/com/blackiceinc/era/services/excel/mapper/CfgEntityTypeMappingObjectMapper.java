@@ -8,12 +8,11 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 @Component
-public class CfgEntityTypeMappingObjectMapper {
+public class CfgEntityTypeMappingObjectMapper extends AbstractObjectMapper {
 
     CfgEntityTypeMappingRepository cfgEntityTypeMappingRepository;
 
@@ -22,26 +21,7 @@ public class CfgEntityTypeMappingObjectMapper {
         this.cfgEntityTypeMappingRepository = cfgEntityTypeMappingRepository;
     }
 
-    public List<CfgEntityTypeMapping> extractCfgEntityTypeMappings(XSSFSheet sheet) {
-        List<CfgEntityTypeMapping> result = new ArrayList<>();
-
-        //Iterate through each rows one by one
-        Iterator<Row> rowIterator = sheet.iterator();
-        int rowIndex = 0;
-        while (rowIterator.hasNext()) {
-            Row row = rowIterator.next();
-            // ignore first row since it's column names
-            if (rowIndex > 0) {
-                result.add(createCfgEntityTypeMappingObj(row));
-            }
-
-            rowIndex++;
-        }
-
-        return result;
-    }
-
-    private CfgEntityTypeMapping createCfgEntityTypeMappingObj(Row row) {
+    CfgEntityTypeMapping createRow(Row row) {
 
         CfgEntityTypeMapping cfgEntityTypeMapping = new CfgEntityTypeMapping();
 
@@ -52,7 +32,7 @@ public class CfgEntityTypeMappingObjectMapper {
         return cfgEntityTypeMapping;
     }
 
-    public void importCfgEntityTypeMappings(XSSFSheet sheet) {
+    public void importData(XSSFSheet sheet) {
         List<CfgEntityTypeMapping> all = cfgEntityTypeMappingRepository.findAll();
         ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
@@ -60,13 +40,12 @@ public class CfgEntityTypeMappingObjectMapper {
         Iterator<CfgEntityTypeMapping> iterator = all.iterator();
         while (iterator.hasNext()) {
             CfgEntityTypeMapping cfgEntityTypeMapping = iterator.next();
-            if (cfgEntityTypeMapping!=null){
+            if (cfgEntityTypeMapping != null) {
                 XSSFRow row = sheet.createRow(rowIndex);
-                if (cfgEntityTypeMapping.getEraEntityType() != null) {
-                    row.createCell(0).setCellValue(ExcelUtils.getStringValue(cfgEntityTypeMapping.getEraEntityType()));
-                }
-                row.createCell(1).setCellValue(ExcelUtils.getStringValue(cfgEntityTypeMapping.getCustomerType()));
-                row.createCell(2).setCellValue(ExcelUtils.getStringValue(cfgEntityTypeMapping.getCustomerSubType()));
+
+                createCell(row, 0, cfgEntityTypeMapping.getEraEntityType());
+                createCell(row, 1, cfgEntityTypeMapping.getCustomerType());
+                createCell(row, 2, cfgEntityTypeMapping.getCustomerSubType());
 
                 rowIndex++;
             }

@@ -9,12 +9,10 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Component
-public class CfgCrmEligibilityObjectMapper {
+public class CfgCrmEligibilityObjectMapper extends AbstractObjectMapper {
 
     CfgCrmEligibilityRepository cfgCrmEligibilityRepository;
 
@@ -23,26 +21,7 @@ public class CfgCrmEligibilityObjectMapper {
         this.cfgCrmEligibilityRepository = cfgCrmEligibilityRepository;
     }
 
-    public List<CfgCrmEligibility> extractData(XSSFSheet sheet) {
-        List<CfgCrmEligibility> result = new ArrayList<>();
-
-        //Iterate through each rows one by one
-        Iterator<Row> rowIterator = sheet.iterator();
-        int rowIndex = 0;
-        while (rowIterator.hasNext()) {
-            Row row = rowIterator.next();
-            // ignore first row since it's column names
-            if (rowIndex > 0) {
-                result.add(createRow(row));
-            }
-
-            rowIndex++;
-        }
-
-        return result;
-    }
-
-    private CfgCrmEligibility createRow(Row row) {
+    CfgCrmEligibility createRow(Row row) {
 
         CfgCrmEligibility cfgCrmEligibility = new CfgCrmEligibility();
 
@@ -54,10 +33,10 @@ public class CfgCrmEligibilityObjectMapper {
         if (cell3 != null) {
             switch (cell3.getCellType()) {
                 case Cell.CELL_TYPE_NUMERIC:
-                    cfgCrmEligibility.setRiskWeight(cell3 != null ? String.valueOf(cell3.getNumericCellValue()) : null);
+                    cfgCrmEligibility.setRiskWeight(String.valueOf(cell3.getNumericCellValue()));
                     break;
                 case Cell.CELL_TYPE_STRING:
-                    cfgCrmEligibility.setRiskWeight(cell3 != null ? cell3.getStringCellValue() : null);
+                    cfgCrmEligibility.setRiskWeight(cell3.getStringCellValue());
                     break;
             }
         }
@@ -72,13 +51,14 @@ public class CfgCrmEligibilityObjectMapper {
         ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
         for (CfgCrmEligibility cfgCrmEligibility : all) {
-            if (cfgCrmEligibility!=null){
+            if (cfgCrmEligibility != null) {
                 XSSFRow row = sheet.createRow(rowIndex);
-                row.createCell(0).setCellValue(cfgCrmEligibility.getEraEntityType());
-                row.createCell(1).setCellValue(cfgCrmEligibility.getEraProductType());
-                row.createCell(2).setCellValue(cfgCrmEligibility.getRiskBucket());
-                row.createCell(3).setCellValue(cfgCrmEligibility.getRiskWeight());
-                row.createCell(4).setCellValue(cfgCrmEligibility.getEligibility());
+
+                createCell(row, 0, cfgCrmEligibility.getEraEntityType());
+                createCell(row, 1, cfgCrmEligibility.getEraProductType());
+                createCell(row, 2, cfgCrmEligibility.getRiskBucket());
+                createCell(row, 3, cfgCrmEligibility.getRiskWeight());
+                createCell(row, 4, cfgCrmEligibility.getEligibility());
 
                 rowIndex++;
             }

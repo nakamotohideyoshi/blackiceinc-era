@@ -8,40 +8,19 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Component
-public class CfgEntityTypeObjectMapper {
+public class CfgEntityTypeObjectMapper extends AbstractObjectMapper {
 
     CfgEntityTypeRepository cfgEntityTypeRepository;
 
     @Autowired
-    public CfgEntityTypeObjectMapper(CfgEntityTypeRepository cfgEntityTypeRepository){
+    public CfgEntityTypeObjectMapper(CfgEntityTypeRepository cfgEntityTypeRepository) {
         this.cfgEntityTypeRepository = cfgEntityTypeRepository;
     }
 
-    public List<CfgEntityType> extractCfgEntityTypes(XSSFSheet sheet) {
-        List<CfgEntityType> result = new ArrayList<>();
-
-        //Iterate through each rows one by one
-        Iterator<Row> rowIterator = sheet.iterator();
-        int rowIndex = 0;
-        while (rowIterator.hasNext()) {
-            Row row = rowIterator.next();
-            // ignore first row since it's column names
-            if (rowIndex > 0) {
-                result.add(createCfgEntityTypeObj(row));
-            }
-
-            rowIndex++;
-        }
-
-        return result;
-    }
-
-    private CfgEntityType createCfgEntityTypeObj(Row row) {
+    CfgEntityType createRow(Row row) {
 
         CfgEntityType cfgEntityType = new CfgEntityType();
 
@@ -51,14 +30,15 @@ public class CfgEntityTypeObjectMapper {
         return cfgEntityType;
     }
 
-    public void importCfgCfgEntityTypes(XSSFSheet sheet) {
+    public void importData(XSSFSheet sheet) {
         List<CfgEntityType> all = cfgEntityTypeRepository.findAll();
         ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
-        for (CfgEntityType cfgEntityType:all){
+        for (CfgEntityType cfgEntityType : all) {
             XSSFRow row = sheet.createRow(rowIndex);
-            row.createCell(0).setCellValue(cfgEntityType.getEraEntityType());
-            row.createCell(1).setCellValue(cfgEntityType.getEntityDesc());
+
+            createCell(row, 0, cfgEntityType.getEraEntityType());
+            createCell(row, 1, cfgEntityType.getEntityDesc());
 
             rowIndex++;
         }

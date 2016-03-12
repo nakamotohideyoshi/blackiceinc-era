@@ -76,9 +76,20 @@ angular.module('ng.cfg-configuration.controller', [])
             $scope.importSelectedConfiguration = function () {
                 var checkedRow = $scope.getFirstCheckedRow();
                 $scope.loading = true;
-                CfgConfigurationService.import(checkedRow).then(function () {
+                CfgConfigurationService.import(checkedRow).then(function (response) {
                     $scope.loading = false;
+
                     ConfirmService.open("Import succesfully run.", null, true);
+
+                    var importedRow = response.data.content;
+
+                    for (var i = $scope.Configuration.list.length; i--;) {
+                        if ($scope.Configuration.list[i][CONSTANT_id] == importedRow[CONSTANT_id]) {
+                            $scope.Configuration.list[i].status = importedRow.status;
+                        } else {
+                            $scope.Configuration.list[i].status = 'NULL';
+                        }
+                    }
                 }, function (response) {
                     $scope.loading = false;
                     ConfirmService.open(response, null, true);

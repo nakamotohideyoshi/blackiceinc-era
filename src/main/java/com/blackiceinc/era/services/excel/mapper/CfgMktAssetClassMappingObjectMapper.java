@@ -8,40 +8,19 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Component
-public class CfgMktAssetClassMappingObjectMapper {
+public class CfgMktAssetClassMappingObjectMapper extends AbstractObjectMapper {
 
     CfgMktAssetClassMappingRepository cfgMktAssetClassMappingRepository;
 
     @Autowired
-    public CfgMktAssetClassMappingObjectMapper(CfgMktAssetClassMappingRepository cfgMktAssetClassMappingRepository){
+    public CfgMktAssetClassMappingObjectMapper(CfgMktAssetClassMappingRepository cfgMktAssetClassMappingRepository) {
         this.cfgMktAssetClassMappingRepository = cfgMktAssetClassMappingRepository;
     }
 
-    public List<CfgMktAssetClassMapping> extractData(XSSFSheet sheet) {
-        List<CfgMktAssetClassMapping> result = new ArrayList<>();
-
-        //Iterate through each rows one by one
-        Iterator<Row> rowIterator = sheet.iterator();
-        int rowIndex = 0;
-        while (rowIterator.hasNext()) {
-            Row row = rowIterator.next();
-            // ignore first row since it's column names
-            if (rowIndex > 0) {
-                result.add(createRow(row));
-            }
-
-            rowIndex++;
-        }
-
-        return result;
-    }
-
-    private CfgMktAssetClassMapping createRow(Row row) {
+    CfgMktAssetClassMapping createRow(Row row) {
 
         CfgMktAssetClassMapping cfgMktAssetClassMapping = new CfgMktAssetClassMapping();
 
@@ -56,11 +35,12 @@ public class CfgMktAssetClassMappingObjectMapper {
         List<CfgMktAssetClassMapping> all = cfgMktAssetClassMappingRepository.findAll();
         ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
-        for (CfgMktAssetClassMapping cfgMktAssetClassMapping:all){
+        for (CfgMktAssetClassMapping cfgMktAssetClassMapping : all) {
             XSSFRow row = sheet.createRow(rowIndex);
-            row.createCell(0).setCellValue(cfgMktAssetClassMapping.getMktAssetClass());
-            row.createCell(1).setCellValue(cfgMktAssetClassMapping.getEraEntityType());
-            row.createCell(2).setCellValue(cfgMktAssetClassMapping.getMktProductType());
+
+            createCell(row, 0, cfgMktAssetClassMapping.getMktAssetClass());
+            createCell(row, 1, cfgMktAssetClassMapping.getEraEntityType());
+            createCell(row, 2, cfgMktAssetClassMapping.getMktProductType());
 
             rowIndex++;
         }

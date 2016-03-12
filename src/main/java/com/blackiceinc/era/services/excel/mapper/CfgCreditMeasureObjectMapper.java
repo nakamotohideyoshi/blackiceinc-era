@@ -8,40 +8,19 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Component
-public class CfgCreditMeasureObjectMapper {
+public class CfgCreditMeasureObjectMapper extends AbstractObjectMapper {
 
     CfgCreditMeasureRepository cfgCreditMeasureRepository;
 
     @Autowired
-    public CfgCreditMeasureObjectMapper(CfgCreditMeasureRepository cfgCreditMeasureRepository){
+    public CfgCreditMeasureObjectMapper(CfgCreditMeasureRepository cfgCreditMeasureRepository) {
         this.cfgCreditMeasureRepository = cfgCreditMeasureRepository;
     }
 
-    public List<CfgCreditMeasure> extractData(XSSFSheet sheet) {
-        List<CfgCreditMeasure> result = new ArrayList<>();
-
-        //Iterate through each rows one by one
-        Iterator<Row> rowIterator = sheet.iterator();
-        int rowIndex = 0;
-        while (rowIterator.hasNext()) {
-            Row row = rowIterator.next();
-            // ignore first row since it's column names
-            if (rowIndex > 0) {
-                result.add(createRow(row));
-            }
-
-            rowIndex++;
-        }
-
-        return result;
-    }
-
-    private CfgCreditMeasure createRow(Row row) {
+    CfgCreditMeasure createRow(Row row) {
 
         CfgCreditMeasure cfgCreditMeasure = new CfgCreditMeasure();
 
@@ -55,10 +34,11 @@ public class CfgCreditMeasureObjectMapper {
         List<CfgCreditMeasure> all = cfgCreditMeasureRepository.findAll();
         ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
-        for (CfgCreditMeasure cfgCreditMeasure:all){
+        for (CfgCreditMeasure cfgCreditMeasure : all) {
             XSSFRow row = sheet.createRow(rowIndex);
-            row.createCell(0).setCellValue(cfgCreditMeasure.getCreditMeasure());
-            row.createCell(1).setCellValue(cfgCreditMeasure.getCreditMeasureDesc());
+
+            createCell(row, 0, cfgCreditMeasure.getCreditMeasure());
+            createCell(row, 1, cfgCreditMeasure.getCreditMeasureDesc());
 
             rowIndex++;
         }

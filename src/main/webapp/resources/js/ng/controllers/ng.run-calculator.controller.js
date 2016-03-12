@@ -21,6 +21,7 @@ angular.module('ng.run-calculator.controller', [])
             $scope.currentPage = parseInt($location.search().page || 1);
 
             $scope.loading = true;
+            $scope.noRowsSelected = true;
             $scope.disableBtnRunCalculator = true;
             $scope.disableBtnCloseRun = true;
 
@@ -204,6 +205,15 @@ angular.module('ng.run-calculator.controller', [])
                 var enabled = shouldCalculationBtnsBeEnabled();
                 $scope.disableBtnRunCalculator = !enabled;
                 $scope.disableBtnCloseRun = !enabled;
+
+                var numberOfCheckedRows = 0;
+                for (var i = 0; i < $scope.RunCalculator.list.length; i++) {
+                    if ($scope.RunCalculator.list[i].$checked) {
+                        numberOfCheckedRows++;
+                    }
+                }
+                $scope.noRowsSelected = (numberOfCheckedRows > 0) ? false : true;
+
             }
 
             shouldCalculationBtnsBeEnabled = function () {
@@ -242,8 +252,11 @@ angular.module('ng.run-calculator.controller', [])
             };
 
             $scope.RunCalculator.MasterCheckbox = function (masterCheck) {
-                for (var i = $scope.RunCalculator.list.length; i--;)
+                for (var i = $scope.RunCalculator.list.length; i--;){
                     $scope.RunCalculator.list[i].$checked = masterCheck;
+                }
+
+                $scope.setRunCalculationBtnsAvailability();
             };
 
             $scope.maxRows = function () {

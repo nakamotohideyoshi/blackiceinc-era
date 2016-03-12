@@ -254,41 +254,44 @@ angular.module('ng.cfg-configuration.controller', [])
             };
 
             $scope.ConfigurationModal.saveConfiguration = function () {
+                if ($scope.ConfigurationModal.file!=null) {
+                    var file = $scope.ConfigurationModal.file;
 
-                var file = $scope.ConfigurationModal.file;
+                    var params = {
+                        file: file
+                    };
 
-                var params = {
-                    file: file
-                };
+                    $scope.ConfigurationModal.$saving = true;
+                    CfgConfigurationService.save(params).then(function (response) {
+                        $scope.ConfigurationModal.$saving = false;
+                        $scope.Configuration.totalElements = response.data.totalElements;
+                        var result = response.data.content;
+                        result.$checked = true;
 
-                $scope.ConfigurationModal.$saving = true;
-                CfgConfigurationService.save(params).then(function (response) {
-                    $scope.ConfigurationModal.$saving = false;
-                    $scope.Configuration.totalElements = response.data.totalElements;
-                    var result = response.data.content;
-                    result.$checked = true;
-
-                    var index = -1;
-                    for (var i = 0; i < $scope.Configuration.list.length; i++) {
-                        if (result.fileName == $scope.Configuration.list[i].fileName) {
-                            index = i;
-                            break;
+                        var index = -1;
+                        for (var i = 0; i < $scope.Configuration.list.length; i++) {
+                            if (result.fileName == $scope.Configuration.list[i].fileName) {
+                                index = i;
+                                break;
+                            }
                         }
-                    }
 
-                    if (index != -1) {
-                        $scope.Configuration.list.splice(index, 1);
-                    }
+                        if (index != -1) {
+                            $scope.Configuration.list.splice(index, 1);
+                        }
 
-                    $scope.Configuration.list.unshift(result);
+                        $scope.Configuration.list.unshift(result);
 
-                    $scope.ConfigurationModal.closeConfigurationModal();
+                        $scope.ConfigurationModal.closeConfigurationModal();
 
-                    $scope.setBtnsAvailability();
-                }, function (response) {
-                    $scope.ConfigurationModal.$saving = false;
-                });
-
+                        $scope.setBtnsAvailability();
+                    }, function (response) {
+                        $scope.ConfigurationModal.$saving = false;
+                    });
+                } else {
+                    $scope.ConfigurationModal.hideValidityStyle = false;
+                    ConfirmService.open('Please fill in required fields.', null, true);
+                }
             };
 
             // Get all all configurations

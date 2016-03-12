@@ -104,7 +104,7 @@ public class RunCalculatorResource {
 
         for (String id : idList) {
             try {
-                runCalculatorRepository.delete(Long.parseLong(id));
+                runCalculatorService.delete(Long.parseLong(id));
                 res.addRecordResponse(new CRUDResponseObj(id, true));
             } catch (NumberFormatException ex) {
                 res.addRecordResponse(new CRUDResponseObj(id, false, "Invalid number formatting"));

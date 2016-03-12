@@ -89,10 +89,9 @@ top: 20px;
 /* ========================= Don't touch     ======================= */
 
 .smart-style-1 #logo img,.smart-style-2 #logo img,.smart-style-3 #logo img {
-width: 200px;
+width: 90px;
 height: auto;
-padding-left: 3px;
-margin-top: 7px;
+padding-left: 20px;
 }
 
 

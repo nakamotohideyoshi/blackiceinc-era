@@ -22,4 +22,6 @@ public interface RunCalculatorService {
                                                    String scenarioId);
 
     List<Date> getSnapshotDateOptions() throws SQLException;
+
+    void delete(Long id);
 }

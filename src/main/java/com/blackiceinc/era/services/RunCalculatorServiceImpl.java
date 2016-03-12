@@ -1,6 +1,9 @@
 package com.blackiceinc.era.services;
 
+import com.blackiceinc.era.persistence.erau.model.MeasurementSensitivity;
 import com.blackiceinc.era.persistence.erau.model.RunCalculator;
+import com.blackiceinc.era.persistence.erau.repository.MeasurementSensitivityDaoCustom;
+import com.blackiceinc.era.persistence.erau.repository.MeasurementSensitivityRepository;
 import com.blackiceinc.era.persistence.erau.repository.RunCalculatorRepository;
 import com.blackiceinc.era.persistence.erau.specifications.RunCalculatorSpecificationsBuilder;
 import org.slf4j.Logger;
@@ -11,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -34,6 +38,9 @@ public class RunCalculatorServiceImpl implements RunCalculatorService {
 
     @Autowired
     private RunCalculatorRepository runCalculatorRepository;
+
+    @Autowired
+    private MeasurementSensitivityDaoCustom measurementSensitivityDaoCustom;
 
     @Override
     public Map<String, List> getFilterOptions() throws SQLException {
@@ -89,6 +96,17 @@ public class RunCalculatorServiceImpl implements RunCalculatorService {
         }
 
         return snapshotDateOptions;
+    }
+
+    @Transactional
+    public void delete(Long id){
+        RunCalculator runCalculator = runCalculatorRepository.findOne(id);
+
+        measurementSensitivityDaoCustom.delete(runCalculator.getSnapshotDate(),
+                runCalculator.getLoadJobNbr(), runCalculator.getScenarioId());
+
+        runCalculatorRepository.delete(id);
+
     }
 
     private Specification<RunCalculator> getRunCalculatorSpecification(Date snapshotDate,

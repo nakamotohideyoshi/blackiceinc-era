@@ -24,7 +24,7 @@ public class MeasurementSensitivity {
 	private Date snapshotDate;
 
 	@Column(name="LOAD_JOB_NBR")
-	private BigDecimal loadJobNbr;
+	private Long loadJobNbr;
 
 	@Column(name="SCENARIO_ID")
 	private String scenarioId;
@@ -48,11 +48,11 @@ public class MeasurementSensitivity {
 		this.snapshotDate = snapshotDate;
 	}
 
-	public BigDecimal getLoadJobNbr() {
+	public Long getLoadJobNbr() {
 		return loadJobNbr;
 	}
 
-	public void setLoadJobNbr(BigDecimal loadJobNbr) {
+	public void setLoadJobNbr(Long loadJobNbr) {
 		this.loadJobNbr = loadJobNbr;
 	}
 

@@ -21,16 +21,15 @@ public class CfgCapElementsLimitObjectMapper extends AbstractObjectMapper {
     }
 
     CfgCapElementsLimit createRow(Row row) {
-
         CfgCapElementsLimit cfgCapElementsLimit = new CfgCapElementsLimit();
 
-        cfgCapElementsLimit.setLimitType(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
-        cfgCapElementsLimit.setOperator(row.getCell(1) != null ? row.getCell(1).getStringCellValue() : null);
-        cfgCapElementsLimit.setThreshold(row.getCell(2) != null ? row.getCell(2).getNumericCellValue() : null);
-        cfgCapElementsLimit.setConsoTable(row.getCell(3) != null ? row.getCell(3).getStringCellValue() : null);
-        cfgCapElementsLimit.setConsoField(row.getCell(4) != null ? row.getCell(4).getStringCellValue() : null);
-        cfgCapElementsLimit.setConsoFieldValue(row.getCell(5) != null ? row.getCell(5).getStringCellValue() : null);
-        cfgCapElementsLimit.setConsoAmt(row.getCell(6) != null ? row.getCell(6).getStringCellValue() : null);
+        cfgCapElementsLimit.setLimitType(getStringValue(row.getCell(0)));
+        cfgCapElementsLimit.setOperator(getStringValue(row.getCell(1)));
+        cfgCapElementsLimit.setThreshold(getDoubleValue(row.getCell(2)));
+        cfgCapElementsLimit.setConsoTable(getStringValue(row.getCell(3)));
+        cfgCapElementsLimit.setConsoField(getStringValue(row.getCell(4)));
+        cfgCapElementsLimit.setConsoFieldValue(getStringValue(row.getCell(5)));
+        cfgCapElementsLimit.setConsoAmt(getStringValue(row.getCell(6)));
 
         return cfgCapElementsLimit;
     }

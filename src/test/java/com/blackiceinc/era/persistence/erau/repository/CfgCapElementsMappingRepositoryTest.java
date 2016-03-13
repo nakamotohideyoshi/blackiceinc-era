@@ -19,6 +19,9 @@ public class CfgCapElementsMappingRepositoryTest {
     @Autowired
     private CfgCapElementsMappingRepository cfgCapElementsMappingRepository;
 
+    @Autowired
+    private CfgCapElementsMappingDaoCustom cfgCapElementsMappingDaoCustom;
+
     @Test
     public void testSave() {
         CfgCapElementsMapping cfgCapElementsMapping = new CfgCapElementsMapping();
@@ -26,7 +29,8 @@ public class CfgCapElementsMappingRepositoryTest {
         cfgCapElementsMapping.setGlCode("gl_code");
         cfgCapElementsMapping.setNote("note");
 
-        cfgCapElementsMappingRepository.save(cfgCapElementsMapping);
+        cfgCapElementsMappingDaoCustom.insert(cfgCapElementsMapping);
+//        cfgCapElementsMappingRepository.save(cfgCapElementsMapping);
     }
 
 }

@@ -2,7 +2,6 @@ package com.blackiceinc.era.services.excel.mapper;
 
 import com.blackiceinc.era.persistence.erau.model.CfgCapElementsMapping;
 import com.blackiceinc.era.persistence.erau.repository.CfgCapElementsMappingRepository;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -22,25 +21,11 @@ public class CfgCapElementsMappingObjectMapper extends AbstractObjectMapper {
     }
 
     CfgCapElementsMapping createRow(Row row) {
-
         CfgCapElementsMapping cfgCapElementsMapping = new CfgCapElementsMapping();
 
-        cfgCapElementsMapping.setCapElements(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
-
-        Cell cell1 = row.getCell(1);
-        if (cell1 != null) {
-            switch (cell1.getCellType()) {
-                case Cell.CELL_TYPE_NUMERIC:
-                    cfgCapElementsMapping.setGlCode(cell1 != null ? String.valueOf((long) cell1.getNumericCellValue()) : null);
-                    break;
-                case Cell.CELL_TYPE_STRING:
-                    cfgCapElementsMapping.setGlCode(cell1 != null ? cell1.getStringCellValue() : null);
-                    break;
-            }
-        }
-
-
-        cfgCapElementsMapping.setNote(row.getCell(2) != null ? row.getCell(2).getStringCellValue() : null);
+        cfgCapElementsMapping.setCapElements(getStringValue(row.getCell(0)));
+        cfgCapElementsMapping.setGlCode(getStringValue(row.getCell(1)));
+        cfgCapElementsMapping.setNote(getStringValue(row.getCell(2)));
 
         return cfgCapElementsMapping;
     }

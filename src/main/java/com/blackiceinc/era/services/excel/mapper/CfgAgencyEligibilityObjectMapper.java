@@ -8,8 +8,6 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Component
@@ -18,17 +16,16 @@ public class CfgAgencyEligibilityObjectMapper extends AbstractObjectMapper {
     CfgAgencyEligibilityRepository cfgAgencyEligibilityRepository;
 
     @Autowired
-    public CfgAgencyEligibilityObjectMapper(CfgAgencyEligibilityRepository cfgAgencyEligibilityRepository){
+    public CfgAgencyEligibilityObjectMapper(CfgAgencyEligibilityRepository cfgAgencyEligibilityRepository) {
         this.cfgAgencyEligibilityRepository = cfgAgencyEligibilityRepository;
     }
 
     CfgAgencyEligibility createRow(Row row) {
-
         CfgAgencyEligibility cfgAgencyEligibility = new CfgAgencyEligibility();
 
-        cfgAgencyEligibility.setAgencyCode(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
-        cfgAgencyEligibility.setAgencyDesc(row.getCell(1) != null ? row.getCell(1).getStringCellValue() : null);
-        cfgAgencyEligibility.setAgencyType(row.getCell(2) != null ? row.getCell(2).getStringCellValue() : null);
+        cfgAgencyEligibility.setAgencyCode(getStringValue(row.getCell(0)));
+        cfgAgencyEligibility.setAgencyDesc(getStringValue(row.getCell(1)));
+        cfgAgencyEligibility.setAgencyType(getStringValue(row.getCell(2)));
 
         return cfgAgencyEligibility;
     }
@@ -37,7 +34,7 @@ public class CfgAgencyEligibilityObjectMapper extends AbstractObjectMapper {
         List<CfgAgencyEligibility> all = cfgAgencyEligibilityRepository.findAll();
         ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
-        for (CfgAgencyEligibility cfgAgencyEligibility:all){
+        for (CfgAgencyEligibility cfgAgencyEligibility : all) {
             XSSFRow row = sheet.createRow(rowIndex);
 
             createCell(row, 0, cfgAgencyEligibility.getAgencyCode());

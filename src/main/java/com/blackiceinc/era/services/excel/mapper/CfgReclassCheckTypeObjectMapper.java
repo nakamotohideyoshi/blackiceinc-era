@@ -23,11 +23,11 @@ public class CfgReclassCheckTypeObjectMapper extends AbstractObjectMapper {
     CfgReclassCheckType createRow(Row row) {
         CfgReclassCheckType cfgReclassCheckType = new CfgReclassCheckType();
 
-        cfgReclassCheckType.setCheckType(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
-        cfgReclassCheckType.setCheckDescription(row.getCell(1) != null ? row.getCell(1).getStringCellValue() : null);
-        cfgReclassCheckType.setWhereClause(row.getCell(2) != null ? row.getCell(2).getStringCellValue() : null);
-        cfgReclassCheckType.setConsoField(row.getCell(3) != null ? row.getCell(3).getStringCellValue() : null);
-        cfgReclassCheckType.setAmtField(row.getCell(4) != null ? row.getCell(4).getStringCellValue() : null);
+        cfgReclassCheckType.setCheckType(getStringValue(row.getCell(0)));
+        cfgReclassCheckType.setCheckDescription(getStringValue(row.getCell(1)));
+        cfgReclassCheckType.setWhereClause(getStringValue(row.getCell(2)));
+        cfgReclassCheckType.setConsoField(getStringValue(row.getCell(3)));
+        cfgReclassCheckType.setAmtField(getStringValue(row.getCell(4)));
 
         return cfgReclassCheckType;
     }

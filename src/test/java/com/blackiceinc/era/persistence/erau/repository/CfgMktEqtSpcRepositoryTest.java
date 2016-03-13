@@ -21,6 +21,9 @@ public class CfgMktEqtSpcRepositoryTest {
     @Autowired
     private CfgMktEqtSpcRepository cfgMktEqtSpcRepository;
 
+    @Autowired
+    private CfgMktEqtSpcDaoCustom cfgMktEqtSpcDaoCustom;
+
     @Test
     public void testSave(){
         CfgMktEqtSpc cfgMktEqtSpc = new CfgMktEqtSpc();
@@ -31,7 +34,8 @@ public class CfgMktEqtSpcRepositoryTest {
         cfgMktEqtSpc.setLiquidEquity("liquid_equity");
         cfgMktEqtSpc.setRiskWeight(new Double(4));
 
-        cfgMktEqtSpcRepository.save(cfgMktEqtSpc);
+        cfgMktEqtSpcDaoCustom.insert(cfgMktEqtSpc);
+//        cfgMktEqtSpcRepository.save(cfgMktEqtSpc);
     }
 
 }

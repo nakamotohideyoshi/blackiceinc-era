@@ -2,7 +2,10 @@ package com.blackiceinc.era.services;
 
 import com.blackiceinc.era.persistence.erau.model.*;
 import com.blackiceinc.era.persistence.erau.repository.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
@@ -11,16 +14,29 @@ import java.util.List;
 @Service
 public class ImportConfigIntoDb {
 
+    private final Logger log = LoggerFactory.getLogger(ImportConfigIntoDb.class);
+
     @Autowired
     private CfgFinancialBookRepository cfgFinancialBookRepository;
+    @Autowired
+    private CfgFinancialBookDaoCustom cfgFinancialBookDaoCustom;
+
     @Autowired
     private CfgCompanyRepository cfgCompanyRepository;
     @Autowired
     private CfgCompanyLinkageRepository cfgCompanyLinkageRepository;
     @Autowired
+    private CfgCompanyLinkageDaoCustom cfgCompanyLinkageDaoCustom;
+
+    @Autowired
     private CfgCompanyDimensionRepository cfgCompanyDimensionRepository;
     @Autowired
+    private CfgCompanyDimensionDaoCustom cfgCompanyDimensionDaoCustom;
+
+    @Autowired
     private CfgCompanyDimensionConsolidationRepository cfgCompanyDimensionConsolidationRepository;
+    @Autowired
+    private CfgCompanyDimensionConsolidationDaoCustom cfgCompanyDimensionConsolidationDaoCustom;
 
     @Autowired
     private CfgEntityTypeRepository cfgEntityTypeRepository;
@@ -29,34 +45,53 @@ public class ImportConfigIntoDb {
 
     @Autowired
     private CfgProductTypeRepository cfgProductTypeRepository;
+
     @Autowired
     private CfgProductTypeMappingRepository cfgProductTypeMappingRepository;
+    @Autowired
+    private CfgProductTypeMappingDaoCustom cfgProductTypeMappingDaoCustom;
 
     @Autowired
     private CfgAssetClassRepository cfgAssetClassRepository;
     @Autowired
+    private CfgAssetClassDaoCustom cfgAssetClassDaoCustom;
+
+    @Autowired
     private CfgAssetClassMappingRepository cfgAssetClassMappingRepository;
+    @Autowired
+    private CfgAssetClassMappingDaoCustom cfgAssetClassMappingDaoCustom;
+
 
     @Autowired
     private CfgNonPerformingMappingRepository cfgNonPerformingMappingRepository;
 
     @Autowired
     private CfgAgencyEligibilityRepository cfgAgencyEligibilityRepository;
+    @Autowired
+    private CfgAgencyEligibilityDaoCustom cfgAgencyEligibilityDaoCustom;
 
     @Autowired
     private CfgRatingRepository cfgRatingRepository;
+    @Autowired
+    private CfgRatingDaoCustom cfgRatingDaoCustom;
 
     @Autowired
     private CfgCreditMeasureRepository cfgCreditMeasureRepository;
 
     @Autowired
     private CfgRiskWeightMappingRepository cfgRiskWeightMappingRepository;
+    @Autowired
+    private CfgRiskWeightMappingDaoCustom cfgRiskWeightMappingDaoCustom;
 
     @Autowired
     private CfgCcfMappingRepository cfgCcfMappingRepository;
+    @Autowired
+    private CfgCcfMappingDaoCustom cfgCcfMappingDaoCustom;
 
     @Autowired
     private CfgAddOnRepository cfgAddOnRepository;
+    @Autowired
+    private CfgAddOnDaoCustom cfgAddOnDaoCustom;
 
     @Autowired
     private CfgCrmEligibilityRepository cfgCrmEligibilityRepository;
@@ -75,24 +110,36 @@ public class ImportConfigIntoDb {
 
     @Autowired
     private CfgMktProductTypeRepository cfgMktProductTypeRepository;
+
     @Autowired
     private CfgMktProductMappingRepository cfgMktProductMappingRepository;
+    @Autowired
+    private CfgMktProductMappingDaoCustom cfgMktProductMappingDaoCustom;
+
     @Autowired
     private CfgMktAssetClassRepository cfgMktAssetClassRepository;
     @Autowired
     private CfgMktAssetClassMappingRepository cfgMktAssetClassMappingRepository;
     @Autowired
     private CfgMktIrrSpcRiskRepository cfgMktIrrSpcRiskRepository;
+
     @Autowired
     private CfgMktIrrGnrRiskRepository cfgMktIrrGnrRiskRepository;
+    @Autowired
+    private CfgMktIrrGnrRiskDaoCustom cfgMktIrrGnrRiskDaoCustom;
+
     @Autowired
     private CfgMktIrrGnrBandRepository cfgMktIrrGnrBandRepository;
     @Autowired
     private CfgMktIrrGnrIntraRepository cfgMktIrrGnrIntraRepository;
     @Autowired
     private CfgMktIrrGnrInterRepository cfgMktIrrGnrInterRepository;
+
     @Autowired
     private CfgMktEqtSpcRepository cfgMktEqtSpcRepository;
+    @Autowired
+    private CfgMktEqtSpcDaoCustom cfgMktEqtSpcDaoCustom;
+
     @Autowired
     private CfgMktEqtGnrRepository cfgMktEqtGnrRepository;
     @Autowired
@@ -105,7 +152,13 @@ public class ImportConfigIntoDb {
     @Autowired
     private CfgOpsProductTypeRepository cfgOpsProductTypeRepository;
     @Autowired
+    private CfgOpsProductTypeDaoCustom cfgOpsProductTypeDaoCustom;
+
+    @Autowired
     private CfgOpsProductTypeMappingRepository cfgOpsProductTypeMappingRepository;
+    @Autowired
+    private CfgOpsProductTypeMappingDaoCustom cfgOpsProductTypeMappingDaoCustom;
+
     @Autowired
     private CfgOpsFormulaRepository cfgOpsFormulaRepository;
     @Autowired
@@ -114,20 +167,30 @@ public class ImportConfigIntoDb {
     @Autowired
     private CfgCapElementsRepository cfgCapElementsRepository;
     @Autowired
+    private CfgCapElementsDaoCustom cfgCapElementsDaoCustom;
+    @Autowired
     private CfgCapElementsTypeRepository cfgCapElementsTypeRepository;
+    @Autowired
+    private CfgCapElementsTypeDaoCustom cfgCapElementsTypeDaoCustom;
+
     @Autowired
     private CfgCapElementsLimitRepository cfgCapElementsLimitRepository;
     @Autowired
+    private CfgCapElementsLimitDaoCustom cfgCapElementsLimitDaoCustom;
+    @Autowired
     private CfgCapElementsMappingRepository cfgCapElementsMappingRepository;
     @Autowired
+    private CfgCapElementsMappingDaoCustom cfgCapElementsMappingDaoCustom;
+    @Autowired
     private CfgCapElementsFormulaRepository cfgCapElementsFormulaRepository;
+    @Autowired
+    private CfgCapElementsFormulaDaoCustom cfgCapElementsFormulaDaoCustom;
 
     public void importCfgFinancialBook(List<CfgFinancialBook> cfgFinancialBookList) {
         cfgFinancialBookRepository.deleteAll();
-        for (CfgFinancialBook cfgFinancialBook:cfgFinancialBookList){
-            cfgFinancialBookRepository.save(cfgFinancialBook);
+        for (CfgFinancialBook cfgFinancialBook : cfgFinancialBookList) {
+            cfgFinancialBookDaoCustom.insert(cfgFinancialBook);
         }
-//        removeAllAndSaveNewList(cfgFinancialBookRepository, cfgFinancialBookList);
     }
 
     public void importCfgCompaniesList(List<CfgCompany> cfgCompaniesList) {
@@ -135,19 +198,24 @@ public class ImportConfigIntoDb {
     }
 
     public void importCfgCompanyLinkage(List<CfgCompanyLinkage> cfgCompaniesLinkageList) {
-        removeAllAndSaveNewList(cfgCompanyLinkageRepository, cfgCompaniesLinkageList);
+        cfgCompanyLinkageRepository.deleteAll();
+        for (CfgCompanyLinkage cfgCompanyLinkage : cfgCompaniesLinkageList) {
+            cfgCompanyLinkageDaoCustom.insert(cfgCompanyLinkage);
+        }
     }
 
     public void importCfgCompanyDimensions(List<CfgCompanyDimension> cfgCompanyDimensions) {
         cfgCompanyDimensionRepository.deleteAll();
-        for (CfgCompanyDimension cfgCompanyDimension:cfgCompanyDimensions){
-            cfgCompanyDimensionRepository.save(cfgCompanyDimension);
+        for (CfgCompanyDimension cfgCompanyDimension : cfgCompanyDimensions) {
+            cfgCompanyDimensionDaoCustom.insert(cfgCompanyDimension);
         }
-//        removeAllAndSaveNewList(cfgCompanyDimensionRepository, cfgCompanyDimensions);
     }
 
     public void importCfgCompanyDimensionConsolidations(List<CfgCompanyDimensionConsolidation> cfgCompanyDimensionConsolidations) {
-        removeAllAndSaveNewList(cfgCompanyDimensionConsolidationRepository, cfgCompanyDimensionConsolidations);
+        cfgCompanyDimensionConsolidationRepository.deleteAll();
+        for (CfgCompanyDimensionConsolidation cfgCompanyDimensionConsolidation : cfgCompanyDimensionConsolidations) {
+            cfgCompanyDimensionConsolidationDaoCustom.insert(cfgCompanyDimensionConsolidation);
+        }
     }
 
     public void importCfgEntityTypes(List<CfgEntityType> cfgEntityTypes) {
@@ -163,15 +231,24 @@ public class ImportConfigIntoDb {
     }
 
     public void importCfgProductTypeMappings(List<CfgProductTypeMapping> cfgProductTypeMappings) {
-        removeAllAndSaveNewList(cfgProductTypeMappingRepository, cfgProductTypeMappings);
+        cfgProductTypeMappingRepository.deleteAll();
+        for (CfgProductTypeMapping cfgProductTypeMapping : cfgProductTypeMappings) {
+            cfgProductTypeMappingDaoCustom.insert(cfgProductTypeMapping);
+        }
     }
 
     public void importCfgAssetClass(List<CfgAssetClass> cfgAssetClass) {
-        removeAllAndSaveNewList(cfgAssetClassRepository, cfgAssetClass);
+        cfgAssetClassRepository.deleteAll();
+        for (CfgAssetClass cfgAssetClas : cfgAssetClass) {
+            cfgAssetClassDaoCustom.insert(cfgAssetClas);
+        }
     }
 
     public void importCfgAssetClassMappings(List<CfgAssetClassMapping> cfgAssetClassMappings) {
-        removeAllAndSaveNewList(cfgAssetClassMappingRepository, cfgAssetClassMappings);
+        cfgAssetClassMappingRepository.deleteAll();
+        for (CfgAssetClassMapping cfgAssetClassMapping : cfgAssetClassMappings) {
+            cfgAssetClassMappingDaoCustom.insert(cfgAssetClassMapping);
+        }
     }
 
     public void importCfgNonPerformingMappings(List<CfgNonPerformingMapping> cfgNonPerformingMappings) {
@@ -179,11 +256,18 @@ public class ImportConfigIntoDb {
     }
 
     public void importCfgAgencyEligibility(List<CfgAgencyEligibility> cfgAgencyEligibility) {
-        removeAllAndSaveNewList(cfgAgencyEligibilityRepository, cfgAgencyEligibility);
+        cfgAgencyEligibilityRepository.deleteAll();
+
+        for (CfgAgencyEligibility agencyEligibility : cfgAgencyEligibility) {
+            cfgAgencyEligibilityDaoCustom.insert(agencyEligibility);
+        }
     }
 
     public void importCfgRatings(List<CfgRating> cfgRatings) {
-        removeAllAndSaveNewList(cfgRatingRepository, cfgRatings);
+        cfgRatingRepository.deleteAll();
+        for (CfgRating cfgRating : cfgRatings) {
+            cfgRatingDaoCustom.insert(cfgRating);
+        }
     }
 
     public void importCfgCreditMeasures(List<CfgCreditMeasure> cfgCreditMeasures) {
@@ -192,15 +276,32 @@ public class ImportConfigIntoDb {
     }
 
     public void importCfgRiskWeightMappings(List<CfgRiskWeightMapping> cfgRiskWeightMappings) {
-        removeAllAndSaveNewList(cfgRiskWeightMappingRepository, cfgRiskWeightMappings);
+        cfgRiskWeightMappingRepository.deleteAll();
+
+        for (CfgRiskWeightMapping cfgRiskWeightMapping : cfgRiskWeightMappings) {
+            try {
+                cfgRiskWeightMappingDaoCustom.insert(cfgRiskWeightMapping);
+            } catch (InvalidDataAccessResourceUsageException ex) {
+                log.error("Error executing sql for entity : {}",
+                        cfgRiskWeightMapping.toString(), ex);
+                throw new RuntimeException(ex);
+            }
+        }
     }
 
     public void importCfgCcfMappings(List<CfgCcfMapping> cfgCcfMappings) {
-        removeAllAndSaveNewList(cfgCcfMappingRepository, cfgCcfMappings);
+        cfgCcfMappingRepository.deleteAll();
+        for (CfgCcfMapping cfgCcfMapping : cfgCcfMappings) {
+            cfgCcfMappingDaoCustom.insert(cfgCcfMapping);
+        }
     }
 
     public void importCfgAddOns(List<CfgAddOn> cfgAddOns) {
-        removeAllAndSaveNewList(cfgAddOnRepository, cfgAddOns);
+        cfgAddOnRepository.deleteAll();
+        for (CfgAddOn cfgAddOn : cfgAddOns) {
+            cfgAddOnDaoCustom.insert(cfgAddOn);
+        }
+//        removeAllAndSaveNewList(cfgAddOnRepository, cfgAddOns);
     }
 
     public void importCfgCrmEligibilities(List<CfgCrmEligibility> cfgCrmEligibilities) {
@@ -213,7 +314,7 @@ public class ImportConfigIntoDb {
 
     public void importCfgReclasses(List<CfgReclass> cfgReclasses) {
         cfgReclassRepository.deleteAll();
-        for (CfgReclass cfgReclass: cfgReclasses){
+        for (CfgReclass cfgReclass : cfgReclasses) {
             cfgReclassDaoCustom.insert(cfgReclass);
         }
 
@@ -233,7 +334,10 @@ public class ImportConfigIntoDb {
     }
 
     public void importCfgMktProductMappings(List<CfgMktProductMapping> cfgMktProductMappings) {
-        removeAllAndSaveNewList(cfgMktProductMappingRepository, cfgMktProductMappings);
+        cfgMktProductMappingRepository.deleteAll();
+        for (CfgMktProductMapping cfgMktProductMapping : cfgMktProductMappings) {
+            cfgMktProductMappingDaoCustom.insert(cfgMktProductMapping);
+        }
     }
 
     public void importCfgMktAssetClasses(List<CfgMktAssetClass> cfgMktAssetClasses) {
@@ -249,7 +353,10 @@ public class ImportConfigIntoDb {
     }
 
     public void importCfgMktIrrGnrRisks(List<CfgMktIrrGnrRisk> cfgMktIrrGnrRisks) {
-        removeAllAndSaveNewList(cfgMktIrrGnrRiskRepository, cfgMktIrrGnrRisks);
+        cfgMktIrrGnrRiskRepository.deleteAll();
+        for (CfgMktIrrGnrRisk cfgMktIrrGnrRisk : cfgMktIrrGnrRisks) {
+            cfgMktIrrGnrRiskDaoCustom.insert(cfgMktIrrGnrRisk);
+        }
     }
 
     public void importCfgMktIrrGnrBands(List<CfgMktIrrGnrBand> cfgMktIrrGnrBands) {
@@ -265,7 +372,10 @@ public class ImportConfigIntoDb {
     }
 
     public void importCfgMktEqtSpcs(List<CfgMktEqtSpc> cfgMktEqtSpcs) {
-        removeAllAndSaveNewList(cfgMktEqtSpcRepository, cfgMktEqtSpcs);
+        cfgMktEqtSpcRepository.deleteAll();
+        for (CfgMktEqtSpc cfgMktEqtSpc : cfgMktEqtSpcs) {
+            cfgMktEqtSpcDaoCustom.insert(cfgMktEqtSpc);
+        }
     }
 
     public void importCfgMktEqtGnrs(List<CfgMktEqtGnr> cfgMktEqtGnrs) {
@@ -285,11 +395,17 @@ public class ImportConfigIntoDb {
     }
 
     public void importCfgOpsProductTypes(List<CfgOpsProductType> cfgOpsProductTypes) {
-        removeAllAndSaveNewList(cfgOpsProductTypeRepository, cfgOpsProductTypes);
+        cfgOpsProductTypeRepository.deleteAll();
+        for (CfgOpsProductType cfgOpsProductType : cfgOpsProductTypes) {
+            cfgOpsProductTypeDaoCustom.insert(cfgOpsProductType);
+        }
     }
 
     public void importCfgOpsProductTypeMappings(List<CfgOpsProductTypeMapping> cfgOpsProductTypeMappings) {
-        removeAllAndSaveNewList(cfgOpsProductTypeMappingRepository, cfgOpsProductTypeMappings);
+        cfgOpsProductTypeMappingRepository.deleteAll();
+        for (CfgOpsProductTypeMapping cfgOpsProductTypeMapping : cfgOpsProductTypeMappings) {
+            cfgOpsProductTypeMappingDaoCustom.insert(cfgOpsProductTypeMapping);
+        }
     }
 
     public void importCfgOpsFormulas(List<CfgOpsFormula> cfgOpsFormulas) {
@@ -301,24 +417,39 @@ public class ImportConfigIntoDb {
     }
 
     public void importCfgCapElementses(List<CfgCapElements> cfgCapElementses) {
-        removeAllAndSaveNewList(cfgCapElementsRepository, cfgCapElementses);
+        cfgCapElementsRepository.deleteAll();
+        for (CfgCapElements cfgCapElementse : cfgCapElementses) {
+            cfgCapElementsDaoCustom.insert(cfgCapElementse);
+        }
     }
 
     public void importCfgCapElementsTypes(List<CfgCapElementsType> cfgCapElementsTypes) {
-        removeAllAndSaveNewList(cfgCapElementsTypeRepository, cfgCapElementsTypes);
+        cfgCapElementsTypeRepository.deleteAll();
+        for (CfgCapElementsType cfgCapElementsType : cfgCapElementsTypes) {
+            cfgCapElementsTypeDaoCustom.insert(cfgCapElementsType);
+        }
     }
 
 
     public void importCfgCapElementsLimits(List<CfgCapElementsLimit> cfgCapElementsLimits) {
-        removeAllAndSaveNewList(cfgCapElementsLimitRepository, cfgCapElementsLimits);
+        cfgCapElementsLimitRepository.deleteAll();
+        for (CfgCapElementsLimit cfgCapElementsLimit : cfgCapElementsLimits) {
+            cfgCapElementsLimitDaoCustom.insert(cfgCapElementsLimit);
+        }
     }
 
     public void importCfgCapElementsMappings(List<CfgCapElementsMapping> cfgCapElementsMappings) {
-        removeAllAndSaveNewList(cfgCapElementsMappingRepository, cfgCapElementsMappings);
+        cfgCapElementsMappingRepository.deleteAll();
+        for (CfgCapElementsMapping cfgCapElementsMapping : cfgCapElementsMappings) {
+            cfgCapElementsMappingDaoCustom.insert(cfgCapElementsMapping);
+        }
     }
 
     public void importCfgCapElementsFormulas(List<CfgCapElementsFormula> cfgCapElementsFormulas) {
-        removeAllAndSaveNewList(cfgCapElementsFormulaRepository, cfgCapElementsFormulas);
+        cfgCapElementsFormulaRepository.deleteAll();
+        for (CfgCapElementsFormula cfgCapElementsFormula : cfgCapElementsFormulas) {
+            cfgCapElementsFormulaDaoCustom.insert(cfgCapElementsFormula);
+        }
     }
 
     private void removeAllAndSaveNewList(JpaRepository repository, List<?> newItems) {

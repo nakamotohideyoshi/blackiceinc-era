@@ -24,8 +24,8 @@ public class CfgCreditMeasureObjectMapper extends AbstractObjectMapper {
 
         CfgCreditMeasure cfgCreditMeasure = new CfgCreditMeasure();
 
-        cfgCreditMeasure.setCreditMeasure(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
-        cfgCreditMeasure.setCreditMeasureDesc(row.getCell(1) != null ? row.getCell(1).getStringCellValue() : null);
+        cfgCreditMeasure.setCreditMeasure(getStringValue(row.getCell(0)));
+        cfgCreditMeasure.setCreditMeasureDesc(getStringValue(row.getCell(1)));
 
         return cfgCreditMeasure;
     }

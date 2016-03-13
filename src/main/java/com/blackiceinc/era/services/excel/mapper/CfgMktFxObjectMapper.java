@@ -23,8 +23,8 @@ public class CfgMktFxObjectMapper extends AbstractObjectMapper {
     CfgMktFx createRow(Row row) {
         CfgMktFx cfgMktFx = new CfgMktFx();
 
-        cfgMktFx.setMktProductType(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
-        cfgMktFx.setRiskWeight(row.getCell(1) != null ? row.getCell(1).getNumericCellValue() : null);
+        cfgMktFx.setMktProductType(getStringValue(row.getCell(0)));
+        cfgMktFx.setRiskWeight(getDoubleValue(row.getCell(1)));
 
         return cfgMktFx;
     }

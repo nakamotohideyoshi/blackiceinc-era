@@ -21,6 +21,9 @@ public class CfgAddOnRepositoryTest {
     @Autowired
     private CfgAddOnRepository cfgAddOnRepository;
 
+    @Autowired
+    private CfgAddOnDaoCustom cfgAddOnDaoCustom;
+
     @Test
     public void testSave(){
         CfgAddOn cfgAddOn = new CfgAddOn();
@@ -29,7 +32,8 @@ public class CfgAddOnRepositoryTest {
         cfgAddOn.setMaturityEnd("2");
         cfgAddOn.setRiskWeight(new Double(3));
 
-        cfgAddOnRepository.save(cfgAddOn);
+        cfgAddOnDaoCustom.insert(cfgAddOn);
+//        cfgAddOnRepository.save(cfgAddOn);
     }
 
 }

@@ -8,8 +8,6 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Component
@@ -17,15 +15,15 @@ public class CfgCompanyDimensionObjectMapper extends AbstractObjectMapper {
     private CfgCompanyDimensionRepository cfgCompanyDimensionRepository;
 
     @Autowired
-    public CfgCompanyDimensionObjectMapper(CfgCompanyDimensionRepository cfgCompanyDimensionRepository){
+    public CfgCompanyDimensionObjectMapper(CfgCompanyDimensionRepository cfgCompanyDimensionRepository) {
         this.cfgCompanyDimensionRepository = cfgCompanyDimensionRepository;
     }
 
     CfgCompanyDimension createRow(Row row) {
         CfgCompanyDimension cfgCompanyDimension = new CfgCompanyDimension();
 
-        cfgCompanyDimension.setCompanyCode(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
-        cfgCompanyDimension.setFinancialBook(row.getCell(1) != null ? row.getCell(1).getStringCellValue() : null);
+        cfgCompanyDimension.setCompanyCode(getStringValue(row.getCell(0)));
+        cfgCompanyDimension.setFinancialBook(getStringValue(row.getCell(1)));
 
         return cfgCompanyDimension;
     }

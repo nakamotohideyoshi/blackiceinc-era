@@ -22,10 +22,10 @@ public class CfgCompanyDimensionConsolidationObjectMapper extends AbstractObject
     CfgCompanyDimensionConsolidation createRow(Row row) {
         CfgCompanyDimensionConsolidation cfgCompanyDimensionConsolidation = new CfgCompanyDimensionConsolidation();
 
-        cfgCompanyDimensionConsolidation.setCompanyCode(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
-        cfgCompanyDimensionConsolidation.setEntityCode(row.getCell(1) != null ? row.getCell(1).getStringCellValue() : null);
-        cfgCompanyDimensionConsolidation.setConsoMode(row.getCell(2) != null ? row.getCell(2).getStringCellValue() : null);
-        cfgCompanyDimensionConsolidation.setConsoPerct(row.getCell(3) != null ? row.getCell(3).getNumericCellValue() : null);
+        cfgCompanyDimensionConsolidation.setCompanyCode(getStringValue(row.getCell(0)));
+        cfgCompanyDimensionConsolidation.setEntityCode(getStringValue(row.getCell(1)));
+        cfgCompanyDimensionConsolidation.setConsoMode(getStringValue(row.getCell(2)));
+        cfgCompanyDimensionConsolidation.setConsoPerct(getDoubleValue(row.getCell(3)));
 
         return cfgCompanyDimensionConsolidation;
     }

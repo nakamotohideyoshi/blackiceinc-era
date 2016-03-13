@@ -21,6 +21,9 @@ public class CfgMktProductMappingRepositoryTest {
     @Autowired
     private CfgMktProductMappingRepository cfgMktProductMappingRepository;
 
+    @Autowired
+    private CfgMktProductMappingDaoCustom cfgMktProductMappingDaoCustom;
+
     @Test
     public void testSave(){
         CfgMktProductMapping cfgMktProductMapping = new CfgMktProductMapping();
@@ -31,7 +34,9 @@ public class CfgMktProductMappingRepositoryTest {
         cfgMktProductMapping.setTableName("table_name");
         cfgMktProductMapping.setUnderlyingType("underlying_type");
 
-        cfgMktProductMappingRepository.save(cfgMktProductMapping);
+        cfgMktProductMappingDaoCustom.insert(cfgMktProductMapping);
+
+//        cfgMktProductMappingRepository.save(cfgMktProductMapping);
     }
 
 }

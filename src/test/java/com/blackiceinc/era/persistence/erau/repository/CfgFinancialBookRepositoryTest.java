@@ -19,13 +19,18 @@ public class CfgFinancialBookRepositoryTest {
     @Autowired
     private CfgFinancialBookRepository cfgFinancialBookRepository;
 
+    @Autowired
+    private CfgFinancialBookDaoCustom cfgFinancialBookDaoCustom;
+
     @Test
     public void testSave() {
         CfgFinancialBook cfgFinancialBook = new CfgFinancialBook();
         cfgFinancialBook.setBookCode("code");
         cfgFinancialBook.setBookDesc("desc");
         cfgFinancialBook.setTradingFlag("T");
-        cfgFinancialBookRepository.save(cfgFinancialBook);
+
+        cfgFinancialBookDaoCustom.insert(cfgFinancialBook);
+//        cfgFinancialBookRepository.save(cfgFinancialBook);
     }
 
 

@@ -24,9 +24,9 @@ public class CfgCompanyObjectMapper extends AbstractObjectMapper {
     CfgCompany createRow(Row row) {
         CfgCompany cfgCompany = new CfgCompany();
 
-        cfgCompany.setCompanyCode(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
-        cfgCompany.setCompanyName(row.getCell(1) != null ? row.getCell(1).getStringCellValue() : null);
-        cfgCompany.setIncorporationCountry(row.getCell(2) != null ? row.getCell(2).getStringCellValue() : null);
+        cfgCompany.setCompanyCode(getStringValue(row.getCell(0)));
+        cfgCompany.setCompanyName(getStringValue(row.getCell(1)));
+        cfgCompany.setIncorporationCountry(getStringValue(row.getCell(2)));
 
         return cfgCompany;
     }

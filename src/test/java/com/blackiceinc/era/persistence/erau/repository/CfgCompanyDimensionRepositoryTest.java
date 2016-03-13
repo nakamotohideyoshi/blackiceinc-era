@@ -21,13 +21,18 @@ public class CfgCompanyDimensionRepositoryTest {
     @Autowired
     private CfgCompanyDimensionRepository companyDimensionRepository;
 
+    @Autowired
+    private CfgCompanyDimensionDaoCustom cfgCompanyDimensionDaoCustom;
+
     @Test
     public void testSave(){
         CfgCompanyDimension cfgCompanyDimension = new CfgCompanyDimension();
         cfgCompanyDimension.setCompanyCode("company_code");
         cfgCompanyDimension.setFinancialBook("financial_book");
 
-        companyDimensionRepository.save(cfgCompanyDimension);
+        cfgCompanyDimensionDaoCustom.insert(cfgCompanyDimension);
+
+//        companyDimensionRepository.save(cfgCompanyDimension);
     }
 
 }

@@ -23,9 +23,9 @@ public class CfgProductTypeObjectMapper extends AbstractObjectMapper {
     CfgProductType createRow(Row row) {
         CfgProductType cfgProductType = new CfgProductType();
 
-        cfgProductType.setEraProductType(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
-        cfgProductType.setEraProductDesc(row.getCell(1) != null ? row.getCell(1).getStringCellValue() : null);
-        cfgProductType.setEraProductCategory(row.getCell(2) != null ? row.getCell(2).getStringCellValue() : null);
+        cfgProductType.setEraProductType(getStringValue(row.getCell(0)));
+        cfgProductType.setEraProductDesc(getStringValue(row.getCell(1)));
+        cfgProductType.setEraProductCategory(getStringValue(row.getCell(2)));
 
         return cfgProductType;
     }

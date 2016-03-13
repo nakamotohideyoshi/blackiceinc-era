@@ -19,13 +19,17 @@ public class CfgCapElementsTypeRepositoryTest {
     @Autowired
     private CfgCapElementsTypeRepository cfgCapElementsTypeRepository;
 
+    @Autowired
+    private CfgCapElementsTypeDaoCustom cfgCapElementsTypeDaoCustom;
+
     @Test
     public void testSave() {
         CfgCapElementsType cfgCapElementsType = new CfgCapElementsType();
         cfgCapElementsType.setCapElementType("cap_element_type");
         cfgCapElementsType.setDescription("description");
 
-        cfgCapElementsTypeRepository.save(cfgCapElementsType);
+        cfgCapElementsTypeDaoCustom.insert(cfgCapElementsType);
+//        cfgCapElementsTypeRepository.save(cfgCapElementsType);
     }
 
 }

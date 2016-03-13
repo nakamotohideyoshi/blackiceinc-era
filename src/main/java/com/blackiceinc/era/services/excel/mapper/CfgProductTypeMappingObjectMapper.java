@@ -23,21 +23,21 @@ public class CfgProductTypeMappingObjectMapper extends AbstractObjectMapper {
     CfgProductTypeMapping createRow(Row row) {
         CfgProductTypeMapping cfgProductTypeMapping = new CfgProductTypeMapping();
 
-        cfgProductTypeMapping.setProductType(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
-        cfgProductTypeMapping.setTableName(row.getCell(1) != null ? row.getCell(1).getStringCellValue() : null);
-        cfgProductTypeMapping.setSeniority(row.getCell(2) != null ? row.getCell(2).getStringCellValue() : null);
-        cfgProductTypeMapping.setEraContractType(row.getCell(3) != null ? row.getCell(3).getStringCellValue() : null);
-        cfgProductTypeMapping.setOnOff(row.getCell(4) != null ? row.getCell(4).getStringCellValue() : null);
-        cfgProductTypeMapping.setfMainIndex(row.getCell(5) != null ? row.getCell(5).getStringCellValue() : null);
-        cfgProductTypeMapping.setfRecogExch(row.getCell(6) != null ? row.getCell(6).getStringCellValue() : null);
-        cfgProductTypeMapping.setfRated(row.getCell(7) != null ? row.getCell(7).getStringCellValue() : null);
+        cfgProductTypeMapping.setProductType(getStringValue(row.getCell(0)));
+        cfgProductTypeMapping.setTableName(getStringValue(row.getCell(1)));
+        cfgProductTypeMapping.setSeniority(getStringValue(row.getCell(2)));
+        cfgProductTypeMapping.setEraContractType(getStringValue(row.getCell(3)));
+        cfgProductTypeMapping.setOnOff(getStringValue(row.getCell(4)));
+        cfgProductTypeMapping.setfMainIndex(getStringValue(row.getCell(5)));
+        cfgProductTypeMapping.setfRecogExch(getStringValue(row.getCell(6)));
+        cfgProductTypeMapping.setfRated(getStringValue(row.getCell(7)));
         // TODO: repayment property suspicious
-        cfgProductTypeMapping.setRepaymentProperty(row.getCell(8) != null ? row.getCell(8).getStringCellValue() : null);
-        cfgProductTypeMapping.setfCompleted(row.getCell(9) != null ? row.getCell(9).getStringCellValue() : null);
-        cfgProductTypeMapping.setfIndependantValuer(row.getCell(10) != null ? row.getCell(10).getStringCellValue() : null);
-        cfgProductTypeMapping.setfLegallyEnforce(row.getCell(11) != null ? row.getCell(11).getStringCellValue() : null);
-        cfgProductTypeMapping.setUnderlying(row.getCell(12) != null ? row.getCell(12).getStringCellValue() : null);
-        cfgProductTypeMapping.setSeq(row.getCell(13) != null ? (long) row.getCell(13).getNumericCellValue() : null);
+        cfgProductTypeMapping.setRepaymentProperty(getStringValue(row.getCell(8)));
+        cfgProductTypeMapping.setfCompleted(getStringValue(row.getCell(9)));
+        cfgProductTypeMapping.setfIndependantValuer(getStringValue(row.getCell(10)));
+        cfgProductTypeMapping.setfLegallyEnforce(getStringValue(row.getCell(11)));
+        cfgProductTypeMapping.setUnderlying(getStringValue(row.getCell(12)));
+        cfgProductTypeMapping.setSeq(getLongValue(row.getCell(13)));
 
         return cfgProductTypeMapping;
     }

@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.data.repository.query.Parameter;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,9 @@ public class CfgMktIrrGnrRiskRepositoryTest {
     @Autowired
     private CfgMktIrrGnrRiskRepository cfgMktIrrGnrRiskRepository;
 
+    @Autowired
+    private CfgMktIrrGnrRiskDaoCustom cfgMktIrrGnrRiskDaoCustom;
+
     @Test
     public void testSave() {
         CfgMktIrrGnrRisk cfgMktIrrGnrRisk = new CfgMktIrrGnrRisk();
@@ -28,12 +32,13 @@ public class CfgMktIrrGnrRiskRepositoryTest {
         cfgMktIrrGnrRisk.setBandCode("band_code");
         cfgMktIrrGnrRisk.setCurrency("currency");
         cfgMktIrrGnrRisk.setCouponRateStart(1L);
-        cfgMktIrrGnrRisk.setCouponRateEnd(5L);
+        cfgMktIrrGnrRisk.setCouponRateEnd(2L);
         cfgMktIrrGnrRisk.setMaturityBandStart(1L);
-        cfgMktIrrGnrRisk.setMaturityBandStart(5L);
-        cfgMktIrrGnrRisk.setRiskWeight(new Double(4));
+        cfgMktIrrGnrRisk.setMaturityBandEnd(null);
+        cfgMktIrrGnrRisk.setRiskWeight(new Double(4.1));
 
-        cfgMktIrrGnrRiskRepository.save(cfgMktIrrGnrRisk);
+        cfgMktIrrGnrRiskDaoCustom.insert(cfgMktIrrGnrRisk);
+//        cfgMktIrrGnrRiskRepository.save(cfgMktIrrGnrRisk);
     }
 
 }

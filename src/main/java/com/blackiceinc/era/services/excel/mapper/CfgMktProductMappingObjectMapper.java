@@ -23,12 +23,12 @@ public class CfgMktProductMappingObjectMapper extends AbstractObjectMapper {
     CfgMktProductMapping createRow(Row row) {
         CfgMktProductMapping cfgMktProductMapping = new CfgMktProductMapping();
 
-        cfgMktProductMapping.setMktProductType(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
-        cfgMktProductMapping.setContractType(row.getCell(1) != null ? row.getCell(1).getStringCellValue() : null);
-        cfgMktProductMapping.setExchangedTraded(row.getCell(2) != null ? row.getCell(2).getStringCellValue() : null);
-        cfgMktProductMapping.setInstrumentType(row.getCell(3) != null ? row.getCell(3).getStringCellValue() : null);
-        cfgMktProductMapping.setTableName(row.getCell(4) != null ? row.getCell(4).getStringCellValue() : null);
-        cfgMktProductMapping.setUnderlyingType(row.getCell(5) != null ? row.getCell(5).getStringCellValue() : null);
+        cfgMktProductMapping.setMktProductType(getStringValue(row.getCell(0)));
+        cfgMktProductMapping.setContractType(getStringValue(row.getCell(1)));
+        cfgMktProductMapping.setExchangedTraded(getStringValue(row.getCell(2)));
+        cfgMktProductMapping.setInstrumentType(getStringValue(row.getCell(3)));
+        cfgMktProductMapping.setTableName(getStringValue(row.getCell(4)));
+        cfgMktProductMapping.setUnderlyingType(getStringValue(row.getCell(5)));
 
         return cfgMktProductMapping;
     }

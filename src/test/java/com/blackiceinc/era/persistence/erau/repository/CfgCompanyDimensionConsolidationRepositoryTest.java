@@ -21,6 +21,9 @@ public class CfgCompanyDimensionConsolidationRepositoryTest {
     @Autowired
     private CfgCompanyDimensionConsolidationRepository cfgCompanyDimensionConsolidationRepository;
 
+    @Autowired
+    private  CfgCompanyDimensionConsolidationDaoCustom cfgCompanyDimensionConsolidationDaoCustom;
+
     @Test
     public void testSave(){
         CfgCompanyDimensionConsolidation cfgCompanyDimensionConsolidation = new CfgCompanyDimensionConsolidation();
@@ -29,7 +32,8 @@ public class CfgCompanyDimensionConsolidationRepositoryTest {
         cfgCompanyDimensionConsolidation.setConsoMode("conso_mode");
         cfgCompanyDimensionConsolidation.setConsoPerct(new Double(1));
 
-        cfgCompanyDimensionConsolidationRepository.save(cfgCompanyDimensionConsolidation);
+        cfgCompanyDimensionConsolidationDaoCustom.insert(cfgCompanyDimensionConsolidation);
+//        cfgCompanyDimensionConsolidationRepository.save(cfgCompanyDimensionConsolidation);
     }
 
 }

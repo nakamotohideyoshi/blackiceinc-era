@@ -2,7 +2,6 @@ package com.blackiceinc.era.services.excel.mapper;
 
 import com.blackiceinc.era.persistence.erau.model.CfgMktIrrGnrIntra;
 import com.blackiceinc.era.persistence.erau.repository.CfgMktIrrGnrIntraRepository;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -24,32 +23,9 @@ public class CfgMktIrrGnrIntraObjectMapper extends AbstractObjectMapper {
     CfgMktIrrGnrIntra createRow(Row row) {
         CfgMktIrrGnrIntra cfgMktIrrGnrIntra = new CfgMktIrrGnrIntra();
 
-        Cell cell0 = row.getCell(0);
-        if (cell0 != null) {
-            switch (cell0.getCellType()) {
-                case Cell.CELL_TYPE_NUMERIC:
-                    cfgMktIrrGnrIntra.setCode(String.valueOf((long) cell0.getNumericCellValue()));
-                    break;
-                case Cell.CELL_TYPE_STRING:
-                    cfgMktIrrGnrIntra.setCode(cell0.getStringCellValue());
-                    break;
-            }
-        }
-
-        Cell cell1 = row.getCell(1);
-        if (cell1 != null) {
-            switch (cell1.getCellType()) {
-                case Cell.CELL_TYPE_NUMERIC:
-                    cfgMktIrrGnrIntra.setZoneCode(String.valueOf((long) cell1.getNumericCellValue()));
-                    break;
-                case Cell.CELL_TYPE_STRING:
-                    cfgMktIrrGnrIntra.setZoneCode(cell1.getStringCellValue());
-                    break;
-            }
-        }
-
-
-        cfgMktIrrGnrIntra.setRiskWeight(row.getCell(2) != null ? row.getCell(2).getNumericCellValue() : null);
+        cfgMktIrrGnrIntra.setCode(getStringValue(row.getCell(0)));
+        cfgMktIrrGnrIntra.setZoneCode(getStringValue(row.getCell(1)));
+        cfgMktIrrGnrIntra.setRiskWeight(getDoubleValue(row.getCell(2)));
 
         return cfgMktIrrGnrIntra;
     }

@@ -23,9 +23,9 @@ public class CfgMktEqtGnrObjectMapper extends AbstractObjectMapper {
     CfgMktEqtGnr createRow(Row row) {
         CfgMktEqtGnr cfgMktEqtGnr = new CfgMktEqtGnr();
 
-        cfgMktEqtGnr.setMktProductType(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
-        cfgMktEqtGnr.setUnderlying(row.getCell(1) != null ? row.getCell(1).getStringCellValue() : null);
-        cfgMktEqtGnr.setRiskWeight(row.getCell(2) != null ? row.getCell(2).getNumericCellValue() : null);
+        cfgMktEqtGnr.setMktProductType(getStringValue(row.getCell(0)));
+        cfgMktEqtGnr.setUnderlying(getStringValue(row.getCell(1)));
+        cfgMktEqtGnr.setRiskWeight(getDoubleValue(row.getCell(2)));
 
         return cfgMktEqtGnr;
     }

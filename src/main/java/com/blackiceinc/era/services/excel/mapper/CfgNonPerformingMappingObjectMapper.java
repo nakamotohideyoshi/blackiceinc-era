@@ -2,7 +2,6 @@ package com.blackiceinc.era.services.excel.mapper;
 
 import com.blackiceinc.era.persistence.erau.model.CfgNonPerformingMapping;
 import com.blackiceinc.era.persistence.erau.repository.CfgNonPerformingMappingRepository;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -24,17 +23,8 @@ public class CfgNonPerformingMappingObjectMapper extends AbstractObjectMapper {
     CfgNonPerformingMapping createRow(Row row) {
         CfgNonPerformingMapping cfgNonPerformingMapping = new CfgNonPerformingMapping();
 
-        cfgNonPerformingMapping.setEraNplCode(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
-
-        Cell cell1 = row.getCell(1);
-        switch (cell1.getCellType()) {
-            case Cell.CELL_TYPE_NUMERIC:
-                cfgNonPerformingMapping.setPerformingStatus(cell1 != null ? String.valueOf((int) cell1.getNumericCellValue()) : null);
-                break;
-            case Cell.CELL_TYPE_STRING:
-                cfgNonPerformingMapping.setPerformingStatus(cell1 != null ? cell1.getStringCellValue() : null);
-                break;
-        }
+        cfgNonPerformingMapping.setEraNplCode(getStringValue(row.getCell(0)));
+        cfgNonPerformingMapping.setPerformingStatus(getStringValue(row.getCell(1)));
 
         return cfgNonPerformingMapping;
     }

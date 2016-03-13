@@ -23,8 +23,8 @@ public class CfgMktComOthObjectMapper extends AbstractObjectMapper {
     CfgMktComOth createRow(Row row) {
         CfgMktComOth cfgMktComOth = new CfgMktComOth();
 
-        cfgMktComOth.setMktProductType(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
-        cfgMktComOth.setRiskWeight(row.getCell(1) != null ? row.getCell(1).getNumericCellValue() : null);
+        cfgMktComOth.setMktProductType(getStringValue(row.getCell(0)));
+        cfgMktComOth.setRiskWeight(getDoubleValue(row.getCell(1)));
 
         return cfgMktComOth;
     }

@@ -21,6 +21,9 @@ public class CfgOpsProductTypeMappingRepositoryTest {
     @Autowired
     private CfgOpsProductTypeMappingRepository cfgOpsProductTypeMappingRepository;
 
+    @Autowired
+    private CfgOpsProductTypeMappingDaoCustom cfgOpsProductTypeMappingDaoCustom;
+
     @Test
     public void testSave() {
         CfgOpsProductTypeMapping cfgOpsProductTypeMapping = new CfgOpsProductTypeMapping();
@@ -29,7 +32,8 @@ public class CfgOpsProductTypeMappingRepositoryTest {
         cfgOpsProductTypeMapping.setOpsVibCode("ops_vib_code");
         cfgOpsProductTypeMapping.setDescription("description");
 
-        cfgOpsProductTypeMappingRepository.save(cfgOpsProductTypeMapping);
+        cfgOpsProductTypeMappingDaoCustom.insert(cfgOpsProductTypeMapping);
+//        cfgOpsProductTypeMappingRepository.save(cfgOpsProductTypeMapping);
     }
 
 }

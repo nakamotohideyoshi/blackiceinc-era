@@ -148,4 +148,21 @@ public class CfgRiskWeightMapping {
     public void setSeq(Long seq) {
         this.seq = seq;
     }
+
+    @Override
+    public String toString() {
+        return "CfgRiskWeightMapping{" +
+                "assetClass='" + assetClass + '\'' +
+                ", eraNplCode='" + eraNplCode + '\'' +
+                ", yearOfEstablishment='" + yearOfEstablishment + '\'' +
+                ", creditMeasure1='" + creditMeasure1 + '\'' +
+                ", creditMeasure1Beg='" + creditMeasure1Beg + '\'' +
+                ", creditMeasure1End='" + creditMeasure1End + '\'' +
+                ", creditMeasure2='" + creditMeasure2 + '\'' +
+                ", creditMeasure2Beg='" + creditMeasure2Beg + '\'' +
+                ", creditMeasure2End='" + creditMeasure2End + '\'' +
+                ", riskWeight=" + riskWeight +
+                ", seq=" + seq +
+                '}';
+    }
 }

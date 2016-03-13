@@ -22,12 +22,11 @@ public class CfgEntityTypeMappingObjectMapper extends AbstractObjectMapper {
     }
 
     CfgEntityTypeMapping createRow(Row row) {
-
         CfgEntityTypeMapping cfgEntityTypeMapping = new CfgEntityTypeMapping();
 
-        cfgEntityTypeMapping.setEraEntityType(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
-        cfgEntityTypeMapping.setCustomerType(row.getCell(1) != null ? row.getCell(1).getStringCellValue() : null);
-        cfgEntityTypeMapping.setCustomerSubType(row.getCell(2) != null ? row.getCell(2).getStringCellValue() : null);
+        cfgEntityTypeMapping.setEraEntityType(getStringValue(row.getCell(0)));
+        cfgEntityTypeMapping.setCustomerType(getStringValue(row.getCell(1)));
+        cfgEntityTypeMapping.setCustomerSubType(getStringValue(row.getCell(2)));
 
         return cfgEntityTypeMapping;
     }

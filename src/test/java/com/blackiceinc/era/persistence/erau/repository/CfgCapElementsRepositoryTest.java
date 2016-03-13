@@ -21,6 +21,9 @@ public class CfgCapElementsRepositoryTest {
     @Autowired
     private CfgCapElementsRepository cfgCapElementsRepository;
 
+    @Autowired
+    private CfgCapElementsDaoCustom cfgCapElementsDaoCustom;
+
     @Test
     public void testSave() {
         CfgCapElements cfgCapElements = new CfgCapElements();
@@ -28,7 +31,8 @@ public class CfgCapElementsRepositoryTest {
         cfgCapElements.setCapElementsDesc("cap_elements_desc");
         cfgCapElements.setType("type");
 
-        cfgCapElementsRepository.save(cfgCapElements);
+        cfgCapElementsDaoCustom.insert(cfgCapElements);
+//        cfgCapElementsRepository.save(cfgCapElements);
     }
 
 

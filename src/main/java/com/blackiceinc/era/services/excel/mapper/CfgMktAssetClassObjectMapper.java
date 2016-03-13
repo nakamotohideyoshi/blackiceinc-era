@@ -21,11 +21,10 @@ public class CfgMktAssetClassObjectMapper extends AbstractObjectMapper {
     }
 
     CfgMktAssetClass createRow(Row row) {
-
         CfgMktAssetClass cfgMktAssetClass = new CfgMktAssetClass();
 
-        cfgMktAssetClass.setMktAssetClass(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
-        cfgMktAssetClass.setMktAssetClassDesc(row.getCell(1) != null ? row.getCell(1).getStringCellValue() : null);
+        cfgMktAssetClass.setMktAssetClass(getStringValue(row.getCell(0)));
+        cfgMktAssetClass.setMktAssetClassDesc(getStringValue(row.getCell(1)));
 
         return cfgMktAssetClass;
     }

@@ -23,9 +23,9 @@ public class CfgMktProductTypeObjectMapper extends AbstractObjectMapper {
     CfgMktProductType createRow(Row row) {
         CfgMktProductType cfgMktProductType = new CfgMktProductType();
 
-        cfgMktProductType.setMktProductType(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
-        cfgMktProductType.setMktProductDesc(row.getCell(1) != null ? row.getCell(1).getStringCellValue() : null);
-        cfgMktProductType.setMktProductCategory(row.getCell(2) != null ? row.getCell(2).getStringCellValue() : null);
+        cfgMktProductType.setMktProductType(getStringValue(row.getCell(0)));
+        cfgMktProductType.setMktProductDesc(getStringValue(row.getCell(1)));
+        cfgMktProductType.setMktProductCategory(getStringValue(row.getCell(2)));
 
         return cfgMktProductType;
     }

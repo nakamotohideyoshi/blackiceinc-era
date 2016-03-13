@@ -8,8 +8,6 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Component
@@ -23,12 +21,11 @@ public class CfgAssetClassMappingObjectMapper extends AbstractObjectMapper {
     }
 
     CfgAssetClassMapping createRow(Row row) {
-
         CfgAssetClassMapping cfgAssetClassMapping = new CfgAssetClassMapping();
 
-        cfgAssetClassMapping.setAssetClass(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
-        cfgAssetClassMapping.setEntityType(row.getCell(1) != null ? row.getCell(1).getStringCellValue() : null);
-        cfgAssetClassMapping.setProductType(row.getCell(2) != null ? row.getCell(2).getStringCellValue() : null);
+        cfgAssetClassMapping.setAssetClass(getStringValue(row.getCell(0)));
+        cfgAssetClassMapping.setEntityType(getStringValue(row.getCell(1)));
+        cfgAssetClassMapping.setProductType(getStringValue(row.getCell(2)));
 
         return cfgAssetClassMapping;
     }

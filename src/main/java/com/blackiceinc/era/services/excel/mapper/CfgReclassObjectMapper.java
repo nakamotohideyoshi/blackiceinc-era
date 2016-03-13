@@ -23,13 +23,13 @@ public class CfgReclassObjectMapper extends AbstractObjectMapper {
     CfgReclass createRow(Row row) {
         CfgReclass cfgReclass = new CfgReclass();
 
-        cfgReclass.setCheckNo(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
-        cfgReclass.setDescription(row.getCell(1) != null ? row.getCell(1).getStringCellValue() : null);
-        cfgReclass.setEraEntityTypeIn(row.getCell(2) != null ? row.getCell(2).getStringCellValue() : null);
-        cfgReclass.setEraProductTypeIn(row.getCell(3) != null ? row.getCell(3).getStringCellValue() : null);
-        cfgReclass.setCheck(row.getCell(4) != null ? row.getCell(4).getStringCellValue() : null);
-        cfgReclass.setEraEntityTypeOut(row.getCell(5) != null ? row.getCell(5).getStringCellValue() : null);
-        cfgReclass.setEraProductTypeOut(row.getCell(6) != null ? row.getCell(6).getStringCellValue() : null);
+        cfgReclass.setCheckNo(getStringValue(row.getCell(0)));
+        cfgReclass.setDescription(getStringValue(row.getCell(1)));
+        cfgReclass.setEraEntityTypeIn(getStringValue(row.getCell(2)));
+        cfgReclass.setEraProductTypeIn(getStringValue(row.getCell(3)));
+        cfgReclass.setCheck(getStringValue(row.getCell(4)));
+        cfgReclass.setEraEntityTypeOut(getStringValue(row.getCell(5)));
+        cfgReclass.setEraProductTypeOut(getStringValue(row.getCell(6)));
 
         return cfgReclass;
     }

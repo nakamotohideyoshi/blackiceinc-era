@@ -21,6 +21,9 @@ public class CfgRatingRepositoryTest {
     @Autowired
     private CfgRatingRepository cfgRatingRepository;
 
+    @Autowired
+    private CfgRatingDaoCustom cfgRatingDaoCustom;
+
     @Test
     public void testSave(){
         CfgRating cfgRating = new CfgRating();
@@ -30,7 +33,8 @@ public class CfgRatingRepositoryTest {
         cfgRating.setLongShort("long_short");
         cfgRating.setRiskBucket(1L);
 
-        cfgRatingRepository.save(cfgRating);
+        cfgRatingDaoCustom.insert(cfgRating);
+//        cfgRatingRepository.save(cfgRating);
     }
 
 }

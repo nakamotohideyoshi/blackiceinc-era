@@ -22,6 +22,9 @@ public class CfgCompanyLinkageRepositoryTest {
     @Autowired
     private CfgCompanyLinkageRepository cfgCompanyLinkageRepository;
 
+    @Autowired
+    private CfgCompanyLinkageDaoCustom cfgCompanyLinkageDaoCustom;
+
     @Test
     public void testSave(){
         CfgCompanyLinkage cfgCompanyLinkage = new CfgCompanyLinkage();
@@ -29,7 +32,8 @@ public class CfgCompanyLinkageRepositoryTest {
         cfgCompanyLinkage.setMotherCode("mother_code");
         cfgCompanyLinkage.setLinkWeight(new Double(1));
 
-        cfgCompanyLinkageRepository.save(cfgCompanyLinkage);
+        cfgCompanyLinkageDaoCustom.insert(cfgCompanyLinkage);
+//        cfgCompanyLinkageRepository.save(cfgCompanyLinkage);
     }
 
 }

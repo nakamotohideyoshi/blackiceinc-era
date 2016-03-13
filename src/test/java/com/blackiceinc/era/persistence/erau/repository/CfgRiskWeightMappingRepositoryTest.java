@@ -19,6 +19,9 @@ public class CfgRiskWeightMappingRepositoryTest {
     @Autowired
     private CfgRiskWeightMappingRepository cfgRiskWeightMappingRepository;
 
+    @Autowired
+    private CfgRiskWeightMappingDaoCustom cfgRiskWeightMappingDaoCustom;
+
     @Test
     public void testSave() {
         CfgRiskWeightMapping cfgRiskWeightMapping = new CfgRiskWeightMapping();
@@ -34,7 +37,8 @@ public class CfgRiskWeightMappingRepositoryTest {
         cfgRiskWeightMapping.setRiskWeight(new Double(1));
         cfgRiskWeightMapping.setSeq(200L);
 
-        cfgRiskWeightMappingRepository.save(cfgRiskWeightMapping);
+        cfgRiskWeightMappingDaoCustom.insert(cfgRiskWeightMapping);
+//        cfgRiskWeightMappingRepository.save(cfgRiskWeightMapping);
     }
 
 }

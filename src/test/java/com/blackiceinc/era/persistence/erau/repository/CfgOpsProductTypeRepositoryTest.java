@@ -21,6 +21,9 @@ public class CfgOpsProductTypeRepositoryTest {
     @Autowired
     private  CfgOpsProductTypeRepository  cfgOpsProductTypeRepository;
 
+    @Autowired
+    private CfgOpsProductTypeDaoCustom cfgOpsProductTypeDaoCustom;
+
     @Test
     public void testSave() {
         CfgOpsProductType cfgOpsProductType = new CfgOpsProductType();
@@ -28,7 +31,9 @@ public class CfgOpsProductTypeRepositoryTest {
         cfgOpsProductType.setOpsProductDesc("ops_product_desc");
         cfgOpsProductType.setOpsBusIndicator("ops_bus_indicator");
 
-        cfgOpsProductTypeRepository.save(cfgOpsProductType);
+        cfgOpsProductTypeDaoCustom.insert(cfgOpsProductType);
+
+//        cfgOpsProductTypeRepository.save(cfgOpsProductType);
     }
 
 }

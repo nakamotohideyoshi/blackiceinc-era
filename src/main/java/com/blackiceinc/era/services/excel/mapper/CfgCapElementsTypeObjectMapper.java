@@ -8,8 +8,6 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Component
@@ -18,16 +16,15 @@ public class CfgCapElementsTypeObjectMapper extends AbstractObjectMapper {
     CfgCapElementsTypeRepository cfgCapElementsTypeRepository;
 
     @Autowired
-    public CfgCapElementsTypeObjectMapper(CfgCapElementsTypeRepository cfgCapElementsTypeRepository){
+    public CfgCapElementsTypeObjectMapper(CfgCapElementsTypeRepository cfgCapElementsTypeRepository) {
         this.cfgCapElementsTypeRepository = cfgCapElementsTypeRepository;
     }
 
     CfgCapElementsType createRow(Row row) {
-
         CfgCapElementsType cfgCapElementsType = new CfgCapElementsType();
 
-        cfgCapElementsType.setCapElementType(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
-        cfgCapElementsType.setDescription(row.getCell(1) != null ? row.getCell(1).getStringCellValue() : null);
+        cfgCapElementsType.setCapElementType(getStringValue(row.getCell(0)));
+        cfgCapElementsType.setDescription(getStringValue(row.getCell(1)));
 
         return cfgCapElementsType;
     }
@@ -36,7 +33,7 @@ public class CfgCapElementsTypeObjectMapper extends AbstractObjectMapper {
         List<CfgCapElementsType> all = cfgCapElementsTypeRepository.findAll();
         ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
-        for (CfgCapElementsType cfgCapElementsType:all){
+        for (CfgCapElementsType cfgCapElementsType : all) {
             XSSFRow row = sheet.createRow(rowIndex);
 
             createCell(row, 0, cfgCapElementsType.getCapElementType());

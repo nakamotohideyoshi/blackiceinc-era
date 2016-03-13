@@ -23,12 +23,12 @@ public class CfgReclassCheckDefObjectMapper extends AbstractObjectMapper {
     CfgReclassCheckDef createRow(Row row) {
         CfgReclassCheckDef cfgReclassCheckDef = new CfgReclassCheckDef();
 
-        cfgReclassCheckDef.setCheckDefNo(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
-        cfgReclassCheckDef.setDescription(row.getCell(1) != null ? row.getCell(1).getStringCellValue() : null);
-        cfgReclassCheckDef.setCheckType(row.getCell(2) != null ? row.getCell(2).getStringCellValue() : null);
-        cfgReclassCheckDef.setOperator(row.getCell(3) != null ? row.getCell(3).getStringCellValue() : null);
-        cfgReclassCheckDef.setThreshold(row.getCell(4) != null ? row.getCell(4).getNumericCellValue() : null);
-        cfgReclassCheckDef.setCurrency(row.getCell(5) != null ? row.getCell(5).getStringCellValue() : null);
+        cfgReclassCheckDef.setCheckDefNo(getStringValue(row.getCell(0)));
+        cfgReclassCheckDef.setDescription(getStringValue(row.getCell(1)));
+        cfgReclassCheckDef.setCheckType(getStringValue(row.getCell(2)));
+        cfgReclassCheckDef.setOperator(getStringValue(row.getCell(3)));
+        cfgReclassCheckDef.setThreshold(getDoubleValue(row.getCell(4)));
+        cfgReclassCheckDef.setCurrency(getStringValue(row.getCell(5)));
 
         return cfgReclassCheckDef;
     }

@@ -23,12 +23,12 @@ public class CfgMktEqtSpcObjectMapper extends AbstractObjectMapper {
     CfgMktEqtSpc createRow(Row row) {
         CfgMktEqtSpc cfgMktEqtSpc = new CfgMktEqtSpc();
 
-        cfgMktEqtSpc.setMktProductType(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
-        cfgMktEqtSpc.setUnderlying(row.getCell(1) != null ? row.getCell(1).getStringCellValue() : null);
-        cfgMktEqtSpc.setDiversifiedEquity(row.getCell(2) != null ? row.getCell(2).getStringCellValue() : null);
-        cfgMktEqtSpc.setDiversifiedIndex(row.getCell(3) != null ? row.getCell(3).getStringCellValue() : null);
-        cfgMktEqtSpc.setLiquidEquity(row.getCell(4) != null ? row.getCell(4).getStringCellValue() : null);
-        cfgMktEqtSpc.setRiskWeight(row.getCell(5) != null ? row.getCell(5).getNumericCellValue() : null);
+        cfgMktEqtSpc.setMktProductType(getStringValue(row.getCell(0)));
+        cfgMktEqtSpc.setUnderlying(getStringValue(row.getCell(1)));
+        cfgMktEqtSpc.setDiversifiedEquity(getStringValue(row.getCell(2)));
+        cfgMktEqtSpc.setDiversifiedIndex(getStringValue(row.getCell(3)));
+        cfgMktEqtSpc.setLiquidEquity(getStringValue(row.getCell(4)));
+        cfgMktEqtSpc.setRiskWeight(getDoubleValue(row.getCell(5)));
 
         return cfgMktEqtSpc;
     }

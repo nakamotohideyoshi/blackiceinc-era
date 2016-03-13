@@ -21,12 +21,11 @@ public class CfgCapElementsObjectMapper extends AbstractObjectMapper {
     }
 
     CfgCapElements createRow(Row row) {
-
         CfgCapElements cfgCapElements = new CfgCapElements();
 
-        cfgCapElements.setCapElements(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
-        cfgCapElements.setCapElementsDesc(row.getCell(1) != null ? row.getCell(1).getStringCellValue() : null);
-        cfgCapElements.setType(row.getCell(2) != null ? row.getCell(2).getStringCellValue() : null);
+        cfgCapElements.setCapElements(getStringValue(row.getCell(0)));
+        cfgCapElements.setCapElementsDesc(getStringValue(row.getCell(1)));
+        cfgCapElements.setType(getStringValue(row.getCell(2)));
 
         return cfgCapElements;
     }

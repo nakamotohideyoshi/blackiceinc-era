@@ -21,11 +21,10 @@ public class CfgMktComDrtObjectMapper extends AbstractObjectMapper {
     }
 
     CfgMktComDrt createRow(Row row) {
-
         CfgMktComDrt cfgMktComDrt = new CfgMktComDrt();
 
-        cfgMktComDrt.setMktProductType(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
-        cfgMktComDrt.setRiskWeight(row.getCell(1) != null ? row.getCell(1).getNumericCellValue() : null);
+        cfgMktComDrt.setMktProductType(getStringValue(row.getCell(0)));
+        cfgMktComDrt.setRiskWeight(getDoubleValue(row.getCell(1)));
 
         return cfgMktComDrt;
     }

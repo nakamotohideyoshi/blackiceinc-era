@@ -15,11 +15,14 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = BlackiceincEraApplication.class)
 @WebAppConfiguration
-//@Transactional
+@Transactional
 public class CfgCapElementsFormulaRepositoryTest {
 
     @Autowired
     private CfgCapElementsFormulaRepository cfgCapElementsFormulaRepository;
+
+    @Autowired
+    private CfgCapElementsFormulaDaoCustom cfgCapElementsFormulaDaoCustom;
 
     @Test
     public void testSave() {
@@ -28,7 +31,9 @@ public class CfgCapElementsFormulaRepositoryTest {
         cfgCapElementsFormula.setDescription("description");
         cfgCapElementsFormula.setFormula("formula");
 
-        cfgCapElementsFormulaRepository.save(cfgCapElementsFormula);
+        cfgCapElementsFormulaDaoCustom.insert(cfgCapElementsFormula);
+
+//        cfgCapElementsFormulaRepository.save(cfgCapElementsFormula);
     }
 
 }

@@ -23,8 +23,8 @@ public class CfgOpsFormulaObjectMapper extends AbstractObjectMapper {
     CfgOpsFormula createRow(Row row) {
         CfgOpsFormula cfgOpsFormula = new CfgOpsFormula();
 
-        cfgOpsFormula.setBasicIndicator(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
-        cfgOpsFormula.setFormula(row.getCell(1) != null ? row.getCell(1).getStringCellValue() : null);
+        cfgOpsFormula.setBasicIndicator(getStringValue(row.getCell(0)));
+        cfgOpsFormula.setFormula(getStringValue(row.getCell(1)));
 
         return cfgOpsFormula;
     }

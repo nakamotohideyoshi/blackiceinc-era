@@ -21,6 +21,9 @@ public class CfgCapElementsLimitRepositoryTest {
     @Autowired
     private CfgCapElementsLimitRepository cfgCapElementsLimitRepository;
 
+    @Autowired
+    private CfgCapElementsLimitDaoCustom cfgCapElementsLimitDaoCustom;
+
     @Test
     public void testSave() {
         CfgCapElementsLimit cfgCapElementsLimit = new CfgCapElementsLimit();
@@ -32,7 +35,9 @@ public class CfgCapElementsLimitRepositoryTest {
         cfgCapElementsLimit.setConsoFieldValue("conso_field_value");
         cfgCapElementsLimit.setConsoAmt("conso_amt");
 
-        cfgCapElementsLimitRepository.save(cfgCapElementsLimit);
+        cfgCapElementsLimitDaoCustom.insert(cfgCapElementsLimit);
+
+//        cfgCapElementsLimitRepository.save(cfgCapElementsLimit);
     }
 
 }

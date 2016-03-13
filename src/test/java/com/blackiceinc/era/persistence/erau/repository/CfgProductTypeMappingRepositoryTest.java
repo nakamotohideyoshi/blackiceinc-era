@@ -10,15 +10,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.Assert.*;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = BlackiceincEraApplication.class)
 @WebAppConfiguration
 @Transactional
 public class CfgProductTypeMappingRepositoryTest {
-@Autowired
+    @Autowired
     private CfgProductTypeMappingRepository cfgProductTypeMappingRepository;
+
+    @Autowired
+    private CfgProductTypeMappingDaoCustom cfgProductTypeMappingDaoCustom;
 
     @Test
     public void testSave() {
@@ -40,6 +41,8 @@ public class CfgProductTypeMappingRepositoryTest {
         cfgProductTypeMapping.setSeq(1L);
         cfgProductTypeMapping.setRepaymentProperty("repayment_property");
 
-        cfgProductTypeMappingRepository.save(cfgProductTypeMapping);
+        cfgProductTypeMappingDaoCustom.insert(cfgProductTypeMapping);
+
+//        cfgProductTypeMappingRepository.save(cfgProductTypeMapping);
     }
 }

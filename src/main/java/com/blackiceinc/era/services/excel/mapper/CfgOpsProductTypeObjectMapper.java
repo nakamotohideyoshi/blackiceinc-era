@@ -3,7 +3,6 @@ package com.blackiceinc.era.services.excel.mapper;
 import com.blackiceinc.era.persistence.erau.model.CfgOpsProductType;
 import com.blackiceinc.era.persistence.erau.repository.CfgOpsProductTypeRepository;
 import com.blackiceinc.era.services.excel.mapper.exception.PrimaryColumnMappingException;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -25,16 +24,9 @@ public class CfgOpsProductTypeObjectMapper extends AbstractObjectMapper {
     CfgOpsProductType createRow(Row row) throws PrimaryColumnMappingException {
         CfgOpsProductType cfgOpsProductType = new CfgOpsProductType();
 
-        Cell cell0 = row.getCell(0);
-        if (cell0 != null) {
-            cfgOpsProductType.setOpsProductType(cell0.getStringCellValue());
-        } else {
-            log.warn("Null value for a primary column");
-            throw new PrimaryColumnMappingException();
-        }
-
-        cfgOpsProductType.setOpsProductDesc(row.getCell(1) != null ? row.getCell(1).getStringCellValue() : null);
-        cfgOpsProductType.setOpsBusIndicator(row.getCell(2) != null ? row.getCell(2).getStringCellValue() : null);
+        cfgOpsProductType.setOpsProductType(getStringValue(row.getCell(0)));
+        cfgOpsProductType.setOpsProductDesc(getStringValue(row.getCell(1)));
+        cfgOpsProductType.setOpsBusIndicator(getStringValue(row.getCell(2)));
 
         return cfgOpsProductType;
     }
@@ -44,13 +36,15 @@ public class CfgOpsProductTypeObjectMapper extends AbstractObjectMapper {
         ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
         for (CfgOpsProductType cfgOpsProductType : all) {
-            XSSFRow row = sheet.createRow(rowIndex);
+            if (cfgOpsProductType!=null){
+                XSSFRow row = sheet.createRow(rowIndex);
 
-            createCell(row, 0, cfgOpsProductType.getOpsProductType());
-            createCell(row, 1, cfgOpsProductType.getOpsProductDesc());
-            createCell(row, 2, cfgOpsProductType.getOpsBusIndicator());
+                createCell(row, 0, cfgOpsProductType.getOpsProductType());
+                createCell(row, 1, cfgOpsProductType.getOpsProductDesc());
+                createCell(row, 2, cfgOpsProductType.getOpsBusIndicator());
 
-            rowIndex++;
+                rowIndex++;
+            }
         }
     }
 }

@@ -96,6 +96,9 @@ public abstract class AbstractObjectMapper {
                 case Cell.CELL_TYPE_STRING:
                     result = Long.valueOf(cell.getStringCellValue());
                     break;
+                case Cell.CELL_TYPE_FORMULA:
+                    result = (long)cell.getNumericCellValue();
+                    break;
             }
         }
 

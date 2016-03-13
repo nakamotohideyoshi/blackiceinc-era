@@ -2,7 +2,6 @@ package com.blackiceinc.era.services.excel.mapper;
 
 import com.blackiceinc.era.persistence.erau.model.CfgCrmEligibility;
 import com.blackiceinc.era.persistence.erau.repository.CfgCrmEligibilityRepository;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -22,26 +21,13 @@ public class CfgCrmEligibilityObjectMapper extends AbstractObjectMapper {
     }
 
     CfgCrmEligibility createRow(Row row) {
-
         CfgCrmEligibility cfgCrmEligibility = new CfgCrmEligibility();
 
-        cfgCrmEligibility.setEraEntityType(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
-        cfgCrmEligibility.setEraProductType(row.getCell(1) != null ? row.getCell(1).getStringCellValue() : null);
-        cfgCrmEligibility.setRiskBucket(row.getCell(2) != null ? row.getCell(2).getStringCellValue() : null);
-
-        Cell cell3 = row.getCell(3);
-        if (cell3 != null) {
-            switch (cell3.getCellType()) {
-                case Cell.CELL_TYPE_NUMERIC:
-                    cfgCrmEligibility.setRiskWeight(String.valueOf(cell3.getNumericCellValue()));
-                    break;
-                case Cell.CELL_TYPE_STRING:
-                    cfgCrmEligibility.setRiskWeight(cell3.getStringCellValue());
-                    break;
-            }
-        }
-
-        cfgCrmEligibility.setEligibility(row.getCell(4) != null ? row.getCell(4).getStringCellValue() : null);
+        cfgCrmEligibility.setEraEntityType(getStringValue(row.getCell(0)));
+        cfgCrmEligibility.setEraProductType(getStringValue(row.getCell(1)));
+        cfgCrmEligibility.setRiskBucket(getStringValue(row.getCell(2)));
+        cfgCrmEligibility.setRiskWeight(getStringValue(row.getCell(3)));
+        cfgCrmEligibility.setEligibility(getStringValue(row.getCell(4)));
 
         return cfgCrmEligibility;
     }

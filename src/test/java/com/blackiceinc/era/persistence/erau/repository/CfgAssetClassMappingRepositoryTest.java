@@ -21,6 +21,9 @@ public class CfgAssetClassMappingRepositoryTest {
     @Autowired
     private CfgAssetClassMappingRepository cfgAssetClassMappingRepository;
 
+    @Autowired
+    private CfgAssetClassMappingDaoCustom cfgAssetClassMappingDaoCustom;
+
     @Test
     public void testSave(){
         CfgAssetClassMapping cfgAssetClassMapping = new CfgAssetClassMapping();
@@ -28,7 +31,9 @@ public class CfgAssetClassMappingRepositoryTest {
         cfgAssetClassMapping.setEntityType("entity_type");
         cfgAssetClassMapping.setProductType("product_type");
 
-        cfgAssetClassMappingRepository.save(cfgAssetClassMapping);
+        cfgAssetClassMappingDaoCustom.insert(cfgAssetClassMapping);
+
+//        cfgAssetClassMappingRepository.save(cfgAssetClassMapping);
     }
 
 }

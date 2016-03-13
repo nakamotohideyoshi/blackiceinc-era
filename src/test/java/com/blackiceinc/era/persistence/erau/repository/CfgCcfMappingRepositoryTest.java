@@ -21,6 +21,9 @@ public class CfgCcfMappingRepositoryTest {
     @Autowired
     private CfgCcfMappingRepository cfgCcfMappingRepository;
 
+    @Autowired
+    private CfgCcfMappingDaoCustom cfgCcfMappingDaoCustom;
+
     @Test
     public void testSave() {
         CfgCcfMapping cfgCcfMapping = new CfgCcfMapping();
@@ -31,7 +34,9 @@ public class CfgCcfMappingRepositoryTest {
         cfgCcfMapping.setMaturityEnd("1");
         cfgCcfMapping.setSeq(200L);
 
-        cfgCcfMappingRepository.save(cfgCcfMapping);
+        cfgCcfMappingDaoCustom.insert(cfgCcfMapping);
+
+//        cfgCcfMappingRepository.save(cfgCcfMapping);
     }
 
 }

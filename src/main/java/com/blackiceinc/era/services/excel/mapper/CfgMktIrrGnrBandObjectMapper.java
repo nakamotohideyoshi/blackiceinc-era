@@ -2,7 +2,6 @@ package com.blackiceinc.era.services.excel.mapper;
 
 import com.blackiceinc.era.persistence.erau.model.CfgMktIrrGnrBand;
 import com.blackiceinc.era.persistence.erau.repository.CfgMktIrrGnrBandRepository;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -24,19 +23,8 @@ public class CfgMktIrrGnrBandObjectMapper extends AbstractObjectMapper {
     CfgMktIrrGnrBand createRow(Row row) {
         CfgMktIrrGnrBand cfgMktIrrGnrBand = new CfgMktIrrGnrBand();
 
-        Cell cell0 = row.getCell(0);
-        if (cell0 != null) {
-            switch (cell0.getCellType()) {
-                case Cell.CELL_TYPE_NUMERIC:
-                    cfgMktIrrGnrBand.setCode(String.valueOf((long) cell0.getNumericCellValue()));
-                    break;
-                case Cell.CELL_TYPE_STRING:
-                    cfgMktIrrGnrBand.setCode(cell0.getStringCellValue());
-                    break;
-            }
-        }
-
-        cfgMktIrrGnrBand.setRiskWeight(row.getCell(1) != null ? row.getCell(1).getNumericCellValue() : null);
+        cfgMktIrrGnrBand.setCode(getStringValue(row.getCell(0)));
+        cfgMktIrrGnrBand.setRiskWeight(getDoubleValue(row.getCell(1)));
 
         return cfgMktIrrGnrBand;
     }

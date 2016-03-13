@@ -21,11 +21,10 @@ public class CfgEntityTypeObjectMapper extends AbstractObjectMapper {
     }
 
     CfgEntityType createRow(Row row) {
-
         CfgEntityType cfgEntityType = new CfgEntityType();
 
-        cfgEntityType.setEraEntityType(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
-        cfgEntityType.setEntityDesc(row.getCell(1) != null ? row.getCell(1).getStringCellValue() : null);
+        cfgEntityType.setEraEntityType(getStringValue(row.getCell(0)));
+        cfgEntityType.setEntityDesc(getStringValue(row.getCell(1)));
 
         return cfgEntityType;
     }

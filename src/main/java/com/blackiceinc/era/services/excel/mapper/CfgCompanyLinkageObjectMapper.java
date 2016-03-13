@@ -24,9 +24,9 @@ public class CfgCompanyLinkageObjectMapper extends AbstractObjectMapper {
     CfgCompanyLinkage createRow(Row row) {
         CfgCompanyLinkage cfgCompanyLinkage = new CfgCompanyLinkage();
 
-        cfgCompanyLinkage.setChildCode(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : null);
-        cfgCompanyLinkage.setMotherCode(row.getCell(1) != null ? row.getCell(1).getStringCellValue() : null);
-        cfgCompanyLinkage.setLinkWeight(row.getCell(2) != null ? row.getCell(2).getNumericCellValue() : null);
+        cfgCompanyLinkage.setChildCode(getStringValue(row.getCell(0)));
+        cfgCompanyLinkage.setMotherCode(getStringValue(row.getCell(1)));
+        cfgCompanyLinkage.setLinkWeight(getDoubleValue(row.getCell(2)));
 
         return cfgCompanyLinkage;
     }

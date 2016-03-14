@@ -526,8 +526,10 @@ public class ConfigurationExportImportServiceImplTest {
     private void mockMktIrrGnrRiskRepo() {
         List<CfgMktIrrGnrRisk> cfgMktIrrGnrRisks = new ArrayList<>();
 
-        cfgMktIrrGnrRisks.add(new CfgMktIrrGnrRisk("zone_code_1", "band_code_1", "currency_1", 1L, 2L, 3L, 4L, new Double(0.4)));
-        cfgMktIrrGnrRisks.add(new CfgMktIrrGnrRisk("zone_code_2", "band_code_2", "currency_2", 1L, 2L, 3L, 4L, new Double(0.5)));
+        cfgMktIrrGnrRisks.add(new CfgMktIrrGnrRisk("zone_code_1", "band_code_1", "currency_1", new Double(0.1),
+                new Double(0.2), new Double(0.3), new Double(0.4), new Double(0.5)));
+        cfgMktIrrGnrRisks.add(new CfgMktIrrGnrRisk("zone_code_2", "band_code_2", "currency_2", new Double(0.6),
+                new Double(0.7), new Double(0.8), new Double(0.9), new Double(0.10)));
 
         when(cfgMktIrrGnrRiskRepository.findAll()).thenReturn(cfgMktIrrGnrRisks);
     }

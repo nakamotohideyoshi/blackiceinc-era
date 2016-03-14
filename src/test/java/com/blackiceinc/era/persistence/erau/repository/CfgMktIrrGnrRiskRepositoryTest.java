@@ -31,9 +31,9 @@ public class CfgMktIrrGnrRiskRepositoryTest {
         cfgMktIrrGnrRisk.setZoneCode("zone_code");
         cfgMktIrrGnrRisk.setBandCode("band_code");
         cfgMktIrrGnrRisk.setCurrency("currency");
-        cfgMktIrrGnrRisk.setCouponRateStart(1L);
-        cfgMktIrrGnrRisk.setCouponRateEnd(2L);
-        cfgMktIrrGnrRisk.setMaturityBandStart(1L);
+        cfgMktIrrGnrRisk.setCouponRateStart(new Double(5.1));
+        cfgMktIrrGnrRisk.setCouponRateEnd(new Double(4.1));
+        cfgMktIrrGnrRisk.setMaturityBandStart(new Double(3.1));
         cfgMktIrrGnrRisk.setMaturityBandEnd(null);
         cfgMktIrrGnrRisk.setRiskWeight(new Double(4.1));
 

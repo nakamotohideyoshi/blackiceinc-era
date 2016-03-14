@@ -20,21 +20,22 @@ public class CfgMktIrrGnrRisk {
     private String currency;
 
     @Column(name = "COUPON_RATE_START")
-    private Long couponRateStart;
+    private Double couponRateStart;
 
     @Column(name = "COUPON_RATE_END")
-    private Long couponRateEnd;
+    private Double couponRateEnd;
 
     @Column(name = "MATURITY_BAND_START")
-    private Long maturityBandStart;
+    private Double maturityBandStart;
 
     @Column(name = "MATURITY_BAND_END")
-    private Long maturityBandEnd;
+    private Double maturityBandEnd;
 
     @Column(name = "RISK_WEIGHT")
     private Double riskWeight;
 
-    public CfgMktIrrGnrRisk(String zoneCode, String bandCode, String currency, Long couponRateStart, Long couponRateEnd, Long maturityBandStart, Long maturityBandEnd, Double riskWeight) {
+    public CfgMktIrrGnrRisk(String zoneCode, String bandCode, String currency, Double couponRateStart,
+                            Double couponRateEnd, Double maturityBandStart, Double maturityBandEnd, Double riskWeight) {
         this.zoneCode = zoneCode;
         this.bandCode = bandCode;
         this.currency = currency;
@@ -73,35 +74,35 @@ public class CfgMktIrrGnrRisk {
         this.currency = currency;
     }
 
-    public Long getCouponRateStart() {
+    public Double getCouponRateStart() {
         return couponRateStart;
     }
 
-    public void setCouponRateStart(Long couponRateStart) {
+    public void setCouponRateStart(Double couponRateStart) {
         this.couponRateStart = couponRateStart;
     }
 
-    public Long getCouponRateEnd() {
+    public Double getCouponRateEnd() {
         return couponRateEnd;
     }
 
-    public void setCouponRateEnd(Long couponRateEnd) {
+    public void setCouponRateEnd(Double couponRateEnd) {
         this.couponRateEnd = couponRateEnd;
     }
 
-    public Long getMaturityBandStart() {
+    public Double getMaturityBandStart() {
         return maturityBandStart;
     }
 
-    public void setMaturityBandStart(Long maturityBandStart) {
+    public void setMaturityBandStart(Double maturityBandStart) {
         this.maturityBandStart = maturityBandStart;
     }
 
-    public Long getMaturityBandEnd() {
+    public Double getMaturityBandEnd() {
         return maturityBandEnd;
     }
 
-    public void setMaturityBandEnd(Long maturityBandEnd) {
+    public void setMaturityBandEnd(Double maturityBandEnd) {
         this.maturityBandEnd = maturityBandEnd;
     }
 

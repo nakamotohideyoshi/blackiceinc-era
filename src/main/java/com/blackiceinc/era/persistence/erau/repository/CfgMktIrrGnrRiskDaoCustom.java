@@ -48,13 +48,13 @@ public class CfgMktIrrGnrRiskDaoCustom {
                 .setParameter("currency",
                         cfgMktIrrGnrRisk.getCurrency(), new StringType())
                 .setParameter("couponRateStart",
-                        cfgMktIrrGnrRisk.getCouponRateStart(), new LongType())
+                        cfgMktIrrGnrRisk.getCouponRateStart(), new DoubleType())
                 .setParameter("couponRateEnd",
-                        cfgMktIrrGnrRisk.getCouponRateEnd(), new LongType())
+                        cfgMktIrrGnrRisk.getCouponRateEnd(), new DoubleType())
                 .setParameter("maturityBandStart",
-                        cfgMktIrrGnrRisk.getMaturityBandStart(), new LongType())
+                        cfgMktIrrGnrRisk.getMaturityBandStart(), new DoubleType())
                 .setParameter("maturityBandEnd",
-                        cfgMktIrrGnrRisk.getMaturityBandEnd(), new LongType())
+                        cfgMktIrrGnrRisk.getMaturityBandEnd(), new DoubleType())
                 .setParameter("riskWeight",
                         cfgMktIrrGnrRisk.getRiskWeight(), new DoubleType())
                 .executeUpdate();

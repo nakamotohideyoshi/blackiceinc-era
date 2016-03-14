@@ -27,10 +27,10 @@ public class CfgMktIrrGnrRiskObjectMapper extends AbstractObjectMapper {
         cfgMktIrrGnrRisk.setZoneCode(getStringValue(row.getCell(0)));
         cfgMktIrrGnrRisk.setBandCode(getStringValue(row.getCell(1)));
         cfgMktIrrGnrRisk.setCurrency(getStringValue(row.getCell(2)));
-        cfgMktIrrGnrRisk.setCouponRateStart(getLongValue(row.getCell(3)));
-        cfgMktIrrGnrRisk.setCouponRateEnd(getLongValue(row.getCell(4)));
-        cfgMktIrrGnrRisk.setMaturityBandStart(getLongValue(row.getCell(5)));
-        cfgMktIrrGnrRisk.setMaturityBandEnd(getLongValue(row.getCell(6)));
+        cfgMktIrrGnrRisk.setCouponRateStart(getDoubleValue(row.getCell(3)));
+        cfgMktIrrGnrRisk.setCouponRateEnd(getDoubleValue(row.getCell(4)));
+        cfgMktIrrGnrRisk.setMaturityBandStart(getDoubleValue(row.getCell(5)));
+        cfgMktIrrGnrRisk.setMaturityBandEnd(getDoubleValue(row.getCell(6)));
         cfgMktIrrGnrRisk.setRiskWeight(getDoubleValue(row.getCell(7)));
 
         return cfgMktIrrGnrRisk;

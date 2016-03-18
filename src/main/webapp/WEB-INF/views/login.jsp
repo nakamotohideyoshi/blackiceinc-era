@@ -120,6 +120,11 @@
 
 			</div>
 			<div class="col-xs-12 col-sm-12 col-md-5 col-lg-4">
+				<c:if test="${not empty error}">
+					<div class="alert alert-danger" role="alert">
+						Your login attempt was not successful, try again.
+					</div>
+				</c:if>
 				<div class="well no-padding">
 					<form action="<c:url value='/login' />" method='POST' id="login-form" class="smart-form client-form">
 						<header>
@@ -129,10 +134,21 @@
 						<fieldset>
 
 							<section>
+								<label class="label">Domain</label>
+								<label class="select"> <i></i>
+									<select name="domain" >
+										<option value=""> - Select - </option>
+										<option value="north.vib.corp">north.vib.corp</option>
+										<option value="south.vib.corp">south.vib.corp</option>
+									</select>
+									<b class="tooltip tooltip-top-right"><i class="fa fa-user txt-color-teal"></i> Please select domain</b></label>
+							</section>
+
+							<section>
 								<label class="label">Username</label>
 								<label class="input"> <i class="icon-append fa fa-user"></i>
 									<input type="text" name="username" value="" >
-									<b class="tooltip tooltip-top-right"><i class="fa fa-user txt-color-teal"></i> Please enter email address/username</b></label>
+									<b class="tooltip tooltip-top-right"><i class="fa fa-user txt-color-teal"></i> Please enter username</b></label>
 							</section>
 
 							<section>
@@ -227,6 +243,9 @@
 		$("#login-form").validate({
 			// Rules for form validation
 			rules : {
+				domain : {
+					required : true
+				},
 				email : {
 					required : true,
 					email : true
@@ -240,6 +259,9 @@
 
 			// Messages for form validation
 			messages : {
+				domain : {
+					required : 'Please select your domain'
+				},
 				email : {
 					required : 'Please enter your email address',
 					email : 'Please enter a VALID email address'

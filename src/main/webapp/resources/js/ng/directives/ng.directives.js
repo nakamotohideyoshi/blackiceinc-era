@@ -140,7 +140,7 @@ angular.module('app.main', [])
     return ribbon;
   }])
 
-.directive('action', function() {
+.directive('action', ['$http', '$q', function ($http,$q) {
   return {
     restrict: 'A',
     link: function(scope, element, attrs) {
@@ -166,7 +166,9 @@ angular.module('app.main', [])
           });
 
           function logout() {
-            window.location = $this.attr('href');
+            $http.post('logout').success(function(data, status, headers, config){
+              window.location = 'login';
+            });
           }
 
         },
@@ -322,7 +324,7 @@ angular.module('app.main', [])
 
     }
   };
-})
+}])
 
 .directive('header', function() {
   return {

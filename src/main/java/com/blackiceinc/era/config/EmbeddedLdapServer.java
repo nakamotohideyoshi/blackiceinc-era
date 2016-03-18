@@ -8,7 +8,7 @@ import org.springframework.security.ldap.server.ApacheDSContainer;
 import javax.annotation.PreDestroy;
 
 @Configuration
-@Profile({Constants.SPRING_PROFILE_LOCAL, Constants.SPRING_PROFILE_LOCAL})
+@Profile({Constants.SPRING_PROFILE_LOCAL, Constants.SPRING_PROFILE_DEV_ERA})
 public class EmbeddedLdapServer {
 
     private static ApacheDSContainer server;

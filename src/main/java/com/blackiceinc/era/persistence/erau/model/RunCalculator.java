@@ -26,11 +26,12 @@ import java.sql.Date;
 
         })
 })
-@Table(name = "RUN_CALCULATOR")
+@Table(name = "ERA_RUN_CALCULATOR")
 public class RunCalculator {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator="era_run_calculator_seq_gen")
+    @SequenceGenerator(name="era_run_calculator_seq_gen", sequenceName="ERA_RUN_CALCULATOR_SEQ")
     private Long id;
 
     @NotNull

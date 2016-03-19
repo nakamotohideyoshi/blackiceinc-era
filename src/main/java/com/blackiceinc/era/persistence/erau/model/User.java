@@ -3,8 +3,6 @@ package com.blackiceinc.era.persistence.erau.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -15,7 +13,8 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "era_user_seq_gen")
+    @SequenceGenerator(name = "era_user_seq_gen", sequenceName = "ERA_USER_SEQ")
     private Long id;
 
     @Column(name = "USERNAME")
@@ -30,9 +29,8 @@ public class User {
     @Column(name = "ENABLED")
     private Boolean enabled;
 
-
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "ERA_USER_ROLE",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
@@ -83,18 +81,18 @@ public class User {
         return roles;
     }
 
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
     public String getRole() {
-        if (roles!=null){
+        if (roles != null) {
             Iterator<Role> iterator = roles.iterator();
             if (iterator.hasNext()) {
-                return iterator.next().getName();
+                return iterator.next().getDisplayName();
             }
         }
         return null;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
     }
 
     @Override

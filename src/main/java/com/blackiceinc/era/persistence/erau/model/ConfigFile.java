@@ -7,11 +7,12 @@ import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "CONFIG_FILE")
+@Table(name = "ERA_CONFIG_FILE")
 public class ConfigFile {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="era_config_file_seq_gen")
+    @SequenceGenerator(name="era_config_file_seq_gen", sequenceName="ERA_CONFIG_FILE_SEQ")
     private Long id;
 
     @NotNull

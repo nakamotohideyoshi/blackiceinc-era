@@ -1,5 +1,6 @@
 package com.blackiceinc.era.config;
 
+import com.blackiceinc.era.persistence.erau.model.Role;
 import com.blackiceinc.era.services.security.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +30,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
                 .authenticationProvider(eraAuthenticationProvider);
+//                .inMemoryAuthentication()
+//                .withUser("admin").password("watermelon700").roles("USER");
     }
 
     @Override
@@ -40,14 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf()
-             .and()
-                .addFilterAfter(new CsrfCookieGeneratorFilter(), CsrfFilter.class)
-                .authorizeRequests()
-                .antMatchers("/login").permitAll()
-                .antMatchers("/logout").permitAll()
-                .anyRequest().authenticated()
-             .and()
+
                 .formLogin()
                 .authenticationDetailsSource(new EraAuthDetailsSource())
                 .loginPage("/login").failureUrl("/login?error")
@@ -67,9 +63,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers()
                 .frameOptions()
                 .disable()
-                .and()
+             .and()
+                .csrf()
+             .and()
+                .addFilterAfter(new CsrfCookieGeneratorFilter(), CsrfFilter.class)
                 .authorizeRequests()
-                .antMatchers("/api/**").permitAll()
+                .antMatchers("/login").permitAll()
+                .antMatchers("/logout").permitAll()
+                .antMatchers("/api/user/**").hasAuthority(Role.ROLE_ADMIN)
+                .antMatchers("/api/runCalculator/**").hasAuthority(Role.ROLE_ADMIN)
+                .antMatchers("/api/configuration/**").hasAnyAuthority(Role.ROLE_ADMIN, Role.ROLE_CONFIGURATION)
+                .anyRequest().authenticated()
         ;
 
     }

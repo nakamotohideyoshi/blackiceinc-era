@@ -10,9 +10,10 @@
         <nav:item data-view="/operational-risk" title="Operational Risk"/> -->
     </nav:group>
 
-  	<nav:item data-view="/run-calculator" data-icon="fa fa-lg fa-fw fa-caret-square-o-right" title="Run Calculator"/>
-    <nav:item data-view="/cfg-configuration" data-icon="fa fa-lg fa-fw fa-cogs" title="Configuration"/>
-    <nav:item data-view="/account-settings" data-icon="fa fa-lg fa-fw fa-user" title="Account Settings"/>
+  	<nav:item data-view="/run-calculator" ng-if="userRole == 'ROLE_ADMIN'" data-icon="fa fa-lg fa-fw fa-caret-square-o-right" title="Run Calculator"/>
+    <nav:item data-view="/cfg-configuration" ng-if="userRole == 'ROLE_ADMIN' || userRole == 'ROLE_CONFIGURATION'" data-icon="fa fa-lg fa-fw fa-cogs" title="Configuration"/>
+
+    <nav:item data-view="/account-settings" ng-if="userRole == 'ROLE_ADMIN'" data-icon="fa fa-lg fa-fw fa-user" title="Account Settings"/>
 
     <!-- <nav:item data-view="/regulatory-report" data-icon="fa fa-lg fa-fw fa-file-text-o" title="Reports" /> -->
 

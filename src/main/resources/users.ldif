@@ -28,6 +28,36 @@ sn: Emu
 uid: user
 userPassword: watermelon700
 
+dn: uid=dashboard,ou=people,dc=springframework,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Dashboard User
+sn: Dashboard
+uid: dashboard
+userPassword: watermelon700
+
+dn: uid=configuration,ou=people,dc=springframework,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Configuration User
+sn: Configuration
+uid: configuration
+userPassword: watermelon700
+
+dn: uid=data,ou=people,dc=springframework,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Data User
+sn: Data
+uid: data
+userPassword: watermelon700
+
 dn: cn=user,ou=groups,dc=springframework,dc=org
 objectclass: top
 objectclass: groupOfNames

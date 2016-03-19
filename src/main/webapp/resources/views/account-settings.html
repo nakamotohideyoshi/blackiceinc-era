@@ -225,7 +225,7 @@
                                     ng-class="{'invalid': !hideValidityStyle && userForm.inputRole.$error.required}"
                                     required>
                                 <option value="">-- Select --</option>
-                                <option ng-repeat="option in UserModal.roles" value="{{option.name}}">{{option.name}}
+                                <option ng-repeat="option in UserModal.roles" value="{{option.name}}">{{option.displayName}}
                                 </option>
                             </select>
                         </div>

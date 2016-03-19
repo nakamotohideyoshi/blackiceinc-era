@@ -36,7 +36,7 @@ public class UserRepositoryTest {
         user.setEnabled(Boolean.TRUE);
 
         Set<Role> roles = new HashSet<>();
-        Role adminRole = roleRepository.findByName(Role.ADMINISTRATOR_GROUP);
+        Role adminRole = roleRepository.findByName(Role.ROLE_ADMIN);
         roles.add(adminRole);
         user.setRoles(roles);
 

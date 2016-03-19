@@ -1,6 +1,7 @@
 package com.blackiceinc.era.services.security;
 
 import com.blackiceinc.era.config.Constants;
+import com.blackiceinc.era.persistence.erau.model.Role;
 import com.blackiceinc.era.persistence.erau.model.User;
 import com.blackiceinc.era.persistence.erau.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,14 @@ import org.springframework.security.authentication.InternalAuthenticationService
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.ldap.authentication.LdapAuthenticationProvider;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class EraAuthenticationProvider implements AuthenticationProvider {
@@ -45,17 +52,29 @@ public class EraAuthenticationProvider implements AuthenticationProvider {
 
         User byUsername = userRepository.findByUsername(name);
         if (byUsername != null) {
+            Authentication authenticate;
             if (env.acceptsProfiles(Constants.SPRING_PROFILE_LOCAL, Constants.SPRING_PROFILE_DEV_ERA)) {
                 // authenticate to embedded ldap server
-                return vibEmbeddedLdapAuthProvider.authenticate(authentication);
+                authenticate = vibEmbeddedLdapAuthProvider.authenticate(authentication);
             } else if (env.acceptsProfiles(Constants.SPRING_PROFILE_ONSITE)) {
                 // check which domain to use
                 EraWebAuthDetails details = (EraWebAuthDetails) authentication.getDetails();
                 String domain = details.getDomain();
-
-                return authenticateToOnsiteDomain(domain, authentication);
+                authenticate = authenticateToOnsiteDomain(domain, authentication);
             } else {
                 throw new InternalAuthenticationServiceException("Missing application configuration");
+            }
+            if (authenticate.isAuthenticated()) {
+                List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+
+                Set<Role> roles = byUsername.getRoles();
+                for (Role role : roles) {
+                    grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
+                }
+                return new UsernamePasswordAuthenticationToken(authenticate.getPrincipal(), authenticate.getCredentials(),
+                        grantedAuthorities);
+            } else {
+                return authenticate;
             }
         } else {
             throw new BadCredentialsException("Username does not exist");

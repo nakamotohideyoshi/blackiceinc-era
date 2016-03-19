@@ -4,6 +4,8 @@ import com.blackiceinc.era.config.Constants;
 import com.blackiceinc.era.persistence.erau.model.Role;
 import com.blackiceinc.era.persistence.erau.model.User;
 import com.blackiceinc.era.persistence.erau.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.env.Environment;
@@ -28,6 +30,8 @@ public class EraAuthenticationProvider implements AuthenticationProvider {
     public static final String NORTH_VIB_CORP = "north.vib.corp";
     public static final String SOUTH_VIB_CORP = "south.vib.corp";
 
+    private final Logger log = LoggerFactory.getLogger(EraAuthenticationProvider.class);
+
     @Autowired
     @Qualifier("vibEmbeddedLdapAuthProvider")
     private LdapAuthenticationProvider vibEmbeddedLdapAuthProvider;
@@ -50,7 +54,9 @@ public class EraAuthenticationProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String name = authentication.getName();
 
-        User byUsername = userRepository.findByUsername(name);
+        log.debug("Authenticating {}", name);
+
+        User byUsername = userRepository.findByUsernameIgnoreCase(name);
         if (byUsername != null) {
             Authentication authenticate;
             if (env.acceptsProfiles(Constants.SPRING_PROFILE_LOCAL, Constants.SPRING_PROFILE_DEV_ERA)) {

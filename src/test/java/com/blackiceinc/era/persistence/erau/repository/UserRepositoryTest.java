@@ -15,6 +15,8 @@ import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
+import static org.junit.Assert.assertNotNull;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = BlackiceincEraApplication.class)
 @WebAppConfiguration
@@ -41,6 +43,12 @@ public class UserRepositoryTest {
         user.setRoles(roles);
 
         userRepository.save(user);
+    }
+
+    @Test
+    public void testFindByName(){
+        User admin = userRepository.findByUsernameIgnoreCase("Admin");
+        assertNotNull(admin);
     }
 
 }

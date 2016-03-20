@@ -260,12 +260,16 @@ angular.module('ng.cfg-configuration.controller', [])
 
                                 $scope.Configuration.totalElements = response.totalElements;
                                 $scope.loading = false;
+                                $scope.setBtnsAvailability();
                             },
                             function (response) {
                                 $scope.loading = false;
                                 ConfirmService.open(response, null, true);
+                                $scope.setBtnsAvailability();
                             });
                     }
+
+
                 });
             };
 

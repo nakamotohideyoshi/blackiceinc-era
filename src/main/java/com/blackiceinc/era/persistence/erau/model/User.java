@@ -89,6 +89,16 @@ public class User {
         if (roles != null) {
             Iterator<Role> iterator = roles.iterator();
             if (iterator.hasNext()) {
+                return iterator.next().getName();
+            }
+        }
+        return null;
+    }
+
+    public String getRoleDisplayName() {
+        if (roles != null) {
+            Iterator<Role> iterator = roles.iterator();
+            if (iterator.hasNext()) {
                 return iterator.next().getDisplayName();
             }
         }

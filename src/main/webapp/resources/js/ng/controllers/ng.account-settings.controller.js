@@ -195,6 +195,7 @@ angular.module('ng.account-settings.controller', [])
                                 var checkedRow = $scope.getFirstCheckedRow();
                                 checkedRow.username = result.username;
                                 checkedRow.role = result.role;
+                                checkedRow.roleDisplayName = result.roleDisplayName;
 
                                 $scope.closeUserModal();
                             },

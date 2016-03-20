@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 @Service
@@ -35,9 +34,8 @@ public class UserService {
         return userRepository.findAll(new PageRequest(pageNumber, pageSize));
     }
 
-    public UserDTO save(UserDTO userDTO) {
-        User savedUser = userRepository.save(getUserFromUserDTO(userDTO));
-        return getUserDtoFromUser(savedUser);
+    public User save(UserDTO userDTO) {
+        return userRepository.save(getUserFromUserDTO(userDTO));
     }
 
     public long countUsers() {

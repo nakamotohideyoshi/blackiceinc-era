@@ -59,7 +59,7 @@ public class UserResource {
         }
 
         try {
-            UserDTO savedEntity = userService.save(userDTO);
+            User savedEntity = userService.save(userDTO);
             res.setContent(savedEntity);
             res.setTotalElements(userService.countUsers());
             return new ResponseEntity<>(res, HttpStatus.CREATED);
@@ -82,7 +82,7 @@ public class UserResource {
         }
 
         try {
-            UserDTO savedEntity = userService.save(userDTO);
+            User savedEntity = userService.save(userDTO);
             res.setContent(savedEntity);
             res.setTotalElements(userService.countUsers());
             return new ResponseEntity<>(res, HttpStatus.OK);

@@ -34,8 +34,8 @@
 		
 
 		<!-- FAVICONS -->
-		<link rel="shortcut icon" href="resources/img/twitteravatar.png" type="image/x-icon">
-		<link rel="icon" href="resources/img/twitteravatar.png" type="image/x-icon">
+		<link rel="shortcut icon" href="resources/img/favicon/favicon.ico" type="image/x-icon">
+		<link rel="icon" href="resources/img/favicon/favicon.ico" type="image/x-icon">
 
 		<!-- GOOGLE FONT -->
 		<link rel="stylesheet" href="resources/css/google-fonts-css.css">

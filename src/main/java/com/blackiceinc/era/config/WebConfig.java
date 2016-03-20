@@ -1,22 +1,18 @@
 package com.blackiceinc.era.config;
 
 
+import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
+import org.springframework.boot.context.embedded.ErrorPage;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.web.servlet.ViewResolver;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
-
-import java.util.Properties;
 
 @Configuration
 @EnableWebMvc
@@ -36,29 +32,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public SimpleMappingExceptionResolver exceptionResolver() {
-        SimpleMappingExceptionResolver exceptionResolver = new SimpleMappingExceptionResolver();
-
-        Properties exceptionMappings = new Properties();
-
-        //exceptionMappings.put("net.petrikainulainen.spring.testmvc.todo.exception.TodoNotFoundException", "error/404");
-        exceptionMappings.put("java.lang.Exception", "error/error");
-        exceptionMappings.put("java.lang.RuntimeException", "error/error");
-
-        exceptionResolver.setExceptionMappings(exceptionMappings);
-
-        Properties statusCodes = new Properties();
-
-        statusCodes.put("error/404", "404");
-        statusCodes.put("error/error", "500");
-
-        exceptionResolver.setStatusCodes(statusCodes);
-
-        return exceptionResolver;
-    }
-
-
-    @Bean
     public InternalResourceViewResolver viewResolver() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
 
@@ -67,6 +40,22 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         viewResolver.setSuffix(VIEW_RESOLVER_SUFFIX);
 
         return viewResolver;
+    }
+
+    @Bean
+    public EmbeddedServletContainerCustomizer containerCustomizer() {
+
+        return new EmbeddedServletContainerCustomizer() {
+            @Override
+            public void customize(ConfigurableEmbeddedServletContainer container) {
+
+//                ErrorPage error401Page = new ErrorPage(HttpStatus.UNAUTHORIZED, "/401.html");
+                ErrorPage error404Page = new ErrorPage(HttpStatus.NOT_FOUND, "/resources/error404.html");
+                ErrorPage error500Page = new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR, "/resources/error500.html");
+
+                container.addErrorPages(error404Page, error500Page);
+            }
+        };
     }
 
 

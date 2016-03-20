@@ -21,6 +21,9 @@ public class CfgCrmHaircutRepositoryTest {
     @Autowired
     private CfgCrmHaircutRepository cfgCrmHaircutRepository;
 
+    @Autowired
+    private CfgCrmHaircutDaoCustom cfgCrmHaircutDaoCustom;
+
     @Test
     public void testSave() {
         CfgCrmHaircut cfgCrmHaircut = new CfgCrmHaircut();
@@ -32,7 +35,8 @@ public class CfgCrmHaircutRepositoryTest {
         cfgCrmHaircut.setHaircut(new Double(4));
         cfgCrmHaircut.setSeq(300L);
 
-        cfgCrmHaircutRepository.save(cfgCrmHaircut);
+        cfgCrmHaircutDaoCustom.insert(cfgCrmHaircut);
+//        cfgCrmHaircutRepository.save(cfgCrmHaircut);
     }
 
 }

@@ -21,6 +21,8 @@ public class CfgCrmEligibilityRepositoryTest {
     @Autowired
     private CfgCrmEligibilityRepository cfgCrmEligibilityRepository;
 
+    @Autowired CfgCrmEligibilityDaoCustom cfgCrmEligibilityDaoCustom;
+
     @Test
     public void testSave() {
         CfgCrmEligibility cfgCrmEligibility = new CfgCrmEligibility();
@@ -31,7 +33,8 @@ public class CfgCrmEligibilityRepositoryTest {
         cfgCrmEligibility.setEligibility("T");
         cfgCrmEligibility.setSeq(200L);
 
-        cfgCrmEligibilityRepository.save(cfgCrmEligibility);
+        cfgCrmEligibilityDaoCustom.insert(cfgCrmEligibility);
+//        cfgCrmEligibilityRepository.save(cfgCrmEligibility);
     }
 
 }

@@ -66,10 +66,21 @@ angular.module('ng.cfg-configuration.controller', [])
                 $scope.loading = true;
                 CfgConfigurationService.export(checkedRow).then(function () {
                     $scope.loading = false;
-                    ConfirmService.open("Export succesfully run.", null, true);
+                    ConfirmService.open("Export successfully run.", null, true);
                 }, function (response) {
                     $scope.loading = false;
-                    ConfirmService.open(response, null, true);
+
+                    if ( ! angular.isObject( response.data ) || ! response.data.message) {
+                        $.smallBox({
+                            title : "An unknown error occurred.",
+                            content : "",
+                            color : "#A65858",
+                            iconSmall : "fa fa-times",
+                            timeout : 5000
+                        });
+                    }else{
+                        ConfirmService.open(response.data.message, null, true);
+                    }
                 });
             };
 
@@ -79,7 +90,7 @@ angular.module('ng.cfg-configuration.controller', [])
                 CfgConfigurationService.import(checkedRow).then(function (response) {
                     $scope.loading = false;
 
-                    ConfirmService.open("Import succesfully run.", null, true);
+                    ConfirmService.open("Import successfully run.", null, true);
 
                     var importedRow = response.data.content;
 
@@ -92,7 +103,18 @@ angular.module('ng.cfg-configuration.controller', [])
                     }
                 }, function (response) {
                     $scope.loading = false;
-                    ConfirmService.open(response, null, true);
+
+                    if ( ! angular.isObject( response.data ) || ! response.data.message) {
+                        $.smallBox({
+                            title : "An unknown error occurred.",
+                            content : "",
+                            color : "#A65858",
+                            iconSmall : "fa fa-times",
+                            timeout : 5000
+                        });
+                    }else{
+                        ConfirmService.open(response.data.message, null, true);
+                    }
                 });
             };
 

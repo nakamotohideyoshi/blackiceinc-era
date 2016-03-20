@@ -21,6 +21,9 @@ public class CfgEntityTypeMappingRepositoryTest {
     @Autowired
     private CfgEntityTypeMappingRepository cfgEntityTypeMappingRepository;
 
+    @Autowired
+    private CfgEntityTypeMappingDaoCustom cfgEntityTypeMappingDaoCustom;
+
     @Test
     public void testSave(){
         CfgEntityTypeMapping cfgEntityTypeMapping = new CfgEntityTypeMapping();
@@ -28,7 +31,9 @@ public class CfgEntityTypeMappingRepositoryTest {
         cfgEntityTypeMapping.setCustomerType("customer_type");
         cfgEntityTypeMapping.setCustomerSubType("customer_sub_type");
 
-        cfgEntityTypeMappingRepository.save(cfgEntityTypeMapping);
+        cfgEntityTypeMappingDaoCustom.insert(cfgEntityTypeMapping);
+
+//        cfgEntityTypeMappingRepository.save(cfgEntityTypeMapping);
     }
 
 }

@@ -1,5 +1,8 @@
 package com.blackiceinc.era.persistence.erau.model;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
@@ -71,5 +74,33 @@ public class CfgCrmHaircutKey implements Serializable {
 
     public void setMaxResidualMaturity(String maxResidualMaturity) {
         this.maxResidualMaturity = maxResidualMaturity;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CfgCrmHaircutKey that = (CfgCrmHaircutKey) o;
+
+        return new EqualsBuilder()
+                .append(eraColType, that.eraColType)
+                .append(eraEntityType, that.eraEntityType)
+                .append(riskBucket, that.riskBucket)
+                .append(minResidualMaturity, that.minResidualMaturity)
+                .append(maxResidualMaturity, that.maxResidualMaturity)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(eraColType)
+                .append(eraEntityType)
+                .append(riskBucket)
+                .append(minResidualMaturity)
+                .append(maxResidualMaturity)
+                .toHashCode();
     }
 }

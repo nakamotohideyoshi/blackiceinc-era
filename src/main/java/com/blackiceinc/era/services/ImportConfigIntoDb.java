@@ -15,34 +15,30 @@ import java.util.List;
 public class ImportConfigIntoDb {
 
     private final Logger log = LoggerFactory.getLogger(ImportConfigIntoDb.class);
-
+    @Autowired
+    CfgEntityTypeMappingDaoCustom cfgEntityTypeMappingDaoCustom;
     @Autowired
     private CfgFinancialBookRepository cfgFinancialBookRepository;
     @Autowired
     private CfgFinancialBookDaoCustom cfgFinancialBookDaoCustom;
-
     @Autowired
     private CfgCompanyRepository cfgCompanyRepository;
     @Autowired
     private CfgCompanyLinkageRepository cfgCompanyLinkageRepository;
     @Autowired
     private CfgCompanyLinkageDaoCustom cfgCompanyLinkageDaoCustom;
-
     @Autowired
     private CfgCompanyDimensionRepository cfgCompanyDimensionRepository;
     @Autowired
     private CfgCompanyDimensionDaoCustom cfgCompanyDimensionDaoCustom;
-
     @Autowired
     private CfgCompanyDimensionConsolidationRepository cfgCompanyDimensionConsolidationRepository;
     @Autowired
     private CfgCompanyDimensionConsolidationDaoCustom cfgCompanyDimensionConsolidationDaoCustom;
-
     @Autowired
     private CfgEntityTypeRepository cfgEntityTypeRepository;
     @Autowired
     private CfgEntityTypeMappingRepository cfgEntityTypeMappingRepository;
-
     @Autowired
     private CfgProductTypeRepository cfgProductTypeRepository;
 
@@ -64,6 +60,8 @@ public class ImportConfigIntoDb {
 
     @Autowired
     private CfgNonPerformingMappingRepository cfgNonPerformingMappingRepository;
+    @Autowired
+    private CfgNonPerformingMappingDaoCustom cfgNonPerformingMappingDaoCustom;
 
     @Autowired
     private CfgAgencyEligibilityRepository cfgAgencyEligibilityRepository;
@@ -95,9 +93,13 @@ public class ImportConfigIntoDb {
 
     @Autowired
     private CfgCrmEligibilityRepository cfgCrmEligibilityRepository;
+    @Autowired
+    private CfgCrmEligibilityDaoCustom cfgCrmEligibilityDaoCustom;
 
     @Autowired
     private CfgCrmHaircutRepository cfgCrmHaircutRepository;
+    @Autowired
+    private CfgCrmHaircutDaoCustom cfgCrmHaircutDaoCustom;
 
     @Autowired
     private CfgReclassRepository cfgReclassRepository;
@@ -223,6 +225,10 @@ public class ImportConfigIntoDb {
     }
 
     public void importCfgEntityTypeMappings(List<CfgEntityTypeMapping> cfgEntityTypeMappings) {
+        cfgEntityTypeMappingRepository.deleteAll();
+        for (CfgEntityTypeMapping cfgEntityTypeMapping : cfgEntityTypeMappings) {
+            cfgEntityTypeMappingDaoCustom.insert(cfgEntityTypeMapping);
+        }
         removeAllAndSaveNewList(cfgEntityTypeMappingRepository, cfgEntityTypeMappings);
     }
 
@@ -252,7 +258,10 @@ public class ImportConfigIntoDb {
     }
 
     public void importCfgNonPerformingMappings(List<CfgNonPerformingMapping> cfgNonPerformingMappings) {
-        removeAllAndSaveNewList(cfgNonPerformingMappingRepository, cfgNonPerformingMappings);
+        cfgNonPerformingMappingRepository.deleteAll();
+        for (CfgNonPerformingMapping cfgNonPerformingMapping : cfgNonPerformingMappings) {
+            cfgNonPerformingMappingDaoCustom.insert(cfgNonPerformingMapping);
+        }
     }
 
     public void importCfgAgencyEligibility(List<CfgAgencyEligibility> cfgAgencyEligibility) {
@@ -305,11 +314,17 @@ public class ImportConfigIntoDb {
     }
 
     public void importCfgCrmEligibilities(List<CfgCrmEligibility> cfgCrmEligibilities) {
-        removeAllAndSaveNewList(cfgCrmEligibilityRepository, cfgCrmEligibilities);
+        cfgCrmEligibilityRepository.deleteAll();
+        for (CfgCrmEligibility cfgCrmEligibility : cfgCrmEligibilities) {
+            cfgCrmEligibilityDaoCustom.insert(cfgCrmEligibility);
+        }
     }
 
     public void importCfgCrmHaircuts(List<CfgCrmHaircut> cfgCrmHaircuts) {
-        removeAllAndSaveNewList(cfgCrmHaircutRepository, cfgCrmHaircuts);
+        cfgCrmHaircutRepository.deleteAll();
+        for (CfgCrmHaircut cfgCrmHaircut : cfgCrmHaircuts) {
+            cfgCrmHaircutDaoCustom.insert(cfgCrmHaircut);
+        }
     }
 
     public void importCfgReclasses(List<CfgReclass> cfgReclasses) {
@@ -317,8 +332,6 @@ public class ImportConfigIntoDb {
         for (CfgReclass cfgReclass : cfgReclasses) {
             cfgReclassDaoCustom.insert(cfgReclass);
         }
-
-//        removeAllAndSaveNewList(cfgReclassRepository, cfgReclasses);
     }
 
     public void importCfgReclassCheckDefs(List<CfgReclassCheckDef> cfgReclassCheckDefs) {

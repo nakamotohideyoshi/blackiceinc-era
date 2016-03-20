@@ -10,22 +10,24 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.Assert.*;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = BlackiceincEraApplication.class)
 @WebAppConfiguration
 @Transactional
 public class CfgNonPerformingMappingRepositoryTest {
     @Autowired
-private CfgNonPerformingMappingRepository cfgNonPerformingMappingRepository;
+    private CfgNonPerformingMappingRepository cfgNonPerformingMappingRepository;
+
+    @Autowired
+    private CfgNonPerformingMappingDaoCustom cfgNonPerformingMappingDaoCustom;
 
     @Test
-    public void testSave(){
+    public void testSave() {
         CfgNonPerformingMapping cfgNonPerformingMapping = new CfgNonPerformingMapping();
         cfgNonPerformingMapping.setEraNplCode("era_npl_code");
         cfgNonPerformingMapping.setPerformingStatus("performing_status");
 
-        cfgNonPerformingMappingRepository.save(cfgNonPerformingMapping);
+        cfgNonPerformingMappingDaoCustom.insert(cfgNonPerformingMapping);
+//        cfgNonPerformingMappingRepository.save(cfgNonPerformingMapping);
     }
 }

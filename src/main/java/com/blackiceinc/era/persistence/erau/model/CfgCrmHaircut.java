@@ -1,5 +1,8 @@
 package com.blackiceinc.era.persistence.erau.model;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import javax.persistence.*;
 
 @Entity
@@ -15,7 +18,9 @@ public class CfgCrmHaircut {
     @Column(name = "SEQ")
     private Long seq;
 
-    public CfgCrmHaircut(String eraColType, String eraEntityType, String riskBucket, String minResidualMaturity, String maxResidualMaturity, Double haircut, Long seq) {
+    public CfgCrmHaircut(String eraColType, String eraEntityType, String riskBucket,
+                         String minResidualMaturity, String maxResidualMaturity,
+                         Double haircut, Long seq) {
         this.cfgCrmHaircutKey = new CfgCrmHaircutKey(eraColType, eraEntityType, riskBucket, minResidualMaturity, maxResidualMaturity);
         this.haircut = haircut;
         this.seq = seq;
@@ -79,5 +84,29 @@ public class CfgCrmHaircut {
 
     public void setSeq(Long seq) {
         this.seq = seq;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CfgCrmHaircut that = (CfgCrmHaircut) o;
+
+        return new EqualsBuilder()
+                .append(cfgCrmHaircutKey, that.cfgCrmHaircutKey)
+                .append(haircut, that.haircut)
+                .append(seq, that.seq)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(cfgCrmHaircutKey)
+                .append(haircut)
+                .append(seq)
+                .toHashCode();
     }
 }

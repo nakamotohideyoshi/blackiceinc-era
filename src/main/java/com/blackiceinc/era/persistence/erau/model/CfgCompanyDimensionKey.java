@@ -1,5 +1,8 @@
 package com.blackiceinc.era.persistence.erau.model;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
@@ -37,4 +40,25 @@ public class CfgCompanyDimensionKey implements Serializable {
         this.financialBook = financialBook;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CfgCompanyDimensionKey that = (CfgCompanyDimensionKey) o;
+
+        return new EqualsBuilder()
+                .append(companyCode, that.companyCode)
+                .append(financialBook, that.financialBook)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(companyCode)
+                .append(financialBook)
+                .toHashCode();
+    }
 }

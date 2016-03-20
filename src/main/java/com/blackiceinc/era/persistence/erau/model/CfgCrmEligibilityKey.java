@@ -1,5 +1,8 @@
 package com.blackiceinc.era.persistence.erau.model;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
@@ -59,5 +62,31 @@ public class CfgCrmEligibilityKey implements Serializable {
 
     public void setRiskWeight(String riskWeight) {
         this.riskWeight = riskWeight;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CfgCrmEligibilityKey that = (CfgCrmEligibilityKey) o;
+
+        return new EqualsBuilder()
+                .append(eraEntityType, that.eraEntityType)
+                .append(eraProductType, that.eraProductType)
+                .append(riskBucket, that.riskBucket)
+                .append(riskWeight, that.riskWeight)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(eraEntityType)
+                .append(eraProductType)
+                .append(riskBucket)
+                .append(riskWeight)
+                .toHashCode();
     }
 }

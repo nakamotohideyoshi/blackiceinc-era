@@ -43,4 +43,5 @@ public class CfgFinancialBook {
     public void setTradingFlag(String tradingFlag) {
         this.tradingFlag = tradingFlag;
     }
+
 }

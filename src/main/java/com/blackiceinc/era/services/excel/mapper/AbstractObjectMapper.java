@@ -1,6 +1,7 @@
 package com.blackiceinc.era.services.excel.mapper;
 
 import com.blackiceinc.era.persistence.erau.model.CfgFinancialBook;
+import com.blackiceinc.era.persistence.erau.repository.utils.ModelUtils;
 import com.blackiceinc.era.services.excel.mapper.exception.CellMappingException;
 import com.blackiceinc.era.services.excel.mapper.exception.PrimaryColumnMappingException;
 import org.apache.poi.ss.usermodel.Cell;
@@ -29,7 +30,14 @@ public abstract class AbstractObjectMapper {
             // ignore first row since it's column names
             if (rowIndex > 0) {
                 try {
-                    result.add(createRow(row));
+                    Object rowObj = createRow(row);
+                    try {
+                        if (!ModelUtils.areAllFieldsNull(rowObj)){
+                            result.add(rowObj);
+                        }
+                    } catch (IllegalAccessException e) {
+                        log.error("Error accessing fields in object!", e);
+                    }
                 } catch (PrimaryColumnMappingException e) {
                     log.warn("Sheet : {} has null value for a primary column in database. Row : {}",
                             sheet.getSheetName(), rowIndex + 1);

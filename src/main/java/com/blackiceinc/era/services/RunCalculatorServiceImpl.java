@@ -138,9 +138,9 @@ public class RunCalculatorServiceImpl implements RunCalculatorService {
         Statement stmt = conn.createStatement();
 
         long start = System.currentTimeMillis();
-        log.info("Starting taking distinct data from RUN_CALCULATOR");
-        ResultSet resultSet = stmt.executeQuery("select DISTINCT SNAPSHOT_DATE, LOAD_JOB_NBR, SCENARIO_ID from RUN_CALCULATOR");
-        log.info("distinct RUN_CALCULATOR data took {} ms", System.currentTimeMillis() - start);
+        log.info("Starting taking distinct data from ERA_RUN_CALCULATOR");
+        ResultSet resultSet = stmt.executeQuery("select DISTINCT SNAPSHOT_DATE, LOAD_JOB_NBR, SCENARIO_ID from ERA_RUN_CALCULATOR");
+        log.info("distinct ERA_RUN_CALCULATOR data took {} ms", System.currentTimeMillis() - start);
         while (resultSet.next()) {
             Date snapshotDate = resultSet.getDate("SNAPSHOT_DATE");
             BigDecimal loadJobNbr = resultSet.getBigDecimal("LOAD_JOB_NBR");

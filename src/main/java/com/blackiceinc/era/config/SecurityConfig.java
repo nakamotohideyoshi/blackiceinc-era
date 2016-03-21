@@ -29,9 +29,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
-                .authenticationProvider(eraAuthenticationProvider);
-//                .inMemoryAuthentication()
-//                .withUser("admin").password("watermelon700").roles("USER");
+//                .authenticationProvider(eraAuthenticationProvider);
+                .inMemoryAuthentication()
+                .withUser("admin").password("watermelon700").roles("ADMIN");
     }
 
     @Override

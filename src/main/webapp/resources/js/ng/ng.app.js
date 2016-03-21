@@ -133,12 +133,18 @@ smartApp.config(['$routeProvider', '$provide', function($routeProvider, $provide
       controller: 'ImfMainController'
     })
 
-    .when('/regulatory-report/:type/:subtype?', {
-      templateUrl: function($routeParams) {
-        return 'resources/views/regulatory-report.html';
-      },
-      controller: 'RegulatoryReportCTRL'
-    })
+    //.when('/regulatory-report/:type/:subtype?', {
+    //  templateUrl: function($routeParams) {
+    //    return 'resources/views/regulatory-report.html';
+    //  },
+    //  controller: 'RegulatoryReportCTRL'
+    //})
+		.when('/regulatory-report', {
+			templateUrl: function($routeParams) {
+				return 'resources/views/report.html';
+			},
+			controller: 'RegulatoryReportCTRL'
+		})
 
 		//default path
 	.otherwise({

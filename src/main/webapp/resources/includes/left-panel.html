@@ -15,9 +15,10 @@
 
     <nav:item data-view="/account-settings" ng-if="userRole == 'ROLE_ADMIN'" data-icon="fa fa-lg fa-fw fa-user" title="Account Settings"/>
 
+    <nav:item data-view="/regulatory-report" data-icon="fa fa-lg fa-fw fa-file-text-o" title="Reports"/>
     <!-- <nav:item data-view="/regulatory-report" data-icon="fa fa-lg fa-fw fa-file-text-o" title="Reports" /> -->
 
-    <nav:group data-icon="fa fa-lg fa-fw fa-file-text-o" title="Reports">
+    <!--<nav:group data-icon="fa fa-lg fa-fw fa-file-text-o" title="Reports">-->
         <!--<nav:group title="Market Risk">-->
         <!--<nav:item data-icon="fa fa-folder txt-color-yellow" data-view="/regulatory-report/market-risk/management" title="Management" />-->
         <!--<nav:item data-icon="fa fa-folder txt-color-yellow" data-view="/regulatory-report/market-risk/regulatory" title="Regulatory"/>-->
@@ -35,18 +36,18 @@
         <!--<nav:item data-icon="fa fa-folder txt-color-yellow" data-view="/regulatory-report/wholesale-credit-risk/regulatory" title="Regulatory"/>-->
         <!--</nav:group>-->
         <!--<nav:item data-icon="fa fa-folder txt-color-yellow" data-view="/regulatory-report/capital-to-be-sorted" title="Capital To Be Sorted‬" />-->
-        <div id="dynamicReportNav" ng-controller="navController">
-            <div ng-repeat="dir in rootParentDir">
-                <nav:group title="{{dir.directory}}">
-                    <nav:item ng-repeat="childDir in dir.content" data-icon="fa fa-folder txt-color-yellow"
-                              data-view="/regulatory-report/{{dir.directory|spaceToHyphen}}/{{childDir.directory|spaceToHyphen}}" title="{{childDir.directory}}"/>
+        <!--<div id="dynamicReportNav" ng-controller="navController">-->
+            <!--<div ng-repeat="dir in rootParentDir">-->
+                <!--<nav:group title="{{dir.directory}}">-->
+                    <!--<nav:item ng-repeat="childDir in dir.content" data-icon="fa fa-folder txt-color-yellow"-->
+                              <!--data-view="/regulatory-report/{{dir.directory|spaceToHyphen}}/{{childDir.directory|spaceToHyphen}}" title="{{childDir.directory}}"/>-->
 
-                </nav:group>
-            </div>
-            <nav:item ng-repeat="dir in rootDir"
-                      data-view="/regulatory-report/{{dir.directory|spaceToHyphen}}" title="{{dir.directory}}"/>
-        </div>
-    </nav:group>
+                <!--</nav:group>-->
+            <!--</div>-->
+            <!--<nav:item ng-repeat="dir in rootDir"-->
+                      <!--data-view="/regulatory-report/{{dir.directory|spaceToHyphen}}" title="{{dir.directory}}"/>-->
+        <!--</div>-->
+    <!--</nav:group>-->
 
     <!-- <nav:item data-view="/stress-testing/imf" data-icon="fa fa-lg fa-fw fa-file-excel-o" title="Stress Testing"/> -->
 

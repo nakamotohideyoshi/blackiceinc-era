@@ -16,12 +16,12 @@ public class EmbeddedLdapServer {
 
     @Bean(name = "embededLdapServer")
     public ApacheDSContainer getEmbeddedLdapServer() throws Exception {
-        server = new ApacheDSContainer("dc=springframework,dc=org",
-                "classpath:users.ldif");
+        server = new ApacheDSContainer("dc=north,dc=vib,dc=corp",
+                "classpath:onsite_users.ldif");
         server.setPort(serverPort);
         server.afterPropertiesSet();
 
-        return null;
+        return server;
     }
 
     @PreDestroy

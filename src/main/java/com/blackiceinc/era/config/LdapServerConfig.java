@@ -29,8 +29,8 @@ public class LdapServerConfig {
     public LdapAuthenticationProvider getVibEmbeddedLdapAuthProvider() {
         if (env.acceptsProfiles(Constants.SPRING_PROFILE_LOCAL, Constants.SPRING_PROFILE_DEV_ERA)) {
             log.info("getVibEmbeddedLdapAuthProvider()");
-            return getLdapAuthenticationProvider(Arrays.asList("ldap://127.0.0.1:33389"), "dc=springframework,dc=org",
-                    new String[]{"uid={0},ou=people"}, "ou=groups");
+            return getLdapAuthenticationProvider(Arrays.asList("ldap://127.0.0.1:33389"), "DC=north,DC=vib,DC=corp",
+                    new String[]{"uid={0},ou=Account Services"}, "ou=Account Services");
         }
         return null;
     }

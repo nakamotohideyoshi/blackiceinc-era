@@ -1,0 +1,22 @@
+dn: ou=Account Services,dc=north,dc=vib,dc=corp
+objectclass: top
+objectclass: organizationalUnit
+ou: Account Services
+
+dn: uid=ldapbasel2.dev,ou=Account Services,dc=north,dc=vib,dc=corp
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: ldapbasel2.dev
+uid: ldapbasel2.dev
+userPassword: watermelon700
+
+dn: uid=admin,ou=Account Services,dc=north,dc=vib,dc=corp
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: admin
+uid: admin
+userPassword: watermelon700

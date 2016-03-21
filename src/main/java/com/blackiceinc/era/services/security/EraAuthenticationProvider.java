@@ -58,29 +58,38 @@ public class EraAuthenticationProvider implements AuthenticationProvider {
 
         User byUsername = userRepository.findByUsernameIgnoreCase(name);
         if (byUsername != null) {
-            Authentication authenticate;
-            if (env.acceptsProfiles(Constants.SPRING_PROFILE_LOCAL, Constants.SPRING_PROFILE_DEV_ERA)) {
-                // authenticate to embedded ldap server
-                authenticate = vibEmbeddedLdapAuthProvider.authenticate(authentication);
-            } else if (env.acceptsProfiles(Constants.SPRING_PROFILE_ONSITE)) {
-                // check which domain to use
-                EraWebAuthDetails details = (EraWebAuthDetails) authentication.getDetails();
-                String domain = details.getDomain();
-                authenticate = authenticateToOnsiteDomain(domain, authentication);
-            } else {
-                throw new InternalAuthenticationServiceException("Missing application configuration");
-            }
-            if (authenticate.isAuthenticated()) {
-                List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-
-                Set<Role> roles = byUsername.getRoles();
-                for (Role role : roles) {
-                    grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
+            try {
+                Authentication authenticate;
+                if (env.acceptsProfiles(Constants.SPRING_PROFILE_LOCAL, Constants.SPRING_PROFILE_DEV_ERA)) {
+                    log.info("Authenticate to embedded ldap server username : {}", name);
+                    // authenticate to embedded ldap server
+                    authenticate = vibEmbeddedLdapAuthProvider.authenticate(authentication);
+                } else if (env.acceptsProfiles(Constants.SPRING_PROFILE_ONSITE)) {
+                    // check which domain to use
+                    EraWebAuthDetails details = (EraWebAuthDetails) authentication.getDetails();
+                    String domain = details.getDomain();
+                    authenticate = authenticateToOnsiteDomain(domain, authentication);
+                } else {
+                    throw new InternalAuthenticationServiceException("Missing application configuration");
                 }
-                return new UsernamePasswordAuthenticationToken(authenticate.getPrincipal(), authenticate.getCredentials(),
-                        grantedAuthorities);
-            } else {
-                return authenticate;
+                if (authenticate.isAuthenticated()) {
+                    log.info("User : {} is authenticated.", name);
+                    List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+
+                    Set<Role> roles = byUsername.getRoles();
+                    for (Role role : roles) {
+                        log.info("Role : ( {} - {} ) added to user : {}.", role.getName(), role.getDisplayName(), name);
+                        grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
+                    }
+                    return new UsernamePasswordAuthenticationToken(authenticate.getPrincipal(), authenticate.getCredentials(),
+                            grantedAuthorities);
+                } else {
+                    log.info("User : {} not authenticated.", name);
+                    return authenticate;
+                }
+            } catch (BadCredentialsException ex) {
+                log.info("Bad credentials for username : {}", name);
+                throw new BadCredentialsException("Bad credentials");
             }
         } else {
             throw new BadCredentialsException("Username does not exist");
@@ -88,9 +97,12 @@ public class EraAuthenticationProvider implements AuthenticationProvider {
     }
 
     private Authentication authenticateToOnsiteDomain(String domain, Authentication authentication) {
+        log.info("authenticateToOnsiteDomain(domain, authentication) domain : {}, name : ", domain, authentication.getName());
         if (NORTH_VIB_CORP.equals(domain)) {
+            log.info("vibOnsiteNorthLdapAuthProvider.authenticate(authentication);");
             return vibOnsiteNorthLdapAuthProvider.authenticate(authentication);
         } else if (SOUTH_VIB_CORP.equals(domain)) {
+            log.info("vibOnsiteSouthLdapAuthProvider.authenticate(authentication);");
             return vibOnsiteSouthLdapAuthProvider.authenticate(authentication);
         } else {
             throw new InternalAuthenticationServiceException("Missing application configuration");

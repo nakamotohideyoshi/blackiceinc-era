@@ -28,6 +28,7 @@ public class CfgCrmEligibilityObjectMapper extends AbstractObjectMapper {
         cfgCrmEligibility.setRiskBucket(getStringValue(row.getCell(2)));
         cfgCrmEligibility.setRiskWeight(getStringValue(row.getCell(3)));
         cfgCrmEligibility.setEligibility(getStringValue(row.getCell(4)));
+        cfgCrmEligibility.setSeq(getLongValue(row.getCell(5)));
 
         return cfgCrmEligibility;
     }
@@ -45,6 +46,7 @@ public class CfgCrmEligibilityObjectMapper extends AbstractObjectMapper {
                 createCell(row, 2, cfgCrmEligibility.getRiskBucket());
                 createCell(row, 3, cfgCrmEligibility.getRiskWeight());
                 createCell(row, 4, cfgCrmEligibility.getEligibility());
+                createCell(row, 5, cfgCrmEligibility.getSeq());
 
                 rowIndex++;
             }

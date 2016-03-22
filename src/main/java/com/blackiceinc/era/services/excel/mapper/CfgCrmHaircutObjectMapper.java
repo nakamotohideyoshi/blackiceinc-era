@@ -29,6 +29,7 @@ public class CfgCrmHaircutObjectMapper extends AbstractObjectMapper {
         cfgCrmHaircut.setMinResidualMaturity(getStringValue(row.getCell(3)));
         cfgCrmHaircut.setMaxResidualMaturity(getStringValue(row.getCell(4)));
         cfgCrmHaircut.setHaircut(getDoubleValue(row.getCell(5)));
+        cfgCrmHaircut.setSeq(getLongValue(row.getCell(6)));
 
         return cfgCrmHaircut;
     }
@@ -46,6 +47,7 @@ public class CfgCrmHaircutObjectMapper extends AbstractObjectMapper {
             createCell(row, 3, cfgCrmHaircut.getMinResidualMaturity());
             createCell(row, 4, cfgCrmHaircut.getMaxResidualMaturity());
             createCell(row, 5, cfgCrmHaircut.getHaircut());
+            createCell(row, 6, cfgCrmHaircut.getSeq());
 
             rowIndex++;
         }

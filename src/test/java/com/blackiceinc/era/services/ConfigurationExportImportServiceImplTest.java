@@ -527,9 +527,9 @@ public class ConfigurationExportImportServiceImplTest {
         List<CfgMktIrrGnrRisk> cfgMktIrrGnrRisks = new ArrayList<>();
 
         cfgMktIrrGnrRisks.add(new CfgMktIrrGnrRisk("zone_code_1", "band_code_1", "currency_1", new Double(0.1),
-                new Double(0.2), new Double(0.3), new Double(0.4), new Double(0.5)));
+                new Double(0.2), new Double(0.3), new Double(0.4), new Double(0.5), 100L));
         cfgMktIrrGnrRisks.add(new CfgMktIrrGnrRisk("zone_code_2", "band_code_2", "currency_2", new Double(0.6),
-                new Double(0.7), new Double(0.8), new Double(0.9), new Double(0.10)));
+                new Double(0.7), new Double(0.8), new Double(0.9), new Double(0.10), 200L));
 
         when(cfgMktIrrGnrRiskRepository.findAll()).thenReturn(cfgMktIrrGnrRisks);
     }
@@ -537,8 +537,8 @@ public class ConfigurationExportImportServiceImplTest {
     private void mockMktIrrSpcRiskRepo() {
         List<CfgMktIrrSpcRisk> cfgMktIrrSpcRisks = new ArrayList<>();
 
-        cfgMktIrrSpcRisks.add(new CfgMktIrrSpcRisk("mkt_asset_class_1", "issue_risk_bucket_1", "issuer_risk_bucket_1", "residual_maturity_start_1", "residual_maturity_end_1", "instrument_group_1", new Double(0.3)));
-        cfgMktIrrSpcRisks.add(new CfgMktIrrSpcRisk("mkt_asset_class_2", "issue_risk_bucket_2", "issuer_risk_bucket_2", "residual_maturity_start_2", "residual_maturity_end_2", "instrument_group_2", new Double(0.5)));
+        cfgMktIrrSpcRisks.add(new CfgMktIrrSpcRisk("mkt_asset_class_1", "issue_risk_bucket_1", "issuer_risk_bucket_1", "residual_maturity_start_1", "residual_maturity_end_1", "instrument_group_1", new Double(0.3), 100L));
+        cfgMktIrrSpcRisks.add(new CfgMktIrrSpcRisk("mkt_asset_class_2", "issue_risk_bucket_2", "issuer_risk_bucket_2", "residual_maturity_start_2", "residual_maturity_end_2", "instrument_group_2", new Double(0.5), 200L));
 
         when(cfgMktIrrSpcRiskRepository.findAll()).thenReturn(cfgMktIrrSpcRisks);
     }

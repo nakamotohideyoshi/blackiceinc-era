@@ -36,6 +36,7 @@ public class CfgMktIrrGnrRiskRepositoryTest {
         cfgMktIrrGnrRisk.setMaturityBandStart(new Double(3.1));
         cfgMktIrrGnrRisk.setMaturityBandEnd(null);
         cfgMktIrrGnrRisk.setRiskWeight(new Double(4.1));
+        cfgMktIrrGnrRisk.setSeq(100L);
 
         cfgMktIrrGnrRiskDaoCustom.insert(cfgMktIrrGnrRisk);
 //        cfgMktIrrGnrRiskRepository.save(cfgMktIrrGnrRisk);

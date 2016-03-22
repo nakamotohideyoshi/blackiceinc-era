@@ -34,8 +34,12 @@ public class CfgMktIrrGnrRisk {
     @Column(name = "RISK_WEIGHT")
     private Double riskWeight;
 
+    @Column(name = "SEQ")
+    private Long seq;
+
     public CfgMktIrrGnrRisk(String zoneCode, String bandCode, String currency, Double couponRateStart,
-                            Double couponRateEnd, Double maturityBandStart, Double maturityBandEnd, Double riskWeight) {
+                            Double couponRateEnd, Double maturityBandStart, Double maturityBandEnd, Double riskWeight,
+                            Long seq) {
         this.zoneCode = zoneCode;
         this.bandCode = bandCode;
         this.currency = currency;
@@ -44,6 +48,7 @@ public class CfgMktIrrGnrRisk {
         this.maturityBandStart = maturityBandStart;
         this.maturityBandEnd = maturityBandEnd;
         this.riskWeight = riskWeight;
+        this.seq = seq;
     }
 
     public CfgMktIrrGnrRisk() {
@@ -112,5 +117,13 @@ public class CfgMktIrrGnrRisk {
 
     public void setRiskWeight(Double riskWeight) {
         this.riskWeight = riskWeight;
+    }
+
+    public Long getSeq() {
+        return seq;
+    }
+
+    public void setSeq(Long seq) {
+        this.seq = seq;
     }
 }

@@ -122,8 +122,11 @@ public class ImportConfigIntoDb {
     private CfgMktAssetClassRepository cfgMktAssetClassRepository;
     @Autowired
     private CfgMktAssetClassMappingRepository cfgMktAssetClassMappingRepository;
+
     @Autowired
     private CfgMktIrrSpcRiskRepository cfgMktIrrSpcRiskRepository;
+    @Autowired
+    private CfgMktIrrSpcRiskDaoCustom cfgMktIrrSpcRiskDaoCustom;
 
     @Autowired
     private CfgMktIrrGnrRiskRepository cfgMktIrrGnrRiskRepository;
@@ -362,7 +365,10 @@ public class ImportConfigIntoDb {
     }
 
     public void importCfgMktIrrSpcRisks(List<CfgMktIrrSpcRisk> cfgMktIrrSpcRisks) {
-        removeAllAndSaveNewList(cfgMktIrrSpcRiskRepository, cfgMktIrrSpcRisks);
+        cfgMktIrrSpcRiskRepository.deleteAll();
+        for (CfgMktIrrSpcRisk cfgMktIrrSpcRisk : cfgMktIrrSpcRisks) {
+            cfgMktIrrSpcRiskDaoCustom.insert(cfgMktIrrSpcRisk);
+        }
     }
 
     public void importCfgMktIrrGnrRisks(List<CfgMktIrrGnrRisk> cfgMktIrrGnrRisks) {

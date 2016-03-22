@@ -31,7 +31,12 @@ public class CfgMktIrrSpcRisk {
     @Column(name = "RISK_WEIGHT")
     private Double riskWeight;
 
-    public CfgMktIrrSpcRisk(String mktAssetClass, String issueRiskBucket, String issuerRiskBucket, String residualMaturityStart, String residualMaturityEnd, String instrumentGroup, Double riskWeight) {
+    @Column(name = "SEQ")
+    private Long seq;
+
+    public CfgMktIrrSpcRisk(String mktAssetClass, String issueRiskBucket, String issuerRiskBucket,
+                            String residualMaturityStart, String residualMaturityEnd, String instrumentGroup,
+                            Double riskWeight, Long seq) {
         this.mktAssetClass = mktAssetClass;
         this.issueRiskBucket = issueRiskBucket;
         this.issuerRiskBucket = issuerRiskBucket;
@@ -39,6 +44,7 @@ public class CfgMktIrrSpcRisk {
         this.residualMaturityEnd = residualMaturityEnd;
         this.instrumentGroup = instrumentGroup;
         this.riskWeight = riskWeight;
+        this.seq = seq;
     }
 
     public CfgMktIrrSpcRisk() {
@@ -99,5 +105,13 @@ public class CfgMktIrrSpcRisk {
 
     public void setRiskWeight(Double riskWeight) {
         this.riskWeight = riskWeight;
+    }
+
+    public Long getSeq() {
+        return seq;
+    }
+
+    public void setSeq(Long seq) {
+        this.seq = seq;
     }
 }

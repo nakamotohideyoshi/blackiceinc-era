@@ -21,6 +21,9 @@ public class CfgMktIrrSpcRiskRepositoryTest {
     @Autowired
     private CfgMktIrrSpcRiskRepository cfgMktIrrSpcRiskRepository;
 
+    @Autowired
+    private CfgMktIrrSpcRiskDaoCustom cfgMktIrrSpcRiskDaoCustom;
+
     @Test
     public void testSave() {
         CfgMktIrrSpcRisk cfgMktIrrSpcRisk = new CfgMktIrrSpcRisk();
@@ -31,8 +34,10 @@ public class CfgMktIrrSpcRiskRepositoryTest {
         cfgMktIrrSpcRisk.setResidualMaturityEnd("residual_maturity_end");
         cfgMktIrrSpcRisk.setInstrumentGroup("instrument_group");
         cfgMktIrrSpcRisk.setRiskWeight(new Double(5));
+        cfgMktIrrSpcRisk.setSeq(500L);
 
-        cfgMktIrrSpcRiskRepository.save(cfgMktIrrSpcRisk);
+        cfgMktIrrSpcRiskDaoCustom.insert(cfgMktIrrSpcRisk);
+//        cfgMktIrrSpcRiskRepository.save(cfgMktIrrSpcRisk);
     }
 
 }

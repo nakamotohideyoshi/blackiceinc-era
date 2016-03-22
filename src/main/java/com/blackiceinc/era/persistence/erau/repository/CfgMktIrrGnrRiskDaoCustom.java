@@ -28,7 +28,8 @@ public class CfgMktIrrGnrRiskDaoCustom {
                 "COUPON_RATE_END, " +
                 "MATURITY_BAND_START, " +
                 "MATURITY_BAND_END, " +
-                "RISK_WEIGHT" +
+                "RISK_WEIGHT," +
+                "SEQ" +
                 ") " +
                 "VALUES " +
                 "(" +
@@ -39,7 +40,8 @@ public class CfgMktIrrGnrRiskDaoCustom {
                 ":couponRateEnd, " +
                 ":maturityBandStart, " +
                 ":maturityBandEnd, " +
-                ":riskWeight" +
+                ":riskWeight," +
+                ":seq" +
                 ")")
                 .setParameter("zoneCode",
                         cfgMktIrrGnrRisk.getZoneCode(), new StringType())
@@ -57,6 +59,8 @@ public class CfgMktIrrGnrRiskDaoCustom {
                         cfgMktIrrGnrRisk.getMaturityBandEnd(), new DoubleType())
                 .setParameter("riskWeight",
                         cfgMktIrrGnrRisk.getRiskWeight(), new DoubleType())
+                .setParameter("seq",
+                        cfgMktIrrGnrRisk.getSeq(), new LongType())
                 .executeUpdate();
     }
 

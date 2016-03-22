@@ -1,8 +1,6 @@
 package com.blackiceinc.era.services.security;
 
 import com.blackiceinc.era.config.Constants;
-import com.blackiceinc.era.persistence.erau.model.Role;
-import com.blackiceinc.era.persistence.erau.model.User;
 import com.blackiceinc.era.persistence.erau.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,16 +13,10 @@ import org.springframework.security.authentication.InternalAuthenticationService
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.ldap.authentication.LdapAuthenticationProvider;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
-@Service
+@Component
 public class EraAuthenticationProvider implements AuthenticationProvider {
 
     public static final String NORTH_VIB_CORP = "north.vib.corp";
@@ -48,6 +40,9 @@ public class EraAuthenticationProvider implements AuthenticationProvider {
     private UserRepository userRepository;
 
     @Autowired
+    private EraUserDetailsService eraUserDetailsService;
+
+    @Autowired
     private Environment env;
 
     @Override
@@ -56,43 +51,31 @@ public class EraAuthenticationProvider implements AuthenticationProvider {
 
         log.debug("Authenticating {}", name);
 
-        User byUsername = userRepository.findByUsernameIgnoreCase(name);
-        if (byUsername != null) {
-            try {
-                Authentication authenticate;
-                if (env.acceptsProfiles(Constants.SPRING_PROFILE_LOCAL, Constants.SPRING_PROFILE_DEV_ERA)) {
-                    log.info("Authenticate to embedded ldap server username : {}", name);
-                    // authenticate to embedded ldap server
-                    authenticate = vibEmbeddedLdapAuthProvider.authenticate(authentication);
-                } else if (env.acceptsProfiles(Constants.SPRING_PROFILE_ONSITE)) {
-                    // check which domain to use
-                    EraWebAuthDetails details = (EraWebAuthDetails) authentication.getDetails();
-                    String domain = details.getDomain();
-                    authenticate = authenticateToOnsiteDomain(domain, authentication);
-                } else {
-                    throw new InternalAuthenticationServiceException("Missing application configuration");
-                }
-                if (authenticate.isAuthenticated()) {
-                    log.info("User : {} is authenticated.", name);
-                    List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-
-                    Set<Role> roles = byUsername.getRoles();
-                    for (Role role : roles) {
-                        log.info("Role : ( {} - {} ) added to user : {}.", role.getName(), role.getDisplayName(), name);
-                        grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
-                    }
-                    return new UsernamePasswordAuthenticationToken(authenticate.getPrincipal(), authenticate.getCredentials(),
-                            grantedAuthorities);
-                } else {
-                    log.info("User : {} not authenticated.", name);
-                    return authenticate;
-                }
-            } catch (BadCredentialsException ex) {
-                log.info("Bad credentials for username : {}", name);
-                throw new BadCredentialsException("Bad credentials");
+        org.springframework.security.core.userdetails.User byUsername = eraUserDetailsService.loadUserByUsername(name);
+        try {
+            Authentication authenticate;
+            if (env.acceptsProfiles(Constants.SPRING_PROFILE_LOCAL, Constants.SPRING_PROFILE_DEV_ERA)) {
+                log.info("Authenticate to embedded ldap server username : {}", name);
+                // authenticate to embedded ldap server
+                authenticate = vibEmbeddedLdapAuthProvider.authenticate(authentication);
+            } else if (env.acceptsProfiles(Constants.SPRING_PROFILE_ONSITE)) {
+                // check which domain to use
+                EraWebAuthDetails details = (EraWebAuthDetails) authentication.getDetails();
+                String domain = details.getDomain();
+                authenticate = authenticateToOnsiteDomain(domain, authentication);
+            } else {
+                throw new InternalAuthenticationServiceException("Missing application configuration");
             }
-        } else {
-            throw new BadCredentialsException("Username does not exist");
+            if (authenticate.isAuthenticated()) {
+                return new UsernamePasswordAuthenticationToken(authenticate.getPrincipal(), authenticate.getCredentials(),
+                        byUsername.getAuthorities());
+            } else {
+                log.info("User : {} not authenticated.", name);
+                return authenticate;
+            }
+        } catch (BadCredentialsException ex) {
+            log.info("Bad credentials for username : {}", name);
+            throw new BadCredentialsException("Bad credentials");
         }
     }
 

@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
 
@@ -21,15 +23,6 @@ public class BlackiceincEraApplication {
 
     @Autowired
     private Environment env;
-
-    @PostConstruct
-    public void initApplication() {
-        if (env.getActiveProfiles().length == 0) {
-            log.warn("No Spring profile configured, running with default configuration");
-        } else {
-            log.info("Running with Spring profile(s) : {}", Arrays.toString(env.getActiveProfiles()));
-        }
-    }
 
     public static void main(String[] args) throws UnknownHostException {
         SpringApplication app = new SpringApplication(BlackiceincEraApplication.class);
@@ -54,6 +47,15 @@ public class BlackiceincEraApplication {
                 !System.getenv().containsKey("SPRING_PROFILES_ACTIVE")) {
 
             app.setAdditionalProfiles(Constants.SPRING_PROFILE_LOCAL);
+        }
+    }
+
+    @PostConstruct
+    public void initApplication() {
+        if (env.getActiveProfiles().length == 0) {
+            log.warn("No Spring profile configured, running with default configuration");
+        } else {
+            log.info("Running with Spring profile(s) : {}", Arrays.toString(env.getActiveProfiles()));
         }
     }
 }

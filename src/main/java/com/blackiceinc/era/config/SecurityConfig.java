@@ -2,10 +2,11 @@ package com.blackiceinc.era.config;
 
 import com.blackiceinc.era.persistence.erau.model.Role;
 import com.blackiceinc.era.services.security.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,8 +15,10 @@ import org.springframework.security.web.csrf.CsrfFilter;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+//@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
 
     @Autowired
     private EraLoginSuccessHandler successHandler;
@@ -29,9 +32,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
-//                .authenticationProvider(eraAuthenticationProvider);
-                .inMemoryAuthentication()
-                .withUser("admin").password("watermelon700").roles("ADMIN");
+                .authenticationProvider(eraAuthenticationProvider);
+//                .inMemoryAuthentication()
+//                .withUser("admin").password("watermelon700").roles("ADMIN");
     }
 
     @Override
@@ -43,7 +46,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .csrf()
+             .and()
 
+                .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler())
+                .accessDeniedPage("/login")
+             .and()
                 .formLogin()
                 .authenticationDetailsSource(new EraAuthDetailsSource())
                 .loginPage("/login").failureUrl("/login?error")
@@ -64,8 +72,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .frameOptions()
                 .disable()
              .and()
-                .csrf()
-             .and()
                 .addFilterAfter(new CsrfCookieGeneratorFilter(), CsrfFilter.class)
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
@@ -77,5 +83,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         ;
 
     }
+
 
 }

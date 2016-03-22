@@ -82,6 +82,13 @@
             <version>11.2.0.4</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.unboundid</groupId>
+            <artifactId>unboundid-ldapsdk</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+
+
         <!-- common -->
         <dependency>
             <groupId>org.apache.commons</groupId>

@@ -2,6 +2,9 @@ package com.blackiceinc.era.services.security;
 
 import com.blackiceinc.era.config.Constants;
 import com.blackiceinc.era.persistence.erau.repository.UserRepository;
+import com.blackiceinc.era.services.security.exception.LdapAuthenticationException;
+import com.blackiceinc.era.services.security.model.LdapConfig;
+import com.blackiceinc.era.services.security.model.LdapConfigBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.ldap.authentication.LdapAuthenticationProvider;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+
 @Component
 public class EraAuthenticationProvider implements AuthenticationProvider {
 
@@ -29,12 +34,7 @@ public class EraAuthenticationProvider implements AuthenticationProvider {
     private LdapAuthenticationProvider vibEmbeddedLdapAuthProvider;
 
     @Autowired
-    @Qualifier("vibOnsiteNorthLdapAuthProvider")
-    private LdapAuthenticationProvider vibOnsiteNorthLdapAuthProvider;
-
-    @Autowired
-    @Qualifier("vibOnsiteSouthLdapAuthProvider")
-    private LdapAuthenticationProvider vibOnsiteSouthLdapAuthProvider;
+    private LdapAuthenticateService ldapAuthenticateService;
 
     @Autowired
     private UserRepository userRepository;
@@ -79,14 +79,29 @@ public class EraAuthenticationProvider implements AuthenticationProvider {
         }
     }
 
-    private Authentication authenticateToOnsiteDomain(String domain, Authentication authentication) {
+    private Authentication authenticateToOnsiteDomain(String domain, Authentication authentication) throws AuthenticationException {
         log.info("authenticateToOnsiteDomain(domain, authentication) domain : {}, name : ", domain, authentication.getName());
         if (NORTH_VIB_CORP.equals(domain)) {
             log.info("vibOnsiteNorthLdapAuthProvider.authenticate(authentication);");
-            return vibOnsiteNorthLdapAuthProvider.authenticate(authentication);
+            boolean authenticate = ldapAuthenticateService.authenticate((String) authentication.getPrincipal(),
+                    (String) authentication.getCredentials(),
+                    getNorthVibCorpConfig());
+            if (!authenticate) {
+                throw new LdapAuthenticationException("LDAP Authentication failed");
+            } else {
+                return authentication;
+            }
         } else if (SOUTH_VIB_CORP.equals(domain)) {
             log.info("vibOnsiteSouthLdapAuthProvider.authenticate(authentication);");
-            return vibOnsiteSouthLdapAuthProvider.authenticate(authentication);
+
+            boolean authenticate = ldapAuthenticateService.authenticate((String) authentication.getPrincipal(),
+                    (String) authentication.getCredentials(),
+                    getSouthVibCorpConfig());
+            if (!authenticate) {
+                throw new LdapAuthenticationException("LDAP Authentication failed");
+            } else {
+                return authentication;
+            }
         } else {
             throw new InternalAuthenticationServiceException("Missing application configuration");
         }
@@ -95,5 +110,29 @@ public class EraAuthenticationProvider implements AuthenticationProvider {
     @Override
     public boolean supports(Class<?> authentication) {
         return authentication.equals(UsernamePasswordAuthenticationToken.class);
+    }
+
+    public LdapConfig getNorthVibCorpConfig() {
+        return new LdapConfigBuilder()
+                .setLdapServers(Arrays.asList(env.getProperty("ldap.north.vib.corp.host").split("/")))
+                .setLdapServerPort(Integer.valueOf(env.getProperty("ldap.north.vib.corp.port")))
+                .setBaseDn(env.getProperty("ldap.north.vib.corp.base-dn"))
+                .setBindDn(env.getProperty("ldap.north.vib.corp.bind-dn"))
+                .setBindPassword(env.getProperty("ldap.north.vib.corp.bind-password"))
+                .setUserFilter(env.getProperty("ldap.north.vib.corp.user-filter"))
+                .setGroupFilter(env.getProperty("ldap.north.vib.corp.group-filter"))
+                .createLdapConfig();
+    }
+
+    public LdapConfig getSouthVibCorpConfig() {
+        return new LdapConfigBuilder()
+                .setLdapServers(Arrays.asList(env.getProperty("ldap.south.vib.corp.host").split("/")))
+                .setLdapServerPort(Integer.valueOf(env.getProperty("ldap.south.vib.corp.port")))
+                .setBaseDn(env.getProperty("ldap.south.vib.corp.base-dn"))
+                .setBindDn(env.getProperty("ldap.south.vib.corp.bind-dn"))
+                .setBindPassword(env.getProperty("ldap.south.vib.corp.bind-password"))
+                .setUserFilter(env.getProperty("ldap.south.vib.corp.user-filter"))
+                .setGroupFilter(env.getProperty("ldap.south.vib.corp.group-filter"))
+                .createLdapConfig();
     }
 }

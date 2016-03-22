@@ -54,21 +54,21 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return viewResolver;
     }
 
-    @Bean(name = "simpleMappingExceptionResolver")
-    public SimpleMappingExceptionResolver createSimpleMappingExceptionResolver() {
-        log.info("Creating SimpleMappingExceptionResolver");
-        SimpleMappingExceptionResolver r = new SimpleMappingExceptionResolver();
-
-        Properties exceptionMappings = new Properties();
-        exceptionMappings.setProperty("Exception", "error/error500");
-        exceptionMappings.put("RuntimeException", "error/error500");
-        exceptionMappings.put("GenericJDBCException", "error/error500");
-
-        r.setExceptionMappings(exceptionMappings); // None by default
-
-        r.setDefaultErrorView("error/error500");
-        return r;
-    }
+//    @Bean(name = "simpleMappingExceptionResolver")
+//    public SimpleMappingExceptionResolver createSimpleMappingExceptionResolver() {
+//        log.info("Creating SimpleMappingExceptionResolver");
+//        SimpleMappingExceptionResolver r = new SimpleMappingExceptionResolver();
+//
+//        Properties exceptionMappings = new Properties();
+//        exceptionMappings.setProperty("Exception", "error/error500");
+//        exceptionMappings.put("RuntimeException", "error/error500");
+//        exceptionMappings.put("GenericJDBCException", "error/error500");
+//
+//        r.setExceptionMappings(exceptionMappings); // None by default
+//
+//        r.setDefaultErrorView("error/error500");
+//        return r;
+//    }
 
     @Bean
     public EmbeddedServletContainerCustomizer containerCustomizer() {

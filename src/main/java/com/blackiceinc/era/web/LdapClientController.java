@@ -2,6 +2,7 @@ package com.blackiceinc.era.web;
 
 import com.blackiceinc.era.services.security.EraAuthenticationProvider;
 import com.blackiceinc.era.services.security.LdapAuthenticateService;
+import com.blackiceinc.era.services.security.LdapUserBindAuthenticateService;
 import com.blackiceinc.era.services.security.model.LdapConfig;
 import com.blackiceinc.era.services.security.model.LdapConfigBuilder;
 import com.blackiceinc.era.web.model.LdapAuth;
@@ -26,6 +27,9 @@ public class LdapClientController {
 
     @Autowired
     private LdapAuthenticateService ldapAuthenticateService;
+
+    @Autowired
+    private LdapUserBindAuthenticateService ldapUserBindAuthenticateService;
 
     @Autowired
     private EraAuthenticationProvider eraAuthenticationProvider;
@@ -59,7 +63,12 @@ public class LdapClientController {
 
         model.addAttribute("ldapAuth", ldapAuth);
 
-        boolean authenticate = ldapAuthenticateService.authenticate(ldapAuth.getUsername(), ldapAuth.getPassword(), ldapAuth.getLdapConfig());
+        boolean authenticate = false;
+        if ("1".equals(ldapAuth.getVersion())){
+            authenticate = ldapAuthenticateService.authenticate(ldapAuth.getUsername(), ldapAuth.getPassword(), ldapAuth.getLdapConfig());
+        }else if ("2".equals(ldapAuth.getVersion())){
+            authenticate = ldapUserBindAuthenticateService.authenticate(ldapAuth.getUsername(), ldapAuth.getPassword(), ldapAuth.getLdapConfig());
+        }
         model.addAttribute("result", authenticate);
 
         return "ldapClient";

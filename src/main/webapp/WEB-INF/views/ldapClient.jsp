@@ -46,6 +46,7 @@
             <td><form:label path="ldapConfig.groupFilter">Group Filter</form:label></td>
             <td><form:input path="ldapConfig.groupFilter"/></td>
         </tr>
+
         <tr style="height: 20px;">
             <td></td>
             <td></td>
@@ -57,6 +58,13 @@
         <tr>
             <td><form:label path="password">Password</form:label></td>
             <td><form:input path="password"/></td>
+        </tr>
+        <tr>
+            <td><form:label path="version">Service version</form:label></td>
+            <td>
+                <form:radiobutton path="version" value="1"/>ver 1
+                <form:radiobutton path="version" value="2"/>ver 2
+            </td>
         </tr>
         <tr>
             <td><input type="submit" value="Submit"/></td>

@@ -37,40 +37,40 @@ public class LdapServerConfig {
 
     @Bean(name = "vibOnsiteNorthLdapAuthProvider")
     public LdapAuthenticationProvider getVibOnsiteNorthLdapAuthProvider() {
-        if (env.acceptsProfiles(Constants.SPRING_PROFILE_ONSITE)) {
-            log.info("getVibOnsiteNorthLdapAuthProvider()");
-            String[] hosts = env.getProperty("ldap.north.vib.corp.host").split("/");
-            String port = env.getProperty("ldap.north.vib.corp.port");
-            String baseDn = env.getProperty("ldap.north.vib.corp.base-dn");
-            String[] userDnPatterns = env.getProperty("ldap.north.vib.corp.user-dn-patterns").split(";");
-            String groupSearchBase = env.getProperty("ldap.north.vib.corp.group-search-base");
-
-            List<String> urls = generateHosts(hosts, port);
-            log.info("-------- Onsite North LDAP configuration ----------");
-            printLdapParameters(port, baseDn, userDnPatterns, groupSearchBase, urls);
-            log.info("---------------------------------------------------");
-            return getLdapAuthenticationProvider(urls, baseDn, userDnPatterns, groupSearchBase);
-        }
+//        if (env.acceptsProfiles(Constants.SPRING_PROFILE_ONSITE)) {
+//            log.info("getVibOnsiteNorthLdapAuthProvider()");
+//            String[] hosts = env.getProperty("ldap.north.vib.corp.host").split("/");
+//            String port = env.getProperty("ldap.north.vib.corp.port");
+//            String baseDn = env.getProperty("ldap.north.vib.corp.base-dn");
+//            String[] userDnPatterns = env.getProperty("ldap.north.vib.corp.user-dn-patterns").split(";");
+//            String groupSearchBase = env.getProperty("ldap.north.vib.corp.group-search-base");
+//
+//            List<String> urls = generateHosts(hosts, port);
+//            log.info("-------- Onsite North LDAP configuration ----------");
+//            printLdapParameters(port, baseDn, userDnPatterns, groupSearchBase, urls);
+//            log.info("---------------------------------------------------");
+//            return getLdapAuthenticationProvider(urls, baseDn, userDnPatterns, groupSearchBase);
+//        }
 
         return null;
     }
 
     @Bean(name = "vibOnsiteSouthLdapAuthProvider")
     public LdapAuthenticationProvider getVibOnsiteSouthLdapAuthProvider() {
-        if (env.acceptsProfiles(Constants.SPRING_PROFILE_ONSITE)) {
-            log.info("getVibOnsiteSouthLdapAuthProvider()");
-            String[] hosts = env.getProperty("ldap.south.vib.corp.host").split("/");
-            String port = env.getProperty("ldap.south.vib.corp.port");
-            String baseDn = env.getProperty("ldap.south.vib.corp.base-dn");
-            String[] userDnPatterns = env.getProperty("ldap.south.vib.corp.user-dn-patterns").split(";");
-            String groupSearchBase = env.getProperty("ldap.south.vib.corp.group-search-base");
-
-            List<String> urls = generateHosts(hosts, port);
-            log.info("-------- Onsite South LDAP configuration ----------");
-            printLdapParameters(port, baseDn, userDnPatterns, groupSearchBase, urls);
-            log.info("---------------------------------------------------");
-            return getLdapAuthenticationProvider(urls, baseDn, userDnPatterns, groupSearchBase);
-        }
+//        if (env.acceptsProfiles(Constants.SPRING_PROFILE_ONSITE)) {
+//            log.info("getVibOnsiteSouthLdapAuthProvider()");
+//            String[] hosts = env.getProperty("ldap.south.vib.corp.host").split("/");
+//            String port = env.getProperty("ldap.south.vib.corp.port");
+//            String baseDn = env.getProperty("ldap.south.vib.corp.base-dn");
+//            String[] userDnPatterns = env.getProperty("ldap.south.vib.corp.user-dn-patterns").split(";");
+//            String groupSearchBase = env.getProperty("ldap.south.vib.corp.group-search-base");
+//
+//            List<String> urls = generateHosts(hosts, port);
+//            log.info("-------- Onsite South LDAP configuration ----------");
+//            printLdapParameters(port, baseDn, userDnPatterns, groupSearchBase, urls);
+//            log.info("---------------------------------------------------");
+//            return getLdapAuthenticationProvider(urls, baseDn, userDnPatterns, groupSearchBase);
+//        }
 
         return null;
     }

@@ -1,21 +1,21 @@
 package com.blackiceinc.era.persistence.erau.specifications;
 
-import com.blackiceinc.era.persistence.erau.model.RunCalculator;
+import com.blackiceinc.era.persistence.erau.model.MeasurementSensitivity;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RunCalculatorSpecificationsBuilder {
+public class MsSpecificationsBuilder {
 
     private final List<SpecSearchCriteria> params;
 
-    public RunCalculatorSpecificationsBuilder() {
+    public MsSpecificationsBuilder() {
         params = new ArrayList<>();
     }
 
-    public final RunCalculatorSpecificationsBuilder with(final String key, final String operation, final Object value, final String prefix, final String suffix) {
+    public final MsSpecificationsBuilder with(final String key, final String operation, final Object value, final String prefix, final String suffix) {
         SearchOperation op = SearchOperation.getSimpleOperation(operation.charAt(0));
         if (op != null) {
             if (op == SearchOperation.EQUALITY) // the operation may be complex operation
@@ -36,17 +36,17 @@ public class RunCalculatorSpecificationsBuilder {
         return this;
     }
 
-    public Specification<RunCalculator> build() {
+    public Specification<MeasurementSensitivity> build() {
         if (params.size() == 0) {
             return null;
         }
 
-        final List<Specification<RunCalculator>> specs = new ArrayList<Specification<RunCalculator>>();
+        final List<Specification<MeasurementSensitivity>> specs = new ArrayList<>();
         for (final SpecSearchCriteria param : params) {
-            specs.add(new RunCalculatorSpecification(param));
+            specs.add(new MsSpecification(param));
         }
 
-        Specification<RunCalculator> result = specs.get(0);
+        Specification<MeasurementSensitivity> result = specs.get(0);
         for (int i = 1; i < specs.size(); i++) {
             result = Specifications.where(result).and(specs.get(i));
         }

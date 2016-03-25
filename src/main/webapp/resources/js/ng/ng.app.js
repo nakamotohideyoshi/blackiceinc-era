@@ -20,7 +20,7 @@ var smartApp = angular.module('smartApp', [
    'ngCookies',
 
    // Controllers
-   'ng.CreditRiskCTRL',
+   'ng.credit-risk.controller',
    'ng.run-calculator.controller',
    'ng.cfg-configuration.controller',
    'ng.account-settings.controller',
@@ -43,18 +43,16 @@ smartApp.config(['$routeProvider', '$provide', function($routeProvider, $provide
 
 	.when('/', {
 		templateUrl: function($routeParams) {
-			return 'resources/views/dashboard.html';
+			return 'resources/views/credit-risk.html';
 		},
 		controller: 'CreditRiskController',
-		reloadOnSearch: false
 	})
 
     .when('/credit-risk', {
       templateUrl: function($routeParams) {
-        return 'resources/views/dashboard.html';
+        return 'resources/views/credit-risk.html';
       },
       controller: 'CreditRiskController',
-      reloadOnSearch: false
     })
 
     .when('/market-risk', {

@@ -63,7 +63,7 @@
 <script src="resources/js/libs/angular-file-upload.js?_cacheuid=1.0.23"></script>
 
 <script src="resources/js/ng/controllers/ng.controllers.js"></script>
-<script src="resources/js/ng/controllers/ng.CreditRiskCTRL.js"></script>
+<script src="resources/js/ng/controllers/ng.credit-risk.controller.js"></script>
 <script src="resources/js/ng/controllers/ng.run-calculator.controller.js"></script>
 <script src="resources/js/ng/controllers/ng.cfg-configuration.controller.js"></script>
 <script src="resources/js/ng/controllers/ng.account-settings.controller.js"></script>

@@ -84,20 +84,20 @@
                     <tbody>
                     <tr>
                         <td>
-                            <div class="lb">Credit Risk</div>
+                            <div class="lb">Snapshot Date</div>
                             <div class="fm">
-                                <label class="select has-success">
-                                    <select class="input-sm"
-                                            ng-model="mode"
-                                            ng-change="ChangeView(mode)">
-                                        <option value="wholesale">Wholesale</option>
-                                        <option value="retail">Retail</option>
+                                <label class="select"
+                                       ng-class="{ 'has-success' : QueryParams.snapshot_date }">
+                                    <select class="form-control input-sm"
+                                            ng-model="QueryParams.snapshot_date"
+                                            ng-change="FilterTable()"
+                                            ng-options="o.snapshotDate as o.snapshotDate for o in filterOptions.snapshotDate">
                                     </select> <i></i>
                                 </label>
                             </div>
                         </td>
                         <td>
-                            <div class="lb">Scenario</div>
+                            <div class="lb">Load Job Nbr</div>
                             <div class="fm">
                                 <label class="select" ng-class="{ 'has-success' : QueryParams.scenario }">
                                     <select class="form-control input-sm"
@@ -110,7 +110,7 @@
                             </div>
                         </td>
                         <td>
-                            <div class="lb">Asset Class</div>
+                            <div class="lb">Scenario ID</div>
                             <div class="fm">
                                 <label class="select"
                                        ng-class="{ 'has-success' : QueryParams.asset_class }">
@@ -149,11 +149,11 @@
                                     </select> <i></i>
                                 </label>
                             </div>
-                        </td> <!---->
+                        </td>
                     </tr>
                     <tr>
                         <td>
-                            <div class="lb">Snaphot Date</div>
+                            <div class="lb">Asset Class</div>
                             <div class="fm">
                                 <label class="select"
                                        ng-class="{ 'has-success' : QueryParams.snapshot_date }">
@@ -166,7 +166,7 @@
                             </div>
                         </td>
                         <td>
-                            <div class="lb">Treatment</div>
+                            <div class="lb">Exposure Type</div>
                             <div class="fm">
                                 <label class="select"
                                        ng-class="{ 'has-success' : QueryParams.treatment }">
@@ -179,7 +179,20 @@
                             </div>
                         </td>
                         <td>
-                            <div class="lb">Exposure Type</div>
+                            <div class="lb">Entity Type</div>
+                            <div class="fm">
+                                <label class="select"
+                                       ng-class="{ 'has-success' : QueryParams.exposure_type }">
+                                    <select class="form-control input-sm"
+                                            ng-model="QueryParams.exposure_type" ng-change="FilterTable()"
+                                            ng-options="o.exposureTypeCode as o.exposureTypeCode for o in filterOptions.exposure_type">
+                                        <option value="">All</option>
+                                    </select> <i></i>
+                                </label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="lb">Product Type</div>
                             <div class="fm">
                                 <label class="select"
                                        ng-class="{ 'has-success' : QueryParams.exposure_type }">
@@ -215,8 +228,7 @@
                                     </select> <i></i>
                                 </label>
                             </div>
-                        </td>
-                        <td></td> <!---->
+                        </td> <!---->
                     </tr>
 
                     </tbody>

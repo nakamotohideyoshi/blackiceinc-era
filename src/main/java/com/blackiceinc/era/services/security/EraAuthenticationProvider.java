@@ -52,7 +52,7 @@ public class EraAuthenticationProvider implements AuthenticationProvider {
             if (env.acceptsProfiles(Constants.SPRING_PROFILE_LOCAL, Constants.SPRING_PROFILE_DEV_ERA)) {
                 log.info("Authenticate to embedded ldap server username : {}", name);
                 // authenticate to embedded ldap server
-                authenticate = vibEmbeddedLdapAuthProvider.authenticate(authentication);
+                authenticate = authenticateToEmbeddedDomain(authentication);
             } else if (env.acceptsProfiles(Constants.SPRING_PROFILE_ONSITE)) {
                 // check which domain to use
                 EraWebAuthDetails details = (EraWebAuthDetails) authentication.getDetails();
@@ -62,12 +62,24 @@ public class EraAuthenticationProvider implements AuthenticationProvider {
                 throw new InternalAuthenticationServiceException("Missing application configuration");
             }
 
-            return new UsernamePasswordAuthenticationToken(authenticate.getPrincipal(), authenticate.getCredentials(),
+            return new UsernamePasswordAuthenticationToken(byUsername, authenticate.getCredentials(),
                     byUsername.getAuthorities());
         } catch (BadCredentialsException ex) {
             log.info("Bad credentials for username : {}", name);
             throw new BadCredentialsException("Bad credentials");
         }
+    }
+
+    private Authentication authenticateToEmbeddedDomain(Authentication authentication) {
+        Authentication authenticate = vibEmbeddedLdapAuthProvider.authenticate(authentication);
+
+        if (!authenticate.isAuthenticated()){
+            throw new LdapAuthenticationException("LDAP Authentication failed");
+        }
+
+        return new UsernamePasswordAuthenticationToken(authentication.getPrincipal(),
+                authentication.getCredentials(),
+                authentication.getAuthorities());
     }
 
     private Authentication authenticateToOnsiteDomain(String domain, Authentication authentication) throws AuthenticationException {

@@ -45,7 +45,7 @@ smartApp.config(['$routeProvider', '$provide', function($routeProvider, $provide
 	.when('/', {
 		templateUrl: function($routeParams) {
 			//return 'resources/views/credit-risk.html';
-			return 'resources/views/resources/views/report.html';
+			return 'resources/views/report.html';
 		},
 		//controller: 'CreditRiskController'
 		controller: 'RegulatoryReportCTRL'

@@ -10,13 +10,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.env.Environment;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.InternalAuthenticationServiceException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.ldap.authentication.LdapAuthenticationProvider;
+import org.springframework.security.ldap.authentication.ad.ActiveDirectoryAuthenticationException;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -33,14 +31,8 @@ public class EraAuthenticationProvider implements AuthenticationProvider {
     @Qualifier("vibEmbeddedLdapAuthProvider")
     private LdapAuthenticationProvider vibEmbeddedLdapAuthProvider;
 
-//    @Autowired
-//    private LdapAuthenticateService ldapAuthenticateService;
-
     @Autowired
     private LdapUserBindAuthenticateService ldapUserBindAuthenticateService;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     private EraUserDetailsService eraUserDetailsService;
@@ -69,13 +61,9 @@ public class EraAuthenticationProvider implements AuthenticationProvider {
             } else {
                 throw new InternalAuthenticationServiceException("Missing application configuration");
             }
-            if (authenticate.isAuthenticated()) {
-                return new UsernamePasswordAuthenticationToken(authenticate.getPrincipal(), authenticate.getCredentials(),
-                        byUsername.getAuthorities());
-            } else {
-                log.info("User : {} not authenticated.", name);
-                return authenticate;
-            }
+
+            return new UsernamePasswordAuthenticationToken(authenticate.getPrincipal(), authenticate.getCredentials(),
+                    byUsername.getAuthorities());
         } catch (BadCredentialsException ex) {
             log.info("Bad credentials for username : {}", name);
             throw new BadCredentialsException("Bad credentials");
@@ -92,7 +80,9 @@ public class EraAuthenticationProvider implements AuthenticationProvider {
             if (!authenticate) {
                 throw new LdapAuthenticationException("LDAP Authentication failed");
             } else {
-                return authentication;
+                return new UsernamePasswordAuthenticationToken(authentication.getPrincipal(),
+                        authentication.getCredentials(),
+                        authentication.getAuthorities());
             }
         } else if (SOUTH_VIB_CORP.equals(domain)) {
             log.info("vibOnsiteSouthLdapAuthProvider.authenticate(authentication);");
@@ -103,7 +93,9 @@ public class EraAuthenticationProvider implements AuthenticationProvider {
             if (!authenticate) {
                 throw new LdapAuthenticationException("LDAP Authentication failed");
             } else {
-                return authentication;
+                return new UsernamePasswordAuthenticationToken(authentication.getPrincipal(),
+                        authentication.getCredentials(),
+                        authentication.getAuthorities());
             }
         } else {
             throw new InternalAuthenticationServiceException("Missing application configuration");

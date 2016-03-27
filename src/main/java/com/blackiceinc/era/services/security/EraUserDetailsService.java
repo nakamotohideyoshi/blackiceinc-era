@@ -28,7 +28,6 @@ public class EraUserDetailsService implements UserDetailsService {
     public org.springframework.security.core.userdetails.User loadUserByUsername(String username) throws UsernameNotFoundException {
         log.info("loadUserByUsername username : {}", username);
 
-
         User byUsername = userRepository.findByUsernameIgnoreCase(username);
 
         if (byUsername != null) {

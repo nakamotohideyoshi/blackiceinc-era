@@ -199,7 +199,7 @@ angular.module('ng.run-calculator.controller', [])
                 $scope.Filter.filters = {};
                 angular.copy($scope.Filter.filtersDefault, $scope.Filter.filters);
                 $scope.filterTable();
-            }
+            };
 
             $scope.setRunCalculationBtnsAvailability = function () {
                 var enabled = shouldCalculationBtnsBeEnabled();
@@ -214,7 +214,7 @@ angular.module('ng.run-calculator.controller', [])
                 }
                 $scope.noRowsSelected = (numberOfCheckedRows > 0) ? false : true;
 
-            }
+            };
 
             shouldCalculationBtnsBeEnabled = function () {
                 var result = true;

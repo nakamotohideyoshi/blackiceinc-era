@@ -395,7 +395,15 @@ angular.module('app.services', [])
 			},
 			remove : function( idArray ) {
           return CustomHttp.remove('api/user', idArray);
-      },
+      }
+		});
+	})
+
+	.service('CreditRiskService', function(CustomHttp){
+		return ({
+			getFilterOptions : function(params) {
+				return CustomHttp.get('api/credit-risk/filter-options', {});
+			}
 		});
 	})
 

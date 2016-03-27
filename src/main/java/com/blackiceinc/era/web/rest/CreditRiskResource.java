@@ -35,9 +35,7 @@ public class CreditRiskResource {
     public Map<String, List> getFilterOptions(HttpServletRequest request) throws URISyntaxException, SQLException {
         HashMap<String, List> stringListHashMap = new HashMap<>();
 
-
         stringListHashMap = creditRiskService.getFilterOptions();
-//        stringListHashMap.put("snapshotDate", "")
 
         return stringListHashMap;
     }

@@ -19,7 +19,7 @@ public class CreditRiskService {
         List<Integer> loadJobNbrList = getLoadJobNbrs();
         List<String> scenarioIdList = getScenarioIds();
         List<String> industryList = getIndustries();
-        List<String> geographyList = getGeographies();
+        List<String> profitCentreList = getProfitCentres();
         List<String> assetClassList = getAssets();
         List<String> exposureTypeList = getExposureTypes();
         List<String> entityTypeList = getEntityTypes();
@@ -29,7 +29,7 @@ public class CreditRiskService {
         filterOptions.put("loadJobNbr", loadJobNbrList);
         filterOptions.put("scenarioId", scenarioIdList);
         filterOptions.put("industry", industryList);
-        filterOptions.put("geography", geographyList);
+        filterOptions.put("profitCentre", profitCentreList);
         filterOptions.put("assetClass", assetClassList);
         filterOptions.put("exposureType", exposureTypeList);
         filterOptions.put("entityType", entityTypeList);
@@ -61,8 +61,8 @@ public class CreditRiskService {
         return Arrays.asList("Asset 1", "Asset 2");
     }
 
-    public List<String> getGeographies() {
-        return Arrays.asList("geography 1", "geography 2", "geography 3");
+    public List<String> getProfitCentres() {
+        return Arrays.asList("profit centre 1", "profit centre 2", "profit centre 3");
     }
 
     public List<String> getExposureTypes() {

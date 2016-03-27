@@ -87,11 +87,12 @@
                             <div class="lb">Snapshot Date</div>
                             <div class="fm">
                                 <label class="select"
-                                       ng-class="{ 'has-success' : QueryParams.snapshot_date }">
+                                       ng-class="{ 'has-success' : Filter.filterSelection.snapshotDate }">
                                     <select class="form-control input-sm"
-                                            ng-model="QueryParams.snapshot_date"
+                                            ng-model="Filter.filterSelection.snapshotDate"
                                             ng-change="FilterTable()"
-                                            ng-options="o.snapshotDate as o.snapshotDate for o in filterOptions.snapshotDate">
+                                            ng-options="o for o in Filter.filterOptions.snapshotDate">
+                                        <option value="">All</option>
                                     </select> <i></i>
                                 </label>
                             </div>
@@ -99,12 +100,12 @@
                         <td>
                             <div class="lb">Load Job Nbr</div>
                             <div class="fm">
-                                <label class="select" ng-class="{ 'has-success' : QueryParams.scenario }">
+                                <label class="select" ng-class="{ 'has-success' : Filter.filterSelection.loadJobNbr }">
                                     <select class="form-control input-sm"
-                                            ng-model="QueryParams.scenario"
-                                            ng-change="FilterTable()">
-                                        <option value="RC">RC</option>
-                                        <option value="EC">EC</option>
+                                            ng-model="Filter.filterSelection.loadJobNbr"
+                                            ng-change="FilterTable()"
+                                            ng-options="o for o in Filter.filterOptions.loadJobNbr">
+                                        <option value="">All</option>
                                     </select> <i></i>
                                 </label>
                             </div>
@@ -113,10 +114,10 @@
                             <div class="lb">Scenario ID</div>
                             <div class="fm">
                                 <label class="select"
-                                       ng-class="{ 'has-success' : QueryParams.asset_class }">
+                                       ng-class="{ 'has-success' : Filter.filterSelection.scenarioId }">
                                     <select class="form-control input-sm"
-                                            ng-model="QueryParams.asset_class" ng-change="FilterTable()"
-                                            ng-options="o.reportAssetClassCode as o.reportAssetClassCode for o in filterOptions.asset_class">
+                                            ng-model="Filter.filterSelection.scenarioId" ng-change="FilterTable()"
+                                            ng-options="o for o in Filter.filterOptions.scenarioId">
                                         <option value="">All</option>
                                     </select> <i></i>
                                 </label>
@@ -126,25 +127,25 @@
                             <div class="lb">Industry</div>
                             <div class="fm">
                                 <label class="select"
-                                       ng-class="{ 'has-success' : QueryParams.sic_code }">
+                                       ng-class="{ 'has-success' : Filter.filterSelection.industry }">
                                     <select class="form-control input-sm"
-                                            ng-model="QueryParams.sic_code"
+                                            ng-model="Filter.filterSelection.industry"
                                             ng-change="FilterTable()"
-                                            ng-options="o.sicCode as o.sicShortDesc for o in filterOptions.industry">
+                                            ng-options="o for o in Filter.filterOptions.industry">
                                         <option value="">All</option>
                                     </select> <i></i>
                                 </label>
                             </div>
                         </td>
                         <td>
-                            <div class="lb">Geography</div>
+                            <div class="lb">Profit Centre</div>
                             <div class="fm">
                                 <label class="select"
-                                       ng-class="{ 'has-success' : QueryParams.geography }">
+                                       ng-class="{ 'has-success' : Filter.filterSelection.profitCentre }">
                                     <select class="form-control input-sm"
-                                            ng-model="QueryParams.geography"
+                                            ng-model="Filter.filterSelection.profitCentre"
                                             ng-change="FilterTable()"
-                                            ng-options="o.id.countryCode as o.countryShortDesc for o in filterOptions.geography">
+                                            ng-options="o for o in Filter.filterOptions.profitCentre">
                                         <option value="">All</option>
                                     </select> <i></i>
                                 </label>
@@ -156,11 +157,12 @@
                             <div class="lb">Asset Class</div>
                             <div class="fm">
                                 <label class="select"
-                                       ng-class="{ 'has-success' : QueryParams.snapshot_date }">
+                                       ng-class="{ 'has-success' : Filter.filterSelection.assetClass }">
                                     <select class="form-control input-sm"
-                                            ng-model="QueryParams.snapshot_date"
+                                            ng-model="Filter.filterSelection.assetClass"
                                             ng-change="FilterTable()"
-                                            ng-options="o.snapshotDate as o.snapshotDate for o in filterOptions.snapshotDate">
+                                            ng-options="o for o in Filter.filterOptions.assetClass">
+                                        <option value="">All</option>
                                     </select> <i></i>
                                 </label>
                             </div>
@@ -169,11 +171,12 @@
                             <div class="lb">Exposure Type</div>
                             <div class="fm">
                                 <label class="select"
-                                       ng-class="{ 'has-success' : QueryParams.treatment }">
+                                       ng-class="{ 'has-success' : Filter.filterSelection.exposureType }">
                                     <select class="form-control input-sm"
-                                            data-ng-model="QueryParams.treatment"
+                                            data-ng-model="Filter.filterSelection.exposureType"
                                             data-ng-change="FilterTable()"
-                                            ng-options="o.rwaTreatmentCode as o.rwaTreatmentCode for o in filterOptions.treatment">
+                                            ng-options="o for o in Filter.filterOptions.exposureType">
+                                        <option value="">All</option>
                                     </select><i></i>
                                 </label>
                             </div>
@@ -182,10 +185,10 @@
                             <div class="lb">Entity Type</div>
                             <div class="fm">
                                 <label class="select"
-                                       ng-class="{ 'has-success' : QueryParams.exposure_type }">
+                                       ng-class="{ 'has-success' : Filter.filterSelection.entityType }">
                                     <select class="form-control input-sm"
-                                            ng-model="QueryParams.exposure_type" ng-change="FilterTable()"
-                                            ng-options="o.exposureTypeCode as o.exposureTypeCode for o in filterOptions.exposure_type">
+                                            ng-model="Filter.filterSelection.entityType" ng-change="FilterTable()"
+                                            ng-options="o for o in Filter.filterOptions.entityType">
                                         <option value="">All</option>
                                     </select> <i></i>
                                 </label>
@@ -195,10 +198,10 @@
                             <div class="lb">Product Type</div>
                             <div class="fm">
                                 <label class="select"
-                                       ng-class="{ 'has-success' : QueryParams.exposure_type }">
+                                       ng-class="{ 'has-success' : Filter.filterSelection.productType }">
                                     <select class="form-control input-sm"
-                                            ng-model="QueryParams.exposure_type" ng-change="FilterTable()"
-                                            ng-options="o.exposureTypeCode as o.exposureTypeCode for o in filterOptions.exposure_type">
+                                            ng-model="Filter.filterSelection.productType" ng-change="FilterTable()"
+                                            ng-options="o for o in Filter.filterOptions.productType">
                                         <option value="">All</option>
                                     </select> <i></i>
                                 </label>
@@ -208,22 +211,22 @@
                             <div class="lb" style="margin-top: 5px;'">Risk Rating</div>
                             <div class="fm" style="position: absolute; margin-left: 5px;">
                                 <label class="select" style="width: 54px; float: left"
-                                       ng-class="{ 'has-success' : QueryParams.risk_rating_from }">
+                                       ng-class="{ 'has-success' : Filter.filterSelection.riskRatingFrom }">
                                     <select class="form-control input-sm"
-                                            ng-model="QueryParams.risk_rating_from"
+                                            ng-model="Filter.filterSelection.riskRatingFrom"
                                             ng-change="FilterTable()"
-                                            ng-options="o.range as o.range for o in filterOptions.risk_rating | filter:riskRatingUpperboundFilter(QueryParams.risk_rating_to)">
+                                            ng-options="o for o in Filter.filterStaticOptions.riskRating">
                                         <option value="">All</option>
                                     </select> <i></i>
                                 </label>
                                 <label class="select"
                                        style="width: 14px; float: left; margin-left: 7px; margin-top: 5px;"> - </label>
                                 <label class="select" style="width: 54px; float: left"
-                                       ng-class="{ 'has-success' : QueryParams.risk_rating_to }">
+                                       ng-class="{ 'has-success' : Filter.filterSelection.riskRatingTo }">
                                     <select class="form-control input-sm"
-                                            ng-model="QueryParams.risk_rating_to"
+                                            ng-model="Filter.filterSelection.riskRatingTo"
                                             ng-change="FilterTable()"
-                                            ng-options="o.range as o.range for o in filterOptions.risk_rating | filter:riskRatingLowerboundFilter(QueryParams.risk_rating_from)">
+                                            ng-options="o for o in Filter.filterStaticOptions.riskRating">
                                         <option value="">All</option>
                                     </select> <i></i>
                                 </label>

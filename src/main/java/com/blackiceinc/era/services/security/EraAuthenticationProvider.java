@@ -33,8 +33,11 @@ public class EraAuthenticationProvider implements AuthenticationProvider {
     @Qualifier("vibEmbeddedLdapAuthProvider")
     private LdapAuthenticationProvider vibEmbeddedLdapAuthProvider;
 
+//    @Autowired
+//    private LdapAuthenticateService ldapAuthenticateService;
+
     @Autowired
-    private LdapAuthenticateService ldapAuthenticateService;
+    private LdapUserBindAuthenticateService ldapUserBindAuthenticateService;
 
     @Autowired
     private UserRepository userRepository;
@@ -83,7 +86,7 @@ public class EraAuthenticationProvider implements AuthenticationProvider {
         log.info("authenticateToOnsiteDomain(domain, authentication) domain : {}, name : ", domain, authentication.getName());
         if (NORTH_VIB_CORP.equals(domain)) {
             log.info("vibOnsiteNorthLdapAuthProvider.authenticate(authentication);");
-            boolean authenticate = ldapAuthenticateService.authenticate((String) authentication.getPrincipal(),
+            boolean authenticate = ldapUserBindAuthenticateService.authenticate((String) authentication.getPrincipal(),
                     (String) authentication.getCredentials(),
                     getNorthVibCorpConfig());
             if (!authenticate) {
@@ -94,7 +97,7 @@ public class EraAuthenticationProvider implements AuthenticationProvider {
         } else if (SOUTH_VIB_CORP.equals(domain)) {
             log.info("vibOnsiteSouthLdapAuthProvider.authenticate(authentication);");
 
-            boolean authenticate = ldapAuthenticateService.authenticate((String) authentication.getPrincipal(),
+            boolean authenticate = ldapUserBindAuthenticateService.authenticate((String) authentication.getPrincipal(),
                     (String) authentication.getCredentials(),
                     getSouthVibCorpConfig());
             if (!authenticate) {

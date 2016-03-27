@@ -32,9 +32,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
-//                .authenticationProvider(eraAuthenticationProvider);
-                .inMemoryAuthentication()
-                .withUser("admin").password("watermelon700").roles("ADMIN");
+                .authenticationProvider(eraAuthenticationProvider);
+//                .inMemoryAuthentication()
+//                .withUser("admin").password("watermelon700").roles("ADMIN");
     }
 
     @Override

@@ -23,6 +23,30 @@ public class MeasurementSensitivity {
 	@Column(name="SNAPSHOT_DATE")
 	private Date snapshotDate;
 
+	@Column(name="ASSET_CLASS_FINAL")
+    private String assetClassFinal;
+
+    @Column(name="EXPOSURE_TYPE_CODE")
+    private String exposureTypeCode;
+
+    @Column(name="ERA_ENTITY_TYPE")
+    private String eraEntityType;
+
+	@Column(name = "ERA_PRODUCT_TYPE_FINAL")
+    private String eraProductTypeFinal;
+
+    @Column(name = "RISK_WEIGHT_FINAL")
+    private Double riskWeightFinal;
+
+    @Column(name = "EAD_BEFORE_CCF_LCY_AMT")
+    private Double eadBeforeCcfLcyAmt;
+
+    @Column(name = "RWA_AMT")
+    private Double rwaAmt;
+
+    @Column(name = "REG_CAP")
+    private Double regCap;
+
 	@Column(name="LOAD_JOB_NBR")
 	private Long loadJobNbr;
 
@@ -48,7 +72,71 @@ public class MeasurementSensitivity {
 		this.snapshotDate = snapshotDate;
 	}
 
-	public Long getLoadJobNbr() {
+    public String getAssetClassFinal() {
+        return assetClassFinal;
+    }
+
+    public void setAssetClassFinal(String assetClassFinal) {
+        this.assetClassFinal = assetClassFinal;
+    }
+
+    public String getExposureTypeCode() {
+        return exposureTypeCode;
+    }
+
+    public void setExposureTypeCode(String exposureTypeCode) {
+        this.exposureTypeCode = exposureTypeCode;
+    }
+
+    public String getEraEntityType() {
+        return eraEntityType;
+    }
+
+    public void setEraEntityType(String eraEntityType) {
+        this.eraEntityType = eraEntityType;
+    }
+
+    public String getEraProductTypeFinal() {
+        return eraProductTypeFinal;
+    }
+
+    public void setEraProductTypeFinal(String eraProductTypeFinal) {
+        this.eraProductTypeFinal = eraProductTypeFinal;
+    }
+
+    public Double getRiskWeightFinal() {
+        return riskWeightFinal;
+    }
+
+    public void setRiskWeightFinal(Double riskWeightFinal) {
+        this.riskWeightFinal = riskWeightFinal;
+    }
+
+    public Double getEadBeforeCcfLcyAmt() {
+        return eadBeforeCcfLcyAmt;
+    }
+
+    public void setEadBeforeCcfLcyAmt(Double eadBeforeCcfLcyAmt) {
+        this.eadBeforeCcfLcyAmt = eadBeforeCcfLcyAmt;
+    }
+
+    public Double getRwaAmt() {
+        return rwaAmt;
+    }
+
+    public void setRwaAmt(Double rwaAmt) {
+        this.rwaAmt = rwaAmt;
+    }
+
+    public Double getRegCap() {
+        return regCap;
+    }
+
+    public void setRegCap(Double regCap) {
+        this.regCap = regCap;
+    }
+
+    public Long getLoadJobNbr() {
 		return loadJobNbr;
 	}
 

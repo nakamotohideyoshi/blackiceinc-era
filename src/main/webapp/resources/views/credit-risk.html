@@ -334,8 +334,8 @@
                         <th class="">Asset Class</th>
                         <th class="">Exposure Type</th>
 
-
                         <th class="">Customer</th>
+
                         <th class="">Entity Type</th>
                         <th class="">Product Type</th>
                         <th class="">Risk Weight</th>
@@ -349,60 +349,21 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="row in Wholesale.list"
-                        ng-class="{ 'success' : row.$edit , 'danger' : row.newItem.$error}">
-
-                        <td>{{ row.snapshotDate.snapshotDate }}</td>
-                        <td>{{ row.rwaTreatmentCode }}</td>
-                        <td>{{ row.reportAssetClassCode }}</td>
+                    <tr ng-repeat="row in CreditRisk.list">
+                        <td>{{ row.snapshotDate }}</td>
+                        <td>{{ row.assetClassFinal }}</td>
                         <td>{{ row.exposureTypeCode }}</td>
 
+                        <td>Customer fixed</td>
 
-                        <td>{{ row.calculatedProbabilityOfDefault }}</td>
-                        <td>{{ row.calculatedLossGivenDefaultFactor }}</td>
-                        <td class="color-01">{{ row.exposureAtDefaultLcyAmt |
-                            number:0 }}
-                        </td>
-                        <td class="color-01">
-                            <div ng-if="!row.$$loading">{{ row.expectedLossLcyAmt |
-                                number:0 }}
-                            </div>
-                            <div ng-if="row.$$loading">0</div>
-                        </td>
-
-                        <td>{{ row.effectiveMaturityInYears }}</td>
-                        <td>{{ row.correlationFactor }}</td>
-
-
-                        <td>{{ row.kcapitalRequirementFactor }}</td>
-                        <td class="color-01">
-                            <div ng-if="!row.$$loading">{{ row.riskWeightedLcyAmt |
-                                number:0 }}
-                            </div>
-                            <div ng-if="row.$$loading">0</div>
-                        </td>
-                        <td>99.97</td>
-
-
-                        <td>{{ row.customer.customerName }}</td>
-                        <td>{{ row.facilityDelegated.facilityTypeCode }}</td>
-                        <td>{{ row.instrument.instrumentTypeCode }}</td>
-
-                        <td>{{ row.customer.sicCode.sicShortDesc }}</td>
-                        <td>{{ row.customer.countryCode.countryShortDesc }}</td>
-                        <td>{{ row.creditScore }}</td>
-                        <td>{{ row.exposureAtDefaultLcyAmt | number:0 }}</td>
-
-                        <td>{{ row.scenario}}</td>
-                        <!-- <td> <div ng-if="!row.$edit">{{ row.directiveParagraph.directiveParagraphNum }}</div></td>
-                                            <td>
-                                                <div ng-if="!row.$edit">{{ row.workStream.workStreamDescription }}</div></td>
-
-                                            <td>
-                                                <div ng-if="!row.$edit"> {{ row.assetClass.assetClassName }}</div> </td>
-
-                                            <td>
-                                                <div ng-if="!row.$edit"> {{ row.riskRatingSystem.riskRatingSystemName }}</div> </td> -->
+                        <td>{{ row.eraEntityType }}</td>
+                        <td>{{ row.eraProductTypeFinal }}</td>
+                        <td>{{ row.riskWeightFinal }}</td>
+                        <td class="color-01">{{ row.eadBeforeCcfLcyAmt }}</td>
+                        <td class="color-01">{{ row.rwaAmt }}</td>
+                        <td class="color-01">{{ row.regCap }}</td>
+                        <td>{{ row.loadJobNbr }}</td>
+                        <td>{{ row.scenarioId }}</td>
                     </tr>
                     </tbody>
                 </table>

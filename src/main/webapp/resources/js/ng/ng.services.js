@@ -403,6 +403,9 @@ angular.module('app.services', [])
 		return ({
 			getFilterOptions : function(params) {
 				return CustomHttp.get('api/credit-risk/filter-options', {});
+			},
+			getAll : function(params) {
+				return CustomHttp.get('api/credit-risk?' + $.param(params), {});
 			}
 		});
 	})

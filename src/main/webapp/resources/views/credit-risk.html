@@ -243,59 +243,69 @@
 
 
         <div class="col-md-6" style="margin-top: 30px">
-                <button type="submit" ng-click="FilterTable()" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>
-                    Search
-                </button>
-                <a class="btn btn-default btn-sm" href="javascript:void(0);" ng-click="ResetFilter()">
-                    <i class="fa fa-refresh"></i> Reset</a>
-                <a href="" ng-click="saveToBookmark()" class="btn btn-default btn-sm"
-                   ng-class="{'disabled' : isEmpty(QueryParams) }">
-                    <i class="fa fa-save"></i> Save to Bookmark </a>
-                <a href="" ng-click="OpenModal()" class="btn btn-default btn-sm">
-                    <i class="glyphicon glyphicon-bookmark"></i> Open Bookmarks </a>
-                <a href="javascript:void(0);" ng-click="GenerateReport()" class="btn btn-default btn-sm ">
-                    <i class="fa  fa-file-pdf-o"></i> Graphs </a>
+            <button type="submit" ng-click="filterTable()" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>
+                Search
+            </button>
+            <a class="btn btn-default btn-sm" href="javascript:void(0);" ng-click="resetFilter()">
+                <i class="fa fa-refresh"></i> Reset</a>
+            <a href="" ng-click="saveToBookmark()" class="btn btn-default btn-sm"
+               ng-class="{'disabled' : isEmpty(QueryParams) }">
+                <i class="fa fa-save"></i> Save to Bookmark </a>
+            <a href="" ng-click="OpenModal()" class="btn btn-default btn-sm">
+                <i class="glyphicon glyphicon-bookmark"></i> Open Bookmarks </a>
+            <a href="javascript:void(0);" ng-click="GenerateReport()" class="btn btn-default btn-sm ">
+                <i class="fa  fa-file-pdf-o"></i> Graphs </a>
         </div>
 
-        <div class="col-md-6" >
-                <table class="table table-bordered pull-right" style="width: 375px;">
-                    <thead>
-                    <tr>
-                        <td style="width:110px;padding: 5px 6px;font-weight: bold;">O/S Bal</td>
-                        <td style="width:110px;padding: 5px 6px;font-weight: bold;">RWA Amt</td>
-                        <td style="width:155px;padding: 5px 6px;font-weight: bold;">Reg Cap</td>
-                    </tr>
-                    </thead>
+        <div class="col-md-6">
+            <table class="table table-bordered pull-right" style="width: 375px;">
+                <thead>
+                <tr>
+                    <td style="width:110px;padding: 5px 6px;font-weight: bold;">O/S Bal</td>
+                    <td style="width:110px;padding: 5px 6px;font-weight: bold;">RWA Amt</td>
+                    <td style="width:155px;padding: 5px 6px;font-weight: bold;">Reg Cap</td>
+                </tr>
+                </thead>
 
-                    <tbody>
-                    <tr>
-                        <td class="color-01" style="width:110px;padding: 5px 6px;">{{ (TotalSum.notionalTotal |number:0)||
-                            'n/a
-                            '}}
-                        </td>
-                        <td class="color-01" style="width:110px;padding: 5px 6px;">{{ (TotalSum.rcAndEcTotal
-                            |number:0)||'n/a
-                            '}}
-                        </td>
-                        <td class="color-01" style="width:155px;padding: 5px 6px;">{{ (TotalSum.expectedLossTotal|number:0)
-                            ||'
-                            n/a '}}
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                <tbody>
+                <tr>
+                    <td class="color-01" style="width:110px;padding: 5px 6px;">{{ (TotalSum.notionalTotal |number:0)||
+                        'n/a
+                        '}}
+                    </td>
+                    <td class="color-01" style="width:110px;padding: 5px 6px;">{{ (TotalSum.rcAndEcTotal
+                        |number:0)||'n/a
+                        '}}
+                    </td>
+                    <td class="color-01" style="width:155px;padding: 5px 6px;">{{ (TotalSum.expectedLossTotal|number:0)
+                        ||'
+                        n/a '}}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
 
         </div>
 
     </div>
+
+    <!-- GRID -->
     <div class="row">
         <div class="col-md-12 dataTables_wrapper">
 
             <div class="dt-toolbar no-padding">
-                <div class="spinner-indicator">
+                <div class="spinner-indicator" ng-if="loading" style="display:block;">
                     <div class="v-loading-indicator second v-loading-indicator-delay"></div>
                 </div>
             </div>
+
+            <div class="dt-toolbar no-padding">
+                <div class="spinner-indicator" ng-if="CreditRisk.list.length==0"
+                     style="display:block;">
+                    <div class="empty-text">No data Found</div>
+                </div>
+            </div>
+
             <div class="wrapper small ">
                 <table ng-float-head
                        class="table table-bordered table-striped  table-hover  sortable"
@@ -370,8 +380,68 @@
             </div>
         </div>
     </div>
+    <!-- GRID END -->
 
-    <modal-bookmark control="focusinControl" callback="ApplyFilter(filter)"></modal-bookmark>
+    <!-- Pagination -->
+    <div class="ngFooterPanel"
+         ng-class="{'ui-widget-content': jqueryUITheme, 'ui-corner-bottom': jqueryUITheme}"
+         ng-style="footerStyle()" style="height: 57px;">
+        <div class="ngTotalSelectContainer">
+            <div class="ngFooterTotalItems ngNoMultiSelect"
+                 ng-class="{'ngNoMultiSelect': !multiSelect}">
+                <span class="ngLabel">Total Items: {{ CreditRisk.totalElements }}</span><span
+                    ng-show="filterText.length > 0" class="ngLabel ng-hide">(Showing Items: 25)</span>
+            </div>
+        </div>
+
+        <div class="ngPagerContainer ngNoMultiSelect" style="float: right; margin-top: 10px;"
+             ng-class="{'ngNoMultiSelect': !multiSelect}">
+            <div style="float:left; margin-right: 10px;" class="ngRowCountPicker">
+                <span style="float: left; margin-top: 3px;" class="ngLabel">Page Size:</span>
+                <select style="float: left;height: 27px; width: 100px" ng-model="pageLength">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                    <option value="250">250</option>
+                    <option value="500">500</option>
+                    <option value="1000">1000</option>
+                </select>
+            </div>
+            <div style="float:left; margin-right: 10px; line-height:25px;" class="ngPagerControl">
+                <button class="ngPagerButton" ng-click="pageToFirst()" ng-disabled="cantPageBackward()"
+                        title="First Page" disabled="disabled">
+                    <div class="ngPagerFirstTriangle">
+                        <div class="ngPagerFirstBar"></div>
+                    </div>
+                </button>
+
+                <button class="ngPagerButton" ng-click="pageBackward()" ng-disabled="cantPageBackward()"
+                        title="Previous Page" disabled="disabled">
+                    <div class="ngPagerFirstTriangle ngPagerPrevTriangle"></div>
+                </button>
+
+                <input class="ngPagerCurrent" min="1" max="537" type="number"
+                       style="width:50px; height: 24px; margin-top: 1px; padding: 0 4px;"
+                       ng-model="currentPage">
+                <span class="ngGridMaxPagesNumber" ng-show="maxPages() > 0">/ {{ CreditRisk.totalPages }} </span>
+
+                <button class="ngPagerButton" ng-click="pageForward()" ng-disabled="cantPageForward()"
+                        title="Next Page">
+                    <div class="ngPagerLastTriangle ngPagerNextTriangle"></div>
+                </button>
+
+                <button class="ngPagerButton" ng-click="pageToLast()" ng-disabled="cantPageToLast()"
+                        title="Last Page">
+                    <div class="ngPagerLastTriangle">
+                        <div class="ngPagerLastBar"></div>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Pagination END -->
+
 </section>
 
 <script type="text/javascript">

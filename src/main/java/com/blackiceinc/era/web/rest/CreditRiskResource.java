@@ -43,11 +43,20 @@ public class CreditRiskResource {
     @RequestMapping(value = "/credit-risk",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PageImpl<MeasurementSensitivity>> getAll(@RequestParam(value = "page", required = false) Integer page,
-                                                                   @RequestParam(value = "length", required = false) Integer length,
-                                                                   @RequestParam(value = "snapshotDate", required = false) Date snapshotDate,
-                                                                   @RequestParam(value = "loadJobNbr", required = false) BigDecimal loadJobNbr,
-                                                                   @RequestParam(value = "scenarioId", required = false) String scenarioId) throws URISyntaxException {
+    public ResponseEntity<PageImpl<MeasurementSensitivity>> getAll(
+            @RequestParam(value = "page", required = false) Integer page,
+            @RequestParam(value = "length", required = false) Integer length,
+            @RequestParam(value = "snapshotDate", required = false) Date snapshotDate,
+            @RequestParam(value = "loadJobNbr", required = false) BigDecimal loadJobNbr,
+            @RequestParam(value = "scenarioId", required = false) String scenarioId,
+            @RequestParam(value = "industry", required = false) String industry,
+            @RequestParam(value = "profitCentre", required = false) String profitCentre,
+            @RequestParam(value = "assetClass", required = false) String assetClass,
+            @RequestParam(value = "exposureType", required = false) String exposureType,
+            @RequestParam(value = "entityType", required = false) String entityType,
+            @RequestParam(value = "productType", required = false) String productType,
+            @RequestParam(value = "riskRatingFrom", required = false) String riskRatingFrom,
+            @RequestParam(value = "riskRatingTo", required = false) String riskRatingTo) throws URISyntaxException {
 
 
         PageImpl<MeasurementSensitivity> page1 = new PageImpl<>(getMSDummy());

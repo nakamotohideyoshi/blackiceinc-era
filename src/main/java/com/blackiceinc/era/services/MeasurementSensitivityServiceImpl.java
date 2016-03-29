@@ -9,6 +9,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Service
 public class MeasurementSensitivityServiceImpl implements MeasurementSensitivityService {
 
@@ -19,12 +21,25 @@ public class MeasurementSensitivityServiceImpl implements MeasurementSensitivity
     private MeasurementSensitivityRepository msRepository;
 
     @Override
-    public Page<MeasurementSensitivity> findMsByParams(Integer page,
-                                                       Integer length) {
+    public Page<MeasurementSensitivity> findMsByParams(Map<String, String> params) {
         Specification<MeasurementSensitivity> specMs = createMsSpecification();
 
-        int pageNumber = (page != null) ? page : PAGE_0;
-        int pageSize = (length != null) ? length : PAGE_SIZE_25;
+        String page = params.get("page");
+        String length = params.get("length");
+        String snapshotDate = params.get("snapshotDate");
+        String loadJobNbr = params.get("loadJobNbr");
+        String scenarioId = params.get("scenarioId");
+        String industry = params.get("industry");
+        String profitCentre = params.get("profitCentre");
+        String assetClass = params.get("assetClass");
+        String exposureType = params.get("exposureType");
+        String entityType = params.get("entityType");
+        String productType = params.get("productType");
+        String riskRatingFrom = params.get("riskRatingFrom");
+        String riskRatingTo = params.get("riskRatingTo");
+
+        int pageNumber = (page != null) ? Integer.parseInt(page) : PAGE_0;
+        int pageSize = (length != null) ? Integer.parseInt(length) : PAGE_SIZE_25;
 
         return msRepository.findAll(specMs, new PageRequest(pageNumber, pageSize));
     }

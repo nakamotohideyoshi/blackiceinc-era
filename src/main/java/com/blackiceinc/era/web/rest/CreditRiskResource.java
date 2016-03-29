@@ -4,7 +4,7 @@ import com.blackiceinc.era.persistence.erau.model.MeasurementSensitivity;
 import com.blackiceinc.era.services.CreditRiskService;
 import com.blackiceinc.era.services.MeasurementSensitivityService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +25,7 @@ import java.util.Map;
 public class CreditRiskResource {
 
     @Autowired
-    private MeasurementSensitivityService measurementSensitivityService;
+    private MeasurementSensitivityService msService;
 
     @Autowired
     private CreditRiskService creditRiskService;
@@ -43,28 +43,14 @@ public class CreditRiskResource {
     @RequestMapping(value = "/credit-risk",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PageImpl<MeasurementSensitivity>> getAll(
-            @RequestParam(value = "page", required = false) Integer page,
-            @RequestParam(value = "length", required = false) Integer length,
-            @RequestParam(value = "snapshotDate", required = false) Date snapshotDate,
-            @RequestParam(value = "loadJobNbr", required = false) BigDecimal loadJobNbr,
-            @RequestParam(value = "scenarioId", required = false) String scenarioId,
-            @RequestParam(value = "industry", required = false) String industry,
-            @RequestParam(value = "profitCentre", required = false) String profitCentre,
-            @RequestParam(value = "assetClass", required = false) String assetClass,
-            @RequestParam(value = "exposureType", required = false) String exposureType,
-            @RequestParam(value = "entityType", required = false) String entityType,
-            @RequestParam(value = "productType", required = false) String productType,
-            @RequestParam(value = "riskRatingFrom", required = false) String riskRatingFrom,
-            @RequestParam(value = "riskRatingTo", required = false) String riskRatingTo) throws URISyntaxException {
+    public ResponseEntity<Page<MeasurementSensitivity>> getAll(
+            @RequestParam Map<String, String> allRequestParams) throws URISyntaxException {
 
+//        PageImpl<MeasurementSensitivity> page1 = new PageImpl<>(getMSDummy());
+        Page<MeasurementSensitivity> msPage = msService.findMsByParams(allRequestParams);
 
-        PageImpl<MeasurementSensitivity> page1 = new PageImpl<>(getMSDummy());
-//        Page<MeasurementSensitivity> msPage = measurementSensitivityService
-//                .findMsByParams(page, length);
-
-//        return new ResponseEntity<>(msPage, HttpStatus.OK);
-        return new ResponseEntity<>(page1, HttpStatus.OK);
+        return new ResponseEntity<>(msPage, HttpStatus.OK);
+//        return new ResponseEntity<>(page1, HttpStatus.OK);
     }
 
     private List<MeasurementSensitivity> getMSDummy() {

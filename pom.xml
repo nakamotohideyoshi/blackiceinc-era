@@ -244,6 +244,24 @@
                 <spring.active.profile>onsite</spring.active.profile>
             </properties>
         </profile>
+        <profile>
+            <id>production</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <spring.active.profile>production</spring.active.profile>
+            </properties>
+        </profile>
+        <profile>
+            <id>recovery</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <spring.active.profile>recovery</spring.active.profile>
+            </properties>
+        </profile>
     </profiles>
 
 </project>

@@ -14,6 +14,7 @@
         //flashUrl: 'yourcdn.com/js/FileAPI.flash.swf'
     };
     var USER_ROLE = "${user_role}";
+    var IBMCOGNOS_URL = "${ibmcognos_url}";
 </script>
 
 <script src="resources/js/libs/jquery-2.0.2.min.js"></script>

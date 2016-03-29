@@ -64,7 +64,8 @@ angular.module('app.controllers', ['ui.bootstrap'])
 	.controller('SmartAppController', ['$scope', function($scope) {
 		// your main controller
 		
-		$scope.userRole = USER_ROLE
+		$scope.userRole = USER_ROLE;
+		$scope.ibmcognosUrl = IBMCOGNOS_URL;
 		
 		
 	}])

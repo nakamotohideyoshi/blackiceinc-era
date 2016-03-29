@@ -2,6 +2,7 @@ package com.blackiceinc.era.web;
 
 import com.blackiceinc.era.services.security.SecurityUtils;
 import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +21,9 @@ import java.util.Locale;
 @Controller
 public class HomeController {
 
+    @Value("${ibmcognos.url:http://10.50.143.8/ibmcognos/cgi-bin/cognos.cgi?b_action=xts.run&m=portal/cc.xts&m_folder=i7C5187CCA1EB4E2B91D3A32B2F95C5BF}")
+    private String ibmCognosUrl;
+
     @RequestMapping(value = "/main", method = RequestMethod.GET)
     public String admin(Locale locale, HttpServletRequest request, HttpServletResponse response, Model model) {
         Date date = new Date();
@@ -32,6 +36,7 @@ public class HomeController {
 
         String userRole = SecurityUtils.getUserRole();
         model.addAttribute("user_role", userRole);
+        model.addAttribute("ibmcognos_url", ibmCognosUrl);
 
         JSONObject result = new JSONObject();
         result.put("role", userRole);

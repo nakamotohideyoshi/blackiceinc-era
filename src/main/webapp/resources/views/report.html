@@ -66,7 +66,7 @@
 
 
         <iframe style="width: 100%" id="iframeID" frameBorder="0" scrolling="no"
-        src="http://10.50.143.8/ibmcognos/cgi-bin/cognos.cgi?b_action=xts.run&m=portal/cc.xts&m_folder=i7C5187CCA1EB4E2B91D3A32B2F95C5BF">
+                ng-src="{{ ibmcognosUrl }}">
             <p>Your browser does not support iframes.</p>
         </iframe>
 
@@ -83,7 +83,7 @@
 
         $(window).resize(function () {
             tableHeightSize()
-        })
+        });
         function tableHeightSize() {
 
             if ($('body').hasClass('menu-on-top')) {

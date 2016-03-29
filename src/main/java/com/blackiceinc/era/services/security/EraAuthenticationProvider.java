@@ -53,7 +53,8 @@ public class EraAuthenticationProvider implements AuthenticationProvider {
                 log.info("Authenticate to embedded ldap server username : {}", name);
                 // authenticate to embedded ldap server
                 authenticate = authenticateToEmbeddedDomain(authentication);
-            } else if (env.acceptsProfiles(Constants.SPRING_PROFILE_ONSITE)) {
+            } else if (env.acceptsProfiles(Constants.SPRING_PROFILE_ONSITE,
+                    Constants.SPRING_PROFILE_PRODUCTION, Constants.SPRING_PROFILE_RECOVERY)) {
                 // check which domain to use
                 EraWebAuthDetails details = (EraWebAuthDetails) authentication.getDetails();
                 String domain = details.getDomain();

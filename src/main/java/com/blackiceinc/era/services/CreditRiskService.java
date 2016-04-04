@@ -1,8 +1,13 @@
 package com.blackiceinc.era.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
+import java.math.BigDecimal;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -11,19 +16,74 @@ import java.util.List;
 @Service
 public class CreditRiskService {
 
+    private final Logger log = LoggerFactory.getLogger(CreditRiskService.class);
 
-    public HashMap<String, List> getFilterOptions() {
+    @Autowired
+    private Environment env;
+
+    public HashMap<String, List> getFilterOptions() throws SQLException {
         HashMap<String, List> filterOptions = new HashMap<>();
 
-        List<Date> snapshotDateList = getSnapshotDates();
-        List<Integer> loadJobNbrList = getLoadJobNbrs();
-        List<String> scenarioIdList = getScenarioIds();
-        List<String> industryList = getIndustries();
-        List<String> profitCentreList = getProfitCentres();
-        List<String> assetClassList = getAssets();
-        List<String> exposureTypeList = getExposureTypes();
-        List<String> entityTypeList = getEntityTypes();
-        List<String> productTypeList = getProductTypes();
+        List<Date> snapshotDateList = new ArrayList<Date>();
+        List<Integer> loadJobNbrList = new ArrayList<Integer>();
+        List<String> scenarioIdList = new ArrayList<String>();
+
+        List<String> industryList = new ArrayList<String>();
+        List<String> profitCentreList = new ArrayList<String>();
+
+        List<String> assetClassList = new ArrayList<String>();
+        List<String> exposureTypeList = new ArrayList<String>();
+        List<String> entityTypeList = new ArrayList<String>();
+        List<String> productTypeList = new ArrayList<String>();
+
+        ResultSet distinctMSResultSet = getDistinctMSResultSet();
+        while (distinctMSResultSet.next()) {
+            Date snapshotDate = distinctMSResultSet.getDate("SNAPSHOT_DATE");
+            Integer loadJobNbr = distinctMSResultSet.getInt("LOAD_JOB_NBR");
+            String scenarioId = distinctMSResultSet.getString("SCENARIO_ID");
+
+            String assetClass = distinctMSResultSet.getString("ASSET_CLASS_FINAL");
+            String exposureType = distinctMSResultSet.getString("EXPOSURE_TYPE_CODE");
+            String entityType = distinctMSResultSet.getString("ERA_ENTITY_TYPE");
+            String productType = distinctMSResultSet.getString("ERA_PRODUCT_TYPE_FINAL");
+
+            if (!snapshotDateList.contains(snapshotDate)) {
+                snapshotDateList.add(snapshotDate);
+            }
+
+            if (!loadJobNbrList.contains(loadJobNbr)) {
+                loadJobNbrList.add(loadJobNbr);
+            }
+
+            if (!scenarioIdList.contains(scenarioId)) {
+                scenarioIdList.add(scenarioId);
+            }
+
+            if (!assetClassList.contains(assetClass)) {
+                assetClassList.add(assetClass);
+            }
+
+            if (!exposureTypeList.contains(exposureType)) {
+                exposureTypeList.add(exposureType);
+            }
+
+            if (!entityTypeList.contains(entityType)) {
+                entityTypeList.add(entityType);
+            }
+
+            if (!productTypeList.contains(productType)) {
+                productTypeList.add(productType);
+            }
+        }
+
+        ResultSet distinctCustomerResultSet = getDistinctCustomerIndustryCodeResultSet();
+        while (distinctCustomerResultSet.next()) {
+            String industryCode = distinctCustomerResultSet.getString("INDUSTRY_CODE");
+
+            if (!industryList.contains(industryCode)) {
+                industryList.add(industryCode);
+            }
+        }
 
         filterOptions.put("snapshotDate", snapshotDateList);
         filterOptions.put("loadJobNbr", loadJobNbrList);
@@ -38,42 +98,38 @@ public class CreditRiskService {
         return filterOptions;
     }
 
-    private List<Date> getSnapshotDates() {
-        List<Date> snapshotDateList = new ArrayList<>();
-        snapshotDateList.add(new Date(2016, 2, 1));
-        snapshotDateList.add(new Date(2016, 3, 1));
-        return snapshotDateList;
+    private ResultSet getDistinctMSResultSet() throws SQLException {
+        long start = System.currentTimeMillis();
+        log.info("Starting taking distinct data from MEASUREMENT_SENSITIVITY");
+        ResultSet resultSet = getStatement().executeQuery("SELECT DISTINCT " +
+                "  SNAPSHOT_DATE,\n" +
+                "  LOAD_JOB_NBR,\n" +
+                "  SCENARIO_ID,\n" +
+                "  ASSET_CLASS_FINAL,\n" +
+                "  EXPOSURE_TYPE_CODE,\n" +
+                "  ERA_ENTITY_TYPE,\n" +
+                "  ERA_PRODUCT_TYPE_FINAL\n" +
+                "FROM MEASUREMENT_SENSITIVITY ms");
+        log.info("distinct MEASUREMENT_SENSITIVITY data took {} ms", System.currentTimeMillis() - start);
+        return resultSet;
     }
 
-    public List<Integer> getLoadJobNbrs() {
-        return Arrays.asList(1, 2, 3);
+    private ResultSet getDistinctCustomerIndustryCodeResultSet() throws SQLException {
+        long start = System.currentTimeMillis();
+        log.info("Starting taking distinct data from CUSTOMER");
+        ResultSet resultSet = getStatement().executeQuery("SELECT DISTINCT INDUSTRY_CODE FROM customer c");
+        log.info("distinct CUSTOMER data took {} ms", System.currentTimeMillis() - start);
+        return resultSet;
     }
 
-    public List<String> getScenarioIds() {
-        return Arrays.asList("1", "2", "3");
+    private Statement getStatement() throws SQLException {
+        Connection conn = DriverManager.getConnection(
+                env.getProperty("jdbc.url"),
+                env.getProperty("jdbc.user"),
+                env.getProperty("jdbc.pass"));
+        conn.setAutoCommit(false);
+
+        return conn.createStatement();
     }
 
-    public List<String> getIndustries() {
-        return Arrays.asList("industry 1", "industry 2");
-    }
-
-    public List<String> getAssets() {
-        return Arrays.asList("Asset 1", "Asset 2");
-    }
-
-    public List<String> getProfitCentres() {
-        return Arrays.asList("profit centre 1", "profit centre 2", "profit centre 3");
-    }
-
-    public List<String> getExposureTypes() {
-        return Arrays.asList("exposure type 1", "exposure type 2");
-    }
-
-    public List<String> getEntityTypes() {
-        return Arrays.asList("entity type 1", "entity type 2");
-    }
-
-    public List<String> getProductTypes() {
-        return Arrays.asList("product type 1", "product type 2");
-    }
 }

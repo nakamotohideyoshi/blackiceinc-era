@@ -22,21 +22,11 @@ public class MeasurementSensitivityServiceImpl implements MeasurementSensitivity
 
     @Override
     public Page<MeasurementSensitivity> findMsByParams(Map<String, String> params) {
-        Specification<MeasurementSensitivity> specMs = createMsSpecification();
+        Specification<MeasurementSensitivity> specMs = createMsSpecification(params);
 
         String page = params.get("page");
         String length = params.get("length");
-        String snapshotDate = params.get("snapshotDate");
-        String loadJobNbr = params.get("loadJobNbr");
-        String scenarioId = params.get("scenarioId");
-        String industry = params.get("industry");
-        String profitCentre = params.get("profitCentre");
-        String assetClass = params.get("assetClass");
-        String exposureType = params.get("exposureType");
-        String entityType = params.get("entityType");
-        String productType = params.get("productType");
-        String riskRatingFrom = params.get("riskRatingFrom");
-        String riskRatingTo = params.get("riskRatingTo");
+
 
         int pageNumber = (page != null) ? Integer.parseInt(page) : PAGE_0;
         int pageSize = (length != null) ? Integer.parseInt(length) : PAGE_SIZE_25;
@@ -44,10 +34,58 @@ public class MeasurementSensitivityServiceImpl implements MeasurementSensitivity
         return msRepository.findAll(specMs, new PageRequest(pageNumber, pageSize));
     }
 
-    private Specification<MeasurementSensitivity> createMsSpecification() {
+    private Specification<MeasurementSensitivity> createMsSpecification(Map<String, String> params) {
         MsSpecificationsBuilder builder = new MsSpecificationsBuilder();
 
-        // TODO: to be implemented filtering
+        String snapshotDate = params.get("snapshotDate");
+        if (snapshotDate!=null){
+            builder.with("snapshotDate", ":", snapshotDate, "", "");
+        }
+
+        String loadJobNbr = params.get("loadJobNbr");
+        if (loadJobNbr != null) {
+            builder.with("loadJobNbr", ":", loadJobNbr, "", "");
+        }
+
+        String scenarioId = params.get("scenarioId");
+        if (scenarioId != null) {
+            builder.with("scenarioId", ":", scenarioId, "", "");
+        }
+
+        String industry = params.get("industry");
+        if (industry!=null){
+            builder.with("industryCode", "I", industry, "", "");
+        }
+
+        String profitCentre = params.get("profitCentre");
+//        if (profitCentre!=null){
+//            builder.with("orgUnit", ":", profitCentre, "", "");
+//        }
+
+
+        String assetClass = params.get("assetClass");
+        if (assetClass!=null){
+            builder.with("assetClassFinal", ":", assetClass, "", "");
+        }
+
+        String exposureType = params.get("exposureType");
+        if (exposureType!=null){
+            builder.with("exposureTypeCode", ":", exposureType, "", "");
+        }
+
+        String entityType = params.get("entityType");
+        if (entityType!=null){
+            builder.with("eraEntityType", ":", entityType, "", "");
+        }
+
+        String productType = params.get("productType");
+        if (productType!=null){
+            builder.with("eraProductTypeFinal", ":", productType, "", "");
+        }
+
+        String riskRatingFrom = params.get("riskRatingFrom");
+        String riskRatingTo = params.get("riskRatingTo");
+
 
         return builder.build();
     }

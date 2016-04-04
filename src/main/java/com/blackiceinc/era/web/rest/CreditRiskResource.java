@@ -53,27 +53,5 @@ public class CreditRiskResource {
 //        return new ResponseEntity<>(page1, HttpStatus.OK);
     }
 
-    private List<MeasurementSensitivity> getMSDummy() {
-        List<MeasurementSensitivity> list = new ArrayList<>();
 
-        for (int i = 0; i < 9; i++) {
-            MeasurementSensitivity ms = new MeasurementSensitivity();
-            ms.setMeasurementNbr(String.valueOf(i));
-            ms.setSnapshotDate(new Date(System.currentTimeMillis()));
-            ms.setAssetClassFinal("Asset Class Final " + String.valueOf(i));
-            ms.setExposureTypeCode("Exposure Type Code " + String.valueOf(i));
-            ms.setEraEntityType("Era Entity Type " + String.valueOf(i));
-            ms.setEraProductTypeFinal("Era Product Type Final " + String.valueOf(i));
-            ms.setRiskWeightFinal(0.5 + i);
-            ms.setEadBeforeCcfLcyAmt(10.5 + i);
-            ms.setRwaAmt(33.33 + i);
-            ms.setRegCap(50.0 + i);
-
-            ms.setLoadJobNbr(2L + i);
-            ms.setScenarioId("1" + String.valueOf(i));
-            list.add(ms);
-        }
-
-        return list;
-    }
 }

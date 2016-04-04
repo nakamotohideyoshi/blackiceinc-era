@@ -3,10 +3,7 @@ package com.blackiceinc.era.persistence.erau.model;
 import java.math.BigDecimal;
 import java.sql.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * The persistent class for the measurement_sensitivity database table.
@@ -52,6 +49,10 @@ public class MeasurementSensitivity {
 
 	@Column(name="SCENARIO_ID")
 	private String scenarioId;
+
+    @OneToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name="CUSTOMER_ID")
+    private Customer customer;
 
 	public MeasurementSensitivity() {
 	}
@@ -151,4 +152,12 @@ public class MeasurementSensitivity {
 	public void setScenarioId(String scenarioId) {
 		this.scenarioId = scenarioId;
 	}
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
 }

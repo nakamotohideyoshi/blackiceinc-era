@@ -2,7 +2,7 @@ package com.blackiceinc.era.persistence.erau.specifications;
 
 
 public enum SearchOperation {
-    EQUALITY, NEGATION, GREATER_THAN, LESS_THAN, LIKE, STARTS_WITH, ENDS_WITH, CONTAINS;
+    EQUALITY, NEGATION, GREATER_THAN, LESS_THAN, LIKE, STARTS_WITH, ENDS_WITH, CONTAINS, INNER_JOIN;
 
     public static final String[] SIMPLE_OPERATION_SET = { ":", "!", ">", "<", "~" };
 
@@ -18,6 +18,8 @@ public enum SearchOperation {
                 return LESS_THAN;
             case '~':
                 return LIKE;
+            case 'I':
+                return INNER_JOIN;
             default:
                 return null;
         }

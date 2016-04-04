@@ -1,13 +1,15 @@
 package com.blackiceinc.era.persistence.erau.specifications;
 
 
+import com.blackiceinc.era.persistence.erau.model.Customer;
 import com.blackiceinc.era.persistence.erau.model.MeasurementSensitivity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.*;
+import javax.persistence.metamodel.EntityType;
+import javax.persistence.metamodel.Metamodel;
 
 public class MsSpecification implements Specification<MeasurementSensitivity> {
     private SpecSearchCriteria criteria;
@@ -36,6 +38,9 @@ public class MsSpecification implements Specification<MeasurementSensitivity> {
                 return builder.like(root.<String>get(criteria.getKey()), "%" + criteria.getValue());
             case CONTAINS:
                 return builder.like(root.<String>get(criteria.getKey()), "%" + criteria.getValue() + "%");
+            case INNER_JOIN:
+                Join<MeasurementSensitivity, Customer> customer = root.join("customer");
+                return builder.equal(customer.get(criteria.getKey()), criteria.getValue());
             default:
                 return null;
         }

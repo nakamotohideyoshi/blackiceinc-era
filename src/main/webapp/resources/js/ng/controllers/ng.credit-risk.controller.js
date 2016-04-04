@@ -1,4 +1,9 @@
-angular.module('ng.credit-risk.controller', [])
+/*global angular, $ */
+(function() {
+    'use strict';
+
+
+    angular.module('ng.credit-risk.controller', [])
     .controller('CreditRiskController', ['$scope', '$timeout', 'Util', 'CreditRiskService', '$routeParams', '$location',
         function ($scope, $timeout, Util, CreditRiskService, $routeParams, $location) {
             var CONSTANT_snapshotDate = 'snapshotDate';
@@ -196,3 +201,4 @@ angular.module('ng.credit-risk.controller', [])
 
         }
     ]);
+})();

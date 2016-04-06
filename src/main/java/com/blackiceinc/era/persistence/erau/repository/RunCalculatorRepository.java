@@ -11,14 +11,5 @@ import java.util.List;
 
 public interface RunCalculatorRepository extends JpaRepository<RunCalculator, Long>, JpaSpecificationExecutor<RunCalculator> {
 
-    @Procedure(name = "RunCalculator.runCalculation")
-    void runCalculatorStoredProcedure(@Param("P_SCENARIO_ID") String scenarioId,
-                                      @Param("P_LOAD_JOB_NBR") Integer loadJobNbr,
-                                      @Param("P_SNAPSHOT_DATE") Date snapshotDate);
-
-    @Procedure(name = "RunCalculator.runCalculationTest")
-    void runCalculatorStoredProcedureTest(@Param("P_SCENARIO_ID") String scenarioId,
-                                      @Param("P_LOAD_JOB_NBR") Integer loadJobNbr,
-                                      @Param("P_SNAPSHOT_DATE") Date snapshotDate);
 
 }

@@ -16,6 +16,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
@@ -41,6 +43,9 @@ public class RunCalculatorServiceImpl implements RunCalculatorService {
 
     @Autowired
     private MeasurementSensitivityDaoCustom measurementSensitivityDaoCustom;
+
+    @PersistenceContext
+    private EntityManager em;
 
     @Override
     public Map<String, List> getFilterOptions() throws SQLException {
@@ -158,6 +163,18 @@ public class RunCalculatorServiceImpl implements RunCalculatorService {
                 scenarioIdList.add(scenarioId);
             }
         }
+    }
+
+    @Transactional
+    public void executeRunCalcProcedure(RunCalculator runCalculator) throws SQLException {
+        long start = System.currentTimeMillis();
+        log.info("Running procedure RUN_CALC for runCalculator : {}", runCalculator.toString());
+        this.em.createNativeQuery("CALL CALC_RUN(:scenarioId, :loadJobNbr, :snapshotDate)")
+                .setParameter("scenarioId", runCalculator.getScenarioId())
+                .setParameter("loadJobNbr", runCalculator.getLoadJobNbr())
+                .setParameter("snapshotDate", runCalculator.getSnapshotDate())
+                .executeUpdate();
+        log.info("Procedure RUN_CALC for runCalculator : {} finished in {} ms", runCalculator.toString(), System.currentTimeMillis() - start);
     }
 
 }

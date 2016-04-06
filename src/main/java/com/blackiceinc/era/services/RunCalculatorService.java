@@ -9,9 +9,6 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by tmanev on 2/12/2016.
- */
 public interface RunCalculatorService {
     Map<String, List> getFilterOptions() throws SQLException;
 
@@ -24,4 +21,6 @@ public interface RunCalculatorService {
     List<Date> getSnapshotDateOptions() throws SQLException;
 
     void delete(Long id);
+
+    void executeRunCalcProcedure(RunCalculator runCalculator) throws SQLException;
 }

@@ -12,20 +12,6 @@ import javax.validation.constraints.Size;
 import java.sql.Date;
 
 @Entity
-@NamedStoredProcedureQueries({
-        @NamedStoredProcedureQuery(name = "RunCalculator.runCalculation", procedureName = "CALC_RUN", parameters = {
-                @StoredProcedureParameter(mode = ParameterMode.IN, name = "P_SCENARIO_ID", type = String.class),
-                @StoredProcedureParameter(mode = ParameterMode.IN, name = "P_LOAD_JOB_NBR", type = Integer.class),
-                @StoredProcedureParameter(mode = ParameterMode.IN, name = "P_SNAPSHOT_DATE", type = Date.class),
-
-        }),
-        @NamedStoredProcedureQuery(name = "RunCalculator.runCalculationTest", procedureName = "CALC_RUN_TEST", parameters = {
-                @StoredProcedureParameter(mode = ParameterMode.IN, name = "P_SCENARIO_ID", type = String.class),
-                @StoredProcedureParameter(mode = ParameterMode.IN, name = "P_LOAD_JOB_NBR", type = Integer.class),
-                @StoredProcedureParameter(mode = ParameterMode.IN, name = "P_SNAPSHOT_DATE", type = Date.class),
-
-        })
-})
 @Table(name = "ERA_RUN_CALCULATOR")
 public class RunCalculator {
 
@@ -37,7 +23,6 @@ public class RunCalculator {
     @NotNull
     @JsonSerialize(using = CustomDateSerializer.class)
     @JsonDeserialize(using = CustomDateDeserializer.class)
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "UTC")
     @Column(name = "SNAPSHOT_DATE")
     private Date snapshotDate;
 

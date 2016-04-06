@@ -43,11 +43,11 @@ public class CfgReclassCheckDefDaoCustom {
                 .setParameter("checkType",
                         cfgReclassCheckDef.getCheckType(), new StringType())
                 .setParameter("operator",
-                        cfgReclassCheckDef.getOperator(), new DoubleType())
+                        cfgReclassCheckDef.getOperator(), new StringType())
                 .setParameter("threshold",
                         cfgReclassCheckDef.getThreshold(), new DoubleType())
                 .setParameter("currency",
-                        cfgReclassCheckDef.getCurrency(), new DoubleType())
+                        cfgReclassCheckDef.getCurrency(), new StringType())
                 .executeUpdate();
     }
 

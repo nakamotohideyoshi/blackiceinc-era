@@ -44,21 +44,18 @@ public class EraAuthenticationProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String name = authentication.getName();
 
-        log.debug("Authenticating {}", name);
-
         org.springframework.security.core.userdetails.User byUsername = eraUserDetailsService.loadUserByUsername(name);
         try {
             Authentication authenticate;
             if (env.acceptsProfiles(Constants.SPRING_PROFILE_LOCAL, Constants.SPRING_PROFILE_DEV_ERA)) {
-                log.info("Authenticate to embedded ldap server username : {}", name);
+                log.info("Authenticate to embedded ldap server with username : {}", name);
                 // authenticate to embedded ldap server
                 authenticate = authenticateToEmbeddedDomain(authentication);
             } else if (env.acceptsProfiles(Constants.SPRING_PROFILE_ONSITE,
                     Constants.SPRING_PROFILE_PRODUCTION, Constants.SPRING_PROFILE_RECOVERY)) {
                 // check which domain to use
                 EraWebAuthDetails details = (EraWebAuthDetails) authentication.getDetails();
-                String domain = details.getDomain();
-                authenticate = authenticateToOnsiteDomain(domain, authentication);
+                authenticate = authenticateToOnsiteDomain(details.getDomain(), authentication);
             } else {
                 throw new InternalAuthenticationServiceException("Missing application configuration");
             }
@@ -74,7 +71,7 @@ public class EraAuthenticationProvider implements AuthenticationProvider {
     private Authentication authenticateToEmbeddedDomain(Authentication authentication) {
         Authentication authenticate = vibEmbeddedLdapAuthProvider.authenticate(authentication);
 
-        if (!authenticate.isAuthenticated()){
+        if (!authenticate.isAuthenticated()) {
             throw new LdapAuthenticationException("LDAP Authentication failed");
         }
 
@@ -84,34 +81,26 @@ public class EraAuthenticationProvider implements AuthenticationProvider {
     }
 
     private Authentication authenticateToOnsiteDomain(String domain, Authentication authentication) throws AuthenticationException {
-        log.info("authenticateToOnsiteDomain(domain, authentication) domain : {}, name : ", domain, authentication.getName());
+        log.info("authenticateToOnsiteDomain(domain, authentication) domain : {}, name : {}", domain, authentication.getName());
         if (NORTH_VIB_CORP.equals(domain)) {
-            log.info("vibOnsiteNorthLdapAuthProvider.authenticate(authentication);");
-            boolean authenticate = ldapUserBindAuthenticateService.authenticate((String) authentication.getPrincipal(),
-                    (String) authentication.getCredentials(),
-                    getNorthVibCorpConfig());
-            if (!authenticate) {
-                throw new LdapAuthenticationException("LDAP Authentication failed");
-            } else {
-                return new UsernamePasswordAuthenticationToken(authentication.getPrincipal(),
-                        authentication.getCredentials(),
-                        authentication.getAuthorities());
-            }
+            return doAuthentication(authentication, getNorthVibCorpConfig());
         } else if (SOUTH_VIB_CORP.equals(domain)) {
-            log.info("vibOnsiteSouthLdapAuthProvider.authenticate(authentication);");
-
-            boolean authenticate = ldapUserBindAuthenticateService.authenticate((String) authentication.getPrincipal(),
-                    (String) authentication.getCredentials(),
-                    getSouthVibCorpConfig());
-            if (!authenticate) {
-                throw new LdapAuthenticationException("LDAP Authentication failed");
-            } else {
-                return new UsernamePasswordAuthenticationToken(authentication.getPrincipal(),
-                        authentication.getCredentials(),
-                        authentication.getAuthorities());
-            }
+            return doAuthentication(authentication, getSouthVibCorpConfig());
         } else {
             throw new InternalAuthenticationServiceException("Missing application configuration");
+        }
+    }
+
+    private Authentication doAuthentication(Authentication authentication, LdapConfig ldapConfig) {
+        boolean authenticate = ldapUserBindAuthenticateService.authenticate((String) authentication.getPrincipal(),
+                (String) authentication.getCredentials(),
+                ldapConfig);
+        if (!authenticate) {
+            throw new LdapAuthenticationException("LDAP Authentication failed");
+        } else {
+            return new UsernamePasswordAuthenticationToken(authentication.getPrincipal(),
+                    authentication.getCredentials(),
+                    authentication.getAuthorities());
         }
     }
 

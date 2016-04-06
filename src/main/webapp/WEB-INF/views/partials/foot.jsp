@@ -69,7 +69,7 @@
 <script src="resources/js/ng/controllers/ng.cfg-configuration.controller.js"></script>
 <script src="resources/js/ng/controllers/ng.account-settings.controller.js"></script>
 <script src="resources/js/ng/controllers/ng.TestingScenariosCTRL.js"></script>
-<script src="resources/js/ng/controllers/ng.RegulatoryReportCTRL.js"></script>
+<script src="resources/js/ng/controllers/ng.reports.controller.js"></script>
 <script src="resources/js/ng/controllers/ng.excelController.js"></script>
 <script src="resources/js/ng/directives/ng.directives.js"></script>
 <script src="resources/js/ng/directives/ng.custom.directives.js"></script>

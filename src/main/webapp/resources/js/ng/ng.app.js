@@ -26,7 +26,7 @@ var smartApp = angular.module('smartApp', [
    'ng.account-settings.controller',
    'ng.maintenance-base.controller',
    'ng.TestingScenariosCTRL',
-   'ng.RegulatoryReportCTRL',
+   'ng.reports.controller',
    'ng.imf-main.controller',
    'ngSlider',
 	'ng.nav'
@@ -48,7 +48,7 @@ smartApp.config(['$routeProvider', '$provide', function($routeProvider, $provide
 			return 'resources/views/report.html';
 		},
 		//controller: 'CreditRiskController'
-		controller: 'RegulatoryReportCTRL'
+		controller: 'ReportsController'
 	})
 
     .when('/credit-risk', {

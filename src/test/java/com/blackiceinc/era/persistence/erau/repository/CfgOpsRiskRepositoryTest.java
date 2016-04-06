@@ -21,13 +21,17 @@ public class CfgOpsRiskRepositoryTest {
     @Autowired
     private CfgOpsRiskRepository cfgOpsRiskRepository;
 
+    @Autowired
+    private CfgOpsRiskDaoCustom cfgOpsRiskDaoCustom;
+
     @Test
     public void testSave() {
         CfgOpsRisk cfgOpsRisk = new CfgOpsRisk();
         cfgOpsRisk.setCode("code");
         cfgOpsRisk.setRiskWeight(new Double(0.1));
 
-        cfgOpsRiskRepository.save(cfgOpsRisk);
+        cfgOpsRiskDaoCustom.insert(cfgOpsRisk);
+//        cfgOpsRiskRepository.save(cfgOpsRisk);
     }
 
 }

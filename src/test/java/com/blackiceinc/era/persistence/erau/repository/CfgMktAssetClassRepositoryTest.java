@@ -21,13 +21,17 @@ public class CfgMktAssetClassRepositoryTest {
     @Autowired
     private CfgMktAssetClassRepository cfgMktAssetClassRepository;
 
+    @Autowired
+    private CfgMktAssetClassDaoCustom cfgMktAssetClassDaoCustom;
+
     @Test
     public void testSave() {
         CfgMktAssetClass cfgMktAssetClass = new CfgMktAssetClass();
         cfgMktAssetClass.setMktAssetClass("mkt_asset_class");
         cfgMktAssetClass.setMktAssetClassDesc("mkt_asset_class");
 
-        cfgMktAssetClassRepository.save(cfgMktAssetClass);
+        cfgMktAssetClassDaoCustom.insert(cfgMktAssetClass);
+//        cfgMktAssetClassRepository.save(cfgMktAssetClass);
     }
 
 }

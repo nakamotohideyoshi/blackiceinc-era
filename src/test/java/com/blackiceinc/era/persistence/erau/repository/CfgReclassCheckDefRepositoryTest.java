@@ -21,6 +21,9 @@ public class CfgReclassCheckDefRepositoryTest {
     @Autowired
     private CfgReclassCheckDefRepository cfgReclassCheckDefRepository;
 
+    @Autowired
+    private CfgReclassCheckDefDaoCustom cfgReclassCheckDefDaoCustom;
+
     @Test
     public void testSave() {
         CfgReclassCheckDef cfgReclassCheckDef = new CfgReclassCheckDef();
@@ -31,7 +34,8 @@ public class CfgReclassCheckDefRepositoryTest {
         cfgReclassCheckDef.setThreshold(new Double(4));
         cfgReclassCheckDef.setCurrency("currency");
 
-        cfgReclassCheckDefRepository.save(cfgReclassCheckDef);
+        cfgReclassCheckDefDaoCustom.insert(cfgReclassCheckDef);
+//        cfgReclassCheckDefRepository.save(cfgReclassCheckDef);
     }
 
 }

@@ -21,6 +21,9 @@ public class CfgCompanyRepositoryTest {
     @Autowired
     private CfgCompanyRepository cfgCompanyRepository;
 
+    @Autowired
+    private CfgCompanyDaoCustom cfgCompanyDaoCustom;
+
     @Test
     public void testSave(){
         CfgCompany cfgCompany = new CfgCompany();
@@ -28,7 +31,8 @@ public class CfgCompanyRepositoryTest {
         cfgCompany.setCompanyName("comp_name");
         cfgCompany.setIncorporationCountry("incorporation_country");
 
-        cfgCompanyRepository.save(cfgCompany);
+        cfgCompanyDaoCustom.insert(cfgCompany);
+//        cfgCompanyRepository.save(cfgCompany);
     }
 
 }

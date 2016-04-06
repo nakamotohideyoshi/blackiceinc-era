@@ -21,13 +21,17 @@ public class CfgEntityTypeRepositoryTest {
     @Autowired
     private CfgEntityTypeRepository cfgEntityTypeRepository;
 
+    @Autowired
+    private CfgEntityTypeDaoCustom cfgEntityTypeDaoCustom;
+
     @Test
     public void testSave(){
         CfgEntityType cfgEntityType = new CfgEntityType();
         cfgEntityType.setEraEntityType("era_entity_type");
         cfgEntityType.setEntityDesc("entity_desc");
 
-        cfgEntityTypeRepository.save(cfgEntityType);
+        cfgEntityTypeDaoCustom.insert(cfgEntityType);
+//        cfgEntityTypeRepository.save(cfgEntityType);
     }
 
 }

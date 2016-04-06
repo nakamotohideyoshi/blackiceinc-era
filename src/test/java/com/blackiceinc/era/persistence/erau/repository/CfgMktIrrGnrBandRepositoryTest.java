@@ -19,13 +19,17 @@ public class CfgMktIrrGnrBandRepositoryTest {
     @Autowired
     private CfgMktIrrGnrBandRepository cfgMktIrrGnrBandRepository;
 
+    @Autowired
+    private CfgMktIrrGnrBandDaoCustom cfgMktIrrGnrBandDaoCustom;
+
     @Test
     public void testSave() {
         CfgMktIrrGnrBand cfgMktIrrGnrBand = new CfgMktIrrGnrBand();
         cfgMktIrrGnrBand.setCode("code");
         cfgMktIrrGnrBand.setRiskWeight(new Double(10));
 
-        cfgMktIrrGnrBandRepository.save(cfgMktIrrGnrBand);
+        cfgMktIrrGnrBandDaoCustom.insert(cfgMktIrrGnrBand);
+//        cfgMktIrrGnrBandRepository.save(cfgMktIrrGnrBand);
     }
 
 }

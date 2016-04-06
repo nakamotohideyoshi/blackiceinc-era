@@ -21,13 +21,17 @@ public class CfgMktComOthRepositoryTest {
     @Autowired
     private CfgMktComOthRepository cfgMktComOthRepository;
 
+    @Autowired
+    private CfgMktComOthDaoCustom cfgMktComOthDaoCustom;
+
     @Test
     public void testSave() {
         CfgMktComOth cfgMktComOth = new CfgMktComOth();
         cfgMktComOth.setMktProductType("mkt_product_type");
         cfgMktComOth.setRiskWeight(new Double(0.1));
 
-        cfgMktComOthRepository.save(cfgMktComOth);
+        cfgMktComOthDaoCustom.insert(cfgMktComOth);
+//        cfgMktComOthRepository.save(cfgMktComOth);
     }
 
 

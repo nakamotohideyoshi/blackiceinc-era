@@ -21,6 +21,9 @@ public class CfgMktEqtGnrRepositoryTest {
     @Autowired
     private CfgMktEqtGnrRepository cfgMktEqtGnrRepository;
 
+    @Autowired
+    private CfgMktEqtGnrDaoCustom cfgMktEqtGnrDaoCustom;
+
     @Test
     public void testSave() {
         CfgMktEqtGnr cfgMktEqtGnr = new CfgMktEqtGnr();
@@ -28,7 +31,8 @@ public class CfgMktEqtGnrRepositoryTest {
         cfgMktEqtGnr.setUnderlying("underlying");
         cfgMktEqtGnr.setRiskWeight(new Double(0.6));
 
-        cfgMktEqtGnrRepository.save(cfgMktEqtGnr);
+        cfgMktEqtGnrDaoCustom.insert(cfgMktEqtGnr);
+//        cfgMktEqtGnrRepository.save(cfgMktEqtGnr);
     }
 
 }

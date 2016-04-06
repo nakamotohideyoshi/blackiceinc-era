@@ -21,6 +21,9 @@ public class CfgMktAssetClassMappingRepositoryTest {
     @Autowired
     private CfgMktAssetClassMappingRepository cfgMktAssetClassMappingRepository;
 
+    @Autowired
+    private CfgMktAssetClassMappingDaoCustom cfgMktAssetClassMappingDaoCustom;
+
     @Test
     public void testSave() {
         CfgMktAssetClassMapping cfgMktAssetClassMapping = new CfgMktAssetClassMapping();
@@ -28,7 +31,8 @@ public class CfgMktAssetClassMappingRepositoryTest {
         cfgMktAssetClassMapping.setEraEntityType("era_entity_type");
         cfgMktAssetClassMapping.setMktProductType("mkt_product_type");
 
-        cfgMktAssetClassMappingRepository.save(cfgMktAssetClassMapping);
+        cfgMktAssetClassMappingDaoCustom.insert(cfgMktAssetClassMapping);
+//        cfgMktAssetClassMappingRepository.save(cfgMktAssetClassMapping);
     }
 
 }

@@ -21,6 +21,9 @@ public class CfgReclassCheckTypeRepositoryTest {
     @Autowired
     private CfgReclassCheckTypeRepository cfgReclassCheckTypeRepository;
 
+    @Autowired
+    private CfgReclassCheckTypeDaoCustom cfgReclassCheckTypeDaoCustom;
+
     @Test
     public void testSave(){
         CfgReclassCheckType cfgReclassCheckType = new CfgReclassCheckType();
@@ -30,7 +33,8 @@ public class CfgReclassCheckTypeRepositoryTest {
         cfgReclassCheckType.setConsoField("conso_field");
         cfgReclassCheckType.setAmtField("amt_field");
 
-        cfgReclassCheckTypeRepository.save(cfgReclassCheckType);
+        cfgReclassCheckTypeDaoCustom.insert(cfgReclassCheckType);
+//        cfgReclassCheckTypeRepository.save(cfgReclassCheckType);
     }
 
 }

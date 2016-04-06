@@ -19,6 +19,9 @@ public class CfgMktIrrGnrIntraRepositoryTest {
     @Autowired
     private CfgMktIrrGnrIntraRepository cfgMktIrrGnrIntraRepository;
 
+    @Autowired
+    private CfgMktIrrGnrIntraDaoCustom cfgMktIrrGnrIntraDaoCustom;
+
     @Test
     public void testSave() {
         CfgMktIrrGnrIntra cfgMktIrrGnrIntra = new CfgMktIrrGnrIntra();
@@ -26,7 +29,8 @@ public class CfgMktIrrGnrIntraRepositoryTest {
         cfgMktIrrGnrIntra.setZoneCode("zone_code");
         cfgMktIrrGnrIntra.setRiskWeight(new Double(0.1));
 
-        cfgMktIrrGnrIntraRepository.save(cfgMktIrrGnrIntra);
+        cfgMktIrrGnrIntraDaoCustom.insert(cfgMktIrrGnrIntra);
+//        cfgMktIrrGnrIntraRepository.save(cfgMktIrrGnrIntra);
     }
 
 }

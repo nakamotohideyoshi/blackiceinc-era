@@ -19,6 +19,9 @@ public class CfgProductTypeRepositoryTest {
     @Autowired
     private CfgProductTypeRepository cfgProductTypeRepository;
 
+    @Autowired
+    private CfgProductTypeDaoCustom cfgProductTypeDaoCustom;
+
     @Test
     public void testSave(){
         CfgProductType cfgProductType = new CfgProductType();
@@ -26,7 +29,8 @@ public class CfgProductTypeRepositoryTest {
         cfgProductType.setEraProductDesc("era_product_desc");
         cfgProductType.setEraProductCategory("era_product_category");
 
-        cfgProductTypeRepository.save(cfgProductType);
+        cfgProductTypeDaoCustom.insert(cfgProductType);
+//        cfgProductTypeRepository.save(cfgProductType);
     }
 
 }

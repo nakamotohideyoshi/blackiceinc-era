@@ -21,13 +21,17 @@ public class CfgOpsFormulaRepositoryTest {
     @Autowired
     private  CfgOpsFormulaRepository cfgOpsFormulaRepository;
 
+    @Autowired
+    private CfgOpsFormulaDaoCustom cfgOpsFormulaDaoCustom;
+
     @Test
     public void testSave() {
         CfgOpsFormula cfgOpsFormula = new CfgOpsFormula();
         cfgOpsFormula.setBasicIndicator("basic_indicator");
         cfgOpsFormula.setFormula("formula");
 
-        cfgOpsFormulaRepository.save(cfgOpsFormula);
+        cfgOpsFormulaDaoCustom.insert(cfgOpsFormula);
+//        cfgOpsFormulaRepository.save(cfgOpsFormula);
     }
 
 }

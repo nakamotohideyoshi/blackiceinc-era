@@ -21,13 +21,17 @@ public class CfgCreditMeasureRepositoryTest {
     @Autowired
     private CfgCreditMeasureRepository cfgCreditMeasureRepository;
 
+    @Autowired
+    private CfgCreditMeasureDaoCustom cfgCreditMeasureDaoCustom;
+
     @Test
     public void testSave() {
         CfgCreditMeasure cfgCreditMeasure = new CfgCreditMeasure();
         cfgCreditMeasure.setCreditMeasure("credit_measure");
         cfgCreditMeasure.setCreditMeasureDesc("credit_measure_desc");
 
-        cfgCreditMeasureRepository.save(cfgCreditMeasure);
+        cfgCreditMeasureDaoCustom.insert(cfgCreditMeasure);
+//        cfgCreditMeasureRepository.save(cfgCreditMeasure);
     }
 
 }

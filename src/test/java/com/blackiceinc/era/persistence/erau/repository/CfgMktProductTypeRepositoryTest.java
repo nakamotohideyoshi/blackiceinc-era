@@ -21,6 +21,9 @@ public class CfgMktProductTypeRepositoryTest {
     @Autowired
     private CfgMktProductTypeRepository cfgMktProductTypeRepository;
 
+    @Autowired
+    private CfgMktProductTypeDaoCustom cfgMktProductTypeDaoCustom;
+
     @Test
     public void testSave() {
         CfgMktProductType cfgMktProductType = new CfgMktProductType();
@@ -28,7 +31,8 @@ public class CfgMktProductTypeRepositoryTest {
         cfgMktProductType.setMktProductDesc("mkt_product_desc");
         cfgMktProductType.setMktProductCategory("mkt_product_category");
 
-        cfgMktProductTypeRepository.save(cfgMktProductType);
+        cfgMktProductTypeDaoCustom.insert(cfgMktProductType);
+//        cfgMktProductTypeRepository.save(cfgMktProductType);
     }
 
 }

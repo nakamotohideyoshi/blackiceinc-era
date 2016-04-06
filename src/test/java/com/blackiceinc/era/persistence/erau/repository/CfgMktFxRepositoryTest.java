@@ -18,12 +18,16 @@ public class CfgMktFxRepositoryTest {
     @Autowired
     private CfgMktFxRepository cfgMktFxRepository;
 
+    @Autowired
+    private CfgMktFxDaoCustom cfgMktFxDaoCustom;
+
     @Test
     public void testSave() {
         CfgMktFx cfgMktComOth = new CfgMktFx();
         cfgMktComOth.setMktProductType("mkt_product_type");
         cfgMktComOth.setRiskWeight(new Double(0.1));
 
-        cfgMktFxRepository.save(cfgMktComOth);
+        cfgMktFxDaoCustom.insert(cfgMktComOth);
+//        cfgMktFxRepository.save(cfgMktComOth);
     }
 }

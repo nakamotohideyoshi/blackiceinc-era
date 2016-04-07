@@ -11,12 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.math.BigDecimal;
 import java.net.URISyntaxException;
-import java.sql.Date;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,11 +29,7 @@ public class CreditRiskResource {
     @RequestMapping(value = "/credit-risk/filter-options", method = RequestMethod.GET)
     @ResponseBody
     public Map<String, List> getFilterOptions(HttpServletRequest request) throws URISyntaxException, SQLException {
-        HashMap<String, List> stringListHashMap = new HashMap<>();
-
-        stringListHashMap = creditRiskService.getFilterOptions();
-
-        return stringListHashMap;
+        return creditRiskService.getFilterOptions();
     }
 
     @RequestMapping(value = "/credit-risk",

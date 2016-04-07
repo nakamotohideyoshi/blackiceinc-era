@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class CfgCrmHaircutObjectMapper extends AbstractObjectMapper {
+public class CfgCrmHaircutObjectMapper extends AbstractObjectMapper<CfgCrmHaircut> {
 
     CfgCrmHaircutRepository cfgCrmHaircutRepository;
 
@@ -20,6 +20,7 @@ public class CfgCrmHaircutObjectMapper extends AbstractObjectMapper {
         this.cfgCrmHaircutRepository = cfgCrmHaircutRepository;
     }
 
+    @Override
     CfgCrmHaircut createRow(Row row) {
         CfgCrmHaircut cfgCrmHaircut = new CfgCrmHaircut();
 

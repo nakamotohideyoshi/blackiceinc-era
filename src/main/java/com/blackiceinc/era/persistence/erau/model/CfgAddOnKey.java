@@ -10,6 +10,8 @@ import java.io.Serializable;
 @Embeddable
 public class CfgAddOnKey implements Serializable {
 
+    private static final long serialVersionUID = 6790200765537795488L;
+
     @Column(name = "ERA_PRODUCT_TYPE")
     private String eraProductType;
 
@@ -20,6 +22,7 @@ public class CfgAddOnKey implements Serializable {
     private String maturityEnd;
 
     public CfgAddOnKey() {
+        // default constructor
     }
 
     public CfgAddOnKey(String eraProductType, String maturityStart, String maturityEnd) {

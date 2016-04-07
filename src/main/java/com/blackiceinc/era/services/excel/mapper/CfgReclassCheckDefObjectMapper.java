@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class CfgReclassCheckDefObjectMapper extends AbstractObjectMapper {
+public class CfgReclassCheckDefObjectMapper extends AbstractObjectMapper<CfgReclassCheckDef> {
 
     CfgReclassCheckDefRepository cfgReclassCheckDefRepository;
 
@@ -20,6 +20,7 @@ public class CfgReclassCheckDefObjectMapper extends AbstractObjectMapper {
         this.cfgReclassCheckDefRepository = cfgReclassCheckDefRepository;
     }
 
+    @Override
     CfgReclassCheckDef createRow(Row row) {
         CfgReclassCheckDef cfgReclassCheckDef = new CfgReclassCheckDef();
 

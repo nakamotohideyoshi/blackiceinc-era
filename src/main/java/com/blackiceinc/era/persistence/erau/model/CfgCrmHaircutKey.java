@@ -10,6 +10,8 @@ import java.io.Serializable;
 @Embeddable
 public class CfgCrmHaircutKey implements Serializable {
 
+    private static final long serialVersionUID = -3146500301880777235L;
+
     @Column(name = "ERA_COL_TYPE")
     private String eraColType;
 
@@ -26,6 +28,7 @@ public class CfgCrmHaircutKey implements Serializable {
     private String maxResidualMaturity;
 
     public CfgCrmHaircutKey() {
+        // default constructor
     }
 
     public CfgCrmHaircutKey(String eraColType, String eraEntityType, String riskBucket, String minResidualMaturity, String maxResidualMaturity) {

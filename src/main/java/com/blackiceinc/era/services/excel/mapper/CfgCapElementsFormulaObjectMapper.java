@@ -2,7 +2,6 @@ package com.blackiceinc.era.services.excel.mapper;
 
 import com.blackiceinc.era.persistence.erau.model.CfgCapElementsFormula;
 import com.blackiceinc.era.persistence.erau.repository.CfgCapElementsFormulaRepository;
-import com.blackiceinc.era.services.excel.mapper.exception.PrimaryColumnMappingException;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class CfgCapElementsFormulaObjectMapper extends AbstractObjectMapper {
+public class CfgCapElementsFormulaObjectMapper extends AbstractObjectMapper<CfgCapElementsFormula> {
 
     CfgCapElementsFormulaRepository cfgCapElementsFormulaRepository;
 
@@ -21,7 +20,8 @@ public class CfgCapElementsFormulaObjectMapper extends AbstractObjectMapper {
         this.cfgCapElementsFormulaRepository = cfgCapElementsFormulaRepository;
     }
 
-    CfgCapElementsFormula createRow(Row row) throws PrimaryColumnMappingException {
+    @Override
+    CfgCapElementsFormula createRow(Row row) {
         CfgCapElementsFormula cfgCapElementsFormula = new CfgCapElementsFormula();
 
         cfgCapElementsFormula.setCapElements(getStringValue(row.getCell(0)));

@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "CFG_CAP_ELEMENTS_LIMIT")
-public class CfgCapElementsLimit {
+public class CfgCapElementsLimit  {
 
     @Id
     @Column(name = "LIMIT_TYPE")
@@ -32,6 +32,7 @@ public class CfgCapElementsLimit {
     private String consoAmt;
 
     public CfgCapElementsLimit() {
+        // default constructor
     }
 
     public CfgCapElementsLimit(String limitType, String operator, Double threshold, String consoTable, String consoField, String consoFieldValue, String consoAmt) {

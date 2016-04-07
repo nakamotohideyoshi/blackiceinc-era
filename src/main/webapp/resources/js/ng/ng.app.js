@@ -55,7 +55,7 @@ smartApp.config(['$routeProvider', '$provide', function($routeProvider, $provide
       templateUrl: function($routeParams) {
         return 'resources/views/credit-risk.html';
       },
-      controller: 'CreditRiskController',
+      controller: 'CreditRiskController'
     })
 
     .when('/market-risk', {
@@ -144,7 +144,7 @@ smartApp.config(['$routeProvider', '$provide', function($routeProvider, $provide
 			templateUrl: function($routeParams) {
 				return 'resources/views/report.html';
 			},
-			controller: 'RegulatoryReportCTRL'
+			controller: 'ReportsController'
 		})
 
 		//default path

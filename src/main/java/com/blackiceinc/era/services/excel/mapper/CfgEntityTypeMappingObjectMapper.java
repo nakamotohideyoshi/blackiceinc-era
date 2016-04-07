@@ -12,7 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 
 @Component
-public class CfgEntityTypeMappingObjectMapper extends AbstractObjectMapper {
+public class CfgEntityTypeMappingObjectMapper extends AbstractObjectMapper<CfgEntityTypeMapping> {
 
     CfgEntityTypeMappingRepository cfgEntityTypeMappingRepository;
 
@@ -21,6 +21,7 @@ public class CfgEntityTypeMappingObjectMapper extends AbstractObjectMapper {
         this.cfgEntityTypeMappingRepository = cfgEntityTypeMappingRepository;
     }
 
+    @Override
     CfgEntityTypeMapping createRow(Row row) {
         CfgEntityTypeMapping cfgEntityTypeMapping = new CfgEntityTypeMapping();
 

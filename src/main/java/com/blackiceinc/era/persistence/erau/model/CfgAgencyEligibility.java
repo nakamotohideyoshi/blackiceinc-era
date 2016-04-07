@@ -26,7 +26,7 @@ public class CfgAgencyEligibility {
     }
 
     public CfgAgencyEligibility() {
-
+        // default constructor
     }
 
     public String getAgencyCode() {

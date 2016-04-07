@@ -6,7 +6,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "CFG_ENTITY_TYPE_MAPPING")
-public class CfgEntityTypeMapping {
+public class CfgEntityTypeMapping  {
 
     @EmbeddedId
     private CfgEntityTypeMappingKey cfgEntityTypeMappingKey;

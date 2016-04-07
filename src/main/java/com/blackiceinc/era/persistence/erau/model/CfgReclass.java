@@ -6,14 +6,9 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "CFG_RECLASS")
-//@NamedNativeQueries({
-//        @NamedNativeQuery(name = CfgReclassRepository.INSERT,
-//                query = "INSERT INTO CFG_RECLASS (CHECK_NO, DESCRIPTION, ERA_ENTITY_TYPE_IN, ERA_PRODUCT_TYPE_IN, \"CHECK\", ERA_ENTITY_TYPE_OUT, ERA_PRODUCT_TYPE_OUT) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)")
-//})
 @NamedNativeQuery(name = "CfgReclass.insert",
         query = "INSERT INTO CFG_RECLASS (CHECK_NO, DESCRIPTION, ERA_ENTITY_TYPE_IN, ERA_PRODUCT_TYPE_IN, \"CHECK\", ERA_ENTITY_TYPE_OUT, ERA_PRODUCT_TYPE_OUT) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)")
-public class CfgReclass {
-
+public class CfgReclass  {
 
     @Id
     @Column(name = "CHECK_NO")
@@ -48,7 +43,7 @@ public class CfgReclass {
     }
 
     public CfgReclass() {
-
+        // default constructor
     }
 
     public String getCheckNo() {

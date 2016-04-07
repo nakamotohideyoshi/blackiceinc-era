@@ -20,6 +20,7 @@ public class CfgCapElementsFormula {
     private String formula;
 
     public CfgCapElementsFormula() {
+        // default constructor
     }
 
     public CfgCapElementsFormula(String capElements, String description, String formula) {

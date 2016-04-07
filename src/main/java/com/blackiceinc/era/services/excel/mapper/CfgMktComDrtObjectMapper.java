@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class CfgMktComDrtObjectMapper extends AbstractObjectMapper {
+public class CfgMktComDrtObjectMapper extends AbstractObjectMapper<CfgMktComDrt> {
 
     CfgMktComDrtRepository cfgMktComDrtRepository;
 
@@ -20,6 +20,7 @@ public class CfgMktComDrtObjectMapper extends AbstractObjectMapper {
         this.cfgMktComDrtRepository = cfgMktComDrtRepository;
     }
 
+    @Override
     CfgMktComDrt createRow(Row row) {
         CfgMktComDrt cfgMktComDrt = new CfgMktComDrt();
 

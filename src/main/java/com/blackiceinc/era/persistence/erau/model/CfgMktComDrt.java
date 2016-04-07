@@ -17,6 +17,7 @@ public class CfgMktComDrt {
     private Double riskWeight;
 
     public CfgMktComDrt() {
+        // default constructor
     }
 
     public CfgMktComDrt(String mktProductType, Double riskWeight) {

@@ -10,6 +10,8 @@ import java.io.Serializable;
 @Embeddable
 public class CfgCrmEligibilityKey implements Serializable {
 
+    private static final long serialVersionUID = 5454041914848434177L;
+
     @Column(name = "ERA_ENTITY_TYPE")
     private String eraEntityType;
 
@@ -23,6 +25,7 @@ public class CfgCrmEligibilityKey implements Serializable {
     private String riskWeight;
 
     public CfgCrmEligibilityKey() {
+        // default constructor
     }
 
     public CfgCrmEligibilityKey(String eraEntityType, String eraProductType, String riskBucket, String riskWeight) {

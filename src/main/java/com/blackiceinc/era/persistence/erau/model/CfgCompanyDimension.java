@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "CFG_COMPANY_DIMENSION")
-public class CfgCompanyDimension {
+public class CfgCompanyDimension  {
 
     @EmbeddedId
     private CfgCompanyDimensionKey cfgCompanyDimensionKey;

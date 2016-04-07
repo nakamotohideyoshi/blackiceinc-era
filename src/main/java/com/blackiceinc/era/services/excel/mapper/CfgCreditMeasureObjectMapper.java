@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class CfgCreditMeasureObjectMapper extends AbstractObjectMapper {
+public class CfgCreditMeasureObjectMapper extends AbstractObjectMapper<CfgCreditMeasure> {
 
     CfgCreditMeasureRepository cfgCreditMeasureRepository;
 
@@ -20,6 +20,7 @@ public class CfgCreditMeasureObjectMapper extends AbstractObjectMapper {
         this.cfgCreditMeasureRepository = cfgCreditMeasureRepository;
     }
 
+    @Override
     CfgCreditMeasure createRow(Row row) {
 
         CfgCreditMeasure cfgCreditMeasure = new CfgCreditMeasure();

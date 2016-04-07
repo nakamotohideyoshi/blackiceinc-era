@@ -10,6 +10,8 @@ import java.io.Serializable;
 @Embeddable
 public class CfgRatingKey implements Serializable {
 
+    private static final long serialVersionUID = 6558318807173574667L;
+
     @Column(name = "AGENCY_CODE")
     private String agencyCode;
 
@@ -17,6 +19,7 @@ public class CfgRatingKey implements Serializable {
     private String rating;
 
     public CfgRatingKey() {
+        // default constructor
     }
 
     public CfgRatingKey(String agencyCode, String rating) {

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class CfgCompanyDimensionObjectMapper extends AbstractObjectMapper {
+public class CfgCompanyDimensionObjectMapper extends AbstractObjectMapper<CfgCompanyDimension> {
     private CfgCompanyDimensionRepository cfgCompanyDimensionRepository;
 
     @Autowired
@@ -19,6 +19,7 @@ public class CfgCompanyDimensionObjectMapper extends AbstractObjectMapper {
         this.cfgCompanyDimensionRepository = cfgCompanyDimensionRepository;
     }
 
+    @Override
     CfgCompanyDimension createRow(Row row) {
         CfgCompanyDimension cfgCompanyDimension = new CfgCompanyDimension();
 

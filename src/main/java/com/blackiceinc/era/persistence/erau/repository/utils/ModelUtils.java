@@ -21,6 +21,7 @@ public class ModelUtils {
         ret.add(Short.class);
         ret.add(Integer.class);
         ret.add(Long.class);
+        ret.add(long.class);
         ret.add(Float.class);
         ret.add(Double.class);
         ret.add(Void.class);

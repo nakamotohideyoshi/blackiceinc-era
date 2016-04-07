@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class CfgAgencyEligibilityObjectMapper extends AbstractObjectMapper {
+public class CfgAgencyEligibilityObjectMapper extends AbstractObjectMapper<CfgAgencyEligibility> {
 
     CfgAgencyEligibilityRepository cfgAgencyEligibilityRepository;
 
@@ -20,6 +20,7 @@ public class CfgAgencyEligibilityObjectMapper extends AbstractObjectMapper {
         this.cfgAgencyEligibilityRepository = cfgAgencyEligibilityRepository;
     }
 
+    @Override
     CfgAgencyEligibility createRow(Row row) {
         CfgAgencyEligibility cfgAgencyEligibility = new CfgAgencyEligibility();
 

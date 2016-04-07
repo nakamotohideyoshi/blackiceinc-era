@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class CfgReclassObjectMapper extends AbstractObjectMapper {
+public class CfgReclassObjectMapper extends AbstractObjectMapper<CfgReclass> {
 
     CfgReclassRepository cfgReclassRepository;
 
@@ -20,6 +20,7 @@ public class CfgReclassObjectMapper extends AbstractObjectMapper {
         this.cfgReclassRepository = cfgReclassRepository;
     }
 
+    @Override
     CfgReclass createRow(Row row) {
         CfgReclass cfgReclass = new CfgReclass();
 

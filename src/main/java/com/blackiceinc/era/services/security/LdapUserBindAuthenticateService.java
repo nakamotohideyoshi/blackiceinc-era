@@ -21,7 +21,7 @@ public class LdapUserBindAuthenticateService {
         if (ldapConnection != null && ldapConnection.isConnected()) {
             log.info("****** LDAP connection successful *****");
 
-            SearchRequest searchRequest = null;
+            SearchRequest searchRequest;
             try {
                 searchRequest = createSearchRequest(username, ldapConfig);
 
@@ -32,7 +32,6 @@ public class LdapUserBindAuthenticateService {
                     } else {
                         SearchResultEntry entry = searchResult.getSearchEntries().get(0);
                         BindRequest bindRequest = new SimpleBindRequest(entry.getDN(), password);
-                        String userCN = entry.getDN();
                         BindResult bindResult = ldapConnection.bind(bindRequest);
                         if (bindResult.getResultCode().equals(ResultCode.SUCCESS)) {
                             log.info("******* User : " + username + " successfully authenticated");
@@ -45,7 +44,7 @@ public class LdapUserBindAuthenticateService {
                     // The search failed for some reason.
                     ResultCode resultCode = lse.getResultCode();
                     String errorMessageFromServer = lse.getMessage();
-                    log.error("***Search result failed :  " + resultCode.toString() + errorMessageFromServer);
+                    log.error("***Search result failed :  " + resultCode.toString() + errorMessageFromServer, lse);
                 }
             } catch (LDAPException e) {
                 logErrorLdapException(username, ldapConfig, ldapConnection.getConnectedAddress(), e);
@@ -57,14 +56,6 @@ public class LdapUserBindAuthenticateService {
         }
 
         return success;
-    }
-
-    private SearchRequest createSearchGroupRequest(String userName, String userCN, LdapConfig ldapConfig) throws LDAPException {
-        log.info("******* Authentication for : " + userName + " successful.");
-        String groupFilter = ldapConfig.getGroupFilter();
-        String exactGroupFilter = StringUtils.replace(groupFilter, "{0}", userCN);
-        log.info("****** Filter query for searching in groups : " + exactGroupFilter);
-        return new SearchRequest(ldapConfig.getBaseDn(), SearchScope.SUB, exactGroupFilter);
     }
 
     private SearchRequest createSearchRequest(String username, LdapConfig ldapConfig) throws LDAPException {

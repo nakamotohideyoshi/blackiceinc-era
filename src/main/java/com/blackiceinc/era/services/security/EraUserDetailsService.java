@@ -25,7 +25,7 @@ public class EraUserDetailsService implements UserDetailsService {
     private UserRepository userRepository;
 
     @Override
-    public org.springframework.security.core.userdetails.User loadUserByUsername(String username) throws UsernameNotFoundException {
+    public org.springframework.security.core.userdetails.User loadUserByUsername(String username) {
         log.info("loadUserByUsername username : {}", username);
 
         User byUsername = userRepository.findByUsernameIgnoreCase(username);

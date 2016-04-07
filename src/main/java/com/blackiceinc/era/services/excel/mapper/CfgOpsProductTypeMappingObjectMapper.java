@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class CfgOpsProductTypeMappingObjectMapper extends AbstractObjectMapper {
+public class CfgOpsProductTypeMappingObjectMapper extends AbstractObjectMapper<CfgOpsProductTypeMapping> {
 
     CfgOpsProductTypeMappingRepository cfgOpsProductTypeMappingRepository;
 
@@ -20,6 +20,7 @@ public class CfgOpsProductTypeMappingObjectMapper extends AbstractObjectMapper {
         this.cfgOpsProductTypeMappingRepository = cfgOpsProductTypeMappingRepository;
     }
 
+    @Override
     CfgOpsProductTypeMapping createRow(Row row) {
         CfgOpsProductTypeMapping cfgOpsProductTypeMapping = new CfgOpsProductTypeMapping();
 

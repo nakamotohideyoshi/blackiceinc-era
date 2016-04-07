@@ -58,9 +58,7 @@ public class ConfigFileServiceImpl implements ConfigFileService {
         FileUtils.copyInputStreamToFile(file.getInputStream(), new File(filePath));
 
         ConfigFile configFile = configFileRepository.findOneByFileName(fileName);
-        if (configFile != null) {
-            // overwrite file and update
-        } else {
+        if (configFile == null) {
             // create file
             configFile = new ConfigFile();
             configFile.setFileName(fileName);

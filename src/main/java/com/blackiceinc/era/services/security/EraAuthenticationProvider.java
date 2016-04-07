@@ -1,7 +1,6 @@
 package com.blackiceinc.era.services.security;
 
 import com.blackiceinc.era.config.Constants;
-import com.blackiceinc.era.persistence.erau.repository.UserRepository;
 import com.blackiceinc.era.services.security.exception.LdapAuthenticationException;
 import com.blackiceinc.era.services.security.model.LdapConfig;
 import com.blackiceinc.era.services.security.model.LdapConfigBuilder;
@@ -10,11 +9,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.env.Environment;
-import org.springframework.security.authentication.*;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.ldap.authentication.LdapAuthenticationProvider;
-import org.springframework.security.ldap.authentication.ad.ActiveDirectoryAuthenticationException;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -64,7 +65,7 @@ public class EraAuthenticationProvider implements AuthenticationProvider {
                     byUsername.getAuthorities());
         } catch (BadCredentialsException ex) {
             log.info("Bad credentials for username : {}", name);
-            throw new BadCredentialsException("Bad credentials");
+            throw ex;
         }
     }
 

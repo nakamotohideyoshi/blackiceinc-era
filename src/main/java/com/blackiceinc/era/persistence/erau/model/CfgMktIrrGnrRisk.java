@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "CFG_MKT_IRR_GNR_RISK")
-public class CfgMktIrrGnrRisk {
+public class CfgMktIrrGnrRisk  {
 
     @Id
     @Column(name = "ZONE_CODE")
@@ -52,7 +52,7 @@ public class CfgMktIrrGnrRisk {
     }
 
     public CfgMktIrrGnrRisk() {
-
+        // default constructor
     }
 
     public String getZoneCode() {

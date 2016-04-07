@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class CfgOpsFormulaObjectMapper extends AbstractObjectMapper {
+public class CfgOpsFormulaObjectMapper extends AbstractObjectMapper<CfgOpsFormula> {
 
     CfgOpsFormulaRepository cfgOpsFormulaRepository;
 
@@ -20,6 +20,7 @@ public class CfgOpsFormulaObjectMapper extends AbstractObjectMapper {
         this.cfgOpsFormulaRepository = cfgOpsFormulaRepository;
     }
 
+    @Override
     CfgOpsFormula createRow(Row row) {
         CfgOpsFormula cfgOpsFormula = new CfgOpsFormula();
 

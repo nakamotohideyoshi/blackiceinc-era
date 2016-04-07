@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class CfgCapElementsMappingObjectMapper extends AbstractObjectMapper {
+public class CfgCapElementsMappingObjectMapper extends AbstractObjectMapper<CfgCapElementsMapping> {
 
     CfgCapElementsMappingRepository cfgCapElementsMappingRepository;
 
@@ -20,6 +20,7 @@ public class CfgCapElementsMappingObjectMapper extends AbstractObjectMapper {
         this.cfgCapElementsMappingRepository = cfgCapElementsMappingRepository;
     }
 
+    @Override
     CfgCapElementsMapping createRow(Row row) {
         CfgCapElementsMapping cfgCapElementsMapping = new CfgCapElementsMapping();
 

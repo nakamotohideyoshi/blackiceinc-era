@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "CFG_RECLASS_CHECK_DEF")
-public class CfgReclassCheckDef {
+public class CfgReclassCheckDef  {
 
     @Id
     @Column(name = "CHECK_DEF_NO")
@@ -38,7 +38,7 @@ public class CfgReclassCheckDef {
     }
 
     public CfgReclassCheckDef() {
-
+        // default constructor
     }
 
     public String getCheckDefNo() {

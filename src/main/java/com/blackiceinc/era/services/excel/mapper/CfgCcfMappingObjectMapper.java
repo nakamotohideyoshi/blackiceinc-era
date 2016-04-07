@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class CfgCcfMappingObjectMapper extends AbstractObjectMapper {
+public class CfgCcfMappingObjectMapper extends AbstractObjectMapper<CfgCcfMapping> {
 
     CfgCcfMappingRepository cfgCcfMappingRepository;
 
@@ -20,6 +20,7 @@ public class CfgCcfMappingObjectMapper extends AbstractObjectMapper {
         this.cfgCcfMappingRepository = cfgCcfMappingRepository;
     }
 
+    @Override
     CfgCcfMapping createRow(Row row) {
         CfgCcfMapping cfgCcfMapping = new CfgCcfMapping();
 

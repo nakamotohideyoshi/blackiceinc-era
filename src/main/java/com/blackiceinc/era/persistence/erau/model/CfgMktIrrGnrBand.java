@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "CFG_MKT_IRR_GNR_BAND")
-public class CfgMktIrrGnrBand {
+public class CfgMktIrrGnrBand  {
 
     @Id
     @Column(name = "CODE")
@@ -16,7 +16,9 @@ public class CfgMktIrrGnrBand {
     @Column(name = "RISK_WEIGHT")
     private Double riskWeight;
 
-    public CfgMktIrrGnrBand(){}
+    public CfgMktIrrGnrBand(){
+        // default constructor
+    }
 
     public CfgMktIrrGnrBand(String code, Double riskWeight) {
         this.code = code;

@@ -1,9 +1,8 @@
 package com.blackiceinc.era.services.security;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.WebAttributes;
@@ -15,12 +14,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Collection;
 
 @Component
 public class EraLoginSuccessHandler implements
         AuthenticationSuccessHandler {
-    protected Log logger = LogFactory.getLog(this.getClass());
+    public static final String MAIN = "/main";
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
@@ -35,52 +34,15 @@ public class EraLoginSuccessHandler implements
 
     protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws IOException {
-        String targetUrl = determineTargetUrl(authentication);
+        String targetUrl = MAIN;
 
         if (response.isCommitted()) {
-            logger.debug("Response has already been committed. Unable to redirect to "
+            log.debug("Response has already been committed. Unable to redirect to "
                     + targetUrl);
             return;
         }
 
         redirectStrategy.sendRedirect(request, response, targetUrl);
-    }
-
-    /**
-     * Builds the target URL according to the logic defined in the main class Javadoc.
-     */
-    protected String determineTargetUrl(Authentication authentication) {
-//        boolean ROLE_ADMIN = false;
-//        boolean ROLE_REGULATOR = false;
-//        boolean ROLE_USER = false;
-//        boolean ROLE_GUEST = false;
-//        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-//
-//        //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        for (GrantedAuthority grantedAuthority : authorities) {
-//            if (grantedAuthority.getAuthority().equals("ROLE_ADMIN")) {
-//                ROLE_ADMIN = true;
-//                break;
-//            } else if (grantedAuthority.getAuthority().equals("ROLE_REGULATOR")) {
-//                ROLE_REGULATOR = true;
-//                break;
-//            } else if (grantedAuthority.getAuthority().equals("ROLE_USER")) {
-//                ROLE_USER = true;
-//                break;
-//            } else if (grantedAuthority.getAuthority().equals("ROLE_GUEST")) {
-//                ROLE_GUEST = true;
-//                break;
-//            }
-//        }
-//
-//        if (ROLE_ADMIN || ROLE_REGULATOR || ROLE_USER || ROLE_GUEST) {
-//            return "/main";
-//        } else {
-//            throw new IllegalStateException();
-//        }
-
-        return "/main";
-
     }
 
     protected void clearAuthenticationAttributes(HttpServletRequest request) {
@@ -89,14 +51,6 @@ public class EraLoginSuccessHandler implements
             return;
         }
         session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
-    }
-
-    protected RedirectStrategy getRedirectStrategy() {
-        return redirectStrategy;
-    }
-
-    public void setRedirectStrategy(RedirectStrategy redirectStrategy) {
-        this.redirectStrategy = redirectStrategy;
     }
 
 }

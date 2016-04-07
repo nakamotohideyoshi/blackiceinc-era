@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "CFG_CAP_ELEMENTS_MAPPING")
-public class CfgCapElementsMapping {
+public class CfgCapElementsMapping  {
 
     @Id
     @Column(name = "CAP_ELEMENTS")
@@ -20,6 +20,7 @@ public class CfgCapElementsMapping {
     private String note;
 
     public CfgCapElementsMapping() {
+        // default constructor
     }
 
     public CfgCapElementsMapping(String capElements, String glCode, String note) {

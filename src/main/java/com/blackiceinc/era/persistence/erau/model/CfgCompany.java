@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "CFG_COMPANY")
-public class CfgCompany {
+public class CfgCompany  {
 
     @Id
     @Column(name = "COMPANY_CODE")

@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "CFG_MKT_ASSET_CLASS_MAPPING")
-public class CfgMktAssetClassMapping {
+public class CfgMktAssetClassMapping  {
 
     @Id
     @Column(name = "MKT_ASSET_CLASS")
@@ -26,7 +26,7 @@ public class CfgMktAssetClassMapping {
     }
 
     public CfgMktAssetClassMapping() {
-
+        // default constructor
     }
 
     public String getMktAssetClass() {

@@ -20,6 +20,7 @@ public class CfgCapElements {
     private String type;
 
     public CfgCapElements() {
+        // default constructor
     }
 
     public CfgCapElements(String capElements, String capElementsDesc, String type) {

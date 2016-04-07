@@ -23,6 +23,7 @@ public class CfgOpsProductTypeMapping {
     private String description;
 
     public CfgOpsProductTypeMapping() {
+        // default constructor
     }
 
     public CfgOpsProductTypeMapping(String opsProductType, String opsGlCode, String opsVibCode, String description) {

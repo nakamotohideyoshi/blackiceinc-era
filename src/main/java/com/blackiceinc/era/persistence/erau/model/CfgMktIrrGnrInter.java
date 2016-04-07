@@ -23,6 +23,7 @@ public class CfgMktIrrGnrInter {
     private Double riskWeight;
 
     public CfgMktIrrGnrInter() {
+        // default constructor
     }
 
     public CfgMktIrrGnrInter(String code, String zoneCode1, String zoneCode2, Double riskWeight) {

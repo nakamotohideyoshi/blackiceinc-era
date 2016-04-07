@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "CFG_PRODUCT_TYPE")
-public class CfgProductType {
+public class CfgProductType  {
 
     @Id
     @Column(name = "ERA_PRODUCT_TYPE")
@@ -26,7 +26,7 @@ public class CfgProductType {
     }
 
     public CfgProductType() {
-
+        // default constructor
     }
 
     public String getEraProductType() {

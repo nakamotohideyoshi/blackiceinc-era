@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "CFG_MKT_PRODUCT_MAPPING")
-public class CfgMktProductMapping {
+public class CfgMktProductMapping  {
 
     @Id
     @Column(name = "MKT_PRODUCT_TYPE")
@@ -29,6 +29,7 @@ public class CfgMktProductMapping {
     private String underlyingType;
 
     public CfgMktProductMapping() {
+        // default constructor
     }
 
     public CfgMktProductMapping(String mktProductType, String contractType, String exchangedTraded, String instrumentType, String tableName, String underlyingType) {

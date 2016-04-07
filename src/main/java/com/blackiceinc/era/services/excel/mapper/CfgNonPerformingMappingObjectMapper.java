@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class CfgNonPerformingMappingObjectMapper extends AbstractObjectMapper {
+public class CfgNonPerformingMappingObjectMapper extends AbstractObjectMapper<CfgNonPerformingMapping> {
 
     CfgNonPerformingMappingRepository cfgNonPerformingMappingRepository;
 
@@ -20,6 +20,7 @@ public class CfgNonPerformingMappingObjectMapper extends AbstractObjectMapper {
         this.cfgNonPerformingMappingRepository = cfgNonPerformingMappingRepository;
     }
 
+    @Override
     CfgNonPerformingMapping createRow(Row row) {
         CfgNonPerformingMapping cfgNonPerformingMapping = new CfgNonPerformingMapping();
 

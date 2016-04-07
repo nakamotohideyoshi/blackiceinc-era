@@ -17,6 +17,7 @@ public class CfgOpsRisk {
     private Double riskWeight;
 
     public CfgOpsRisk() {
+        // default constructor
     }
 
     public CfgOpsRisk(String code, Double riskWeight) {

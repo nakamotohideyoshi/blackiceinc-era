@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "CFG_MKT_FX")
-public class CfgMktFx {
+public class CfgMktFx  {
 
     @Id
     @Column(name = "MKT_PRODUCT_TYPE")
@@ -17,6 +17,7 @@ public class CfgMktFx {
     private Double riskWeight;
 
     public CfgMktFx() {
+        // default constructor
     }
 
     public CfgMktFx(String mktProductType, Double riskWeight) {

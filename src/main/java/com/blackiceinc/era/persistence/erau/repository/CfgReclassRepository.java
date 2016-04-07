@@ -7,16 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface CfgReclassRepository extends JpaRepository<CfgReclass, String> {
 
-    public static String INSERT = "insert";
-
     @Modifying
     @Query("delete from #{#entityName}")
     void deleteAll();
-
-//    @Modifying
-//    @Query(name = INSERT, nativeQuery = true)
-    void insert(String checkNo, String description, String eraEntityTypeIn,
-                String eraProductTypeIn, String check, String eraEntityTypeOut,
-                String eraProductTypeOut);
 
 }

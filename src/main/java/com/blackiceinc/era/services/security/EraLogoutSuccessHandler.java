@@ -1,5 +1,7 @@
 package com.blackiceinc.era.services.security;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
@@ -13,12 +15,15 @@ import java.io.IOException;
 
 @Component
 public class EraLogoutSuccessHandler implements LogoutSuccessHandler {
+
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException,
             ServletException {
-        System.out.println(" ******************* LOGOUT **************");
+        log.info("Logout user : {}", authentication.getName());
         redirectStrategy.sendRedirect(request, response, "/login");
     }
 

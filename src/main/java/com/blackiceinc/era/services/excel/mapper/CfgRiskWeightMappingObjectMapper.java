@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class CfgRiskWeightMappingObjectMapper extends AbstractObjectMapper {
+public class CfgRiskWeightMappingObjectMapper extends AbstractObjectMapper<CfgRiskWeightMapping> {
 
     CfgRiskWeightMappingRepository cfgRiskWeightMappingRepository;
 
@@ -20,6 +20,7 @@ public class CfgRiskWeightMappingObjectMapper extends AbstractObjectMapper {
         this.cfgRiskWeightMappingRepository = cfgRiskWeightMappingRepository;
     }
 
+    @Override
     CfgRiskWeightMapping createRow(Row row) {
 
         CfgRiskWeightMapping cfgRiskWeightMapping = new CfgRiskWeightMapping();

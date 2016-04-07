@@ -21,7 +21,7 @@ public class CfgAssetClass {
     }
 
     public CfgAssetClass() {
-
+        // default constructor
     }
 
     public String getEraAssetClass() {

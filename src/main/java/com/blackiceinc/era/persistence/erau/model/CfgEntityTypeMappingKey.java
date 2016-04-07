@@ -10,6 +10,8 @@ import java.io.Serializable;
 @Embeddable
 public class CfgEntityTypeMappingKey implements Serializable {
 
+    private static final long serialVersionUID = -6869198650289946405L;
+
     @Column(name = "ERA_ENTITY_TYPE")
     private String eraEntityType;
 
@@ -20,6 +22,7 @@ public class CfgEntityTypeMappingKey implements Serializable {
     private String customerSubType;
 
     public CfgEntityTypeMappingKey() {
+        // default constructor
     }
 
     public CfgEntityTypeMappingKey(String eraEntityType, String customerType, String customerSubType) {

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class CfgCompanyLinkageObjectMapper extends AbstractObjectMapper {
+public class CfgCompanyLinkageObjectMapper extends AbstractObjectMapper<CfgCompanyLinkage> {
 
     private CfgCompanyLinkageRepository cfgCompanyLinkageRepository;
 
@@ -21,6 +21,7 @@ public class CfgCompanyLinkageObjectMapper extends AbstractObjectMapper {
         this.cfgCompanyLinkageRepository = cfgCompanyLinkageRepository;
     }
 
+    @Override
     CfgCompanyLinkage createRow(Row row) {
         CfgCompanyLinkage cfgCompanyLinkage = new CfgCompanyLinkage();
 

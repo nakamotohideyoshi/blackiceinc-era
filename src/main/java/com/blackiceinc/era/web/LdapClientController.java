@@ -1,13 +1,10 @@
 package com.blackiceinc.era.web;
 
 import com.blackiceinc.era.services.security.EraAuthenticationProvider;
-import com.blackiceinc.era.services.security.LdapAuthenticateService;
 import com.blackiceinc.era.services.security.LdapUserBindAuthenticateService;
 import com.blackiceinc.era.services.security.model.LdapConfig;
 import com.blackiceinc.era.services.security.model.LdapConfigBuilder;
 import com.blackiceinc.era.web.model.LdapAuth;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,11 +20,6 @@ import java.util.Arrays;
 @Controller
 public class LdapClientController {
 
-    private static Logger log = LoggerFactory.getLogger(LdapClientController.class);
-
-    @Autowired
-    private LdapAuthenticateService ldapAuthenticateService;
-
     @Autowired
     private LdapUserBindAuthenticateService ldapUserBindAuthenticateService;
 
@@ -38,17 +30,16 @@ public class LdapClientController {
     public String ldapClient(@RequestParam(value = "domain", required = false, defaultValue = "") String domain, HttpServletRequest request, HttpServletResponse response, Model model) {
 
         LdapAuth ldapAuth;
-        switch (domain){
-            case "north":{
+        switch (domain) {
+            case "north": {
                 ldapAuth = getNorthLdapAuth();
                 break;
             }
-            case "south":{
+            case "south": {
                 ldapAuth = getSouthLdapAuth();
                 break;
             }
-            default:{
-
+            default: {
                 ldapAuth = new LdapAuth("euclid", "password", getSimpleLdapConfig());
             }
         }
@@ -59,16 +50,11 @@ public class LdapClientController {
     }
 
     @RequestMapping(value = "/ldapClient", method = RequestMethod.POST)
-    public String ldapClient(@ModelAttribute("ldapAuth")LdapAuth ldapAuth, HttpServletRequest request, HttpServletResponse response, Model model) {
+    public String ldapClient(@ModelAttribute("ldapAuth") LdapAuth ldapAuth, HttpServletRequest request, HttpServletResponse response, Model model) {
 
         model.addAttribute("ldapAuth", ldapAuth);
 
-        boolean authenticate = false;
-        if ("1".equals(ldapAuth.getVersion())){
-            authenticate = ldapAuthenticateService.authenticate(ldapAuth.getUsername(), ldapAuth.getPassword(), ldapAuth.getLdapConfig());
-        }else if ("2".equals(ldapAuth.getVersion())){
-            authenticate = ldapUserBindAuthenticateService.authenticate(ldapAuth.getUsername(), ldapAuth.getPassword(), ldapAuth.getLdapConfig());
-        }
+        boolean authenticate = ldapUserBindAuthenticateService.authenticate(ldapAuth.getUsername(), ldapAuth.getPassword(), ldapAuth.getLdapConfig());
         model.addAttribute("result", authenticate);
 
         return "ldapClient";
@@ -86,10 +72,10 @@ public class LdapClientController {
     }
 
     public LdapAuth getNorthLdapAuth() {
-        return new LdapAuth("ldapbasel2.dev", "kkkKKK234",eraAuthenticationProvider.getNorthVibCorpConfig());
+        return new LdapAuth("ldapbasel2.dev", "kkkKKK234", eraAuthenticationProvider.getNorthVibCorpConfig());
     }
 
     public LdapAuth getSouthLdapAuth() {
-        return new LdapAuth("ldapbasel2.devs", "kkkKKK234",eraAuthenticationProvider.getSouthVibCorpConfig());
+        return new LdapAuth("ldapbasel2.devs", "kkkKKK234", eraAuthenticationProvider.getSouthVibCorpConfig());
     }
 }

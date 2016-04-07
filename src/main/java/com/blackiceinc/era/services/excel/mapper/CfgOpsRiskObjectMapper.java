@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class CfgOpsRiskObjectMapper extends AbstractObjectMapper {
+public class CfgOpsRiskObjectMapper extends AbstractObjectMapper<CfgOpsRisk> {
 
     CfgOpsRiskRepository cfgOpsRiskRepository;
 
@@ -20,6 +20,7 @@ public class CfgOpsRiskObjectMapper extends AbstractObjectMapper {
         this.cfgOpsRiskRepository = cfgOpsRiskRepository;
     }
 
+    @Override
     CfgOpsRisk createRow(Row row) {
         CfgOpsRisk cfgOpsRisk = new CfgOpsRisk();
 

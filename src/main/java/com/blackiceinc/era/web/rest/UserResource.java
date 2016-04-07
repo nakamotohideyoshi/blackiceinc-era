@@ -41,9 +41,7 @@ public class UserResource {
     public Page<User> getAll(@RequestParam(value = "page", required = false) Integer page,
                              @RequestParam(value = "length", required = false) Integer length) throws URISyntaxException {
 
-        Page<User> users = userService.findUsersByParams(page, length);
-
-        return users;
+        return userService.findUsersByParams(page, length);
     }
 
     @RequestMapping(value = "/user",

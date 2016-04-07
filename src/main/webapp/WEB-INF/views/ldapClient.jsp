@@ -60,13 +60,6 @@
             <td><form:input path="password"/></td>
         </tr>
         <tr>
-            <td><form:label path="version">Service version</form:label></td>
-            <td>
-                <form:radiobutton path="version" value="1"/>ver 1
-                <form:radiobutton path="version" value="2"/>ver 2
-            </td>
-        </tr>
-        <tr>
             <td><input type="submit" value="Submit"/></td>
         </tr>
         <tr style="height: 20px;">

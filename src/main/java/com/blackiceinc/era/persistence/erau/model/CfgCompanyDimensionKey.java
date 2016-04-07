@@ -10,6 +10,8 @@ import java.io.Serializable;
 @Embeddable
 public class CfgCompanyDimensionKey implements Serializable {
 
+    private static final long serialVersionUID = -5976865064930634610L;
+
     @Column(name = "COMPANY_CODE")
     private String companyCode;
 
@@ -17,6 +19,7 @@ public class CfgCompanyDimensionKey implements Serializable {
     private String financialBook;
 
     public CfgCompanyDimensionKey() {
+        // default constructor
     }
 
     public CfgCompanyDimensionKey(String companyCode, String financialBook) {

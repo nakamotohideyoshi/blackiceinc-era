@@ -2,18 +2,16 @@ package com.blackiceinc.era.services.excel.mapper;
 
 import com.blackiceinc.era.persistence.erau.model.CfgFinancialBook;
 import com.blackiceinc.era.persistence.erau.repository.CfgFinancialBookRepository;
-import com.blackiceinc.era.services.excel.mapper.exception.PrimaryColumnMappingException;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Iterator;
 import java.util.List;
 
 @Component
-public class CfgFinancialBookObjectMapper extends AbstractObjectMapper {
+public class CfgFinancialBookObjectMapper extends AbstractObjectMapper<CfgFinancialBook> {
 
     CfgFinancialBookRepository cfgFinancialBookRepository;
 
@@ -22,7 +20,8 @@ public class CfgFinancialBookObjectMapper extends AbstractObjectMapper {
         this.cfgFinancialBookRepository = cfgFinancialBookRepository;
     }
 
-    CfgFinancialBook createRow(Row row) throws PrimaryColumnMappingException {
+    @Override
+    CfgFinancialBook createRow(Row row) {
         CfgFinancialBook cfgFinancialBook = new CfgFinancialBook();
 
         cfgFinancialBook.setBookCode(getStringValue(row.getCell(0)));

@@ -18,8 +18,6 @@ import org.springframework.security.web.csrf.CsrfFilter;
 //@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
-
     @Autowired
     private EraLoginSuccessHandler successHandler;
 

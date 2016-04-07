@@ -10,6 +10,8 @@ import java.io.Serializable;
 @Embeddable
 public class CfgNonPerformingMappingKey implements Serializable {
 
+    private static final long serialVersionUID = 7799395449148446249L;
+
     @Column(name = "ERA_NPL_CODE")
     private String eraNplCode;
 
@@ -17,6 +19,7 @@ public class CfgNonPerformingMappingKey implements Serializable {
     private String performingStatus;
 
     public CfgNonPerformingMappingKey() {
+        // default constructor
     }
 
     public CfgNonPerformingMappingKey(String eraNplCode, String performingStatus) {

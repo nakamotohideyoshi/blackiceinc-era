@@ -5,17 +5,13 @@ import com.blackiceinc.era.persistence.erau.repository.CfgAddOnRepository;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-public class CfgAddOnObjectMapper extends AbstractObjectMapper {
-
-    private final Logger log = LoggerFactory.getLogger(CfgAddOnObjectMapper.class);
+public class CfgAddOnObjectMapper extends AbstractObjectMapper<CfgAddOn> {
 
     CfgAddOnRepository cfgAddOnRepository;
 
@@ -24,6 +20,7 @@ public class CfgAddOnObjectMapper extends AbstractObjectMapper {
         this.cfgAddOnRepository = cfgAddOnRepository;
     }
 
+    @Override
     CfgAddOn createRow(Row row) {
         CfgAddOn cfgAddOn = new CfgAddOn();
 

@@ -38,7 +38,7 @@ public class BlackiceErauDBConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(erauDataSource());
-        em.setPackagesToScan(new String[]{"com.blackiceinc.era.persistence.erau.model"});
+        em.setPackagesToScan("com.blackiceinc.era.persistence.erau.model");
 
         final HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         // vendorAdapter.set

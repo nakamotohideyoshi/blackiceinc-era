@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class CfgCapElementsLimitObjectMapper extends AbstractObjectMapper {
+public class CfgCapElementsLimitObjectMapper extends AbstractObjectMapper<CfgCapElementsLimit> {
 
     CfgCapElementsLimitRepository cfgCapElementsLimitRepository;
 
@@ -20,6 +20,7 @@ public class CfgCapElementsLimitObjectMapper extends AbstractObjectMapper {
         this.cfgCapElementsLimitRepository = cfgCapElementsLimitRepository;
     }
 
+    @Override
     CfgCapElementsLimit createRow(Row row) {
         CfgCapElementsLimit cfgCapElementsLimit = new CfgCapElementsLimit();
 

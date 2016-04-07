@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class CfgEntityTypeObjectMapper extends AbstractObjectMapper {
+public class CfgEntityTypeObjectMapper extends AbstractObjectMapper<CfgEntityType> {
 
     CfgEntityTypeRepository cfgEntityTypeRepository;
 
@@ -20,6 +20,7 @@ public class CfgEntityTypeObjectMapper extends AbstractObjectMapper {
         this.cfgEntityTypeRepository = cfgEntityTypeRepository;
     }
 
+    @Override
     CfgEntityType createRow(Row row) {
         CfgEntityType cfgEntityType = new CfgEntityType();
 

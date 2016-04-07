@@ -1,9 +1,6 @@
 package com.blackiceinc.era.services.excel.mapper;
 
-import com.blackiceinc.era.persistence.erau.model.CfgFinancialBook;
 import com.blackiceinc.era.persistence.erau.repository.utils.ModelUtils;
-import com.blackiceinc.era.services.excel.mapper.exception.CellMappingException;
-import com.blackiceinc.era.services.excel.mapper.exception.PrimaryColumnMappingException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -15,12 +12,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public abstract class AbstractObjectMapper {
+public abstract class AbstractObjectMapper<T> {
 
     final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    public List extractData(XSSFSheet sheet) {
-        List result = new ArrayList<>();
+    public List<T> extractData(XSSFSheet sheet) {
+        List<T> result = new ArrayList<>();
 
         //Iterate through each rows one by one
         Iterator<Row> rowIterator = sheet.iterator();
@@ -29,18 +26,13 @@ public abstract class AbstractObjectMapper {
             Row row = rowIterator.next();
             // ignore first row since it's column names
             if (rowIndex > 0) {
+                T rowObj = createRow(row);
                 try {
-                    Object rowObj = createRow(row);
-                    try {
-                        if (!ModelUtils.areAllFieldsNull(rowObj)){
-                            result.add(rowObj);
-                        }
-                    } catch (IllegalAccessException e) {
-                        log.error("Error accessing fields in object!", e);
+                    if (!ModelUtils.areAllFieldsNull(rowObj)) {
+                        result.add(rowObj);
                     }
-                } catch (PrimaryColumnMappingException e) {
-                    log.warn("Sheet : {} has null value for a primary column in database. Row : {}",
-                            sheet.getSheetName(), rowIndex + 1);
+                } catch (IllegalAccessException e) {
+                    log.error("Error accessing fields in object!", e);
                 }
             }
 
@@ -50,33 +42,33 @@ public abstract class AbstractObjectMapper {
         return result;
     }
 
-    abstract Object createRow(Row row) throws PrimaryColumnMappingException;
+    abstract T createRow(Row row);
 
-    void createCell(XSSFRow row, int columnIndex, String value){
-        if (value!=null){
+    void createCell(XSSFRow row, int columnIndex, String value) {
+        if (value != null) {
             row.createCell(columnIndex).setCellValue(value);
         }
     }
 
-    void createCell(XSSFRow row, int columnIndex, Boolean value){
-        if (value!=null){
+    void createCell(XSSFRow row, int columnIndex, Boolean value) {
+        if (value != null) {
             row.createCell(columnIndex).setCellValue(value);
         }
     }
 
-    void createCell(XSSFRow row, int columnIndex, Double value){
-        if (value!=null){
+    void createCell(XSSFRow row, int columnIndex, Double value) {
+        if (value != null) {
             row.createCell(columnIndex).setCellValue(value);
         }
     }
 
     void createCell(XSSFRow row, int columnIndex, Long value) {
-        if (value!=null){
+        if (value != null) {
             row.createCell(columnIndex).setCellValue(value);
         }
     }
 
-    String getStringValue(Cell cell){
+    String getStringValue(Cell cell) {
         String result = null;
 
         if (cell != null) {
@@ -93,7 +85,7 @@ public abstract class AbstractObjectMapper {
         return result;
     }
 
-    Long getLongValue(Cell cell){
+    Long getLongValue(Cell cell) {
         Long result = null;
 
         if (cell != null) {
@@ -105,7 +97,7 @@ public abstract class AbstractObjectMapper {
                     result = Long.valueOf(cell.getStringCellValue());
                     break;
                 case Cell.CELL_TYPE_FORMULA:
-                    result = (long)cell.getNumericCellValue();
+                    result = (long) cell.getNumericCellValue();
                     break;
             }
         }

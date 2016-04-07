@@ -2,7 +2,6 @@ package com.blackiceinc.era.services.excel.mapper;
 
 import com.blackiceinc.era.persistence.erau.model.CfgOpsProductType;
 import com.blackiceinc.era.persistence.erau.repository.CfgOpsProductTypeRepository;
-import com.blackiceinc.era.services.excel.mapper.exception.PrimaryColumnMappingException;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class CfgOpsProductTypeObjectMapper extends AbstractObjectMapper {
+public class CfgOpsProductTypeObjectMapper extends AbstractObjectMapper<CfgOpsProductType> {
 
     CfgOpsProductTypeRepository cfgOpsProductTypeRepository;
 
@@ -21,7 +20,8 @@ public class CfgOpsProductTypeObjectMapper extends AbstractObjectMapper {
         this.cfgOpsProductTypeRepository = cfgOpsProductTypeRepository;
     }
 
-    CfgOpsProductType createRow(Row row) throws PrimaryColumnMappingException {
+    @Override
+    CfgOpsProductType createRow(Row row) {
         CfgOpsProductType cfgOpsProductType = new CfgOpsProductType();
 
         cfgOpsProductType.setOpsProductType(getStringValue(row.getCell(0)));

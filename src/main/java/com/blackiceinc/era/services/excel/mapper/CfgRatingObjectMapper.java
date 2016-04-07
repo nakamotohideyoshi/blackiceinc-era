@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class CfgRatingObjectMapper extends AbstractObjectMapper {
+public class CfgRatingObjectMapper extends AbstractObjectMapper<CfgRating> {
 
     CfgRatingRepository cfgRatingRepository;
 
@@ -20,6 +20,7 @@ public class CfgRatingObjectMapper extends AbstractObjectMapper {
         this.cfgRatingRepository = cfgRatingRepository;
     }
 
+    @Override
     CfgRating createRow(Row row) {
         CfgRating cfgRating = new CfgRating();
 

@@ -46,7 +46,10 @@ public class EmbeddedLdapServer {
     @PreDestroy
     public void stopServer() throws Exception {
         if (server != null) {
+            log.info("Stopping embedded ldap server.");
             server.stop();
+        }else{
+            log.info("Embedded ldap server instance is null. No need to stop.");
         }
     }
 }

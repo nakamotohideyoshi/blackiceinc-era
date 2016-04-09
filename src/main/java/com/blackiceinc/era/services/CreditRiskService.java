@@ -35,43 +35,74 @@ public class CreditRiskService {
         List<String> entityTypeList = new ArrayList<>();
         List<String> productTypeList = new ArrayList<>();
 
-        ResultSet distinctMSResultSet = getDistinctMSResultSet();
-        while (distinctMSResultSet.next()) {
-            Date snapshotDate = distinctMSResultSet.getDate("SNAPSHOT_DATE");
-            Integer loadJobNbr = distinctMSResultSet.getInt("LOAD_JOB_NBR");
-            String scenarioId = distinctMSResultSet.getString("SCENARIO_ID");
+        long start = System.currentTimeMillis();
 
-            String assetClass = distinctMSResultSet.getString("ASSET_CLASS_FINAL");
-            String exposureType = distinctMSResultSet.getString("EXPOSURE_TYPE_CODE");
-            String entityType = distinctMSResultSet.getString("ERA_ENTITY_TYPE");
-            String productType = distinctMSResultSet.getString("ERA_PRODUCT_TYPE_FINAL");
+        Connection conn = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {
+            conn = getConnection();
+            conn.setAutoCommit(false);
+            statement = conn.createStatement();
+            log.info("Starting taking distinct data from MEASUREMENT_SENSITIVITY");
+            resultSet = statement.executeQuery("SELECT DISTINCT " +
+                    "  SNAPSHOT_DATE,\n" +
+                    "  LOAD_JOB_NBR,\n" +
+                    "  SCENARIO_ID,\n" +
+                    "  ASSET_CLASS_FINAL,\n" +
+                    "  EXPOSURE_TYPE_CODE,\n" +
+                    "  ERA_ENTITY_TYPE,\n" +
+                    "  ERA_PRODUCT_TYPE_FINAL\n" +
+                    "FROM MEASUREMENT_SENSITIVITY ms");
+            log.info("distinct MEASUREMENT_SENSITIVITY data took {} ms", System.currentTimeMillis() - start);
 
-            if (!snapshotDateList.contains(snapshotDate)) {
-                snapshotDateList.add(snapshotDate);
+            while (resultSet.next()) {
+                Date snapshotDate = resultSet.getDate("SNAPSHOT_DATE");
+                Integer loadJobNbr = resultSet.getInt("LOAD_JOB_NBR");
+                String scenarioId = resultSet.getString("SCENARIO_ID");
+
+                String assetClass = resultSet.getString("ASSET_CLASS_FINAL");
+                String exposureType = resultSet.getString("EXPOSURE_TYPE_CODE");
+                String entityType = resultSet.getString("ERA_ENTITY_TYPE");
+                String productType = resultSet.getString("ERA_PRODUCT_TYPE_FINAL");
+
+                if (!snapshotDateList.contains(snapshotDate)) {
+                    snapshotDateList.add(snapshotDate);
+                }
+
+                if (!loadJobNbrList.contains(loadJobNbr)) {
+                    loadJobNbrList.add(loadJobNbr);
+                }
+
+                if (!scenarioIdList.contains(scenarioId)) {
+                    scenarioIdList.add(scenarioId);
+                }
+
+                if (!assetClassList.contains(assetClass)) {
+                    assetClassList.add(assetClass);
+                }
+
+                if (!exposureTypeList.contains(exposureType)) {
+                    exposureTypeList.add(exposureType);
+                }
+
+                if (!entityTypeList.contains(entityType)) {
+                    entityTypeList.add(entityType);
+                }
+
+                if (!productTypeList.contains(productType)) {
+                    productTypeList.add(productType);
+                }
             }
-
-            if (!loadJobNbrList.contains(loadJobNbr)) {
-                loadJobNbrList.add(loadJobNbr);
+        } finally {
+            if (resultSet != null) {
+                resultSet.close();
             }
-
-            if (!scenarioIdList.contains(scenarioId)) {
-                scenarioIdList.add(scenarioId);
+            if (statement != null) {
+                statement.close();
             }
-
-            if (!assetClassList.contains(assetClass)) {
-                assetClassList.add(assetClass);
-            }
-
-            if (!exposureTypeList.contains(exposureType)) {
-                exposureTypeList.add(exposureType);
-            }
-
-            if (!entityTypeList.contains(entityType)) {
-                entityTypeList.add(entityType);
-            }
-
-            if (!productTypeList.contains(productType)) {
-                productTypeList.add(productType);
+            if (conn != null) {
+                conn.close();
             }
         }
 
@@ -92,72 +123,40 @@ public class CreditRiskService {
 
     private List<String> getIndustryCodes() throws SQLException {
         List<String> industryList = new ArrayList<>();
-        ResultSet distinctCustomerResultSet = getDistinctCustomerIndustryCodeResultSet();
-        while (distinctCustomerResultSet.next()) {
-            String industryCode = distinctCustomerResultSet.getString("INDUSTRY_CODE");
-
-            if (!industryList.contains(industryCode)) {
-                industryList.add(industryCode);
-            }
-        }
-        return industryList;
-    }
-
-
-    private ResultSet getDistinctMSResultSet() throws SQLException {
-        ResultSet resultSet = null;
-        long start = System.currentTimeMillis();
-        log.info("Starting taking distinct data from MEASUREMENT_SENSITIVITY");
-
-        Connection conn = null;
-        Statement statement = null;
-        try{
-            conn = getConnection();
-            conn.setAutoCommit(false);
-            statement = conn.createStatement();
-            resultSet = statement.executeQuery("SELECT DISTINCT " +
-                    "  SNAPSHOT_DATE,\n" +
-                    "  LOAD_JOB_NBR,\n" +
-                    "  SCENARIO_ID,\n" +
-                    "  ASSET_CLASS_FINAL,\n" +
-                    "  EXPOSURE_TYPE_CODE,\n" +
-                    "  ERA_ENTITY_TYPE,\n" +
-                    "  ERA_PRODUCT_TYPE_FINAL\n" +
-                    "FROM MEASUREMENT_SENSITIVITY ms");
-            log.info("distinct MEASUREMENT_SENSITIVITY data took {} ms", System.currentTimeMillis() - start);
-        }finally {
-            if (statement!=null){
-                statement.close();
-            }
-            if (conn!=null){
-                conn.close();
-            }
-        }
-        return resultSet;
-    }
-
-    private ResultSet getDistinctCustomerIndustryCodeResultSet() throws SQLException {
-        ResultSet resultSet = null;
 
         long start = System.currentTimeMillis();
-        log.info("Starting taking distinct data from CUSTOMER");
         Connection conn = null;
         Statement statement = null;
+        ResultSet resultSet = null;
         try {
             conn = getConnection();
             conn.setAutoCommit(false);
             statement = conn.createStatement();
+            log.info("Starting taking distinct data from CUSTOMER");
             resultSet = statement.executeQuery("SELECT DISTINCT INDUSTRY_CODE FROM customer c");
             log.info("distinct CUSTOMER data took {} ms", System.currentTimeMillis() - start);
+
+            while (resultSet.next()) {
+                String industryCode = resultSet.getString("INDUSTRY_CODE");
+
+                if (!industryList.contains(industryCode)) {
+                    industryList.add(industryCode);
+                }
+            }
         } finally {
-            if (statement!=null){
+            if (resultSet != null) {
+                resultSet.close();
+            }
+            if (statement != null) {
                 statement.close();
             }
-            if (conn!=null){
+            if (conn != null) {
                 conn.close();
             }
         }
-        return resultSet;
+
+
+        return industryList;
     }
 
     private Connection getConnection() throws SQLException {

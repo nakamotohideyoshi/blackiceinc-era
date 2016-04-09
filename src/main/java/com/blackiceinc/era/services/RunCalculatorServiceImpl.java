@@ -1,9 +1,7 @@
 package com.blackiceinc.era.services;
 
-import com.blackiceinc.era.persistence.erau.model.MeasurementSensitivity;
 import com.blackiceinc.era.persistence.erau.model.RunCalculator;
 import com.blackiceinc.era.persistence.erau.repository.MeasurementSensitivityDaoCustom;
-import com.blackiceinc.era.persistence.erau.repository.MeasurementSensitivityRepository;
 import com.blackiceinc.era.persistence.erau.repository.RunCalculatorRepository;
 import com.blackiceinc.era.persistence.erau.specifications.RunCalculatorSpecificationsBuilder;
 import org.slf4j.Logger;
@@ -82,29 +80,52 @@ public class RunCalculatorServiceImpl implements RunCalculatorService {
     public List<Date> getSnapshotDateOptions() throws SQLException {
         List<Date> snapshotDateOptions = new ArrayList<>();
 
-        Connection conn = DriverManager.getConnection(
-                env.getProperty("jdbc.url"),
-                env.getProperty("jdbc.user"),
-                env.getProperty("jdbc.pass"));
-        conn.setAutoCommit(false);
-
-        Statement stmt = conn.createStatement();
         long start = System.currentTimeMillis();
-        log.info("Starting taking distinct snapshotData MEASUREMENT_SENSITIVITY data");
-        ResultSet resultSet = stmt.executeQuery("select DISTINCT SNAPSHOT_DATE from MEASUREMENT_SENSITIVITY");
-        log.info("MEASUREMENT_SENSITIVITY data took {} ms", System.currentTimeMillis() - start);
-        while (resultSet.next()) {
-            Date snapshotDate = resultSet.getDate("SNAPSHOT_DATE");
-            if (!snapshotDateOptions.contains(snapshotDate)) {
-                snapshotDateOptions.add(snapshotDate);
+
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet resultSet = null;
+        try {
+            conn = getConnection();
+            conn.setAutoCommit(false);
+            stmt = conn.createStatement();
+            log.info("Starting taking distinct snapshotData MEASUREMENT_SENSITIVITY data");
+            resultSet = stmt.executeQuery("select DISTINCT SNAPSHOT_DATE from MEASUREMENT_SENSITIVITY");
+            log.info("MEASUREMENT_SENSITIVITY data took {} ms", System.currentTimeMillis() - start);
+
+            while (resultSet.next()) {
+                Date snapshotDate = resultSet.getDate("SNAPSHOT_DATE");
+                if (!snapshotDateOptions.contains(snapshotDate)) {
+                    snapshotDateOptions.add(snapshotDate);
+                }
+            }
+        } finally {
+            if (resultSet != null) {
+                resultSet.close();
+            }
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (conn != null) {
+                conn.close();
             }
         }
+
 
         return snapshotDateOptions;
     }
 
+    private Connection getConnection() throws SQLException {
+        Connection conn;
+        conn = DriverManager.getConnection(
+                env.getProperty("jdbc.url"),
+                env.getProperty("jdbc.user"),
+                env.getProperty("jdbc.pass"));
+        return conn;
+    }
+
     @Transactional
-    public void delete(Long id){
+    public void delete(Long id) {
         RunCalculator runCalculator = runCalculatorRepository.findOne(id);
 
         measurementSensitivityDaoCustom.delete(runCalculator.getSnapshotDate(),
@@ -119,48 +140,60 @@ public class RunCalculatorServiceImpl implements RunCalculatorService {
                                                                        String scenarioId) {
         RunCalculatorSpecificationsBuilder builder = new RunCalculatorSpecificationsBuilder();
         if (snapshotDate != null) {
-            builder.with("snapshotDate", ":", snapshotDate, "", "");
+            builder.with(SNAPSHOT_DATE, ":", snapshotDate, "", "");
         }
 
         if (loadJobNbr != null) {
-            builder.with("loadJobNbr", ":", loadJobNbr, "", "");
+            builder.with(LOAD_JOB_NBR, ":", loadJobNbr, "", "");
         }
 
         if (scenarioId != null) {
-            builder.with("scenarioId", ":", scenarioId, "", "");
+            builder.with(SCENARIO_ID, ":", scenarioId, "", "");
         }
 
         return builder.build();
     }
 
     private void fillFilterFromRunCalculatorDB(List<Date> snapshotDateList, List<BigDecimal> loadJobNbrList, List<String> scenarioIdList) throws SQLException {
-        Connection conn = DriverManager.getConnection(
-                env.getProperty("jdbc.url"),
-                env.getProperty("jdbc.user"),
-                env.getProperty("jdbc.pass"));
-        conn.setAutoCommit(false);
-
-        Statement stmt = conn.createStatement();
-
         long start = System.currentTimeMillis();
-        log.info("Starting taking distinct data from ERA_RUN_CALCULATOR");
-        ResultSet resultSet = stmt.executeQuery("select DISTINCT SNAPSHOT_DATE, LOAD_JOB_NBR, SCENARIO_ID from ERA_RUN_CALCULATOR");
-        log.info("distinct ERA_RUN_CALCULATOR data took {} ms", System.currentTimeMillis() - start);
-        while (resultSet.next()) {
-            Date snapshotDate = resultSet.getDate("SNAPSHOT_DATE");
-            BigDecimal loadJobNbr = resultSet.getBigDecimal("LOAD_JOB_NBR");
-            String scenarioId = resultSet.getString("SCENARIO_ID");
 
-            if (!snapshotDateList.contains(snapshotDate)) {
-                snapshotDateList.add(snapshotDate);
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet resultSet = null;
+        try {
+            conn = getConnection();
+            conn.setAutoCommit(false);
+            stmt = conn.createStatement();
+            log.info("Starting taking distinct data from ERA_RUN_CALCULATOR");
+            resultSet = stmt.executeQuery("select DISTINCT SNAPSHOT_DATE, LOAD_JOB_NBR, SCENARIO_ID from ERA_RUN_CALCULATOR");
+            log.info("distinct ERA_RUN_CALCULATOR data took {} ms", System.currentTimeMillis() - start);
+
+            while (resultSet.next()) {
+                Date snapshotDate = resultSet.getDate("SNAPSHOT_DATE");
+                BigDecimal loadJobNbr = resultSet.getBigDecimal("LOAD_JOB_NBR");
+                String scenarioId = resultSet.getString("SCENARIO_ID");
+
+                if (!snapshotDateList.contains(snapshotDate)) {
+                    snapshotDateList.add(snapshotDate);
+                }
+
+                if (!loadJobNbrList.contains(loadJobNbr)) {
+                    loadJobNbrList.add(loadJobNbr);
+                }
+
+                if (!scenarioIdList.contains(scenarioId)) {
+                    scenarioIdList.add(scenarioId);
+                }
             }
-
-            if (!loadJobNbrList.contains(loadJobNbr)) {
-                loadJobNbrList.add(loadJobNbr);
+        } finally {
+            if (resultSet != null) {
+                resultSet.close();
             }
-
-            if (!scenarioIdList.contains(scenarioId)) {
-                scenarioIdList.add(scenarioId);
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (conn != null) {
+                conn.close();
             }
         }
     }
@@ -170,9 +203,9 @@ public class RunCalculatorServiceImpl implements RunCalculatorService {
         long start = System.currentTimeMillis();
         log.info("Running procedure RUN_CALC for runCalculator : {}", runCalculator.toString());
         this.em.createNativeQuery("CALL CALC_RUN(:scenarioId, :loadJobNbr, :snapshotDate)")
-                .setParameter("scenarioId", runCalculator.getScenarioId())
-                .setParameter("loadJobNbr", runCalculator.getLoadJobNbr())
-                .setParameter("snapshotDate", runCalculator.getSnapshotDate())
+                .setParameter(SCENARIO_ID, runCalculator.getScenarioId())
+                .setParameter(LOAD_JOB_NBR, runCalculator.getLoadJobNbr())
+                .setParameter(SNAPSHOT_DATE, runCalculator.getSnapshotDate())
                 .executeUpdate();
         log.info("Procedure RUN_CALC for runCalculator : {} finished in {} ms", runCalculator.toString(), System.currentTimeMillis() - start);
     }

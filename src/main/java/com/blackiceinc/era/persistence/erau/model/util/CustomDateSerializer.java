@@ -11,10 +11,10 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 
 public class CustomDateSerializer extends JsonSerializer<Date> {
-    private static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
     @Override
-    public void serialize(Date date, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
+    public void serialize(Date date, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
         jsonGenerator.writeString(format.format(date));
     }
 }

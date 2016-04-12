@@ -5,6 +5,7 @@ import com.blackiceinc.era.services.CreditRiskService;
 import com.blackiceinc.era.services.MeasurementSensitivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -38,11 +39,18 @@ public class CreditRiskResource {
     public ResponseEntity<Page<MeasurementSensitivity>> getAll(
             @RequestParam Map<String, String> allRequestParams) throws URISyntaxException {
 
-//        PageImpl<MeasurementSensitivity> page1 = new PageImpl<>(getMSDummy());
         Page<MeasurementSensitivity> msPage = msService.findMsByParams(allRequestParams);
 
         return new ResponseEntity<>(msPage, HttpStatus.OK);
-//        return new ResponseEntity<>(page1, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/credit-risk/sums",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Map<String, Float>> getSums(
+            @RequestParam Map<String, String> allRequestParams) throws URISyntaxException, SQLException {
+        return new ResponseEntity<>(msService.getSums(allRequestParams),
+                HttpStatus.OK);
     }
 
 

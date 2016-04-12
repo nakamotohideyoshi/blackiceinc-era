@@ -171,7 +171,39 @@ angular.module('app.services', [])
 
 	})
 
+	.service('CustomHttp2', function($q, $http) {
+		return ({
+			get : get
+		});
+		function get(url, params, isCache) {
+			var request =  $http({
+				method: 'GET',
+				url: url,
+				params: params,
+				cache: isCache
+			});
 
+			return( request.then(handleSuccess, handleError) );
+		}
+		function handleSuccess(response) {
+			return( response );
+		}
+		function handleError(response) {
+
+			if ( ! angular.isObject( response.data ) || ! response.data.message) {
+				$.smallBox({
+					title : "An unknown error occurred.",
+					content : "",
+					color : "#A65858",
+					iconSmall : "fa fa-times",
+					timeout : 5000
+				});
+				return( $q.reject( "An unknown error occurred." ) );
+			}
+
+			return( $q.reject( response.data.message ) );
+		}
+	})
 
 	.service('CustomHttp', function($q, $http) {
 		return ({
@@ -399,15 +431,39 @@ angular.module('app.services', [])
 		});
 	})
 
-	.service('CreditRiskService', function(CustomHttp){
+	.service('CreditRiskService', function(CustomHttp, CustomHttp2){
 		return ({
 			getFilterOptions : function(params) {
 				return CustomHttp.get('api/credit-risk/filter-options', {});
 			},
 			getAll : function(params) {
-				return CustomHttp.get('api/credit-risk?' + $.param(params), {});
+				return CustomHttp2.get('api/credit-risk?' + $.param(params), {});
+			},
+			getSums : function(params) {
+				return CustomHttp.get('api/credit-risk/sums?' + $.param(params), {});
 			}
 		});
+	})
+
+	.factory('CreditRiskState', function(){
+		var savedData = {
+			currentPage: 1,
+			pageLength: 25,
+			snapshotDate: ''
+		};
+
+		function set(data) {
+			savedData = data;
+		}
+
+		function get() {
+			return savedData;
+		}
+
+		return {
+			set: set,
+			get: get
+		}
 	})
 
 	.service("BookmarkService", function(CustomHttp){

@@ -38,17 +38,17 @@ smartApp.config(['$routeProvider', '$provide', function($routeProvider, $provide
 
 	$routeProvider
 		.when('/', {
-			//redirectTo: '/credit-risk'
-			redirectTo: '/regulatory-report'
+			redirectTo: '/credit-risk'
+			//redirectTo: '/regulatory-report'
 		})
 
 	.when('/', {
 		templateUrl: function($routeParams) {
-			//return 'resources/views/credit-risk.html';
-			return 'resources/views/report.html';
+			return 'resources/views/credit-risk.html';
+			//return 'resources/views/report.html';
 		},
-		//controller: 'CreditRiskController'
-		controller: 'ReportsController'
+		controller: 'CreditRiskController'
+		//controller: 'ReportsController'
 	})
 
     .when('/credit-risk', {

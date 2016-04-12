@@ -90,8 +90,8 @@
                                        ng-class="{ 'has-success' : Filter.filterSelection.snapshotDate }">
                                     <select class="form-control input-sm"
                                             ng-model="Filter.filterSelection.snapshotDate"
-                                            ng-change="FilterTable()"
-                                            ng-options="o for o in Filter.filterOptions.snapshotDate">
+                                            ng-change="updateSnapshotDateState()"
+                                            ng-options="o as o for o in Filter.filterOptions.snapshotDate track by o">
                                         <option value="">All</option>
                                     </select> <i></i>
                                 </label>
@@ -103,8 +103,8 @@
                                 <label class="select" ng-class="{ 'has-success' : Filter.filterSelection.loadJobNbr }">
                                     <select class="form-control input-sm"
                                             ng-model="Filter.filterSelection.loadJobNbr"
-                                            ng-change="FilterTable()"
-                                            ng-options="o for o in Filter.filterOptions.loadJobNbr">
+                                            ng-change="updateLoadJobNbrState()"
+                                            ng-options="o as o for o in Filter.filterOptions.loadJobNbr track by o">
                                         <option value="">All</option>
                                     </select> <i></i>
                                 </label>
@@ -116,8 +116,9 @@
                                 <label class="select"
                                        ng-class="{ 'has-success' : Filter.filterSelection.scenarioId }">
                                     <select class="form-control input-sm"
-                                            ng-model="Filter.filterSelection.scenarioId" ng-change="FilterTable()"
-                                            ng-options="o for o in Filter.filterOptions.scenarioId">
+                                            ng-model="Filter.filterSelection.scenarioId"
+                                            ng-change="updateScenarioIdState()"
+                                            ng-options="o as o for o in Filter.filterOptions.scenarioId track by o">
                                         <option value="">All</option>
                                     </select> <i></i>
                                 </label>
@@ -130,8 +131,8 @@
                                        ng-class="{ 'has-success' : Filter.filterSelection.industry }">
                                     <select class="form-control input-sm"
                                             ng-model="Filter.filterSelection.industry"
-                                            ng-change="FilterTable()"
-                                            ng-options="o for o in Filter.filterOptions.industry">
+                                            ng-change="updateIndustryState()"
+                                            ng-options="o as o for o in Filter.filterOptions.industry track by o">
                                         <option value="">All</option>
                                     </select> <i></i>
                                 </label>
@@ -144,8 +145,8 @@
                                        ng-class="{ 'has-success' : Filter.filterSelection.profitCentre }">
                                     <select class="form-control input-sm"
                                             ng-model="Filter.filterSelection.profitCentre"
-                                            ng-change="FilterTable()"
-                                            ng-options="o for o in Filter.filterOptions.profitCentre">
+                                            ng-change="updateProfitCentreState()"
+                                            ng-options="o as o for o in Filter.filterOptions.profitCentre track by o">
                                         <option value="">All</option>
                                     </select> <i></i>
                                 </label>
@@ -160,8 +161,8 @@
                                        ng-class="{ 'has-success' : Filter.filterSelection.assetClass }">
                                     <select class="form-control input-sm"
                                             ng-model="Filter.filterSelection.assetClass"
-                                            ng-change="FilterTable()"
-                                            ng-options="o for o in Filter.filterOptions.assetClass">
+                                            ng-change="updateAssetClassState()"
+                                            ng-options="o as o for o in Filter.filterOptions.assetClass track by o">
                                         <option value="">All</option>
                                     </select> <i></i>
                                 </label>
@@ -173,9 +174,9 @@
                                 <label class="select"
                                        ng-class="{ 'has-success' : Filter.filterSelection.exposureType }">
                                     <select class="form-control input-sm"
-                                            data-ng-model="Filter.filterSelection.exposureType"
-                                            data-ng-change="FilterTable()"
-                                            ng-options="o for o in Filter.filterOptions.exposureType">
+                                            ng-model="Filter.filterSelection.exposureType"
+                                            ng-change="updateExposureTypeState()"
+                                            ng-options="o as o for o in Filter.filterOptions.exposureType track by o">
                                         <option value="">All</option>
                                     </select><i></i>
                                 </label>
@@ -187,8 +188,9 @@
                                 <label class="select"
                                        ng-class="{ 'has-success' : Filter.filterSelection.entityType }">
                                     <select class="form-control input-sm"
-                                            ng-model="Filter.filterSelection.entityType" ng-change="FilterTable()"
-                                            ng-options="o for o in Filter.filterOptions.entityType">
+                                            ng-model="Filter.filterSelection.entityType"
+                                            ng-change="updateEntityTypeState()"
+                                            ng-options="o as o for o in Filter.filterOptions.entityType track by o">
                                         <option value="">All</option>
                                     </select> <i></i>
                                 </label>
@@ -200,38 +202,14 @@
                                 <label class="select"
                                        ng-class="{ 'has-success' : Filter.filterSelection.productType }">
                                     <select class="form-control input-sm"
-                                            ng-model="Filter.filterSelection.productType" ng-change="FilterTable()"
-                                            ng-options="o for o in Filter.filterOptions.productType">
+                                            ng-model="Filter.filterSelection.productType"
+                                            ng-change="updateProductType()"
+                                            ng-options="o as o for o in Filter.filterOptions.productType track by o">
                                         <option value="">All</option>
                                     </select> <i></i>
                                 </label>
                             </div>
                         </td>
-                        <td>
-                            <div class="lb" style="margin-top: 5px;'">Risk Rating</div>
-                            <div class="fm" style="position: absolute; margin-left: 5px;">
-                                <label class="select" style="width: 54px; float: left"
-                                       ng-class="{ 'has-success' : Filter.filterSelection.riskRatingFrom }">
-                                    <select class="form-control input-sm"
-                                            ng-model="Filter.filterSelection.riskRatingFrom"
-                                            ng-change="FilterTable()"
-                                            ng-options="o for o in Filter.filterStaticOptions.riskRating">
-                                        <option value="">All</option>
-                                    </select> <i></i>
-                                </label>
-                                <label class="select"
-                                       style="width: 14px; float: left; margin-left: 7px; margin-top: 5px;"> - </label>
-                                <label class="select" style="width: 54px; float: left"
-                                       ng-class="{ 'has-success' : Filter.filterSelection.riskRatingTo }">
-                                    <select class="form-control input-sm"
-                                            ng-model="Filter.filterSelection.riskRatingTo"
-                                            ng-change="FilterTable()"
-                                            ng-options="o for o in Filter.filterStaticOptions.riskRating">
-                                        <option value="">All</option>
-                                    </select> <i></i>
-                                </label>
-                            </div>
-                        </td> <!---->
                     </tr>
 
                     </tbody>
@@ -243,7 +221,7 @@
 
 
         <div class="col-md-6" style="margin-top: 30px">
-            <button type="submit" ng-click="filterTable()" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>
+            <button type="submit" ng-click="search()" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>
                 Search
             </button>
             <a class="btn btn-default btn-sm" href="javascript:void(0);" ng-click="resetFilter()">
@@ -253,8 +231,7 @@
                 <i class="fa fa-save"></i> Save to Bookmark </a>
             <a href="" ng-click="OpenModal()" class="btn btn-default btn-sm">
                 <i class="glyphicon glyphicon-bookmark"></i> Open Bookmarks </a>
-            <a href="javascript:void(0);" ng-click="GenerateReport()" class="btn btn-default btn-sm ">
-                <i class="fa  fa-file-pdf-o"></i> Graphs </a>
+
         </div>
 
         <div class="col-md-6">
@@ -269,17 +246,14 @@
 
                 <tbody>
                 <tr>
-                    <td class="color-01" style="width:110px;padding: 5px 6px;">{{ (TotalSum.notionalTotal |number:0)||
-                        'n/a
-                        '}}
+                    <td class="color-01" style="width:110px;padding: 5px 6px;">
+                        {{ (CreditRisk.sums.sumosbal|number:0)||' n/a '}}
                     </td>
-                    <td class="color-01" style="width:110px;padding: 5px 6px;">{{ (TotalSum.rcAndEcTotal
-                        |number:0)||'n/a
-                        '}}
+                    <td class="color-01" style="width:110px;padding: 5px 6px;">
+                        {{ (CreditRisk.sums.sumrwa|number:0)||' n/a '}}
                     </td>
-                    <td class="color-01" style="width:155px;padding: 5px 6px;">{{ (TotalSum.expectedLossTotal|number:0)
-                        ||'
-                        n/a '}}
+                    <td class="color-01" style="width:155px;padding: 5px 6px;">
+                        {{ (CreditRisk.sums.sumregcap|number:0) ||' n/a '}}
                     </td>
                 </tr>
                 </tbody>

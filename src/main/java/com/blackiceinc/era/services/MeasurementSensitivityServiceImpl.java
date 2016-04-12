@@ -4,6 +4,7 @@ import com.blackiceinc.era.persistence.erau.DbUtils;
 import com.blackiceinc.era.persistence.erau.model.MeasurementSensitivity;
 import com.blackiceinc.era.persistence.erau.repository.MeasurementSensitivityRepository;
 import com.blackiceinc.era.persistence.erau.specifications.MsSpecificationsBuilder;
+import org.joda.time.format.ISODateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +71,7 @@ public class MeasurementSensitivityServiceImpl implements MeasurementSensitivity
                     .append("SUM(ms.RWA_AMT) as sumrwa, ")
                     .append("SUM(ms.REG_CAP) as sumregcap ")
                     .append("FROM MEASUREMENT_SENSITIVITY ms ")
-            .append("INNER JOIN CUSTOMER cus on ms.CUSTOMER_ID=cus.CUSTOMER_ID ");
+                    .append("INNER JOIN CUSTOMER cus on ms.CUSTOMER_ID=cus.CUSTOMER_ID ");
 
             List<Condition> filtersForQuery = getFiltersForQuery(allRequestParams);
             if (!filtersForQuery.isEmpty()) {
@@ -172,7 +173,7 @@ public class MeasurementSensitivityServiceImpl implements MeasurementSensitivity
 
         String snapshotDate = params.get("snapshotDate");
         if (snapshotDate != null) {
-            builder.with("snapshotDate", ":", snapshotDate, "", "");
+            builder.with("snapshotDate", ":", ISODateTimeFormat.dateTimeParser().parseDateTime(snapshotDate).toLocalDate().toDate(), "", "");
         }
 
         String loadJobNbr = params.get("loadJobNbr");

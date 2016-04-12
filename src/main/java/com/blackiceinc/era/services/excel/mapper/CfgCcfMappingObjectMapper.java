@@ -28,7 +28,7 @@ public class CfgCcfMappingObjectMapper extends AbstractObjectMapper<CfgCcfMappin
         cfgCcfMapping.setCcf(getDoubleValue(row.getCell(1)));
         cfgCcfMapping.setUnconditionallyCancelable(getStringValue(row.getCell(2)));
         cfgCcfMapping.setMaturityStart(getStringValue(row.getCell(3)));
-        cfgCcfMapping.setMaturityStart(getStringValue(row.getCell(4)));
+        cfgCcfMapping.setMaturityEnd(getStringValue(row.getCell(4)));
         cfgCcfMapping.setSeq(getLongValue(row.getCell(5)));
 
         return cfgCcfMapping;

@@ -8,6 +8,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -74,7 +75,7 @@ public abstract class AbstractObjectMapper<T> {
         if (cell != null) {
             switch (cell.getCellType()) {
                 case Cell.CELL_TYPE_NUMERIC:
-                    result = String.valueOf((long) cell.getNumericCellValue());
+                    result = new BigDecimal(Double.toString(cell.getNumericCellValue())).toPlainString();
                     break;
                 case Cell.CELL_TYPE_STRING:
                     result = cell.getStringCellValue();

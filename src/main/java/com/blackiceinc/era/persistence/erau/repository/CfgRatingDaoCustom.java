@@ -23,7 +23,6 @@ public class CfgRatingDaoCustom {
                 "AGENCY_CODE, " +
                 "RATING, " +
                 "QUALIFYING, " +
-                "LONG_SHORT, " +
                 "RISK_BUCKET " +
                 ") " +
                 "VALUES " +
@@ -31,7 +30,6 @@ public class CfgRatingDaoCustom {
                 ":agencyCode, " +
                 ":rating, " +
                 ":qualifying, " +
-                ":longShort, " +
                 ":riskBucket " +
                 ")")
                 .setParameter("agencyCode",
@@ -40,8 +38,6 @@ public class CfgRatingDaoCustom {
                         cfgRating.getRating(), new StringType())
                 .setParameter("qualifying",
                         cfgRating.getQualifying(), new StringType())
-                .setParameter("longShort",
-                        cfgRating.getLongShort(), new StringType())
                 .setParameter("riskBucket",
                         cfgRating.getRiskBucket(), new LongType())
                 .executeUpdate();

@@ -669,8 +669,8 @@ public class ConfigurationExportImportServiceImplTest {
     private void mockRatingRepo() {
         List<CfgRating> cfgRatings = new ArrayList<>();
 
-        cfgRatings.add(new CfgRating("agency_code_1", "rating_1", "qualifying_1", "long_short_1", 1L));
-        cfgRatings.add(new CfgRating("agency_code_2", "rating_2", "qualifying_2", "long_short_2", 2L));
+        cfgRatings.add(new CfgRating("agency_code_1", "rating_1", "qualifying_1", 1L));
+        cfgRatings.add(new CfgRating("agency_code_2", "rating_2", "qualifying_2", 2L));
 
         when(cfgRatingRepository.findAll()).thenReturn(cfgRatings);
     }

@@ -27,8 +27,7 @@ public class CfgRatingObjectMapper extends AbstractObjectMapper<CfgRating> {
         cfgRating.setAgencyCode(getStringValue(row.getCell(0)));
         cfgRating.setRating(getStringValue(row.getCell(1)));
         cfgRating.setQualifying(getStringValue(row.getCell(2)));
-        cfgRating.setLongShort(getStringValue(row.getCell(3)));
-        cfgRating.setRiskBucket(getLongValue(row.getCell(4)));
+        cfgRating.setRiskBucket(getLongValue(row.getCell(3)));
 
         return cfgRating;
     }
@@ -43,8 +42,7 @@ public class CfgRatingObjectMapper extends AbstractObjectMapper<CfgRating> {
             createCell(row, 0, cfgRating.getAgencyCode());
             createCell(row, 1, cfgRating.getRating());
             createCell(row, 2, cfgRating.getQualifying());
-            createCell(row, 3, cfgRating.getLongShort());
-            createCell(row, 4, cfgRating.getRiskBucket());
+            createCell(row, 3, cfgRating.getRiskBucket());
 
             rowIndex++;
         }

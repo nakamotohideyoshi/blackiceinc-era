@@ -30,7 +30,6 @@ public class CfgRatingRepositoryTest {
         cfgRating.setAgencyCode("agency_code");
         cfgRating.setRating("rating");
         cfgRating.setQualifying("qualifying");
-        cfgRating.setLongShort("long_short");
         cfgRating.setRiskBucket(1L);
 
         cfgRatingDaoCustom.insert(cfgRating);

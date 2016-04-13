@@ -15,16 +15,12 @@ public class CfgRating  {
     @Column(name = "QUALIFYING")
     private String qualifying;
 
-    @Column(name = "LONG_SHORT")
-    private String longShort;
-
     @Column(name = "RISK_BUCKET")
     private Long riskBucket;
 
-    public CfgRating(String agencyCode, String rating, String qualifying, String longShort, Long riskBucket) {
+    public CfgRating(String agencyCode, String rating, String qualifying, Long riskBucket) {
         this.cfgRatingKey = new CfgRatingKey(agencyCode, rating);
         this.qualifying = qualifying;
-        this.longShort = longShort;
         this.riskBucket = riskBucket;
     }
 
@@ -54,14 +50,6 @@ public class CfgRating  {
 
     public void setQualifying(String qualifying) {
         this.qualifying = qualifying;
-    }
-
-    public String getLongShort() {
-        return longShort;
-    }
-
-    public void setLongShort(String longShort) {
-        this.longShort = longShort;
     }
 
     public Long getRiskBucket() {

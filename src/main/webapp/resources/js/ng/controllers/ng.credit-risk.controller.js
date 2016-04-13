@@ -67,66 +67,21 @@
 
                 $scope.filterTable = function () {
                     var params = getParams();
-
                     $scope.loading = true;
                     $scope.getCreditRiskData(params);
                 };
 
                 $scope.search = function () {
+                    saveState();
                     $scope.filterTable();
                     $scope.getCreditRiskSums(getParams());
                 };
 
                 $scope.resetFilter = function () {
                     $scope.Filter.filterSelection = {};
+                    saveState();
                     $scope.filterTable();
                     $scope.getCreditRiskSums(getParams());
-                };
-
-                // Filter events setting state
-                $scope.updateSnapshotDateState = function () {
-                    var state = CreditRiskState.get();
-                    state.snapshotDate = $scope.Filter.filterSelection.snapshotDate;
-                };
-
-                $scope.updateLoadJobNbrState = function () {
-                    var state = CreditRiskState.get();
-                    state.loadJobNbr = $scope.Filter.filterSelection.loadJobNbr;
-                };
-
-                $scope.updateScenarioIdState = function () {
-                    var state = CreditRiskState.get();
-                    state.scenarioId = $scope.Filter.filterSelection.scenarioId;
-                };
-
-                $scope.updateIndustryState = function () {
-                    var state = CreditRiskState.get();
-                    state.industry = $scope.Filter.filterSelection.industry;
-                };
-
-                $scope.updateProfitCentreState = function () {
-                    var state = CreditRiskState.get();
-                    state.profitCentre = $scope.Filter.filterSelection.profitCentre;
-                };
-
-                $scope.updateAssetClassState = function () {
-                    var state = CreditRiskState.get();
-                    state.assetClass = $scope.Filter.filterSelection.assetClass;
-                };
-
-                $scope.updateExposureTypeState = function () {
-                    var state = CreditRiskState.get();
-                    state.exposureType = $scope.Filter.filterSelection.exposureType;
-                };
-
-                $scope.updateEntityTypeState = function () {
-                    var state = CreditRiskState.get();
-                    state.entityType = $scope.Filter.filterSelection.entityType;
-                };
-
-                $scope.updateProductType = function () {
-                    var state = CreditRiskState.get();
-                    state.productType = $scope.Filter.filterSelection.productType;
                 };
 
                 // Pagination
@@ -274,6 +229,19 @@
                     }
 
                     return params;
+                }
+
+                function saveState() {
+                    var state = CreditRiskState.get();
+                    state.snapshotDate = $scope.Filter.filterSelection.snapshotDate;
+                    state.loadJobNbr = $scope.Filter.filterSelection.loadJobNbr;
+                    state.scenarioId = $scope.Filter.filterSelection.scenarioId;
+                    state.industry = $scope.Filter.filterSelection.industry;
+                    state.profitCentre = $scope.Filter.filterSelection.profitCentre;
+                    state.assetClass = $scope.Filter.filterSelection.assetClass;
+                    state.exposureType = $scope.Filter.filterSelection.exposureType;
+                    state.entityType = $scope.Filter.filterSelection.entityType;
+                    state.productType = $scope.Filter.filterSelection.productType;
                 }
 
             }

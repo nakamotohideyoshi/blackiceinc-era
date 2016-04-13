@@ -1,7 +1,7 @@
 angular.module('ng.run-calculator.controller', [])
-    .controller('RunCalculatorController', ['$scope', '$timeout', 'RunCalculatorService',
+    .controller('RunCalculatorController', ['$scope', '$timeout', 'RunCalculatorService', 'RunCalculatorState',
         'Util', '$routeParams', 'VNotificationService', '$location', 'ConfirmService',
-        function ($scope, $timeout, RunCalculatorService, Util, $routeParams,
+        function ($scope, $timeout, RunCalculatorService, RunCalculatorState, Util, $routeParams,
                   VNotificationService, $location, ConfirmService) {
             var CONSTANT_id = 'id';
             var CONSTANT_snapshotDate = 'snapshotDate';
@@ -17,8 +17,12 @@ angular.module('ng.run-calculator.controller', [])
             };
 
             var initializing = true;
-            $scope.pageLength = parseInt($location.search().length || 25);
-            $scope.currentPage = parseInt($location.search().page || 1);
+            var state = RunCalculatorState.get();
+            $scope.pageLength = state.pageLength;
+            $scope.currentPage = state.currentPage;
+            $scope.Filter.filters.snapshotDate = state.snapshotDate;
+            $scope.Filter.filters.loadJobNbr = state.loadJobNbr;
+            $scope.Filter.filters.scenarioId = state.scenarioId;
 
             $scope.loading = true;
             $scope.noRowsSelected = true;
@@ -41,12 +45,12 @@ angular.module('ng.run-calculator.controller', [])
                 Util.removeNulls($scope.Filter.filters);
                 var params = {};
 
+                params.length = $scope.pageLength;
+                params.page = $scope.currentPage - 1;
+
                 var snapshotDate = $scope.Filter.filters.snapshotDate;
                 var loadJobNbr = $scope.Filter.filters.loadJobNbr;
                 var scenarioId = $scope.Filter.filters.scenarioId;
-
-                params.length = $scope.pageLength;
-                params.page = $scope.currentPage - 1;
 
                 if (snapshotDate) {
                     params[CONSTANT_snapshotDate] = snapshotDate;
@@ -132,8 +136,6 @@ angular.module('ng.run-calculator.controller', [])
 
             $scope.saveRunCalculatorModal = function () {
                 if (!$scope.newRunCalculatorForm.$invalid) {
-                    var row = $scope.newRunCalculator;
-
                     $scope.RunCalculator.$saving = true;
                     RunCalculatorService.create($scope.newRunCalculator).then(function (response) {
                         $scope.RunCalculator.$saving = false;
@@ -195,9 +197,14 @@ angular.module('ng.run-calculator.controller', [])
                 });
             };
 
+            $scope.search = function () {
+                saveState();
+                $scope.filterTable();
+            };
+
             $scope.resetFilter = function () {
                 $scope.Filter.filters = {};
-                angular.copy($scope.Filter.filtersDefault, $scope.Filter.filters);
+                saveState();
                 $scope.filterTable();
             };
 
@@ -323,9 +330,10 @@ angular.module('ng.run-calculator.controller', [])
                         initializing = false;
                     });
                 } else {
-                    //console.log('page changed to ' + $scope.currentPage);
-                    $location.search('page', $scope.currentPage);
-                    $location.search('length', $scope.pageLength);
+                    var state = RunCalculatorState.get();
+                    state.currentPage = $scope.currentPage;
+                    state.pageLength = $scope.pageLength;
+
                     $scope.filterTable();
                 }
             });
@@ -339,10 +347,13 @@ angular.module('ng.run-calculator.controller', [])
                 $scope.Filter.snapshotDateOptions = response;
             });
 
-            // Get all all run calculations
-            $scope.getRunCalculators({
-                length: $scope.pageLength,
-                page: $scope.currentPage - 1
-            });
+            $scope.filterTable()
+
+            function saveState() {
+                var state = RunCalculatorState.get();
+                state.snapshotDate = $scope.Filter.filters.snapshotDate;
+                state.loadJobNbr = $scope.Filter.filters.loadJobNbr;
+                state.scenarioId = $scope.Filter.filters.scenarioId;
+            }
         }
     ]);

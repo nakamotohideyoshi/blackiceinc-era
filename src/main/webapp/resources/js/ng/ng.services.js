@@ -378,6 +378,26 @@ angular.module('app.services', [])
 		});
 	})
 
+	.factory('RunCalculatorState', function(){
+		var savedData = {
+			currentPage: 1,
+			pageLength: 25
+		};
+
+		function set(data) {
+			savedData = data;
+		}
+
+		function get() {
+			return savedData;
+		}
+
+		return {
+			set: set,
+			get: get
+		}
+	})
+
 	.service('CfgConfigurationService', function($http, CustomHttp){
 		return ({
 			getAll : function(params) {
@@ -448,8 +468,7 @@ angular.module('app.services', [])
 	.factory('CreditRiskState', function(){
 		var savedData = {
 			currentPage: 1,
-			pageLength: 25,
-			snapshotDate: ''
+			pageLength: 25
 		};
 
 		function set(data) {
@@ -554,4 +573,4 @@ angular.module('app.services', [])
 		function handleSuccess(response) {
 			return( response.data );
 		}
-	})
+	});

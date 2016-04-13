@@ -431,6 +431,27 @@ angular.module('app.services', [])
 		});
 	})
 
+	.factory('CfgConfigurationState', function(){
+		var savedData = {
+			currentPage: 1,
+			pageLength: 25,
+			name: ''
+		};
+
+		function set(data) {
+			savedData = data;
+		}
+
+		function get() {
+			return savedData;
+		}
+
+		return {
+			set: set,
+			get: get
+		}
+	})
+
 	.service('AccountSettingsService', function(CustomHttp){
 		return ({
 			getAll : function(params) {

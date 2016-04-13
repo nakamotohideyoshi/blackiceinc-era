@@ -1,13 +1,9 @@
 angular.module('ng.cfg-configuration.controller', [])
-    .controller('CfgConfigurationController', ['$scope', '$timeout', 'CfgConfigurationService',
+    .controller('CfgConfigurationController', ['$scope', '$timeout', 'CfgConfigurationService', 'CfgConfigurationState',
         'Util', '$routeParams', 'VNotificationService', '$location', 'ConfirmService',
-        function ($scope, $timeout, CfgConfigurationService, Util, $routeParams,
+        function ($scope, $timeout, CfgConfigurationService, CfgConfigurationState, Util, $routeParams,
                   VNotificationService, $location, ConfirmService) {
             var CONSTANT_id = 'id';
-
-            var initializing = true;
-            $scope.pageLength = parseInt($location.search().length || 25);
-            $scope.currentPage = parseInt($location.search().page || 1);
 
             $scope.loading = true;
             $scope.noRowsSelected = true;
@@ -20,6 +16,13 @@ angular.module('ng.cfg-configuration.controller', [])
                 }
             };
 
+            var initializing = true;
+            var state = CfgConfigurationState.get();
+
+            $scope.pageLength = state.pageLength;
+            $scope.currentPage = state.currentPage;
+            $scope.Filter.form.name = state.name;
+
             $scope.getConfigurations = function (params) {
                 CfgConfigurationService.getAll(params).then(function (response) {
                     $scope.Configuration.list = response.content;
@@ -30,8 +33,14 @@ angular.module('ng.cfg-configuration.controller', [])
                 });
             };
 
+            $scope.search = function() {
+                saveState();
+                $scope.filterTable();
+            };
+
             $scope.resetFilter = function () {
                 $scope.Filter.form.name = '';
+                saveState();
                 $scope.filterTable();
             };
 
@@ -203,9 +212,10 @@ angular.module('ng.cfg-configuration.controller', [])
                         initializing = false;
                     });
                 } else {
-                    //console.log('page changed to ' + $scope.currentPage);
-                    $location.search('page', $scope.currentPage);
-                    $location.search('length', $scope.pageLength);
+                    var state = CfgConfigurationState.get();
+                    state.currentPage = $scope.currentPage;
+                    state.pageLength = $scope.pageLength;
+
                     $scope.filterTable();
                 }
             });
@@ -332,11 +342,11 @@ angular.module('ng.cfg-configuration.controller', [])
             };
 
             // Get all all configurations
-            $scope.getConfigurations({
-                length: $scope.pageLength,
-                page: $scope.currentPage - 1
-            });
+            $scope.filterTable();
 
-
+            function saveState() {
+                var state = CfgConfigurationState.get();
+                state.name = $scope.Filter.form.name;
+            }
         }
     ]);

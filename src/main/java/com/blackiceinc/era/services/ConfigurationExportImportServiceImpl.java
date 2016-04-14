@@ -67,6 +67,9 @@ public class ConfigurationExportImportServiceImpl implements ConfigurationExport
     public static final String CAP_ELEMENTS_LIMIT = "CAP_ELEMENTS_LIMIT";
     public static final String CAP_ELEMENTS_MAPPING = "CAP_ELEMENTS_MAPPING";
     public static final String CAP_ELEMENTS_FORMULA = "CAP_ELEMENTS_FORMULA";
+    public static final String OTHER_ASSETS = "OTHER_ASSETS";
+    public static final String FX_PROD_TYPE = "FX_PROD_TYPE";
+    public static final String FX_PROD_MAPPING = "FX_PROD_MAPPING";
     private static final Logger log = LoggerFactory.getLogger(ConfigurationExportImportServiceImpl.class);
     private final CfgFinancialBookObjectMapper cfgFinancialBookObjectMapper;
     private final CfgCompanyObjectMapper cfgCompanyObjectMapper;
@@ -131,6 +134,10 @@ public class ConfigurationExportImportServiceImpl implements ConfigurationExport
     private CfgCapElementsLimitObjectMapper cfgCapElementsLimitObjectMapper;
     private CfgCapElementsMappingObjectMapper cfgCapElementsMappingObjectMapper;
     private CfgCapElementsFormulaObjectMapper cfgCapElementsFormulaObjectMapper;
+    private CfgOtherAssetsObjectMapper cfgOtherAssetsObjectMapper;
+
+    private CfgFxProdTypeObjectMapper cfgFxProdTypeObjectMapper;
+    private CfgFxProdMappingObjectMapper cfgFxProdMappingObjectMapper;
 
 
     private ConfigFileRepository configFileRepository;
@@ -161,7 +168,34 @@ public class ConfigurationExportImportServiceImpl implements ConfigurationExport
                                                 CfgCrmEligibilityObjectMapper cfgCrmEligibilityObjectMapper,
                                                 CfgCrmHaircutObjectMapper cfgCrmHaircutObjectMapper,
                                                 CfgReclassObjectMapper cfgReclassObjectMapper,
-                                                CfgReclassCheckDefObjectMapper cfgReclassCheckDefObjectMapper, CfgReclassCheckTypeObjectMapper cfgReclassCheckTypeObjectMapper, CfgMktProductTypeObjectMapper cfgMktProductTypeObjectMapper, CfgMktProductMappingObjectMapper cfgMktProductMappingObjectMapper, CfgMktAssetClassObjectMapper cfgMktAssetClassObjectMapper, CfgMktAssetClassMappingObjectMapper cfgMktAssetClassMappingObjectMapper, CfgMktIrrSpcRiskObjectMapper cfgMktIrrSpcRiskObjectMapper, CfgMktIrrGnrRiskObjectMapper cfgMktIrrGnrRiskObjectMapper, CfgMktIrrGnrBandObjectMapper cfgMktIrrGnrBandObjectMapper, CfgMktIrrGnrIntraObjectMapper cfgMktIrrGnrIntraObjectMapper, CfgMktIrrGnrInterObjectMapper cfgMktIrrGnrInterObjectMapper, CfgMktEqtSpcObjectMapper cfgMktEqtSpcObjectMapper, CfgMktEqtGnrObjectMapper cfgMktEqtGnrObjectMapper, CfgMktComDrtObjectMapper cfgMktComDrtObjectMapper, CfgMktComOthObjectMapper cfgMktComOthObjectMapper, CfgMktFxObjectMapper cfgMktFxObjectMapper, CfgOpsProductTypeObjectMapper cfgOpsProductTypeObjectMapper, CfgOpsProductTypeMappingObjectMapper cfgOpsProductTypeMappingObjectMapper, CfgOpsFormulaObjectMapper cfgOpsFormulaObjectMapper, CfgOpsRiskObjectMapper cfgOpsRiskObjectMapper, CfgCapElementsObjectMapper cfgCapElementsObjectMapper, CfgCapElementsTypeObjectMapper cfgCapElementsTypeObjectMapper, CfgCapElementsLimitObjectMapper cfgCapElementsLimitObjectMapper, CfgCapElementsMappingObjectMapper cfgCapElementsMappingObjectMapper, CfgCapElementsFormulaObjectMapper cfgCapElementsFormulaObjectMapper) {
+                                                CfgReclassCheckDefObjectMapper cfgReclassCheckDefObjectMapper,
+                                                CfgReclassCheckTypeObjectMapper cfgReclassCheckTypeObjectMapper,
+                                                CfgMktProductTypeObjectMapper cfgMktProductTypeObjectMapper,
+                                                CfgMktProductMappingObjectMapper cfgMktProductMappingObjectMapper,
+                                                CfgMktAssetClassObjectMapper cfgMktAssetClassObjectMapper,
+                                                CfgMktAssetClassMappingObjectMapper cfgMktAssetClassMappingObjectMapper,
+                                                CfgMktIrrSpcRiskObjectMapper cfgMktIrrSpcRiskObjectMapper,
+                                                CfgMktIrrGnrRiskObjectMapper cfgMktIrrGnrRiskObjectMapper,
+                                                CfgMktIrrGnrBandObjectMapper cfgMktIrrGnrBandObjectMapper,
+                                                CfgMktIrrGnrIntraObjectMapper cfgMktIrrGnrIntraObjectMapper,
+                                                CfgMktIrrGnrInterObjectMapper cfgMktIrrGnrInterObjectMapper,
+                                                CfgMktEqtSpcObjectMapper cfgMktEqtSpcObjectMapper,
+                                                CfgMktEqtGnrObjectMapper cfgMktEqtGnrObjectMapper,
+                                                CfgMktComDrtObjectMapper cfgMktComDrtObjectMapper,
+                                                CfgMktComOthObjectMapper cfgMktComOthObjectMapper,
+                                                CfgMktFxObjectMapper cfgMktFxObjectMapper,
+                                                CfgOpsProductTypeObjectMapper cfgOpsProductTypeObjectMapper,
+                                                CfgOpsProductTypeMappingObjectMapper cfgOpsProductTypeMappingObjectMapper,
+                                                CfgOpsFormulaObjectMapper cfgOpsFormulaObjectMapper,
+                                                CfgOpsRiskObjectMapper cfgOpsRiskObjectMapper,
+                                                CfgCapElementsObjectMapper cfgCapElementsObjectMapper,
+                                                CfgCapElementsTypeObjectMapper cfgCapElementsTypeObjectMapper,
+                                                CfgCapElementsLimitObjectMapper cfgCapElementsLimitObjectMapper,
+                                                CfgCapElementsMappingObjectMapper cfgCapElementsMappingObjectMapper,
+                                                CfgCapElementsFormulaObjectMapper cfgCapElementsFormulaObjectMapper,
+                                                CfgOtherAssetsObjectMapper cfgOtherAssetsObjectMapper,
+                                                CfgFxProdTypeObjectMapper cfgFxProdTypeObjectMapper,
+                                                CfgFxProdMappingObjectMapper cfgFxProdMappingObjectMapper) {
         this.configFileRepository = configFileRepository;
         this.importConfigIntoDb = importConfigIntoDb;
 
@@ -225,6 +259,10 @@ public class ConfigurationExportImportServiceImpl implements ConfigurationExport
         this.cfgCapElementsLimitObjectMapper = cfgCapElementsLimitObjectMapper;
         this.cfgCapElementsMappingObjectMapper = cfgCapElementsMappingObjectMapper;
         this.cfgCapElementsFormulaObjectMapper = cfgCapElementsFormulaObjectMapper;
+
+        this.cfgOtherAssetsObjectMapper = cfgOtherAssetsObjectMapper;
+        this.cfgFxProdTypeObjectMapper = cfgFxProdTypeObjectMapper;
+        this.cfgFxProdMappingObjectMapper = cfgFxProdMappingObjectMapper;
     }
 
     @Override
@@ -312,6 +350,12 @@ public class ConfigurationExportImportServiceImpl implements ConfigurationExport
             XSSFSheet mktProductTypeSheet = workbook.getSheet(MKT_PRODUCT_TYPE);
             cfgMktProductTypeObjectMapper.importData(mktProductTypeSheet);
 
+            XSSFSheet fxProdTypeSheet = workbook.getSheet(FX_PROD_TYPE);
+            cfgFxProdTypeObjectMapper.importData(fxProdTypeSheet);
+
+            XSSFSheet fxProdMappingSheet = workbook.getSheet(FX_PROD_MAPPING);
+            cfgFxProdMappingObjectMapper.importData(fxProdMappingSheet);
+
             XSSFSheet mktProductMappingSheet = workbook.getSheet(MKT_PRODUCT_MAPPING);
             cfgMktProductMappingObjectMapper.importData(mktProductMappingSheet);
 
@@ -377,6 +421,9 @@ public class ConfigurationExportImportServiceImpl implements ConfigurationExport
 
             XSSFSheet capElementsFormulaSheet = workbook.getSheet(CAP_ELEMENTS_FORMULA);
             cfgCapElementsFormulaObjectMapper.importData(capElementsFormulaSheet);
+
+            XSSFSheet otherAssetsSheet = workbook.getSheet(OTHER_ASSETS);
+            cfgOtherAssetsObjectMapper.importData(otherAssetsSheet);
 
             file.close();
 
@@ -499,6 +546,14 @@ public class ConfigurationExportImportServiceImpl implements ConfigurationExport
             List<CfgMktProductType> cfgMktProductTypes = cfgMktProductTypeObjectMapper.extractData(mktProductTypeSheet);
             importConfigIntoDb.importCfgMktProductTypes(cfgMktProductTypes);
 
+            XSSFSheet fxProdTypeSheet = workbook.getSheet(FX_PROD_TYPE);
+            List<CfgFxProdType> cfgFxProdTypes = cfgFxProdTypeObjectMapper.extractData(fxProdTypeSheet);
+            importConfigIntoDb.importCfgFxProdType(cfgFxProdTypes);
+
+            XSSFSheet fxProdMappingSheet = workbook.getSheet(FX_PROD_MAPPING);
+            List<CfgFxProdMapping> cfgFxProdMappings = cfgFxProdMappingObjectMapper.extractData(fxProdMappingSheet);
+            importConfigIntoDb.importCfgFxProdMapping(cfgFxProdMappings);
+
             XSSFSheet mktProductMappingSheet = workbook.getSheet(MKT_PRODUCT_MAPPING);
             List<CfgMktProductMapping> cfgMktProductMappings = cfgMktProductMappingObjectMapper.extractData(mktProductMappingSheet);
             importConfigIntoDb.importCfgMktProductMappings(cfgMktProductMappings);
@@ -586,6 +641,10 @@ public class ConfigurationExportImportServiceImpl implements ConfigurationExport
             XSSFSheet capElementsFormulaSheet = workbook.getSheet(CAP_ELEMENTS_FORMULA);
             List<CfgCapElementsFormula> cfgCapElementsFormulas = cfgCapElementsFormulaObjectMapper.extractData(capElementsFormulaSheet);
             importConfigIntoDb.importCfgCapElementsFormulas(cfgCapElementsFormulas);
+
+            XSSFSheet otherAssetsSheet = workbook.getSheet(OTHER_ASSETS);
+            List<CfgOtherAssets> cfgOtherAssets = cfgOtherAssetsObjectMapper.extractData(otherAssetsSheet);
+            importConfigIntoDb.importCfgOtherAssets(cfgOtherAssets);
 
             file.close();
 

@@ -5,7 +5,6 @@ import com.blackiceinc.era.persistence.erau.repository.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -242,6 +241,21 @@ public class ImportConfigIntoDb {
     @Autowired
     private CfgCapElementsFormulaDaoCustom cfgCapElementsFormulaDaoCustom;
 
+    @Autowired
+    private CfgOtherAssetsRepository cfgOtherAssetsRepository;
+    @Autowired
+    private CfgOtherAssetsDaoCustom cfgOtherAssetsDaoCustom;
+
+    @Autowired
+    private CfgFxProdTypeRepository cfgFxProdTypeRepository;
+    @Autowired
+    private CfgFxProdTypeDaoCustom cfgFxProdTypeDaoCustom;
+
+    @Autowired
+    private CfgFxProdMappingRepository cfgFxProdMappingRepository;
+    @Autowired
+    private CfgFxProdMappingDaoCustom cfgFxProdMappingDaoCustom;
+
     public void importCfgFinancialBook(List<CfgFinancialBook> cfgFinancialBookList) {
         cfgFinancialBookRepository.deleteAll();
         for (CfgFinancialBook cfgFinancialBook : cfgFinancialBookList) {
@@ -353,13 +367,7 @@ public class ImportConfigIntoDb {
         cfgRiskWeightMappingRepository.deleteAll();
 
         for (CfgRiskWeightMapping cfgRiskWeightMapping : cfgRiskWeightMappings) {
-            try {
-                cfgRiskWeightMappingDaoCustom.insert(cfgRiskWeightMapping);
-            } catch (InvalidDataAccessResourceUsageException ex) {
-                log.error("Error executing sql for entity : {}",
-                        cfgRiskWeightMapping.toString(), ex);
-                throw new RuntimeException(ex);
-            }
+            cfgRiskWeightMappingDaoCustom.insert(cfgRiskWeightMapping);
         }
     }
 
@@ -571,6 +579,27 @@ public class ImportConfigIntoDb {
         cfgCapElementsFormulaRepository.deleteAll();
         for (CfgCapElementsFormula cfgCapElementsFormula : cfgCapElementsFormulas) {
             cfgCapElementsFormulaDaoCustom.insert(cfgCapElementsFormula);
+        }
+    }
+
+    public void importCfgOtherAssets(List<CfgOtherAssets> cfgOtherAssetses) {
+        cfgOtherAssetsRepository.deleteAll();
+        for (CfgOtherAssets cfgOtherAssets : cfgOtherAssetses) {
+            cfgOtherAssetsDaoCustom.insert(cfgOtherAssets);
+        }
+    }
+
+    public void importCfgFxProdType(List<CfgFxProdType> cfgFxProdTypes) {
+        cfgFxProdTypeRepository.deleteAll();
+        for (CfgFxProdType cfgFxProdType : cfgFxProdTypes) {
+            cfgFxProdTypeDaoCustom.insert(cfgFxProdType);
+        }
+    }
+
+    public void importCfgFxProdMapping(List<CfgFxProdMapping> cfgFxProdMappings){
+        cfgFxProdMappingRepository.deleteAll();
+        for (CfgFxProdMapping cfgFxProdMapping : cfgFxProdMappings) {
+            cfgFxProdMappingDaoCustom.insert(cfgFxProdMapping);
         }
     }
 

@@ -139,6 +139,14 @@ public class ConfigurationExportImportServiceImplTest {
     private CfgCapElementsMappingRepository cfgCapElementsMappingRepository;
     @Mock
     private CfgCapElementsFormulaRepository cfgCapElementsFormulaRepository;
+    @Mock
+    private CfgOtherAssetsRepository cfgOtherAssetsRepository;
+
+    @Mock
+    private CfgFxProdTypeRepository cfgFxProdTypeRepository;
+
+    @Mock
+    private CfgFxProdMappingRepository cfgFxProdMappingRepository;
 
 
     private CfgFinancialBookObjectMapper cfgFinancialBookObjectMapper;
@@ -198,6 +206,10 @@ public class ConfigurationExportImportServiceImplTest {
     private CfgCapElementsLimitObjectMapper cfgCapElementsLimitObjectMapper;
     private CfgCapElementsMappingObjectMapper cfgCapElementsMappingObjectMapper;
     private CfgCapElementsFormulaObjectMapper cfgCapElementsFormulaObjectMapper;
+    private CfgOtherAssetsObjectMapper cfgOtherAssetsObjectMapper;
+
+    private CfgFxProdTypeObjectMapper cfgFxProdTypeObjectMapper;
+    private CfgFxProdMappingObjectMapper cfgFxProdMappingObjectMapper;
 
     @Before
     public void init() {
@@ -264,6 +276,10 @@ public class ConfigurationExportImportServiceImplTest {
         cfgCapElementsLimitObjectMapper = new CfgCapElementsLimitObjectMapper(cfgCapElementsLimitRepository);
         cfgCapElementsMappingObjectMapper = new CfgCapElementsMappingObjectMapper(cfgCapElementsMappingRepository);
         cfgCapElementsFormulaObjectMapper = new CfgCapElementsFormulaObjectMapper(cfgCapElementsFormulaRepository);
+        cfgOtherAssetsObjectMapper = new CfgOtherAssetsObjectMapper(cfgOtherAssetsRepository);
+
+        cfgFxProdTypeObjectMapper = new CfgFxProdTypeObjectMapper(cfgFxProdTypeRepository);
+        cfgFxProdMappingObjectMapper = new CfgFxProdMappingObjectMapper(cfgFxProdMappingRepository);
 
 
         configurationExportImportService = new ConfigurationExportImportServiceImpl(configFileRepository, importConfigIntoDb,
@@ -281,7 +297,8 @@ public class ConfigurationExportImportServiceImplTest {
                 cfgMktEqtGnrObjectMapper, cfgMktComDrtObjectMapper, cfgMktComOthObjectMapper, cfgMktFxObjectMapper,
                 cfgOpsProductTypeObjectMapper, cfgOpsProductTypeMappingObjectMapper, cfgOpsFormulaObjectMapper,
                 cfgOpsRiskObjectMapper, cfgCapElementsObjectMapper, cfgCapElementsTypeObjectMapper,
-                cfgCapElementsLimitObjectMapper, cfgCapElementsMappingObjectMapper, cfgCapElementsFormulaObjectMapper);
+                cfgCapElementsLimitObjectMapper, cfgCapElementsMappingObjectMapper, cfgCapElementsFormulaObjectMapper,
+                cfgOtherAssetsObjectMapper, cfgFxProdTypeObjectMapper, cfgFxProdMappingObjectMapper);
     }
 
     @Test
@@ -368,6 +385,37 @@ public class ConfigurationExportImportServiceImplTest {
         mockCapElementsLimitRepo();
         mockCapElementsMappingRepo();
         mockCapElementsFormulaRepo();
+
+        mockOtherAssetsRepo();
+        mockFxProdTypeRepo();
+        mockFxProdMappingRepo();
+    }
+
+    private void mockFxProdMappingRepo() {
+        List<CfgFxProdMapping> cfgFxProdMappings = new ArrayList<>();
+
+        cfgFxProdMappings.add(new CfgFxProdMapping("gl_code_1", "fx_prod_type_1", "gl_code_desc_1"));
+        cfgFxProdMappings.add(new CfgFxProdMapping("gl_code_2", "fx_prod_type_2", "gl_code_desc_2"));
+
+        when(cfgFxProdMappingRepository.findAll()).thenReturn(cfgFxProdMappings);
+    }
+
+    private void mockFxProdTypeRepo() {
+        List<CfgFxProdType> cfgFxProdTypes = new ArrayList<>();
+
+        cfgFxProdTypes.add(new CfgFxProdType("fx_prod_type_1", "fx_prod_type_desc_1"));
+        cfgFxProdTypes.add(new CfgFxProdType("fx_prod_type_1", "fx_prod_type_desc_2"));
+
+        when(cfgFxProdTypeRepository.findAll()).thenReturn(cfgFxProdTypes);
+    }
+
+    private void mockOtherAssetsRepo() {
+        List<CfgOtherAssets> cfgOtherAssetses = new ArrayList<>();
+
+        cfgOtherAssetses.add(new CfgOtherAssets("gl_code_1", "group_check_1", "heading_1", "gl_desc_1", "era_contract_type_1", "check_criteria_1", 2.5));
+        cfgOtherAssetses.add(new CfgOtherAssets("gl_code_1", "group_check_2", "heading_2", "gl_desc_2", "era_contract_type_2", "check_criteria_2", 3.55));
+
+        when(cfgOtherAssetsRepository.findAll()).thenReturn(cfgOtherAssetses);
     }
 
     private void mockCapElementsFormulaRepo() {

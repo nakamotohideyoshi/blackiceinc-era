@@ -108,6 +108,7 @@
                 };
 
                 $scope.BookmarkModal.edit = function (data) {
+                    data.$saving = false;
                     data.tempName = data.name;
                     data.edit = true;
                 };
@@ -130,12 +131,15 @@
                 $scope.BookmarkModal.save = function (data, element) {
                     var form = element['editForm' + data.id];
                     if (!form.$invalid) {
+                        data.$saving = true;
                         data.name = data.tempName;
                         // save
                         BookmarkService.update(data).then(function (response) {
+                            data.$saving = false;
                             data.edit = false;
                             VNotificationService2.success('Changes to record saved successfully');
                         }, function (response) {
+                            data.$saving = false;
                             VNotificationService2.error('Error!');
                         });
                     }
@@ -151,6 +155,7 @@
 
                 $scope.AddBookmarkModal.open = function () {
                     $scope.AddBookmarkModal.hideValidityStyle = true;
+                    $scope.AddBookmarkModal.$saving = false;
                     $scope.AddBookmarkModal.form = {
                         name: '',
                         state: ''
@@ -164,13 +169,16 @@
 
                 $scope.AddBookmarkModal.save = function () {
                     if (!$scope.addBookmarkForm.$invalid) {
+                        $scope.AddBookmarkModal.$saving = true;
                         var params = getParams();
                         $scope.AddBookmarkModal.form.state = JSON.stringify(params);
                         // save to server
                         BookmarkService.create($scope.AddBookmarkModal.form).then(function (response) {
+                            $scope.AddBookmarkModal.$saving = false;
                             $scope.AddBookmarkModal.close();
                             VNotificationService2.success('Bookmark saved successfully');
                         }, function (response) {
+                            $scope.AddBookmarkModal.$saving = false;
                             VNotificationService2.error('Error!');
                         });
 

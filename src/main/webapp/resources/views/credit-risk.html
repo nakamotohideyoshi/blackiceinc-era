@@ -525,6 +525,7 @@
                                    ng-click="BookmarkModal.save(data, this)">
                                     <span class="fa fa-save"></span> Save
                                 </a>
+                                <i ng-if="data.$saving" style="float:right; margin-top: 7px; margin-right: 5px;" class="fa fa-refresh fa-spin "></i>
                             </div>
 
                         </div>
@@ -605,6 +606,7 @@
                                ng-class="{'invalid': !AddBookmarkModal.hideValidityStyle && addBookmarkForm.inputName.$error.required}"
                                required />
                         <div style="margin-top: 20px; text-align: right;">
+                            <i ng-if="AddBookmarkModal.$saving" class="fa fa-refresh fa-spin "></i>
                             <a style="margin-top: 5px;" href="" class="btn btn-xs btn-success"
                                ng-click="AddBookmarkModal.save(data)">
                                 <span class="fa fa-save"></span> Save

@@ -484,7 +484,7 @@
                             </div>
                         </div>
                         <div class="dt-toolbar no-padding">
-                            <div class="spinner-indicator" ng-if="BookmarkModal.bookmarks.length==0"
+                            <div class="spinner-indicator" ng-if="!BookmarkModal.loading && BookmarkModal.bookmarks.length==0"
                                  style="display:block; top: 130px;">
                                 <div class="empty-text">No data Found</div>
                             </div>

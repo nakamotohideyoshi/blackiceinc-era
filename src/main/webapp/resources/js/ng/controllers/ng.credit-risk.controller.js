@@ -4,8 +4,8 @@
 
 
     angular.module('ng.credit-risk.controller', [])
-        .controller('CreditRiskController', ['$scope', '$timeout', 'Util', 'CreditRiskService', 'CreditRiskState', '$routeParams', '$location',
-            function ($scope, $timeout, Util, CreditRiskService, CreditRiskState, $routeParams, $location) {
+        .controller('CreditRiskController', ['$scope', '$timeout', 'Util', 'CreditRiskService', 'CreditRiskState', 'BookmarkService', 'VNotificationService2', '$routeParams', '$location',
+            function ($scope, $timeout, Util, CreditRiskService, CreditRiskState, BookmarkService, VNotificationService2, $routeParams, $location) {
                 var CONSTANT_snapshotDate = 'snapshotDate';
                 var CONSTANT_loadJobNbr = 'loadJobNbr';
                 var CONSTANT_scenarioId = 'scenarioId';
@@ -44,6 +44,143 @@
 
                 $scope.CreditRisk = {};
 
+                $scope.BookmarkModal = {
+                    bookmarks: [],
+                    loading: false
+                };
+
+                $scope.AddBookmarkModal = {};
+
+                /*** Bookmark Modal begin ***/
+                $scope.BookmarkModal.openBookmarkModal = function () {
+                    $scope.BookmarkModal.loading = true;
+                    $scope.BookmarkModal.bookmarks = [];
+
+                    BookmarkService.findAll().then(function (response) {
+                            $scope.BookmarkModal.bookmarks = response;
+                            $scope.BookmarkModal.loading = false;
+                        }, function (response) {
+                            $scope.BookmarkModal.loading = false;
+                        }
+                    );
+
+                    angular.element('#bookmarkModal').addClass('md-show');
+                };
+
+                $scope.BookmarkModal.closeBookmarkModal = function () {
+                    angular.element('#bookmarkModal').removeClass('md-show');
+                };
+
+                $scope.BookmarkModal.loadBookmark = function (id) {
+                    var bookmark = getSelectedBookmark(id);
+                    $scope.Filter.filterSelection = {};
+                    var state = JSON.parse(bookmark.state);
+                    if (state.snapshotDate) {
+                        $scope.Filter.filterSelection.snapshotDate = state.snapshotDate;
+                    }
+                    if (state.loadJobNbr) {
+                        $scope.Filter.filterSelection.loadJobNbr = state.loadJobNbr;
+                    }
+                    if (state.scenarioId) {
+                        $scope.Filter.filterSelection.scenarioId = state.scenarioId;
+                    }
+                    if (state.industry) {
+                        $scope.Filter.filterSelection.industry = state.industry;
+                    }
+                    if (state.profitCentre) {
+                        $scope.Filter.filterSelection.profitCentre = state.profitCentre;
+                    }
+                    if (state.assetClass) {
+                        $scope.Filter.filterSelection.assetClass = state.assetClass;
+                    }
+                    if (state.exposureType) {
+                        $scope.Filter.filterSelection.exposureType = state.exposureType;
+                    }
+                    if (state.entityType) {
+                        $scope.Filter.filterSelection.entityType = state.entityType;
+                    }
+                    if (state.productType) {
+                        $scope.Filter.filterSelection.productType = state.productType;
+                    }
+
+                    $scope.search();
+                    $scope.BookmarkModal.closeBookmarkModal();
+                };
+
+                $scope.BookmarkModal.edit = function (data) {
+                    data.tempName = data.name;
+                    data.edit = true;
+                };
+
+                $scope.BookmarkModal.delete = function (data) {
+                    // make call to backend
+                    BookmarkService.remove(data.id).then(function (response) {
+                        var index = $scope.BookmarkModal.bookmarks.indexOf(data);
+                        if (index > -1) {
+                            $scope.BookmarkModal.bookmarks.splice(index, 1);
+                        }
+                        VNotificationService2.success('Bookmark was successfully deleted');
+                    }, function (response) {
+                        VNotificationService2.error('Error!');
+                    });
+
+
+                };
+
+                $scope.BookmarkModal.save = function (data, element) {
+                    var form = element['editForm' + data.id];
+                    if (!form.$invalid) {
+                        data.name = data.tempName;
+                        // save
+                        BookmarkService.update(data).then(function (response) {
+                            data.edit = false;
+                            VNotificationService2.success('Changes to record saved successfully');
+                        }, function (response) {
+                            VNotificationService2.error('Error!');
+                        });
+                    }
+                };
+
+                $scope.BookmarkModal.cancel = function (data) {
+                    data.edit = false;
+                };
+
+                /*** Bookmark Modal end ***/
+
+                /*** Add Bookmark Modal begin ***/
+
+                $scope.AddBookmarkModal.open = function () {
+                    $scope.AddBookmarkModal.hideValidityStyle = true;
+                    $scope.AddBookmarkModal.form = {
+                        name: '',
+                        state: ''
+                    };
+                    angular.element('#addBookmarkModal').addClass('md-show');
+                };
+
+                $scope.AddBookmarkModal.close = function () {
+                    angular.element('#addBookmarkModal').removeClass('md-show');
+                };
+
+                $scope.AddBookmarkModal.save = function () {
+                    if (!$scope.addBookmarkForm.$invalid) {
+                        var params = getParams();
+                        $scope.AddBookmarkModal.form.state = JSON.stringify(params);
+                        // save to server
+                        BookmarkService.create($scope.AddBookmarkModal.form).then(function (response) {
+                            $scope.AddBookmarkModal.close();
+                            VNotificationService2.success('Bookmark saved successfully');
+                        }, function (response) {
+                            VNotificationService2.error('Error!');
+                        });
+
+                    } else {
+                        $scope.AddBookmarkModal.hideValidityStyle = false;
+                    }
+                };
+
+                /*** Add Bookmark Modal end ***/
+
                 $scope.getCreditRiskData = function (params) {
                     CreditRiskService.getAll(params).then(function (response) {
                             $scope.CreditRisk.list = response.data.content;
@@ -60,9 +197,9 @@
                 };
 
                 $scope.getCreditRiskSums = function (params) {
-                  CreditRiskService.getSums(params).then(function (response){
-                     $scope.CreditRisk.sums = response;
-                  });
+                    CreditRiskService.getSums(params).then(function (response) {
+                        $scope.CreditRisk.sums = response;
+                    });
                 };
 
                 $scope.filterTable = function () {
@@ -242,6 +379,17 @@
                     state.exposureType = $scope.Filter.filterSelection.exposureType;
                     state.entityType = $scope.Filter.filterSelection.entityType;
                     state.productType = $scope.Filter.filterSelection.productType;
+                }
+
+                function getSelectedBookmark(id) {
+                    var result = null;
+                    for (var i = 0; i < $scope.BookmarkModal.bookmarks.length; i++) {
+                        if ($scope.BookmarkModal.bookmarks[i].id == id) {
+                            result = $scope.BookmarkModal.bookmarks[i];
+                            break;
+                        }
+                    }
+                    return result;
                 }
 
             }

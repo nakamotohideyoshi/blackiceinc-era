@@ -76,6 +76,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/logout").permitAll()
                 .antMatchers("/ldapClient").permitAll()
                 .antMatchers("/credit-risk/**").permitAll()
+                .antMatchers("/api/bookmark/**").authenticated()
                 .antMatchers("/api/user/**").hasAuthority(Role.ROLE_ADMIN)
                 .antMatchers("/api/runCalculator/**").hasAuthority(Role.ROLE_ADMIN)
                 .antMatchers("/api/configuration/**").hasAnyAuthority(Role.ROLE_ADMIN, Role.ROLE_CONFIGURATION)

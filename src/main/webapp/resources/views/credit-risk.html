@@ -226,10 +226,9 @@
             </button>
             <a class="btn btn-default btn-sm" href="javascript:void(0);" ng-click="resetFilter()">
                 <i class="fa fa-refresh"></i> Reset</a>
-            <a href="" ng-click="saveToBookmark()" class="btn btn-default btn-sm"
-               ng-class="{'disabled' : isEmpty(QueryParams) }">
+            <a href="" ng-click="AddBookmarkModal.open()" class="btn btn-default btn-sm">
                 <i class="fa fa-save"></i> Save to Bookmark </a>
-            <a href="" ng-click="OpenModal()" class="btn btn-default btn-sm">
+            <a href="" ng-click="BookmarkModal.openBookmarkModal()" class="btn btn-default btn-sm">
                 <i class="glyphicon glyphicon-bookmark"></i> Open Bookmarks </a>
 
         </div>
@@ -247,13 +246,13 @@
                 <tbody>
                 <tr>
                     <td class="color-01" style="width:110px;padding: 5px 6px;">
-                        {{ (CreditRisk.sums.sumosbal|number:0)||' n/a '}}
+                        {{ ( CreditRisk.sums.sumosbal )||' n/a '}}
                     </td>
                     <td class="color-01" style="width:110px;padding: 5px 6px;">
-                        {{ (CreditRisk.sums.sumrwa|number:0)||' n/a '}}
+                        {{ ( CreditRisk.sums.sumrwa )||' n/a '}}
                     </td>
                     <td class="color-01" style="width:155px;padding: 5px 6px;">
-                        {{ (CreditRisk.sums.sumregcap|number:0) ||' n/a '}}
+                        {{ ( CreditRisk.sums.sumregcap ) ||' n/a '}}
                     </td>
                 </tr>
                 </tbody>
@@ -415,6 +414,212 @@
     <!-- Pagination END -->
 
 </section>
+
+
+<div class="md-modal md-effect-10 " id="bookmarkModal">
+    <style>
+        ._form {
+            position: absolute;
+            top: -195px;
+            width: 65%;
+            margin: 0 auto;
+            left: 17%;
+            -webkit-box-shadow: 0px 5px 8px 0px rgba(50, 50, 50, 0.5);
+            -moz-box-shadow: 0px 5px 8px 0px rgba(50, 50, 50, 0.5);
+            box-shadow: 0px 5px 8px 0px rgba(50, 50, 50, 0.5);
+            transition: .5s;
+        }
+
+        .slide_form {
+            transition: 0.5s;
+            top: 0;
+        }
+
+        .overlayx {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        div.success {
+            background-color: #dff0d8;
+        }
+
+        h2 {
+            height: 100%;
+            width: auto;
+            display: inline-block;
+            font-size: 15px;
+            position: relative;
+            margin: 0 0 0 10px;
+            line-height: 34px;
+            font-weight: 400;
+            letter-spacing: 0;
+        }
+
+    </style>
+    <div class="md-content">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="BookmarkModal.closeBookmarkModal()" data-dismiss="modal"
+                        aria-hidden="true">
+                    <i class="fa fa-times"></i>
+                </button>
+                <i class="fa fa-bookmark-o" style="font-size: 20px;"></i>
+                <h2><Strong translate> Bookmarks</Strong></h2>
+            </div>
+            <div class="modal-body">
+                <div class="col-sm-4" style="margin-bottom:10px;padding-left: 0px;">
+                    <div class="icon-addon addon-sm">
+                        <input type="text" placeholder="Search" ng-model="query.name" class="form-control">
+                        <label class="glyphicon glyphicon-search" rel="tooltip" title=""></label>
+                    </div>
+                </div>
+                <div style="overflow: auto; width: 100%; position:relative;border: 1px solid #e5e5e5;min-height: 300px;">
+                    <div class="dataTables_wrapper">
+                        <div class="dt-toolbar no-padding">
+                            <div class="spinner-indicator" ng-if="BookmarkModal.loading"
+                                 style="top: 100px; display:block">
+                                <div class="v-loading-indicator second v-loading-indicator-delay"></div>
+                            </div>
+                        </div>
+                        <div class="dt-toolbar no-padding">
+                            <div class="spinner-indicator" ng-if="BookmarkModal.bookmarks.length==0"
+                                 style="display:block; top: 130px;">
+                                <div class="empty-text">No data Found</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="overflow: auto; width: 100%;max-height:350px;">
+
+                        <div class=" demo-icon-font" style="padding:5px 10px;"
+                             ng-repeat="data in BookmarkModal.bookmarks | filter:query">
+                            <div ng-show="!data.edit">
+                                <a href="" ng-click="BookmarkModal.loadBookmark(data.id)" ng-show="!data.edit">
+                                    {{ data.name }}
+                                </a>
+
+                                <a href="" ng-click="BookmarkModal.delete(data)"
+                                   style="float:right; margin-left: 15px; color: #CF4762;"
+                                   title="Delete">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                                <a href="" ng-click="BookmarkModal.edit(data)" style="float:right;"
+                                   title="Edit">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                            </div>
+
+                            <div ng-show="data.edit" class="form-inline" ng-form name="editForm{{data.id}}">
+                                <input type="text" class="form-control"
+                                       name="inputName"
+                                       placeholder="Bookmark name"
+                                       ng-model="data.tempName"
+                                       ng-class="{'invalid': editForm{{data.id}}.inputName.$error.required}"
+                                       required >
+                                <a style="float:right; margin-top: 5px; margin-left: 5px;" href=""
+                                   class="btn btn-xs btn-default" ng-click="BookmarkModal.cancel(data)">
+                                    <span class="fa fa-times"></span> Cancel
+                                </a>
+                                <a style="float:right; margin-top: 5px;" href="" class="btn btn-xs btn-success"
+                                   ng-click="BookmarkModal.save(data, this)">
+                                    <span class="fa fa-save"></span> Save
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="md-modal md-effect-10 " id="addBookmarkModal">
+    <style>
+        ._form {
+            position: absolute;
+            top: -195px;
+            width: 65%;
+            margin: 0 auto;
+            left: 17%;
+            -webkit-box-shadow: 0px 5px 8px 0px rgba(50, 50, 50, 0.5);
+            -moz-box-shadow: 0px 5px 8px 0px rgba(50, 50, 50, 0.5);
+            box-shadow: 0px 5px 8px 0px rgba(50, 50, 50, 0.5);
+            transition: .5s;
+        }
+
+        .slide_form {
+            transition: 0.5s;
+            top: 0;
+        }
+
+        .overlayx {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        div.success {
+            background-color: #dff0d8;
+        }
+
+        h2 {
+            height: 100%;
+            width: auto;
+            display: inline-block;
+            font-size: 15px;
+            position: relative;
+            margin: 0 0 0 10px;
+            line-height: 34px;
+            font-weight: 400;
+            letter-spacing: 0;
+        }
+
+    </style>
+    <div class="md-content">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="AddBookmarkModal.close()" data-dismiss="modal"
+                        aria-hidden="true">
+                    <i class="fa fa-times"></i>
+                </button>
+                <i class="fa fa-bookmark-o" style="font-size: 20px;"></i>
+                <h2><Strong translate>Create New Bookmark</Strong></h2>
+            </div>
+            <div class="modal-body">
+                <div >
+                    <div class="dataTables_wrapper">
+                        <div class="dt-toolbar no-padding">
+                            <div class="spinner-indicator" ng-if="BookmarkModal.loading"
+                                 style="top: 100px; display:block">
+                                <div class="v-loading-indicator second v-loading-indicator-delay"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <form name="addBookmarkForm">
+                        <input type="text" class="form-control"
+                               name="inputName"
+                               placeholder="Enter bookmark name"
+                               ng-model="AddBookmarkModal.form.name"
+                               ng-class="{'invalid': !AddBookmarkModal.hideValidityStyle && addBookmarkForm.inputName.$error.required}"
+                               required />
+                        <div style="margin-top: 20px; text-align: right;">
+                            <a style="margin-top: 5px;" href="" class="btn btn-xs btn-success"
+                               ng-click="AddBookmarkModal.save(data)">
+                                <span class="fa fa-save"></span> Save
+                            </a>
+                            <a style="margin-top: 5px; margin-left: 5px;" href=""
+                               class="btn btn-xs btn-default" ng-click="AddBookmarkModal.close()">
+                                <span class="fa fa-times"></span> Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript">
     hieghtResize();

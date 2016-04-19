@@ -54,6 +54,9 @@ public class MeasurementSensitivity {
     @JoinColumn(name="CUSTOMER_ID")
     private Customer customer;
 
+    @Column(name="ORG_UNIT")
+    private String orgUnit;
+
 	public MeasurementSensitivity() {
 	}
 
@@ -159,5 +162,13 @@ public class MeasurementSensitivity {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public String getOrgUnit() {
+        return orgUnit;
+    }
+
+    public void setOrgUnit(String orgUnit) {
+        this.orgUnit = orgUnit;
     }
 }

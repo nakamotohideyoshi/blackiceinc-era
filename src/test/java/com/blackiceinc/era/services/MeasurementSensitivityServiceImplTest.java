@@ -35,10 +35,10 @@ public class MeasurementSensitivityServiceImplTest {
         params.put("entityType", "SOV");
 //        params.put("exposureType", "DRAWN");
 
-        Map<String, Float> sums = msService.getSums(params);
+        Map<String, String> sums = msService.getSums(params);
         Set<String> strings = sums.keySet();
         for (String string : strings) {
-            Float aFloat = sums.get(string);
+            String aFloat = sums.get(string);
             log.info(string + ": " + aFloat.toString());
         }
     }

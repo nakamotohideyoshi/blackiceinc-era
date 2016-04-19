@@ -51,8 +51,8 @@ public class MeasurementSensitivityServiceImpl implements MeasurementSensitivity
     }
 
     @Override
-    public Map<String, Float> getSums(Map<String, String> allRequestParams) throws SQLException {
-        Map<String, Float> result = new HashMap<>();
+    public Map<String, String> getSums(Map<String, String> allRequestParams) throws SQLException {
+        Map<String, String> result = new HashMap<>();
         Connection conn = null;
         Statement stmt = null;
         ResultSet resultSet = null;
@@ -84,9 +84,9 @@ public class MeasurementSensitivityServiceImpl implements MeasurementSensitivity
             log.info("SUM took {} ms", System.currentTimeMillis() - start);
 
             if (resultSet.next()) {
-                result.put("sumosbal", resultSet.getFloat("sumosbal"));
-                result.put("sumrwa", resultSet.getFloat("sumrwa"));
-                result.put("sumregcap", resultSet.getFloat("sumregcap"));
+                result.put("sumosbal", resultSet.getBigDecimal("sumosbal").toPlainString());
+                result.put("sumrwa", resultSet.getBigDecimal("sumrwa").toPlainString());
+                result.put("sumregcap", resultSet.getBigDecimal("sumregcap").toPlainString());
             }
 
         } finally {
@@ -138,10 +138,9 @@ public class MeasurementSensitivityServiceImpl implements MeasurementSensitivity
         }
 
         String profitCentre = params.get("profitCentre");
-        // TODO: Profit centre will be done when column is ready in database
-//        if (profitCentre!=null){
-//            builder.with("orgUnit", ":", profitCentre, "", "");
-//        }
+        if (profitCentre != null) {
+            conditions.add(new Condition("cus.ORG_UNIT", profitCentre, Condition.Type.STRING));
+        }
 
 
         String assetClass = params.get("assetClass");
@@ -192,10 +191,9 @@ public class MeasurementSensitivityServiceImpl implements MeasurementSensitivity
         }
 
         String profitCentre = params.get("profitCentre");
-//        if (profitCentre!=null){
-//            builder.with("orgUnit", ":", profitCentre, "", "");
-//        }
-
+        if (profitCentre != null) {
+            builder.with("orgUnit", ":", profitCentre, "", "");
+        }
 
         String assetClass = params.get("assetClass");
         if (assetClass != null) {
@@ -216,10 +214,6 @@ public class MeasurementSensitivityServiceImpl implements MeasurementSensitivity
         if (productType != null) {
             builder.with("eraProductTypeFinal", ":", productType, "", "");
         }
-
-        String riskRatingFrom = params.get("riskRatingFrom");
-        String riskRatingTo = params.get("riskRatingTo");
-
 
         return builder.build();
     }

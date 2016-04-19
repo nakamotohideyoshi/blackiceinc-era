@@ -47,7 +47,7 @@ public class CreditRiskResource {
     @RequestMapping(value = "/credit-risk/sums",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Map<String, Float>> getSums(
+    public ResponseEntity<Map<String, String>> getSums(
             @RequestParam Map<String, String> allRequestParams) throws URISyntaxException, SQLException {
         return new ResponseEntity<>(msService.getSums(allRequestParams),
                 HttpStatus.OK);

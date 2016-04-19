@@ -68,6 +68,34 @@ angular.module('app.services', [])
 		return sharedService;
 	}])
 
+	.factory('VNotificationService2', function () {
+			var VNotification = {};
+			var defaultTimeout = 3000;
+
+			VNotification.success = function (title, msg, timeout) {
+				$.smallBox({
+					title: title,
+					content: msg || '',
+					color: '#739E73',
+					iconSmall: 'fa fa-times',
+					timeout: timeout || defaultTimeout
+				});
+			};
+
+			VNotification.error = function (title, msg, timeout) {
+				$.smallBox({
+					title: title,
+					content: msg || '',
+					color: "#A65858",
+					iconSmall: "fa fa-times",
+					timeout: timeout || defaultTimeout
+				});
+			};
+
+			return VNotification;
+		}
+	)
+
 	.factory('VNotificationService', ['$rootScope', function($rootScope) {
         var VNotification = {};
         var defaultTimeout = 3000;
@@ -112,6 +140,8 @@ angular.module('app.services', [])
 
         return VNotification;
     }])
+
+
 
 	.factory('Util', function(){
 
@@ -507,7 +537,7 @@ angular.module('app.services', [])
 	})
 
 	.service("BookmarkService", function(CustomHttp){
-		var url = 'api/bookmarks/';
+		var url = 'api/bookmark/';
 		return ({
 			findAll : function(params) {
 				return CustomHttp.get( url , params );

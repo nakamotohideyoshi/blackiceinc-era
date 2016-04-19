@@ -1133,3 +1133,9 @@ body {
   -moz-animation-delay: -500ms;
   animation-delay: -500ms;
 }
+
+/** modal **/
+.md-modal .modal-header {
+    background: #60747C;
+    color: #ffffff;
+}

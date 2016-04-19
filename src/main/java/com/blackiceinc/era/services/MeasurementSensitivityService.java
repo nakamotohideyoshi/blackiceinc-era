@@ -9,5 +9,5 @@ import java.util.Map;
 public interface MeasurementSensitivityService {
     Page<MeasurementSensitivity> findMsByParams(Map<String, String> params);
 
-    Map<String, Float> getSums(Map<String, String> allRequestParams) throws SQLException;
+    Map<String, String> getSums(Map<String, String> allRequestParams) throws SQLException;
 }

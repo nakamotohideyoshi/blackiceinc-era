@@ -278,151 +278,151 @@ public class ConfigurationExportImportServiceImpl implements ConfigurationExport
             //Create Workbook instance holding reference to .xlsx file
             XSSFWorkbook workbook = new XSSFWorkbook(file);
 
-            XSSFSheet financialBookSheet = workbook.getSheet(FINANCIAL_BOOK);
+            XSSFSheet financialBookSheet = getSheet(FINANCIAL_BOOK, workbook);
             cfgFinancialBookObjectMapper.importData(financialBookSheet);
 
-            XSSFSheet companySheet = workbook.getSheet(COMPANY);
+            XSSFSheet companySheet = getSheet(COMPANY, workbook);
             cfgCompanyObjectMapper.importData(companySheet);
 
-            XSSFSheet companyLinkageSheet = workbook.getSheet(COMPANY_LINKAGE);
+            XSSFSheet companyLinkageSheet = getSheet(COMPANY_LINKAGE, workbook);
             cfgCompanyLinkageObjectMapper.importData(companyLinkageSheet);
 
-            XSSFSheet companyDimensionSheet = workbook.getSheet(COMPANY_DIMENSION);
+            XSSFSheet companyDimensionSheet = getSheet(COMPANY_DIMENSION, workbook);
             cfgCompanyDimensionObjectMapper.importData(companyDimensionSheet);
 
-            XSSFSheet companyDimensionConsolidationSheet = workbook.getSheet(COMPANY_DIMENSION_CONSOLIDATION);
+            XSSFSheet companyDimensionConsolidationSheet = getSheet(COMPANY_DIMENSION_CONSOLIDATION, workbook);
             cfgCompanyDimensionConsolidationObjectMapper.importData(companyDimensionConsolidationSheet);
 
-            XSSFSheet entityTypeSheet = workbook.getSheet(ENTITY_TYPE);
+            XSSFSheet entityTypeSheet = getSheet(ENTITY_TYPE, workbook);
             cfgEntityTypeObjectMapper.importData(entityTypeSheet);
 
-            XSSFSheet entityTypeMappingSheet = workbook.getSheet(ENTITY_TYPE_MAPPING);
+            XSSFSheet entityTypeMappingSheet = getSheet(ENTITY_TYPE_MAPPING, workbook);
             cfgEntityTypeMappingObjectMapper.importData(entityTypeMappingSheet);
 
-            XSSFSheet productTypeSheet = workbook.getSheet(PRODUCT_TYPE);
+            XSSFSheet productTypeSheet = getSheet(PRODUCT_TYPE, workbook);
             cfgProductTypeObjectMapper.importData(productTypeSheet);
 
-            XSSFSheet productTypeMappingSheet = workbook.getSheet(PRODUCT_TYPE_MAPPING);
+            XSSFSheet productTypeMappingSheet = getSheet(PRODUCT_TYPE_MAPPING, workbook);
             cfgProductTypeMappingObjectMapper.importData(productTypeMappingSheet);
 
-            XSSFSheet assetClassSheet = workbook.getSheet(ASSET_CLASS);
+            XSSFSheet assetClassSheet = getSheet(ASSET_CLASS, workbook);
             cfgAssetClassObjectMapper.importData(assetClassSheet);
 
-            XSSFSheet assetClassMappingSheet = workbook.getSheet(ASSET_CLASS_MAPPING);
+            XSSFSheet assetClassMappingSheet = getSheet(ASSET_CLASS_MAPPING, workbook);
             cfgAssetClassMappingObjectMapper.importCfgAssetClassMapping(assetClassMappingSheet);
 
-            XSSFSheet nonPerformingMappingSheet = workbook.getSheet(NON_PERFORMING_MAPPING);
+            XSSFSheet nonPerformingMappingSheet = getSheet(NON_PERFORMING_MAPPING, workbook);
             cfgNonPerformingMappingObjectMapper.importData(nonPerformingMappingSheet);
 
-            XSSFSheet agencyEligibilitySheet = workbook.getSheet(AGENCY_ELIGIBILITY);
+            XSSFSheet agencyEligibilitySheet = getSheet(AGENCY_ELIGIBILITY, workbook);
             cfgAgencyEligibilityObjectMapper.importData(agencyEligibilitySheet);
 
-            XSSFSheet ratingSheet = workbook.getSheet(RATING);
+            XSSFSheet ratingSheet = getSheet(RATING, workbook);
             cfgRatingObjectMapper.importData(ratingSheet);
 
-            XSSFSheet creditMeasureSheet = workbook.getSheet(CREDIT_MEASURE);
+            XSSFSheet creditMeasureSheet = getSheet(CREDIT_MEASURE, workbook);
             cfgCreditMeasureObjectMapper.importData(creditMeasureSheet);
 
-            XSSFSheet riskWeightMappingSheet = workbook.getSheet(RISK_WEIGHT_MAPPING);
+            XSSFSheet riskWeightMappingSheet = getSheet(RISK_WEIGHT_MAPPING, workbook);
             cfgRiskWeightMappingObjectMapper.importData(riskWeightMappingSheet);
 
-            XSSFSheet ccfMappingSheet = workbook.getSheet(CCF_MAPPING);
+            XSSFSheet ccfMappingSheet = getSheet(CCF_MAPPING, workbook);
             cfgCcfMappingObjectMapper.importData(ccfMappingSheet);
 
-            XSSFSheet addOnSheet = workbook.getSheet(ADD_ON);
+            XSSFSheet addOnSheet = getSheet(ADD_ON, workbook);
             cfgAddOnObjectMapper.importData(addOnSheet);
 
-            XSSFSheet crmEligibilitySheet = workbook.getSheet(CRM_ELIGIBILITY);
+            XSSFSheet crmEligibilitySheet = getSheet(CRM_ELIGIBILITY, workbook);
             cfgCrmEligibilityObjectMapper.importData(crmEligibilitySheet);
 
-            XSSFSheet crmHaircutSheet = workbook.getSheet(CRM_HAIRCUT);
+            XSSFSheet crmHaircutSheet = getSheet(CRM_HAIRCUT, workbook);
             cfgCrmHaircutObjectMapper.importData(crmHaircutSheet);
 
-            XSSFSheet reclassSheet = workbook.getSheet(RECLASS);
+            XSSFSheet reclassSheet = getSheet(RECLASS, workbook);
             cfgReclassObjectMapper.importData(reclassSheet);
 
-            XSSFSheet reclassCheckDefSheet = workbook.getSheet(RECLASS_CHECK_DEF);
+            XSSFSheet reclassCheckDefSheet = getSheet(RECLASS_CHECK_DEF, workbook);
             cfgReclassCheckDefObjectMapper.importData(reclassCheckDefSheet);
 
-            XSSFSheet reclassCheckTypeSheet = workbook.getSheet(RECLASS_CHECK_TYPE);
+            XSSFSheet reclassCheckTypeSheet = getSheet(RECLASS_CHECK_TYPE, workbook);
             cfgReclassCheckTypeObjectMapper.importData(reclassCheckTypeSheet);
 
-            XSSFSheet mktProductTypeSheet = workbook.getSheet(MKT_PRODUCT_TYPE);
+            XSSFSheet mktProductTypeSheet = getSheet(MKT_PRODUCT_TYPE, workbook);
             cfgMktProductTypeObjectMapper.importData(mktProductTypeSheet);
 
-            XSSFSheet fxProdTypeSheet = workbook.getSheet(FX_PROD_TYPE);
+            XSSFSheet fxProdTypeSheet = getSheet(FX_PROD_TYPE, workbook);
             cfgFxProdTypeObjectMapper.importData(fxProdTypeSheet);
 
-            XSSFSheet fxProdMappingSheet = workbook.getSheet(FX_PROD_MAPPING);
+            XSSFSheet fxProdMappingSheet = getSheet(FX_PROD_MAPPING, workbook);
             cfgFxProdMappingObjectMapper.importData(fxProdMappingSheet);
 
-            XSSFSheet mktProductMappingSheet = workbook.getSheet(MKT_PRODUCT_MAPPING);
+            XSSFSheet mktProductMappingSheet = getSheet(MKT_PRODUCT_MAPPING, workbook);
             cfgMktProductMappingObjectMapper.importData(mktProductMappingSheet);
 
-            XSSFSheet mktAssetClassSheet = workbook.getSheet(MKT_ASSET_CLASS);
+            XSSFSheet mktAssetClassSheet = getSheet(MKT_ASSET_CLASS, workbook);
             cfgMktAssetClassObjectMapper.importData(mktAssetClassSheet);
 
-            XSSFSheet mktAssetClassMappingSheet = workbook.getSheet(MKT_ASSET_CLASS_MAPPING);
+            XSSFSheet mktAssetClassMappingSheet = getSheet(MKT_ASSET_CLASS_MAPPING, workbook);
             cfgMktAssetClassMappingObjectMapper.importData(mktAssetClassMappingSheet);
 
-            XSSFSheet mktIrrSpcRiskSheet = workbook.getSheet(MKT_IRR_SPC_RISK);
+            XSSFSheet mktIrrSpcRiskSheet = getSheet(MKT_IRR_SPC_RISK, workbook);
             cfgMktIrrSpcRiskObjectMapper.importData(mktIrrSpcRiskSheet);
 
-            XSSFSheet mktIrrGnrRiskSheet = workbook.getSheet(MKT_IRR_GNR_RISK);
+            XSSFSheet mktIrrGnrRiskSheet = getSheet(MKT_IRR_GNR_RISK, workbook);
             cfgMktIrrGnrRiskObjectMapper.importData(mktIrrGnrRiskSheet);
 
-            XSSFSheet mktIrrGnrBandSheet = workbook.getSheet(MKT_IRR_GNR_BAND);
+            XSSFSheet mktIrrGnrBandSheet = getSheet(MKT_IRR_GNR_BAND, workbook);
             cfgMktIrrGnrBandObjectMapper.importData(mktIrrGnrBandSheet);
 
-            XSSFSheet mktIrrGnrIntraSheet = workbook.getSheet(MKT_IRR_GNR_INTRA);
+            XSSFSheet mktIrrGnrIntraSheet = getSheet(MKT_IRR_GNR_INTRA, workbook);
             cfgMktIrrGnrIntraObjectMapper.importData(mktIrrGnrIntraSheet);
 
-            XSSFSheet mktIrrGnrInterSheet = workbook.getSheet(MKT_IRR_GNR_INTER);
+            XSSFSheet mktIrrGnrInterSheet = getSheet(MKT_IRR_GNR_INTER, workbook);
             cfgMktIrrGnrInterObjectMapper.importData(mktIrrGnrInterSheet);
 
-            XSSFSheet mktEqtSpcSheet = workbook.getSheet(MKT_EQT_SPC);
+            XSSFSheet mktEqtSpcSheet = getSheet(MKT_EQT_SPC, workbook);
             cfgMktEqtSpcObjectMapper.importData(mktEqtSpcSheet);
 
-            XSSFSheet mktEqtGnrSheet = workbook.getSheet(MKT_EQT_GNR);
+            XSSFSheet mktEqtGnrSheet = getSheet(MKT_EQT_GNR, workbook);
             cfgMktEqtGnrObjectMapper.importData(mktEqtGnrSheet);
 
-            XSSFSheet mktComDrtSheet = workbook.getSheet(MKT_COM_DRT);
+            XSSFSheet mktComDrtSheet = getSheet(MKT_COM_DRT, workbook);
             cfgMktComDrtObjectMapper.importData(mktComDrtSheet);
 
-            XSSFSheet mktComOthSheet = workbook.getSheet(MKT_COM_OTH);
+            XSSFSheet mktComOthSheet = getSheet(MKT_COM_OTH, workbook);
             cfgMktComOthObjectMapper.importData(mktComOthSheet);
 
-            XSSFSheet mktFxSheet = workbook.getSheet(MKT_FX);
+            XSSFSheet mktFxSheet = getSheet(MKT_FX, workbook);
             cfgMktFxObjectMapper.importData(mktFxSheet);
 
-            XSSFSheet opsProductTypeSheet = workbook.getSheet(OPS_PRODUCT_TYPE);
+            XSSFSheet opsProductTypeSheet = getSheet(OPS_PRODUCT_TYPE, workbook);
             cfgOpsProductTypeObjectMapper.importData(opsProductTypeSheet);
 
-            XSSFSheet opsProductTypeMappingSheet = workbook.getSheet(OPS_PRODUCT_TYPE_MAPPING);
+            XSSFSheet opsProductTypeMappingSheet = getSheet(OPS_PRODUCT_TYPE_MAPPING, workbook);
             cfgOpsProductTypeMappingObjectMapper.importData(opsProductTypeMappingSheet);
 
-            XSSFSheet opsFormulaSheet = workbook.getSheet(OPS_FORMULA);
+            XSSFSheet opsFormulaSheet = getSheet(OPS_FORMULA, workbook);
             cfgOpsFormulaObjectMapper.importData(opsFormulaSheet);
 
-            XSSFSheet opsRiskSheet = workbook.getSheet(OPS_RISK);
+            XSSFSheet opsRiskSheet = getSheet(OPS_RISK, workbook);
             cfgOpsRiskObjectMapper.importData(opsRiskSheet);
 
-            XSSFSheet capElementsSheet = workbook.getSheet(CAP_ELEMENTS);
+            XSSFSheet capElementsSheet = getSheet(CAP_ELEMENTS, workbook);
             cfgCapElementsObjectMapper.importData(capElementsSheet);
 
-            XSSFSheet capElementsTypeSheet = workbook.getSheet(CAP_ELEMENTS_TYPE);
+            XSSFSheet capElementsTypeSheet = getSheet(CAP_ELEMENTS_TYPE, workbook);
             cfgCapElementsTypeObjectMapper.importData(capElementsTypeSheet);
 
-            XSSFSheet capElementsLimitSheet = workbook.getSheet(CAP_ELEMENTS_LIMIT);
+            XSSFSheet capElementsLimitSheet = getSheet(CAP_ELEMENTS_LIMIT, workbook);
             cfgCapElementsLimitObjectMapper.importData(capElementsLimitSheet);
 
-            XSSFSheet capElementsMappingSheet = workbook.getSheet(CAP_ELEMENTS_MAPPING);
+            XSSFSheet capElementsMappingSheet = getSheet(CAP_ELEMENTS_MAPPING, workbook);
             cfgCapElementsMappingObjectMapper.importData(capElementsMappingSheet);
 
-            XSSFSheet capElementsFormulaSheet = workbook.getSheet(CAP_ELEMENTS_FORMULA);
+            XSSFSheet capElementsFormulaSheet = getSheet(CAP_ELEMENTS_FORMULA, workbook);
             cfgCapElementsFormulaObjectMapper.importData(capElementsFormulaSheet);
 
-            XSSFSheet otherAssetsSheet = workbook.getSheet(OTHER_ASSETS);
+            XSSFSheet otherAssetsSheet = getSheet(OTHER_ASSETS, workbook);
             cfgOtherAssetsObjectMapper.importData(otherAssetsSheet);
 
             file.close();
@@ -437,6 +437,14 @@ public class ConfigurationExportImportServiceImpl implements ConfigurationExport
         }
 
         log.info("Export for configFile : {} finished in {} ms", configFile.toString(), System.currentTimeMillis() - start);
+    }
+
+    private XSSFSheet getSheet(String sheetName, XSSFWorkbook workbook) {
+        XSSFSheet sheet = workbook.getSheet(sheetName);
+        if (sheet==null){
+            sheet = workbook.createSheet(sheetName);
+        }
+        return sheet;
     }
 
     @Override

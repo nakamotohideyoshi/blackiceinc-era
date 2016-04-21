@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 public class CfgCcfMappingObjectMapper extends AbstractObjectMapper<CfgCcfMapping> {
 
-    CfgCcfMappingRepository cfgCcfMappingRepository;
+    private CfgCcfMappingRepository cfgCcfMappingRepository;
 
     @Autowired
     public CfgCcfMappingObjectMapper(CfgCcfMappingRepository cfgCcfMappingRepository) {

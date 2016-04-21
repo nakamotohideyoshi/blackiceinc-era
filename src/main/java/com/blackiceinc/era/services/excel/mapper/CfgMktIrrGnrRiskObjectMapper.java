@@ -14,7 +14,7 @@ import java.util.List;
 @Component
 public class CfgMktIrrGnrRiskObjectMapper extends AbstractObjectMapper<CfgMktIrrGnrRisk> {
 
-    CfgMktIrrGnrRiskRepository cfgMktIrrGnrRiskRepository;
+    private CfgMktIrrGnrRiskRepository cfgMktIrrGnrRiskRepository;
 
     @Autowired
     public CfgMktIrrGnrRiskObjectMapper(CfgMktIrrGnrRiskRepository cfgMktIrrGnrRiskRepository) {

@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 public class CfgRiskWeightMappingObjectMapper extends AbstractObjectMapper<CfgRiskWeightMapping> {
 
-    CfgRiskWeightMappingRepository cfgRiskWeightMappingRepository;
+    private CfgRiskWeightMappingRepository cfgRiskWeightMappingRepository;
 
     @Autowired
     public CfgRiskWeightMappingObjectMapper(CfgRiskWeightMappingRepository cfgRiskWeightMappingRepository) {

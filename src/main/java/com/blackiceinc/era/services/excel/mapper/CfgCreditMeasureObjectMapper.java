@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 public class CfgCreditMeasureObjectMapper extends AbstractObjectMapper<CfgCreditMeasure> {
 
-    CfgCreditMeasureRepository cfgCreditMeasureRepository;
+    private CfgCreditMeasureRepository cfgCreditMeasureRepository;
 
     @Autowired
     public CfgCreditMeasureObjectMapper(CfgCreditMeasureRepository cfgCreditMeasureRepository) {

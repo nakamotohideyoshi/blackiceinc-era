@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 public class CfgFinancialBookObjectMapper extends AbstractObjectMapper<CfgFinancialBook> {
 
-    CfgFinancialBookRepository cfgFinancialBookRepository;
+    private CfgFinancialBookRepository cfgFinancialBookRepository;
 
     @Autowired
     public CfgFinancialBookObjectMapper(CfgFinancialBookRepository cfgFinancialBookRepository) {

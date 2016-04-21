@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 public class CfgOpsProductTypeMappingObjectMapper extends AbstractObjectMapper<CfgOpsProductTypeMapping> {
 
-    CfgOpsProductTypeMappingRepository cfgOpsProductTypeMappingRepository;
+    private CfgOpsProductTypeMappingRepository cfgOpsProductTypeMappingRepository;
 
     @Autowired
     public CfgOpsProductTypeMappingObjectMapper(CfgOpsProductTypeMappingRepository cfgOpsProductTypeMappingRepository) {

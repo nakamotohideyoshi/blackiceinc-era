@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 public class CfgMktIrrGnrInterObjectMapper extends AbstractObjectMapper<CfgMktIrrGnrInter> {
 
-    CfgMktIrrGnrInterRepository cfgMktIrrGnrInterRepository;
+    private CfgMktIrrGnrInterRepository cfgMktIrrGnrInterRepository;
 
     @Autowired
     public CfgMktIrrGnrInterObjectMapper(CfgMktIrrGnrInterRepository cfgMktIrrGnrInterRepository) {

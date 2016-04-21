@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 public class CfgAgencyEligibilityObjectMapper extends AbstractObjectMapper<CfgAgencyEligibility> {
 
-    CfgAgencyEligibilityRepository cfgAgencyEligibilityRepository;
+    private CfgAgencyEligibilityRepository cfgAgencyEligibilityRepository;
 
     @Autowired
     public CfgAgencyEligibilityObjectMapper(CfgAgencyEligibilityRepository cfgAgencyEligibilityRepository) {

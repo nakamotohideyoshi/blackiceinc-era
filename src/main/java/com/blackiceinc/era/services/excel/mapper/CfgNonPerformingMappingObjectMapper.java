@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 public class CfgNonPerformingMappingObjectMapper extends AbstractObjectMapper<CfgNonPerformingMapping> {
 
-    CfgNonPerformingMappingRepository cfgNonPerformingMappingRepository;
+    private CfgNonPerformingMappingRepository cfgNonPerformingMappingRepository;
 
     @Autowired
     public CfgNonPerformingMappingObjectMapper(CfgNonPerformingMappingRepository cfgNonPerformingMappingRepository) {

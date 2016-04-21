@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 public class CfgReclassObjectMapper extends AbstractObjectMapper<CfgReclass> {
 
-    CfgReclassRepository cfgReclassRepository;
+    private CfgReclassRepository cfgReclassRepository;
 
     @Autowired
     public CfgReclassObjectMapper(CfgReclassRepository cfgReclassRepository) {

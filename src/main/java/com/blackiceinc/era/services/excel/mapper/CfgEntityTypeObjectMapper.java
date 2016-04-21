@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 public class CfgEntityTypeObjectMapper extends AbstractObjectMapper<CfgEntityType> {
 
-    CfgEntityTypeRepository cfgEntityTypeRepository;
+    private CfgEntityTypeRepository cfgEntityTypeRepository;
 
     @Autowired
     public CfgEntityTypeObjectMapper(CfgEntityTypeRepository cfgEntityTypeRepository) {

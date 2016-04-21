@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 public class CfgCrmHaircutObjectMapper extends AbstractObjectMapper<CfgCrmHaircut> {
 
-    CfgCrmHaircutRepository cfgCrmHaircutRepository;
+    private CfgCrmHaircutRepository cfgCrmHaircutRepository;
 
     @Autowired
     public CfgCrmHaircutObjectMapper(CfgCrmHaircutRepository cfgCrmHaircutRepository) {

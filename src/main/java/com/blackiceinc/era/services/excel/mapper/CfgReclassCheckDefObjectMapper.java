@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 public class CfgReclassCheckDefObjectMapper extends AbstractObjectMapper<CfgReclassCheckDef> {
 
-    CfgReclassCheckDefRepository cfgReclassCheckDefRepository;
+    private CfgReclassCheckDefRepository cfgReclassCheckDefRepository;
 
     @Autowired
     public CfgReclassCheckDefObjectMapper(CfgReclassCheckDefRepository cfgReclassCheckDefRepository) {

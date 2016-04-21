@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 public class CfgCapElementsLimitObjectMapper extends AbstractObjectMapper<CfgCapElementsLimit> {
 
-    CfgCapElementsLimitRepository cfgCapElementsLimitRepository;
+    private CfgCapElementsLimitRepository cfgCapElementsLimitRepository;
 
     @Autowired
     public CfgCapElementsLimitObjectMapper(CfgCapElementsLimitRepository cfgCapElementsLimitRepository) {

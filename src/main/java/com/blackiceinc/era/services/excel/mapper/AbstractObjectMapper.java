@@ -15,7 +15,7 @@ import java.util.List;
 
 public abstract class AbstractObjectMapper<T> {
 
-    final Logger log = LoggerFactory.getLogger(this.getClass());
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     public List<T> extractData(XSSFSheet sheet) {
         List<T> result = new ArrayList<>();
@@ -28,19 +28,23 @@ public abstract class AbstractObjectMapper<T> {
             // ignore first row since it's column names
             if (rowIndex > 0) {
                 T rowObj = createRow(row);
-                try {
-                    if (!ModelUtils.areAllFieldsNull(rowObj)) {
-                        result.add(rowObj);
-                    }
-                } catch (IllegalAccessException e) {
-                    log.error("Error accessing fields in object!", e);
-                }
+                addRowObj(result, rowObj);
             }
 
             rowIndex++;
         }
 
         return result;
+    }
+
+    private void addRowObj(List<T> result, T rowObj) {
+        try {
+            if (!ModelUtils.areAllFieldsNull(rowObj)) {
+                result.add(rowObj);
+            }
+        } catch (IllegalAccessException e) {
+            log.error("Error accessing fields in object!", e);
+        }
     }
 
     abstract T createRow(Row row);
@@ -80,6 +84,10 @@ public abstract class AbstractObjectMapper<T> {
                 case Cell.CELL_TYPE_STRING:
                     result = cell.getStringCellValue();
                     break;
+                default:
+                    log.warn("Unsupported cell mapping in sheet {}, row index : {}, column index {}",
+                            cell.getSheet().getSheetName(), cell.getRowIndex(), cell.getColumnIndex());
+                    break;
             }
         }
 
@@ -100,6 +108,10 @@ public abstract class AbstractObjectMapper<T> {
                 case Cell.CELL_TYPE_FORMULA:
                     result = (long) cell.getNumericCellValue();
                     break;
+                default:
+                    log.warn("Unsupported cell mapping for getLongValue in sheet {}, row index : {}, column index {}",
+                            cell.getSheet().getSheetName(), cell.getRowIndex(), cell.getColumnIndex());
+                    break;
             }
         }
 
@@ -116,6 +128,10 @@ public abstract class AbstractObjectMapper<T> {
                     break;
                 case Cell.CELL_TYPE_STRING:
                     result = Double.valueOf(cell.getStringCellValue());
+                    break;
+                default:
+                    log.warn("Unsupported cell mapping for getDoubleValue in sheet {}, row index : {}, column index {}",
+                            cell.getSheet().getSheetName(), cell.getRowIndex(), cell.getColumnIndex());
                     break;
             }
         }

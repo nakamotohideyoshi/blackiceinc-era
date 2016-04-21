@@ -14,7 +14,7 @@ import java.util.List;
 @Component
 public class CfgFxProdMappingObjectMapper extends AbstractObjectMapper<CfgFxProdMapping> {
 
-    CfgFxProdMappingRepository cfgFxProdMappingRepository;
+    private CfgFxProdMappingRepository cfgFxProdMappingRepository;
 
     @Autowired
     public CfgFxProdMappingObjectMapper(CfgFxProdMappingRepository cfgFxProdMappingRepository) {

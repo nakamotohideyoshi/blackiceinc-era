@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 public class CfgAddOnObjectMapper extends AbstractObjectMapper<CfgAddOn> {
 
-    CfgAddOnRepository cfgAddOnRepository;
+    private CfgAddOnRepository cfgAddOnRepository;
 
     @Autowired
     public CfgAddOnObjectMapper(CfgAddOnRepository cfgAddOnRepository) {

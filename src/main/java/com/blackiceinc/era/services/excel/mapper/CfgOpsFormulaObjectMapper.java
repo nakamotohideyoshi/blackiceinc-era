@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 public class CfgOpsFormulaObjectMapper extends AbstractObjectMapper<CfgOpsFormula> {
 
-    CfgOpsFormulaRepository cfgOpsFormulaRepository;
+    private CfgOpsFormulaRepository cfgOpsFormulaRepository;
 
     @Autowired
     public CfgOpsFormulaObjectMapper(CfgOpsFormulaRepository cfgOpsFormulaRepository) {

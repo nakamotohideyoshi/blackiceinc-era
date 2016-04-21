@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 public class CfgOpsRiskObjectMapper extends AbstractObjectMapper<CfgOpsRisk> {
 
-    CfgOpsRiskRepository cfgOpsRiskRepository;
+    private CfgOpsRiskRepository cfgOpsRiskRepository;
 
     @Autowired
     public CfgOpsRiskObjectMapper(CfgOpsRiskRepository cfgOpsRiskRepository) {

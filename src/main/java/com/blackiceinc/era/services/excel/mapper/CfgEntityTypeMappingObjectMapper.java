@@ -8,13 +8,12 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Iterator;
 import java.util.List;
 
 @Component
 public class CfgEntityTypeMappingObjectMapper extends AbstractObjectMapper<CfgEntityTypeMapping> {
 
-    CfgEntityTypeMappingRepository cfgEntityTypeMappingRepository;
+    private CfgEntityTypeMappingRepository cfgEntityTypeMappingRepository;
 
     @Autowired
     public CfgEntityTypeMappingObjectMapper(CfgEntityTypeMappingRepository cfgEntityTypeMappingRepository) {
@@ -37,9 +36,7 @@ public class CfgEntityTypeMappingObjectMapper extends AbstractObjectMapper<CfgEn
         ExcelUtils.removeAllRowsExcelFirstOne(sheet);
         int rowIndex = 1;
 
-        Iterator<CfgEntityTypeMapping> iterator = all.iterator();
-        while (iterator.hasNext()) {
-            CfgEntityTypeMapping cfgEntityTypeMapping = iterator.next();
+        for (CfgEntityTypeMapping cfgEntityTypeMapping : all) {
             if (cfgEntityTypeMapping != null) {
                 XSSFRow row = sheet.createRow(rowIndex);
 

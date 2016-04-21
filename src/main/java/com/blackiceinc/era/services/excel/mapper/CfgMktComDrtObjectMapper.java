@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 public class CfgMktComDrtObjectMapper extends AbstractObjectMapper<CfgMktComDrt> {
 
-    CfgMktComDrtRepository cfgMktComDrtRepository;
+    private CfgMktComDrtRepository cfgMktComDrtRepository;
 
     @Autowired
     public CfgMktComDrtObjectMapper(CfgMktComDrtRepository cfgMktComDrtRepository) {

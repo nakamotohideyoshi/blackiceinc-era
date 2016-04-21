@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 public class CfgCapElementsTypeObjectMapper extends AbstractObjectMapper<CfgCapElementsType> {
 
-    CfgCapElementsTypeRepository cfgCapElementsTypeRepository;
+    private CfgCapElementsTypeRepository cfgCapElementsTypeRepository;
 
     @Autowired
     public CfgCapElementsTypeObjectMapper(CfgCapElementsTypeRepository cfgCapElementsTypeRepository) {

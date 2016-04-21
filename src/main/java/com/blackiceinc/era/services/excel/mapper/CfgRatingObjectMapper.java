@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 public class CfgRatingObjectMapper extends AbstractObjectMapper<CfgRating> {
 
-    CfgRatingRepository cfgRatingRepository;
+    private CfgRatingRepository cfgRatingRepository;
 
     @Autowired
     public CfgRatingObjectMapper(CfgRatingRepository cfgRatingRepository) {

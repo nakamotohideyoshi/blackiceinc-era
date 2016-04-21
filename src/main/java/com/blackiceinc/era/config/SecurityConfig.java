@@ -28,7 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private EraAuthenticationProvider eraAuthenticationProvider;
 
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    public void configureGlobal(AuthenticationManagerBuilder auth) {
         auth
                 .authenticationProvider(eraAuthenticationProvider);
 //                .inMemoryAuthentication()

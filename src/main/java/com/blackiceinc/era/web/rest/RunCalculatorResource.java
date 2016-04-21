@@ -202,8 +202,7 @@ public class RunCalculatorResource {
     }
 
     private String getValidationExceptionMessages(ConstraintViolationException validationException) {
-        validationException.printStackTrace();
-        Set<String> messages = new HashSet();
+        HashSet<String> messages = new HashSet<>();
         Set<ConstraintViolation<?>> stack = validationException.getConstraintViolations();
         StringBuilder errorMessages = new StringBuilder();
         for (ConstraintViolation<?> constraintViolation : stack) {

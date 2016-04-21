@@ -16,7 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 @Controller
 public class HomeController {
@@ -38,10 +40,10 @@ public class HomeController {
         model.addAttribute("user_role", userRole);
         model.addAttribute("ibmcognos_url", ibmCognosUrl);
 
-        JSONObject result = new JSONObject();
-        result.put("role", userRole);
-        result.put("username", SecurityUtils.getCurrentLogin());
-        response.addCookie(new Cookie("user", result.toJSONString()));
+        Map<String, String> resultMap = new HashMap<>();
+        resultMap.put("role", userRole);
+        resultMap.put("username", SecurityUtils.getCurrentLogin());
+        response.addCookie(new Cookie("user", new JSONObject(resultMap).toJSONString()));
 
         return "home";
     }

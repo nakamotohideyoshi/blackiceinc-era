@@ -27,12 +27,12 @@ public class EraLoginSuccessHandler implements
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException,
             ServletException {
 
-        handle(request, response, authentication);
+        handle(request, response);
         clearAuthenticationAttributes(request);
         request.getSession().setMaxInactiveInterval(60 * 60);
     }
 
-    protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
+    protected void handle(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         String targetUrl = MAIN;
 

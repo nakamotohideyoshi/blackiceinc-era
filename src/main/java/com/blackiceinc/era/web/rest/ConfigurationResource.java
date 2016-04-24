@@ -9,13 +9,10 @@ import com.blackiceinc.era.services.ImportExportMessageProvider;
 import com.blackiceinc.era.web.rest.model.CRUDResponseObj;
 import com.blackiceinc.era.web.rest.model.DeleteResponse;
 import com.blackiceinc.era.web.rest.model.Response;
-import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
@@ -23,12 +20,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.net.URISyntaxException;
 
 @RestController
@@ -36,7 +31,6 @@ import java.net.URISyntaxException;
 public class ConfigurationResource {
 
     private final Logger log = LoggerFactory.getLogger(ConfigurationResource.class);
-
 
     @Autowired
     private ConfigFileService configFileService;
@@ -68,29 +62,24 @@ public class ConfigurationResource {
     @RequestMapping(value = "/configuration",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Response> create(@RequestParam(value = "file", required = false) MultipartFile file,
-                                           @RequestParam(value = "data") Object data) throws URISyntaxException {
+    public ResponseEntity<Response> create(@RequestParam(value = "file", required = false) MultipartFile file) throws URISyntaxException {
         log.debug("REST request to save ConfigFileDTO");
 
         Response res = new Response();
 
-        ConfigFile savedEntity = null;
-        try {
-            savedEntity = configFileService.save(file);
-            res.setContent(savedEntity);
-            res.setTotalElements(configFileRepository.count());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception ex) {
-            log.error("Error while getting config file data", ex);
-        }
+        ConfigFile savedEntity;
+
+        savedEntity = configFileService.save(file);
+        res.setContent(savedEntity);
+        res.setTotalElements(configFileRepository.count());
+
         return new ResponseEntity<>(res, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/configuration",
             method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Response> delete(@RequestParam String idListStr) {
+    public ResponseEntity<DeleteResponse> delete(@RequestParam String idListStr) {
         log.debug("REST request to delete Configurations : {}", idListStr);
 
         DeleteResponse res = new DeleteResponse();
@@ -98,23 +87,12 @@ public class ConfigurationResource {
         HttpStatus returnStatus = HttpStatus.OK;
 
         for (String id : idList) {
-            try {
-                configFileService.delete(Long.parseLong(id));
-                res.addRecordResponse(new CRUDResponseObj(id, true));
-            } catch (NumberFormatException ex) {
-                res.addRecordResponse(new CRUDResponseObj(id, false, "Invalid number formatting"));
-                returnStatus = HttpStatus.NOT_FOUND;
-            } catch (EmptyResultDataAccessException ex) {
-                res.addRecordResponse(new CRUDResponseObj(id, false, "Data with id=" + id + " does not exist."));
-                returnStatus = HttpStatus.NOT_FOUND;
-            } catch (DataIntegrityViolationException ex) {
-                res.addRecordResponse(new CRUDResponseObj(id, false, "Cannot Be Deleted Due To Foreign Key Constraint."));
-                returnStatus = HttpStatus.CONFLICT;
-            }
+            configFileService.delete(Long.parseLong(id));
+            res.addRecordResponse(new CRUDResponseObj(id, true));
         }
 
         res.setTotalElements(configFileRepository.count());
-        return new ResponseEntity<Response>(res, returnStatus);
+        return new ResponseEntity<>(res, returnStatus);
     }
 
     @RequestMapping(value = "/configuration/{id}/import",
@@ -140,7 +118,7 @@ public class ConfigurationResource {
     @RequestMapping(value = "/configuration/{id}/export",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Response> exportConfig(@PathVariable Long id) throws OpenXML4JException, SAXException, IOException {
+    public ResponseEntity<Response> exportConfig(@PathVariable Long id) {
         log.debug("REST request to import ConfigFile : {}", id);
         Response res = new Response();
         try {

@@ -4,8 +4,8 @@
 
 
     angular.module('ng.credit-risk.controller', [])
-        .controller('CreditRiskController', ['$scope', '$timeout', 'Util', 'CreditRiskService', 'CreditRiskState', 'BookmarkService', 'VNotificationService2', '$routeParams', '$location',
-            function ($scope, $timeout, Util, CreditRiskService, CreditRiskState, BookmarkService, VNotificationService2, $routeParams, $location) {
+        .controller('CreditRiskController', ['$scope', '$timeout', 'Util', 'CreditRiskService', 'CreditRiskState', 'BookmarkService', 'VNotificationService', '$routeParams', '$location',
+            function ($scope, $timeout, Util, CreditRiskService, CreditRiskState, BookmarkService, VNotificationService, $routeParams, $location) {
                 var CONSTANT_snapshotDate = 'snapshotDate';
                 var CONSTANT_loadJobNbr = 'loadJobNbr';
                 var CONSTANT_scenarioId = 'scenarioId';
@@ -120,9 +120,9 @@
                         if (index > -1) {
                             $scope.BookmarkModal.bookmarks.splice(index, 1);
                         }
-                        VNotificationService2.success('Bookmark was successfully deleted');
+                        VNotificationService.success('Bookmark was successfully deleted');
                     }, function (response) {
-                        VNotificationService2.error('Error!');
+
                     });
 
 
@@ -132,15 +132,17 @@
                     var form = element['editForm' + data.id];
                     if (!form.$invalid) {
                         data.$saving = true;
+                        var oldName = data.name;
                         data.name = data.tempName;
                         // save
                         BookmarkService.update(data).then(function (response) {
                             data.$saving = false;
                             data.edit = false;
-                            VNotificationService2.success('Changes to record saved successfully');
+                            VNotificationService.success('Changes to record saved successfully');
                         }, function (response) {
+                            data.name = oldName;
                             data.$saving = false;
-                            VNotificationService2.error('Error!');
+                            VNotificationService.error(response);
                         });
                     }
                 };
@@ -176,10 +178,10 @@
                         BookmarkService.create($scope.AddBookmarkModal.form).then(function (response) {
                             $scope.AddBookmarkModal.$saving = false;
                             $scope.AddBookmarkModal.close();
-                            VNotificationService2.success('Bookmark saved successfully');
+                            VNotificationService.success('Bookmark saved successfully');
                         }, function (response) {
                             $scope.AddBookmarkModal.$saving = false;
-                            VNotificationService2.error('Error!');
+                            VNotificationService.error(response);
                         });
 
                     } else {
@@ -190,12 +192,12 @@
                 /*** Add Bookmark Modal end ***/
 
                 $scope.getCreditRiskData = function (params) {
-                    CreditRiskService.getAll(params).then(function (response) {
-                            $scope.CreditRisk.list = response.data.content;
+                    CreditRiskService.getAll(params).then(function (data) {
+                            $scope.CreditRisk.list = data.content;
 
-                            $scope.CreditRisk.totalElements = response.data.totalElements;
-                            $scope.CreditRisk.totalPages = response.data.totalPages;
-                            $scope.CreditRisk.numberOfElements = response.data.numberOfElements;
+                            $scope.CreditRisk.totalElements = data.totalElements;
+                            $scope.CreditRisk.totalPages = data.totalPages;
+                            $scope.CreditRisk.numberOfElements = data.numberOfElements;
 
                             $scope.loading = false;
                         }, function (response) {

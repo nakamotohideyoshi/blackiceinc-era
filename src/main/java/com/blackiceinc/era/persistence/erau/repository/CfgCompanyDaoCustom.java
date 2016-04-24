@@ -1,10 +1,7 @@
 package com.blackiceinc.era.persistence.erau.repository;
 
 import com.blackiceinc.era.persistence.erau.model.CfgCompany;
-import com.blackiceinc.era.persistence.erau.model.CfgMktIrrGnrRisk;
 import org.hibernate.Session;
-import org.hibernate.type.DoubleType;
-import org.hibernate.type.LongType;
 import org.hibernate.type.StringType;
 import org.springframework.stereotype.Repository;
 

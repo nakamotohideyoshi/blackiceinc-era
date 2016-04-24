@@ -1,12 +1,11 @@
 package com.blackiceinc.era.web.rest;
 
 import com.blackiceinc.era.persistence.erau.model.RunCalculator;
-import com.blackiceinc.era.persistence.erau.repository.MeasurementSensitivityRepository;
 import com.blackiceinc.era.persistence.erau.repository.RunCalculatorRepository;
 import com.blackiceinc.era.services.ImportExportMessageProvider;
 import com.blackiceinc.era.services.RunCalculatorService;
-import com.blackiceinc.era.web.rest.model.DeleteResponse;
 import com.blackiceinc.era.web.rest.model.CRUDResponseObj;
+import com.blackiceinc.era.web.rest.model.DeleteResponse;
 import com.blackiceinc.era.web.rest.model.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,8 +25,8 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
-import java.sql.*;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.*;
 
 @RestController
@@ -45,9 +44,6 @@ public class RunCalculatorResource {
     private RunCalculatorService runCalculatorService;
 
     @Autowired
-    private MeasurementSensitivityRepository measurementSensitivityRepository;
-
-    @Autowired
     private ImportExportMessageProvider importExportMessageProvider;
 
     @RequestMapping(value = "/runCalculator",
@@ -57,7 +53,7 @@ public class RunCalculatorResource {
                                                       @RequestParam(value = "length", required = false) Integer length,
                                                       @RequestParam(value = "snapshotDate", required = false) Date snapshotDate,
                                                       @RequestParam(value = "loadJobNbr", required = false) BigDecimal loadJobNbr,
-                                                      @RequestParam(value = "scenarioId", required = false) String scenarioId) throws URISyntaxException  {
+                                                      @RequestParam(value = "scenarioId", required = false) String scenarioId) throws URISyntaxException {
 
         Page<RunCalculator> runCalculators = runCalculatorService
                 .findRunCalculationByParams(page, length, snapshotDate, loadJobNbr, scenarioId);
@@ -126,19 +122,18 @@ public class RunCalculatorResource {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public
-    HttpEntity<Map<String, Object>> checkIfExists(@RequestParam LinkedHashMap<String, String> allRequestParams) throws URISyntaxException {
-        int page = (allRequestParams.containsKey("page")) ? Integer.parseInt(allRequestParams.get("page")) : 0;
-        int length = (allRequestParams.containsKey("length")) ? Integer.parseInt(allRequestParams.get("length")) : 1;
-        String hashKey = allRequestParams.containsKey("hashKey")?allRequestParams.get("hashKey"):null;
-        Date snapshotDate = (allRequestParams.containsKey("snapshotDate")) ? Date.valueOf(allRequestParams.get("snapshotDate")) : null;
-        BigDecimal loadJobNbr = (allRequestParams.containsKey("loadJobNbr")) ? BigDecimal.valueOf(Long.valueOf(allRequestParams.get("loadJobNbr"))) : null;
-        String scenarioId = (allRequestParams.containsKey("scenarioId")) ? allRequestParams.get("scenarioId") : null;
+    public HttpEntity<Map<String, Object>> checkIfExists(@RequestParam HashMap<String, String> allRequestParams) throws URISyntaxException {
+        int page = allRequestParams.containsKey("page") ? Integer.parseInt(allRequestParams.get("page")) : 0;
+        int length = allRequestParams.containsKey("length") ? Integer.parseInt(allRequestParams.get("length")) : 1;
+        String hashKey = allRequestParams.containsKey("hashKey") ? allRequestParams.get("hashKey") : null;
+        Date snapshotDate = allRequestParams.containsKey("snapshotDate") ? Date.valueOf(allRequestParams.get("snapshotDate")) : null;
+        BigDecimal loadJobNbr = allRequestParams.containsKey("loadJobNbr") ? BigDecimal.valueOf(Long.valueOf(allRequestParams.get("loadJobNbr"))) : null;
+        String scenarioId = allRequestParams.containsKey("scenarioId") ? allRequestParams.get("scenarioId") : null;
 
         Page<RunCalculator> pageable = runCalculatorService
                 .findRunCalculationByParams(page, length, snapshotDate, loadJobNbr, scenarioId);
 
-        Map<String, Object> msg = new HashMap<String, Object>();
+        Map<String, Object> msg = new HashMap<>();
         if (pageable.getNumberOfElements() == 0) {
             msg.put("exists", false);
         } else {
@@ -156,9 +151,8 @@ public class RunCalculatorResource {
         Response res = new Response();
 
         try {
-            long start = System.currentTimeMillis();
             runCalculatorService.executeRunCalcProcedure(runCalculator);
-        } catch (Exception ex){
+        } catch (Exception ex) {
             log.error("Error executing PL/SQL procedure", ex);
             res.setMessage("Error running calculation!");
             return new ResponseEntity<>(res, HttpStatus.EXPECTATION_FAILED);

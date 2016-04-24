@@ -1,35 +1,32 @@
 package com.blackiceinc.era.persistence.erau.model;
 
-import java.math.BigDecimal;
-import java.sql.Date;
-
 import javax.persistence.*;
+import java.sql.Date;
 
 /**
  * The persistent class for the measurement_sensitivity database table.
- * 
  */
 @Entity
-@Table(name="MEASUREMENT_SENSITIVITY")
+@Table(name = "MEASUREMENT_SENSITIVITY")
 public class MeasurementSensitivity {
-	
-	@Id
-	@Column(name="MEASUREMENT_NBR")
-	private String measurementNbr;
 
-	@Column(name="SNAPSHOT_DATE")
-	private Date snapshotDate;
+    @Id
+    @Column(name = "MEASUREMENT_NBR")
+    private String measurementNbr;
 
-	@Column(name="ASSET_CLASS_FINAL")
+    @Column(name = "SNAPSHOT_DATE")
+    private Date snapshotDate;
+
+    @Column(name = "ASSET_CLASS_FINAL")
     private String assetClassFinal;
 
-    @Column(name="EXPOSURE_TYPE_CODE")
+    @Column(name = "EXPOSURE_TYPE_CODE")
     private String exposureTypeCode;
 
-    @Column(name="ERA_ENTITY_TYPE")
+    @Column(name = "ERA_ENTITY_TYPE")
     private String eraEntityType;
 
-	@Column(name = "ERA_PRODUCT_TYPE_FINAL")
+    @Column(name = "ERA_PRODUCT_TYPE_FINAL")
     private String eraProductTypeFinal;
 
     @Column(name = "RISK_WEIGHT_FINAL")
@@ -44,37 +41,37 @@ public class MeasurementSensitivity {
     @Column(name = "REG_CAP")
     private Double regCap;
 
-	@Column(name="LOAD_JOB_NBR")
-	private Long loadJobNbr;
+    @Column(name = "LOAD_JOB_NBR")
+    private Long loadJobNbr;
 
-	@Column(name="SCENARIO_ID")
-	private String scenarioId;
+    @Column(name = "SCENARIO_ID")
+    private String scenarioId;
 
-    @OneToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name="CUSTOMER_ID")
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "CUSTOMER_ID")
     private Customer customer;
 
-    @Column(name="ORG_UNIT")
+    @Column(name = "ORG_UNIT")
     private String orgUnit;
 
-	public MeasurementSensitivity() {
-	}
+    public MeasurementSensitivity() {
+    }
 
-	public String getMeasurementNbr() {
-		return this.measurementNbr;
-	}
+    public String getMeasurementNbr() {
+        return this.measurementNbr;
+    }
 
-	public void setMeasurementNbr(String measurementNbr) {
-		this.measurementNbr = measurementNbr;
-	}
+    public void setMeasurementNbr(String measurementNbr) {
+        this.measurementNbr = measurementNbr;
+    }
 
-	public Date getSnapshotDate() {
-		return snapshotDate;
-	}
+    public Date getSnapshotDate() {
+        return snapshotDate;
+    }
 
-	public void setSnapshotDate(Date snapshotDate) {
-		this.snapshotDate = snapshotDate;
-	}
+    public void setSnapshotDate(Date snapshotDate) {
+        this.snapshotDate = snapshotDate;
+    }
 
     public String getAssetClassFinal() {
         return assetClassFinal;
@@ -141,20 +138,20 @@ public class MeasurementSensitivity {
     }
 
     public Long getLoadJobNbr() {
-		return loadJobNbr;
-	}
+        return loadJobNbr;
+    }
 
-	public void setLoadJobNbr(Long loadJobNbr) {
-		this.loadJobNbr = loadJobNbr;
-	}
+    public void setLoadJobNbr(Long loadJobNbr) {
+        this.loadJobNbr = loadJobNbr;
+    }
 
-	public String getScenarioId() {
-		return scenarioId;
-	}
+    public String getScenarioId() {
+        return scenarioId;
+    }
 
-	public void setScenarioId(String scenarioId) {
-		this.scenarioId = scenarioId;
-	}
+    public void setScenarioId(String scenarioId) {
+        this.scenarioId = scenarioId;
+    }
 
     public Customer getCustomer() {
         return customer;

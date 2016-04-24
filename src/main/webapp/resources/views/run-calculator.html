@@ -82,10 +82,10 @@
                                        ng-class="{'disabled' : loading}" ng-click="resetFilter()">
                                         <i class="fa fa-refresh"></i> Reset</a>
                                     <a class="btn btn-primary" href="javascript:void(0);"
-                                       ng-class="{'disabled' : disableBtnRunCalculator }"
+                                       ng-class="{'disabled' : disableBtnRunCalculator || loading }"
                                        ng-click="runSelectedCalculator()">Run Calculator</a>
                                     <a class="btn btn-primary" href="javascript:void(0);"
-                                       ng-class="{'disabled' : disableBtnCloseRun}" ng-click="closeSelectedRun()">Close
+                                       ng-class="{'disabled' : disableBtnCloseRun || loading}" ng-click="closeSelectedRun()">Close
                                         Run</a>
                                 </div>
 

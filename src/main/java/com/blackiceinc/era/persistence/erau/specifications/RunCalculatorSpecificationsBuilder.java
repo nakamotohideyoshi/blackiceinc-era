@@ -41,7 +41,7 @@ public class RunCalculatorSpecificationsBuilder {
             return null;
         }
 
-        final List<Specification<RunCalculator>> specs = new ArrayList<Specification<RunCalculator>>();
+        final List<Specification<RunCalculator>> specs = new ArrayList<>();
         for (final SpecSearchCriteria param : params) {
             specs.add(new RunCalculatorSpecification(param));
         }

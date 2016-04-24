@@ -70,44 +70,15 @@ public class BlackiceErauDBConfig {
         return transactionManager;
     }
 
-    private final Properties additionalProperties() {
+    private Properties additionalProperties() {
         final Properties hibernateProperties = new Properties();
-        // hibernateProperties.setProperty("hibernate.hbm2ddl.auto",
-        // env.getProperty("hibernate.hbm2ddl.auto"));
+
         hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.Oracle10gDialect");
         hibernateProperties.setProperty("hibernate.show_sql", "true");
-        // hibernateProperties.setProperty("hibernate.globally_quoted_identifiers",
-        // "true");
         hibernateProperties.setProperty("hibernate.temp.use_jdbc_metadata_defaults", "false");
-
         hibernateProperties.setProperty("hibernate.format_sql", "true");
-
-        // hibernateProperties.setProperty("hibernate.max_fetch_depth", "3");
-
-        // hibernateProperties.setProperty("hibernate.connection.provider_class",
-        // "org.hibernate.connection.C3P0ConnectionProvider");
-
-        // hibernateProperties.setProperty("hibernate.c3p0.acquire_increment",
-        // "5");
-        // hibernateProperties.setProperty("hibernate.c3p0.idle_test_period",
-        // "1800");
-        // hibernateProperties.setProperty("hibernate.c3p0.max_size", "600");
-        // hibernateProperties.setProperty("hibernate.c3p0.max_statements",
-        // "50");
-        // hibernateProperties.setProperty("hibernate.c3p0.min_size", "5");
-        // hibernateProperties.setProperty("hibernate.c3p0.timeout", "1800");
-        // hibernateProperties.setProperty("hibernate.c3p0.validate", "true");
-
-        // hibernateProperties.setProperty("hibernate.generate_statistics",
-        // "true");
-
         hibernateProperties.setProperty("hibernate.cache.use_second_level_cache", "false");
-        // hibernateProperties.setProperty("hibernate.cache.use_query_cache",
-        // "true");
         hibernateProperties.setProperty("hibernate.cache.region.factory_class", "org.hibernate.cache.ehcache.EhCacheRegionFactory");
-
-        // hibernateProperties.setProperty("net.sf.ehcache.configurationResourceName",
-        // "/ehcache-config.xml");
 
         return hibernateProperties;
     }

@@ -2,7 +2,6 @@ package com.blackiceinc.era.persistence.erau.repository;
 
 import com.blackiceinc.era.persistence.erau.model.CfgReclassCheckType;
 import org.hibernate.Session;
-import org.hibernate.type.DoubleType;
 import org.hibernate.type.StringType;
 import org.springframework.stereotype.Repository;
 

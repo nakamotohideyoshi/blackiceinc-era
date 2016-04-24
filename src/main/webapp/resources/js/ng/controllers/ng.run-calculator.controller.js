@@ -347,7 +347,7 @@ angular.module('ng.run-calculator.controller', [])
                 $scope.Filter.snapshotDateOptions = response;
             });
 
-            $scope.filterTable()
+            $scope.filterTable();
 
             function saveState() {
                 var state = RunCalculatorState.get();

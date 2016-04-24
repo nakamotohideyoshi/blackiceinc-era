@@ -6,9 +6,11 @@ import com.blackiceinc.era.persistence.erau.model.User;
 import com.blackiceinc.era.persistence.erau.repository.BookmarkRepository;
 import com.blackiceinc.era.persistence.erau.repository.UserRepository;
 import com.blackiceinc.era.services.security.SecurityUtils;
+import com.blackiceinc.era.web.rest.model.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -44,27 +46,44 @@ public class BookmarkResource {
     @RequestMapping(value = "/bookmark",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Bookmark> create(@RequestBody Bookmark bookmark) throws URISyntaxException {
-        User user = getAuthenticatedUser();
+    public ResponseEntity<Response> create(@RequestBody Bookmark bookmark) throws URISyntaxException {
+        Response res = new Response();
 
-        bookmark.setUserId(user.getId());
-        bookmark.setType("CREDIT_RISK");
-        Bookmark result = bookmarkRepository.save(bookmark);
-        return ResponseEntity.created(new URI("/api/bookmark/" + result.getId())).body(result);
+        try {
+            User user = getAuthenticatedUser();
+            bookmark.setUserId(user.getId());
+            bookmark.setType("CREDIT_RISK");
+            Bookmark result = bookmarkRepository.save(bookmark);
+            res.setContent(result);
+
+            return ResponseEntity.created(new URI("/api/bookmark/" + result.getId())).body(res);
+        } catch (DataIntegrityViolationException ex) {
+            res.setMessage("A Bookmark with same name already exists.");
+            return new ResponseEntity<>(res, HttpStatus.CONFLICT);
+        }
     }
 
     @RequestMapping(value = "/bookmark",
             method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Bookmark> update(@RequestBody Bookmark bookmark) throws URISyntaxException {
+    public ResponseEntity<Response> update(@RequestBody Bookmark bookmark) throws URISyntaxException {
         if (bookmark.getId() == null) {
             return create(bookmark);
         }
 
-        User user = getAuthenticatedUser();
-        bookmark.setUserId(user.getId());
-        Bookmark result = bookmarkRepository.save(bookmark);
-        return ResponseEntity.ok().body(result);
+        Response res = new Response();
+        try {
+
+            User user = getAuthenticatedUser();
+            bookmark.setUserId(user.getId());
+            Bookmark result = bookmarkRepository.save(bookmark);
+            res.setContent(result);
+
+            return ResponseEntity.ok().body(res);
+        } catch (DataIntegrityViolationException ex) {
+            res.setMessage("A Bookmark with same name already exists.");
+            return new ResponseEntity<>(res, HttpStatus.CONFLICT);
+        }
     }
 
     @RequestMapping(value = "/bookmark/{id}",

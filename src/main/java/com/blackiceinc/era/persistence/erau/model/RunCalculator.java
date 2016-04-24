@@ -2,7 +2,6 @@ package com.blackiceinc.era.persistence.erau.model;
 
 import com.blackiceinc.era.persistence.erau.model.util.CustomDateDeserializer;
 import com.blackiceinc.era.persistence.erau.model.util.CustomDateSerializer;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -16,8 +15,8 @@ import java.sql.Date;
 public class RunCalculator {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator="era_run_calculator_seq_gen")
-    @SequenceGenerator(name="era_run_calculator_seq_gen", sequenceName="ERA_RUN_CALCULATOR_SEQ")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "era_run_calculator_seq_gen")
+    @SequenceGenerator(name = "era_run_calculator_seq_gen", sequenceName = "ERA_RUN_CALCULATOR_SEQ")
     private Long id;
 
     @NotNull
@@ -31,7 +30,7 @@ public class RunCalculator {
     private Long loadJobNbr;
 
     @NotNull
-    @Size(min=1)
+    @Size(min = 1)
     @Column(name = "SCENARIO_ID")
     private String scenarioId;
 

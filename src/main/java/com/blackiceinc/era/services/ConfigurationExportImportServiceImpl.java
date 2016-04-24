@@ -3,6 +3,8 @@ package com.blackiceinc.era.services;
 import com.blackiceinc.era.persistence.erau.model.*;
 import com.blackiceinc.era.persistence.erau.repository.ConfigFileRepository;
 import com.blackiceinc.era.services.excel.mapper.*;
+import com.blackiceinc.era.services.exception.ExportConfigurationException;
+import com.blackiceinc.era.services.exception.ImportConfigurationException;
 import org.apache.commons.codec.CharEncoding;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -433,7 +435,7 @@ public class ConfigurationExportImportServiceImpl implements ConfigurationExport
             out.close();
 
         } catch (Exception e) {
-            log.error("Error exporting configuration from db into configFile : {}", configFile.toString(), e);
+            throw new ExportConfigurationException(String.format("Error exporting configuration from db into configFile : %s", configFile.toString()));
         }
 
         log.info("Export for configFile : {} finished in {} ms", configFile.toString(), System.currentTimeMillis() - start);
@@ -441,7 +443,7 @@ public class ConfigurationExportImportServiceImpl implements ConfigurationExport
 
     private XSSFSheet getSheet(String sheetName, XSSFWorkbook workbook) {
         XSSFSheet sheet = workbook.getSheet(sheetName);
-        if (sheet==null){
+        if (sheet == null) {
             sheet = workbook.createSheet(sheetName);
         }
         return sheet;
@@ -670,10 +672,10 @@ public class ConfigurationExportImportServiceImpl implements ConfigurationExport
             return savedConfig;
         } catch (FileNotFoundException e) {
             log.error("File not found!", e);
-            throw new Exception(e);
+            throw new ImportConfigurationException("File not found!", e);
         } catch (IOException e) {
             log.error("IO Exception!", e);
-            throw new Exception(e);
+            throw new ImportConfigurationException("IO Exception!", e);
         }
     }
 }

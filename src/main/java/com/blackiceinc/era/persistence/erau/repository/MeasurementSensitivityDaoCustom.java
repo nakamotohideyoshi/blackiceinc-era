@@ -1,6 +1,5 @@
 package com.blackiceinc.era.persistence.erau.repository;
 
-import com.blackiceinc.era.persistence.erau.model.CfgReclass;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;

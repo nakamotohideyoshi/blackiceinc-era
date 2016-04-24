@@ -52,7 +52,8 @@ public class CreditRiskService {
                     "  ASSET_CLASS_FINAL,\n" +
                     "  EXPOSURE_TYPE_CODE,\n" +
                     "  ERA_ENTITY_TYPE,\n" +
-                    "  ERA_PRODUCT_TYPE_FINAL\n" +
+                    "  ERA_PRODUCT_TYPE_FINAL,\n" +
+                    "  ORG_UNIT\n" +
                     "FROM MEASUREMENT_SENSITIVITY ms");
             log.info("distinct MEASUREMENT_SENSITIVITY data took {} ms", System.currentTimeMillis() - start);
 
@@ -66,32 +67,38 @@ public class CreditRiskService {
                 String entityType = resultSet.getString("ERA_ENTITY_TYPE");
                 String productType = resultSet.getString("ERA_PRODUCT_TYPE_FINAL");
 
-                if (!snapshotDateList.contains(snapshotDate)) {
+                String profitCentre = resultSet.getString("ORG_UNIT");
+
+                if (shouldAdd(snapshotDate, snapshotDateList)) {
                     snapshotDateList.add(snapshotDate);
                 }
 
-                if (!loadJobNbrList.contains(loadJobNbr)) {
+                if (shouldAdd(loadJobNbr, loadJobNbrList)) {
                     loadJobNbrList.add(loadJobNbr);
                 }
 
-                if (!scenarioIdList.contains(scenarioId)) {
+                if (shouldAdd(scenarioId, scenarioIdList)) {
                     scenarioIdList.add(scenarioId);
                 }
 
-                if (!assetClassList.contains(assetClass)) {
+                if (shouldAdd(assetClass, assetClassList)) {
                     assetClassList.add(assetClass);
                 }
 
-                if (!exposureTypeList.contains(exposureType)) {
+                if (shouldAdd(exposureType, exposureTypeList)) {
                     exposureTypeList.add(exposureType);
                 }
 
-                if (!entityTypeList.contains(entityType)) {
+                if (shouldAdd(entityType, entityTypeList)) {
                     entityTypeList.add(entityType);
                 }
 
-                if (!productTypeList.contains(productType)) {
+                if (shouldAdd(productType, productTypeList)) {
                     productTypeList.add(productType);
+                }
+
+                if (shouldAdd(profitCentre, profitCentreList)){
+                    profitCentreList.add(profitCentre);
                 }
             }
         } finally {
@@ -119,6 +126,18 @@ public class CreditRiskService {
         filterOptions.put("productType", productTypeList);
 
         return filterOptions;
+    }
+
+    private boolean shouldAdd(Date date, List<Date> list) {
+        return date != null && !list.contains(date);
+    }
+
+    private boolean shouldAdd(String value, List<String> list) {
+        return value != null && !list.contains(value);
+    }
+
+    private boolean shouldAdd(Integer value, List<Integer> list) {
+        return value != null && !list.contains(value);
     }
 
     private List<String> getIndustryCodes() throws SQLException {

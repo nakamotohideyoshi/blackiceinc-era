@@ -1,8 +1,6 @@
 package com.blackiceinc.era.persistence.erau.repository;
 
 import com.blackiceinc.era.persistence.erau.model.CfgCrmHaircut;
-import com.blackiceinc.era.persistence.erau.model.CfgFinancialBook;
-import com.blackiceinc.era.persistence.erau.model.CfgProductTypeMapping;
 import org.hibernate.Session;
 import org.hibernate.type.DoubleType;
 import org.hibernate.type.LongType;

@@ -1,7 +1,5 @@
 package com.blackiceinc.era.persistence.erau.model;
 
-import oracle.sql.NUMBER;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -9,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "CFG_COMPANY_LINKAGE")
-public class CfgCompanyLinkage  {
+public class CfgCompanyLinkage {
 
     @Id
     @Column(name = "CHILD_CODE")

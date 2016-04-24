@@ -68,7 +68,7 @@ angular.module('app.services', [])
 		return sharedService;
 	}])
 
-	.factory('VNotificationService2', function () {
+	.factory('VNotificationService', function () {
 			var VNotification = {};
 			var defaultTimeout = 3000;
 
@@ -95,53 +95,6 @@ angular.module('app.services', [])
 			return VNotification;
 		}
 	)
-
-	.factory('VNotificationService', ['$rootScope', function($rootScope) {
-        var VNotification = {};
-        var defaultTimeout = 3000;
-        VNotification.message = '';
-
-        VNotification.info = function(msg, timeout) {
-            this.message = msg;
-            this.timeout = timeout || defaultTimeout;
-            $rootScope.$broadcast('vNotificationInfo');
-        };
-
-        VNotification.success = function(msg, timeout) {
-            this.message = msg;
-            this.timeout = timeout || defaultTimeout;
-            $rootScope.$broadcast('vNotificationSuccess');
-        };
-
-        VNotification.failure = function(msg, timeout, header) {
-            this.message = msg;
-            if(header) this.header = header;
-            this.timeout = timeout || defaultTimeout;
-            $rootScope.$broadcast('vNotificationFailure');
-            this.header = null;
-        };
-
-        VNotification.error = function(msg, timeout) {
-            this.message = msg;
-            this.timeout = timeout || defaultTimeout;
-            $rootScope.$broadcast('vNotificationError');
-        };
-
-        VNotification.warning = function(msg, timeout) {
-            this.message = msg;
-            this.timeout = timeout || defaultTimeout;
-            $rootScope.$broadcast('vNotificationWarning');
-        };
-        VNotification.clear = function() {
-            $rootScope.$broadcast('vNotificationClear');
-        };
-
-
-
-        return VNotification;
-    }])
-
-
 
 	.factory('Util', function(){
 
@@ -201,111 +154,9 @@ angular.module('app.services', [])
 
 	})
 
-	.service('CustomHttp2', function($q, $http) {
-		return ({
-			get : get
-		});
-		function get(url, params, isCache) {
-			var request =  $http({
-				method: 'GET',
-				url: url,
-				params: params,
-				cache: isCache
-			});
 
-			return( request.then(handleSuccess, handleError) );
-		}
-		function handleSuccess(response) {
-			return( response );
-		}
-		function handleError(response) {
 
-			if ( ! angular.isObject( response.data ) || ! response.data.message) {
-				$.smallBox({
-					title : "An unknown error occurred.",
-					content : "",
-					color : "#A65858",
-					iconSmall : "fa fa-times",
-					timeout : 5000
-				});
-				return( $q.reject( "An unknown error occurred." ) );
-			}
 
-			return( $q.reject( response.data.message ) );
-		}
-	})
-
-	.service('CustomHttp', function($q, $http) {
-		return ({
-			get : get,
-			post : post,
-			put : put,
-			remove : remove
-		});
-		function post(url, data) {
-			var request =  $http({
-				method: 'POST',
-				url: url,
-				data: data
-			});
-			return( request.then(handleSuccess, handleError) );
-		}
-
-		function get(url, params, isCache) {
-			var request =  $http({
-				method: 'GET',
-				url: url,
-				params: params,
-				cache: isCache
-			});
-
-			return( request.then(handleSuccess, handleError) );
-		}
-		function put(url, data) {
-			var request =  $http({
-				method: 'PUT',
-				url: url,
-				data: data
-			});
-
-			return( request.then(handleSuccess, handleError) );
-		}
-		function remove(url, idArray) {
-			if(idArray) {
-				var jsonString = JSON.stringify(idArray);
-				var request =  $http({
-					method: 'DELETE',
-					url: url,
-					params: {idList : jsonString}
-				});
-			} else {
-				var request = $http({
-					method:'DELETE',
-					url: url
-				});
-			}
-
-			return( request.then(handleSuccess, handleError) );
-		}
-		function handleError(response) {
-
-			if ( ! angular.isObject( response.data ) || ! response.data.message) {
-				$.smallBox({
-					title : "An unknown error occurred.",
-					content : "",
-					color : "#A65858",
-					iconSmall : "fa fa-times",
-					timeout : 5000
-				});
-				return( $q.reject( "An unknown error occurred." ) );
-			}
-
-			return( $q.reject( response.data.message ) );
-		}
-		function handleSuccess(response) {
-			return( response.data );
-		}
-	})
 
 	.service("WholesaleService", function($http, $q, CustomHttp) {
 		return({
@@ -435,12 +286,12 @@ angular.module('app.services', [])
 			},
 			save : function(params) {
 				var fd = new FormData();
-				fd.append('data', angular.toJson(params.configObj));
-        fd.append('file', params.file);
-        var request = $http.post("api/configuration", fd, {
-            transformRequest: angular.identity,
-            headers: {'Content-Type': undefined}
-        });
+				fd.append('file', params.file);
+				var request = $http.post("api/configuration", fd, {
+					transformRequest: angular.identity,
+					headers: {'Content-Type': undefined}
+				});
+
 				return request;
 			},
 			remove : function( idArray ) {
@@ -502,13 +353,13 @@ angular.module('app.services', [])
 		});
 	})
 
-	.service('CreditRiskService', function(CustomHttp, CustomHttp2){
+	.service('CreditRiskService', function(CustomHttp){
 		return ({
 			getFilterOptions : function(params) {
 				return CustomHttp.get('api/credit-risk/filter-options', {});
 			},
 			getAll : function(params) {
-				return CustomHttp2.get('api/credit-risk?' + $.param(params), {});
+				return CustomHttp.get('api/credit-risk?' + $.param(params), {});
 			},
 			getSums : function(params) {
 				return CustomHttp.get('api/credit-risk/sums?' + $.param(params), {});
@@ -554,7 +405,7 @@ angular.module('app.services', [])
 		})
 	})
 
-	.service('CustomHttp', function($http, $q) {
+	.service('CustomHttp',['$window', '$http', '$q', function($window, $http, $q) {
 		return ({
 			get : get,
 			post : post,
@@ -607,8 +458,7 @@ angular.module('app.services', [])
 			return( request.then(handleSuccess, handleError) );
 		}
 		function handleError(response) {
-
-			if ( ! angular.isObject( response.data ) || ! response.data.message) {
+			if (response.status==500) {
 				$.smallBox({
 					title : "An unknown error occurred.",
 					content : "",
@@ -617,6 +467,17 @@ angular.module('app.services', [])
 					timeout : 5000
 				});
 				return( $q.reject( "An unknown error occurred." ) );
+			} else if (response.status==401){
+				$window.location.href ="/login";
+			} else if ( ! angular.isObject( response.data ) || ! response.data.message) {
+				$.smallBox({
+					title : 'An unknown error occurred. <p>URL: <a href='+response.config.url+' target=_blank style="color:white;margin-left:10px;">' + response.config.url + '</a><p>',
+					content : '',
+					color : '#A65858',
+					iconSmall : 'fa fa-times',
+					timeout : 5000
+				});
+				return( $q.reject( 'An unknown error occurred.' ) );
 			}
 
 			return( $q.reject( response.data.message ) );
@@ -624,4 +485,4 @@ angular.module('app.services', [])
 		function handleSuccess(response) {
 			return( response.data );
 		}
-	});
+	}]);

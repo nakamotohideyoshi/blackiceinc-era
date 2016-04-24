@@ -3,13 +3,9 @@ package com.blackiceinc.era.persistence.erau.specifications;
 
 import com.blackiceinc.era.persistence.erau.model.Customer;
 import com.blackiceinc.era.persistence.erau.model.MeasurementSensitivity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.EntityManager;
 import javax.persistence.criteria.*;
-import javax.persistence.metamodel.EntityType;
-import javax.persistence.metamodel.Metamodel;
 
 public class MsSpecification implements Specification<MeasurementSensitivity> {
     private SpecSearchCriteria criteria;

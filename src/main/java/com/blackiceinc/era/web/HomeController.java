@@ -2,10 +2,14 @@ package com.blackiceinc.era.web;
 
 import com.blackiceinc.era.services.security.SecurityUtils;
 import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,32 +27,39 @@ import java.util.Map;
 @Controller
 public class HomeController {
 
+    private static Logger log = LoggerFactory.getLogger(HomeController.class);
+
     @Value("${ibmcognos.url:http://10.50.143.8/ibmcognos/cgi-bin/cognos.cgi?b_action=xts.run&m=portal/cc.xts&m_folder=i7C5187CCA1EB4E2B91D3A32B2F95C5BF}")
     private String ibmCognosUrl;
 
     @RequestMapping(value = "/main", method = RequestMethod.GET)
     public String admin(Locale locale, HttpServletRequest request, HttpServletResponse response, Model model) {
-        Date date = new Date();
-        DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-
-        String formattedDate = dateFormat.format(date);
-        CsrfToken token = (CsrfToken) request.getAttribute("_csrf");
-        response.addCookie(new Cookie("XSRF-TOKEN", token.getToken()));
-        model.addAttribute("serverTime", formattedDate);
-
         String userRole = SecurityUtils.getUserRole();
-        model.addAttribute("user_role", userRole);
-        model.addAttribute("ibmcognos_url", ibmCognosUrl);
+        String currentLogin = SecurityUtils.getCurrentLogin();
 
-        Map<String, String> resultMap = new HashMap<>();
-        resultMap.put("role", userRole);
-        resultMap.put("username", SecurityUtils.getCurrentLogin());
-        response.addCookie(new Cookie("user", new JSONObject(resultMap).toJSONString()));
+        if (userRole!=null){
+            Date date = new Date();
+            DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
 
-        return "home";
+            String formattedDate = dateFormat.format(date);
+            CsrfToken token = (CsrfToken) request.getAttribute("_csrf");
+            response.addCookie(new Cookie("XSRF-TOKEN", token.getToken()));
+            model.addAttribute("serverTime", formattedDate);
+
+            model.addAttribute("user_role", userRole);
+            model.addAttribute("ibmcognos_url", ibmCognosUrl);
+
+            Map<String, String> resultMap = new HashMap<>();
+            resultMap.put("role", userRole);
+            resultMap.put("username", currentLogin);
+            response.addCookie(new Cookie("user", new JSONObject(resultMap).toJSONString()));
+
+            return "home";
+        } else {
+            return "login";
+        }
     }
 
-    //Spring Security see this :
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login(
             @RequestParam(value = "error", required = false) String error,
@@ -77,6 +88,30 @@ public class HomeController {
         model.setViewName("login");
         return model;
 
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ModelAndView handleError405(HttpServletRequest request, Exception e)   {
+        ModelAndView mav = new ModelAndView("error/error405");
+        mav.addObject("exception", e);
+        log.error("handleError405", e);
+        return mav;
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ModelAndView handleError(HttpServletRequest request, Exception e)   {
+        ModelAndView mav = new ModelAndView("error/error500");
+        mav.addObject("exception", e);
+        log.error("Exception is thrown", e);
+        return mav;
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ModelAndView handleError2(HttpServletRequest request, Exception e)   {
+        ModelAndView mav = new ModelAndView("error/error500");
+        mav.addObject("exception", e);
+        log.error("RuntimeException is thrown", e);
+        return mav;
     }
 
 }

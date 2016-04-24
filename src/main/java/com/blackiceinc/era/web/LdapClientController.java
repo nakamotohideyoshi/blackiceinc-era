@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
+import java.util.ArrayList;
 
 @Controller
 public class LdapClientController {
@@ -61,8 +61,10 @@ public class LdapClientController {
     }
 
     private LdapConfig getSimpleLdapConfig() {
+        ArrayList<String> servers = new ArrayList<>();
+        servers.add("ldap.forumsys.com");
         return new LdapConfigBuilder()
-                .setLdapServers(Arrays.asList("ldap.forumsys.com"))
+                .setLdapServers(servers)
                 .setLdapServerPort(389).setBaseDn("dc=example,dc=com")
                 .setBindDn("cn=read-only-admin,dc=example,dc=com")
                 .setBindPassword("password")

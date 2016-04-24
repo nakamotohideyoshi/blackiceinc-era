@@ -2,6 +2,7 @@ package com.blackiceinc.era.services;
 
 import com.blackiceinc.era.persistence.erau.model.ConfigFile;
 import com.blackiceinc.era.persistence.erau.repository.ConfigFileRepository;
+import com.blackiceinc.era.services.exception.ServiceException;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,25 +51,32 @@ public class ConfigFileServiceImpl implements ConfigFileService {
     }
 
     @Override
-    public ConfigFile save(MultipartFile file) throws IOException {
+    public ConfigFile save(MultipartFile file) {
+        ConfigFile configFile;
+
         String fileName = file.getOriginalFilename();
         String filePath = storagePath + fileName;
 
         //store file to disk
-        FileUtils.copyInputStreamToFile(file.getInputStream(), new File(filePath));
+        try {
+            FileUtils.copyInputStreamToFile(file.getInputStream(), new File(filePath));
 
-        ConfigFile configFile = configFileRepository.findOneByFileName(fileName);
-        if (configFile == null) {
-            // create file
-            configFile = new ConfigFile();
-            configFile.setFileName(fileName);
-            configFile.setFilePath(filePath);
-            configFile.setCreated(new Timestamp(Calendar.getInstance().getTimeInMillis()));
+            configFile = configFileRepository.findOneByFileName(fileName);
+            if (configFile == null) {
+                // create file
+                configFile = new ConfigFile();
+                configFile.setFileName(fileName);
+                configFile.setFilePath(filePath);
+                configFile.setCreated(new Timestamp(Calendar.getInstance().getTimeInMillis()));
+            }
+
+            configFile.setStatus("NULL");
+            configFile.setModified(new Timestamp(Calendar.getInstance().getTimeInMillis()));
+            configFile = configFileRepository.save(configFile);
+        } catch (IOException e) {
+            log.error("IOException", e);
+            throw new ServiceException("IOException", e);
         }
-
-        configFile.setStatus("NULL");
-        configFile.setModified(new Timestamp(Calendar.getInstance().getTimeInMillis()));
-        configFile = configFileRepository.save(configFile);
 
         return configFile;
     }

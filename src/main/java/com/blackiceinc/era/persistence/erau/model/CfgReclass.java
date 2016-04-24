@@ -1,14 +1,12 @@
 package com.blackiceinc.era.persistence.erau.model;
 
-import com.blackiceinc.era.persistence.erau.repository.CfgReclassRepository;
-
 import javax.persistence.*;
 
 @Entity
 @Table(name = "CFG_RECLASS")
 @NamedNativeQuery(name = "CfgReclass.insert",
         query = "INSERT INTO CFG_RECLASS (CHECK_NO, DESCRIPTION, ERA_ENTITY_TYPE_IN, ERA_PRODUCT_TYPE_IN, \"CHECK\", ERA_ENTITY_TYPE_OUT, ERA_PRODUCT_TYPE_OUT) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)")
-public class CfgReclass  {
+public class CfgReclass {
 
     @Id
     @Column(name = "CHECK_NO")

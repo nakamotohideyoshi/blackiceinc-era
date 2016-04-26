@@ -70,7 +70,7 @@ angular.module('app.services', [])
 
 	.factory('VNotificationService', function () {
 			var VNotification = {};
-			var defaultTimeout = 3000;
+			var defaultTimeout = 5000;
 
 			VNotification.success = function (title, msg, timeout) {
 				$.smallBox({
@@ -78,6 +78,7 @@ angular.module('app.services', [])
 					content: msg || '',
 					color: '#739E73',
 					iconSmall: 'fa fa-times',
+					sound: false,
 					timeout: timeout || defaultTimeout
 				});
 			};
@@ -88,6 +89,7 @@ angular.module('app.services', [])
 					content: msg || '',
 					color: "#A65858",
 					iconSmall: "fa fa-times",
+					sound: false,
 					timeout: timeout || defaultTimeout
 				});
 			};
@@ -464,17 +466,19 @@ angular.module('app.services', [])
 					content : "",
 					color : "#A65858",
 					iconSmall : "fa fa-times",
+					sound: false,
 					timeout : 5000
 				});
 				return( $q.reject( "An unknown error occurred." ) );
 			} else if (response.status==401){
-				$window.location.href ="/login";
+				$window.location.href ="login";
 			} else if ( ! angular.isObject( response.data ) || ! response.data.message) {
 				$.smallBox({
 					title : 'An unknown error occurred. <p>URL: <a href='+response.config.url+' target=_blank style="color:white;margin-left:10px;">' + response.config.url + '</a><p>',
 					content : '',
 					color : '#A65858',
 					iconSmall : 'fa fa-times',
+					sound: false,
 					timeout : 5000
 				});
 				return( $q.reject( 'An unknown error occurred.' ) );

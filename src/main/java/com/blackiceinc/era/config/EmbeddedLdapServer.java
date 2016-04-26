@@ -41,10 +41,12 @@ public class EmbeddedLdapServer {
     }
 
     @PreDestroy
-    public void stopServer() throws Exception {
+    public void stopServer() throws InterruptedException {
         if (server != null) {
             log.info("Stopping embedded ldap server.");
             server.stop();
+            log.info("Embedded ldap server running: {}", server.isRunning());
+            log.info("Embedded ldap server stopped.");
         }else{
             log.info("Embedded ldap server instance is null. No need to stop.");
         }

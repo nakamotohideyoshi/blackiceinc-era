@@ -74,7 +74,7 @@ public class BlackiceErauDBConfig {
         final Properties hibernateProperties = new Properties();
 
         hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.Oracle10gDialect");
-        hibernateProperties.setProperty("hibernate.show_sql", "true");
+        hibernateProperties.setProperty("hibernate.show_sql", "false");
         hibernateProperties.setProperty("hibernate.temp.use_jdbc_metadata_defaults", "false");
         hibernateProperties.setProperty("hibernate.format_sql", "true");
         hibernateProperties.setProperty("hibernate.cache.use_second_level_cache", "false");

@@ -71,7 +71,7 @@ public class MeasurementSensitivityServiceImpl implements MeasurementSensitivity
                     .append("SUM(ms.RWA_AMT) as sumrwa, ")
                     .append("SUM(ms.REG_CAP) as sumregcap ")
                     .append("FROM MEASUREMENT_SENSITIVITY ms ")
-                    .append("INNER JOIN CUSTOMER cus on ms.CUSTOMER_ID=cus.CUSTOMER_ID ");
+                    .append("INNER JOIN CUSTOMER cus on ms.CUSTOMER_ID=cus.CUSTOMER_ID AND ms.SNAPSHOT_DATE=cus.SNAPSHOT_DATE ");
 
             List<Condition> filtersForQuery = getFiltersForQuery(allRequestParams);
             if (!filtersForQuery.isEmpty()) {
@@ -81,7 +81,7 @@ public class MeasurementSensitivityServiceImpl implements MeasurementSensitivity
 
             log.info("Selecting SUM for O/S Bal, RWA Amt and Reg Cap from MEASUREMENT_SENSITIVITY table");
             resultSet = stmt.executeQuery(query.toString());
-            log.info("SUM took {} ms", System.currentTimeMillis() - start);
+            log.info("SUM for O/S Bal, RWA Amt and Reg Cap took {} ms", System.currentTimeMillis() - start);
 
             if (resultSet.next()) {
                 result.put("sumosbal", resultSet.getBigDecimal("sumosbal").toPlainString());

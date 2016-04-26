@@ -48,7 +48,10 @@ public class MeasurementSensitivity {
     private String scenarioId;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "CUSTOMER_ID")
+    @JoinColumns({
+            @JoinColumn(name = "CUSTOMER_ID", insertable=false, updatable=false),
+            @JoinColumn(name = "SNAPSHOT_DATE", insertable=false, updatable=false)
+            })
     private Customer customer;
 
     @Column(name = "ORG_UNIT")

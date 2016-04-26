@@ -32,7 +32,7 @@ public class HomeController {
     @Value("${ibmcognos.url:http://10.50.143.8/ibmcognos/cgi-bin/cognos.cgi?b_action=xts.run&m=portal/cc.xts&m_folder=i7C5187CCA1EB4E2B91D3A32B2F95C5BF}")
     private String ibmCognosUrl;
 
-    @RequestMapping(value = "/main", method = RequestMethod.GET)
+    @RequestMapping(value = {"/", "/main"}, method = RequestMethod.GET)
     public String admin(Locale locale, HttpServletRequest request, HttpServletResponse response, Model model) {
         String userRole = SecurityUtils.getUserRole();
         String currentLogin = SecurityUtils.getCurrentLogin();
@@ -75,17 +75,6 @@ public class HomeController {
         }
         model.setViewName("login");
 
-        return model;
-
-    }
-
-    @RequestMapping(value = {"/", "/welcome**"}, method = RequestMethod.GET)
-    public ModelAndView welcomePage() {
-
-        ModelAndView model = new ModelAndView();
-        model.addObject("title", "Spring Security Custom Login Form");
-        model.addObject("message", "This is welcome page!");
-        model.setViewName("login");
         return model;
 
     }

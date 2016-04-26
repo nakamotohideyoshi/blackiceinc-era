@@ -54,7 +54,8 @@
 	// Enable this to activate fastclick plugin
 	// dependency: js/plugin/fastclick/fastclick.js 
 	$.fastClick = false;
-	
+	$.sound_path = "resources/sound/";
+
 /==========================================================================================================/
 
 

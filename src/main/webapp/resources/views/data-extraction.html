@@ -1,0 +1,92 @@
+<style type="text/css">
+    .wrapper.small {
+        height: 400px;
+        border: 1px solid #ccc;
+    }
+
+    .wrapper {
+        overflow: auto;
+        position: relative;
+    }
+
+    .floatThead-container table {
+        border-left: none;
+    }
+
+    table.sortable thead .sorting {
+        background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATAgMAAAAPPt5fAAAACVBMVEUAAADIyMjl5eVIBBP/AAAAAXRSTlMAQObYZgAAAClJREFUCNdjwAYEwGQKiGDsBJFsTA5AUoJhAqZaiDhEDVg9RC/MHEwAANsMA91AQfd/AAAAAElFTkSuQmCC) no-repeat center right;
+    }
+
+    .wrapper table.table td {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        vertical-align: middle;
+    }
+</style>
+
+<!-- widget grid -->
+<section id="widget-grid" class="">
+
+    <!-- row -->
+    <div class="row">
+        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12 sortable-grid ui-sortable">
+            <!-- Widget ID (each widget will need unique ID)-->
+            <div class="jarviswidget jarviswidget-color-blue" id="runcalc-wid-01" data-widget-deletebutton="false"
+                 data-widget-editbutton="false">
+
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-pencil-square-o"></i> </span>
+                    <h2><strong>Data Extraction</strong></h2>
+                </header>
+
+                <div class="widget-body filter-forms">
+
+                    <!-- Filter options -->
+                    <div class="row no-margin">
+                        <form class="form-horizontal ng-pristine ng-valid" ng-submit="filterTable()">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label class="control-label">Enity</label>
+                                    <select class="form-control input-sm"
+                                            ng-options="o for o in Filter.filterOptions.entities"
+                                            ng-model="Filter.selectedFilters.entity" ng-disabled="loading"
+                                            style="width: 250px;">
+                                        <option value="">-- Select --</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group" style="clear:both">
+                                    <button ng-click="extract()" class="btn btn-primary btn-sm ng-binding"
+                                            ng-class="{'disabled' : loading}">
+                                        <i class="fa fa-search"></i> Extract
+                                    </button>
+                                </div>
+
+                            </fieldset>
+                        </form>
+                    </div>
+                    <!-- Filter options END -->
+
+                </div>
+
+            </div>
+        </article>
+    </div>
+</section>
+
+<!--  data extraction downloading modal -->
+<div id="preparing-file-modal" title="Preparing data..." style="display:none;">
+    <div class="hr hr-12 hr-double"></div>
+    <p>
+        We are preparing your data, please wait...
+    <div class="progress progress-striped active no-margin">
+        <div class="progress-bar progress-primary" role="progressbar" style="width: 100%"></div>
+    </div>
+    </p>
+</div>
+
+<div id="error-modal" title="Error" style="display: none;">
+    There was a problem extracting data, please try again.
+</div>
+<!--  data extraction downloading modal -->

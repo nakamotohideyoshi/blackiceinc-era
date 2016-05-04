@@ -41,6 +41,7 @@
 <script src="${contextRoot}/resources/js/plugin/fastclick/fastclick.min.js"></script>
 
 <script src="${contextRoot}/resources/js/plugin/html2canvas/html2canvas.js"></script>
+<script src="${contextRoot}/resources/js/plugin/jquery-file-download/jquery.fileDownload.js"></script>
 
 
 <script src="${contextRoot}/resources/js/libs/angular-file-upload-shim.js?_cacheuid=1.0.23"></script>
@@ -67,6 +68,7 @@
 <script src="${contextRoot}/resources/js/ng/controllers/ng.controllers.js"></script>
 <script src="${contextRoot}/resources/js/ng/controllers/ng.credit-risk.controller.js"></script>
 <script src="${contextRoot}/resources/js/ng/controllers/ng.run-calculator.controller.js"></script>
+<script src="${contextRoot}/resources/js/ng/controllers/ng.data-extraction.controller.js"></script>
 <script src="${contextRoot}/resources/js/ng/controllers/ng.cfg-configuration.controller.js"></script>
 <script src="${contextRoot}/resources/js/ng/controllers/ng.account-settings.controller.js"></script>
 <script src="${contextRoot}/resources/js/ng/controllers/ng.TestingScenariosCTRL.js"></script>

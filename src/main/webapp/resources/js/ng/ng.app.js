@@ -22,6 +22,7 @@ var smartApp = angular.module('smartApp', [
    // Controllers
    'ng.credit-risk.controller',
    'ng.run-calculator.controller',
+	'ng.data-extraction.controller',
    'ng.cfg-configuration.controller',
    'ng.account-settings.controller',
    'ng.maintenance-base.controller',
@@ -145,6 +146,13 @@ smartApp.config(['$routeProvider', '$provide', function($routeProvider, $provide
 				return 'resources/views/report.html';
 			},
 			controller: 'ReportsController'
+		})
+
+		.when('/data-extraction', {
+			templateUrl: function($routeParams) {
+				return 'resources/views/data-extraction.html';
+			},
+			controller: 'DataExtractionController'
 		})
 
 		//default path

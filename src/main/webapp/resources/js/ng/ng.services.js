@@ -281,6 +281,12 @@ angular.module('app.services', [])
 		}
 	})
 
+	.service('DataExtractionService', function(CustomHttp){
+		return({
+			
+		});
+	})
+
 	.service('CfgConfigurationService', function($http, CustomHttp){
 		return ({
 			getAll : function(params) {

@@ -17,6 +17,8 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 @RestController
 @RequestMapping("/api")
@@ -32,10 +34,10 @@ public class DataExtractResource {
         log.debug("Requesting extraction for entity : {}", entity);
 
         try {
-            byte[] extractedExcel = dataExtractService.extractEntityIntoExcel(entity);
+            Path extractedExcel = dataExtractService.writeToCsvFile(entity);
 
-            response.setHeader("Content-Disposition", "attachment;filename=\"" + entity + ".xlsx\"");
-            response.setContentType("application/vnd.ms-excel");
+            response.setHeader("Content-Disposition", "attachment;filename=\"" + entity + ".csv\"");
+            response.setContentType("application/csv");
 
             Cookie c = new Cookie("fileDownload", "true");
             c.setPath("/");
@@ -43,9 +45,11 @@ public class DataExtractResource {
 
             ServletOutputStream outStream = response.getOutputStream();
 
-            outStream.write(extractedExcel);
+            outStream.write(Files.readAllBytes(extractedExcel));
             outStream.close();
             response.flushBuffer();
+
+            Files.delete(extractedExcel);
 
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (DataExtractionException ex) {

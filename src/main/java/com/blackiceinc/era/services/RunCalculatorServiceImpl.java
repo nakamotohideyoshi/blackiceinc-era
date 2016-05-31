@@ -89,9 +89,9 @@ public class RunCalculatorServiceImpl implements RunCalculatorService {
             conn = getConnection();
             conn.setAutoCommit(false);
             stmt = conn.createStatement();
-            log.info("Starting taking distinct snapshotData MEASUREMENT_SENSITIVITY data");
-            resultSet = stmt.executeQuery("select DISTINCT SNAPSHOT_DATE from MEASUREMENT_SENSITIVITY");
-            log.info("MEASUREMENT_SENSITIVITY data took {} ms", System.currentTimeMillis() - start);
+            log.info("Starting taking distinct snapshotData INSTRUMENT table");
+            resultSet = stmt.executeQuery("select DISTINCT SNAPSHOT_DATE from INSTRUMENT");
+            log.info("extracting data took {} ms", System.currentTimeMillis() - start);
 
             while (resultSet.next()) {
                 Date snapshotDate = resultSet.getDate("SNAPSHOT_DATE");

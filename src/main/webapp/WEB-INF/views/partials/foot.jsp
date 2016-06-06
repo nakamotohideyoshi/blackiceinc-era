@@ -16,6 +16,7 @@
     };
     var USER_ROLE = "${user_role}";
     var IBMCOGNOS_URL = "${ibmcognos_url}";
+    var CONTEXT_ROOT = "${contextRoot}";
 </script>
 
 <script src="${contextRoot}/resources/js/libs/jquery-2.0.2.min.js"></script>

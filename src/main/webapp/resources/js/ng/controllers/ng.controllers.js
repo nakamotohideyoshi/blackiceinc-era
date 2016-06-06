@@ -66,7 +66,23 @@ angular.module('app.controllers', ['ui.bootstrap'])
 		
 		$scope.userRole = USER_ROLE;
 		$scope.ibmcognosUrl = IBMCOGNOS_URL;
-		
+		$scope.contextRoot = CONTEXT_ROOT;
+
+		$scope.downloadStressTesting = function () {
+			var $preparingFileModal = $("#preparing-file-modal");
+			$preparingFileModal.dialog({modal: true});
+
+			$.fileDownload('api/stress-testing', {
+				successCallback: function (url) {
+					$preparingFileModal.dialog('close');
+				},
+				failCallback: function (responseHtml, url) {
+					$preparingFileModal.dialog('close');
+					$("#error-modal").dialog({modal: true});
+				}
+			});
+
+		}
 		
 	}])
 

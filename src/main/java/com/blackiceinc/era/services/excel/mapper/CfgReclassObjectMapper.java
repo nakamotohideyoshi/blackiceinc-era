@@ -30,7 +30,7 @@ public class CfgReclassObjectMapper extends AbstractObjectMapper<CfgReclass> {
         cfgReclass.setEraProductTypeIn(getStringValue(row.getCell(3)));
         cfgReclass.setCheck(getStringValue(row.getCell(4)));
         cfgReclass.setEraEntityTypeOut(getStringValue(row.getCell(5)));
-        cfgReclass.setEraProductTypeOut(getStringValue(row.getCell(6)));
+        cfgReclass.setEraAssetClassOut(getStringValue(row.getCell(6)));
 
         return cfgReclass;
     }
@@ -48,7 +48,7 @@ public class CfgReclassObjectMapper extends AbstractObjectMapper<CfgReclass> {
             createCell(row, 3, cfgReclass.getEraProductTypeIn());
             createCell(row, 4, cfgReclass.getCheck());
             createCell(row, 5, cfgReclass.getEraEntityTypeOut());
-            createCell(row, 6, cfgReclass.getEraProductTypeOut());
+            createCell(row, 6, cfgReclass.getEraAssetClassOut());
 
             rowIndex++;
         }

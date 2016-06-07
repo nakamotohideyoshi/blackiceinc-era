@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "CFG_RECLASS")
 @NamedNativeQuery(name = "CfgReclass.insert",
-        query = "INSERT INTO CFG_RECLASS (CHECK_NO, DESCRIPTION, ERA_ENTITY_TYPE_IN, ERA_PRODUCT_TYPE_IN, \"CHECK\", ERA_ENTITY_TYPE_OUT, ERA_PRODUCT_TYPE_OUT) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)")
+        query = "INSERT INTO CFG_RECLASS (CHECK_NO, DESCRIPTION, ERA_ENTITY_TYPE_IN, ERA_PRODUCT_TYPE_IN, \"CHECK\", ERA_ENTITY_TYPE_OUT, ERA_ASSET_CLASS_OUT) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)")
 public class CfgReclass {
 
     @Id
@@ -27,17 +27,17 @@ public class CfgReclass {
     @Column(name = "ERA_ENTITY_TYPE_OUT")
     private String eraEntityTypeOut;
 
-    @Column(name = "ERA_PRODUCT_TYPE_OUT")
-    private String eraProductTypeOut;
+    @Column(name = "ERA_ASSET_CLASS_OUT")
+    private String eraAssetClassOut;
 
-    public CfgReclass(String checkNo, String description, String eraEntityTypeIn, String eraProductTypeIn, String check, String eraEntityTypeOut, String eraProductTypeOut) {
+    public CfgReclass(String checkNo, String description, String eraEntityTypeIn, String eraProductTypeIn, String check, String eraEntityTypeOut, String eraAssetClassOut) {
         this.checkNo = checkNo;
         this.description = description;
         this.eraEntityTypeIn = eraEntityTypeIn;
         this.eraProductTypeIn = eraProductTypeIn;
         this.check = check;
         this.eraEntityTypeOut = eraEntityTypeOut;
-        this.eraProductTypeOut = eraProductTypeOut;
+        this.eraAssetClassOut = eraAssetClassOut;
     }
 
     public CfgReclass() {
@@ -92,11 +92,11 @@ public class CfgReclass {
         this.eraEntityTypeOut = eraEntityTypeOut;
     }
 
-    public String getEraProductTypeOut() {
-        return eraProductTypeOut;
+    public String getEraAssetClassOut() {
+        return eraAssetClassOut;
     }
 
-    public void setEraProductTypeOut(String eraProductTypeOut) {
-        this.eraProductTypeOut = eraProductTypeOut;
+    public void setEraAssetClassOut(String eraAssetClassOut) {
+        this.eraAssetClassOut = eraAssetClassOut;
     }
 }

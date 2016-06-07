@@ -10,8 +10,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.Assert.*;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = BlackiceincEraApplication.class)
 @WebAppConfiguration
@@ -40,7 +38,7 @@ public class CfgReclassRepositoryTest {
 //        cfgReclassRepository.insert(cfgReclass.getCheckNo(),cfgReclass.getDescription(),
 //                cfgReclass.getEraEntityTypeIn(), cfgReclass.getEraProductTypeIn(),
 //                cfgReclass.getCheck(), cfgReclass.getEraEntityTypeOut(),
-//                cfgReclass.getEraProductTypeOut());
+//                cfgReclass.getEraAssetClassOut());
     }
 
     private CfgReclass createDummyCfgReclassObj() {
@@ -51,7 +49,7 @@ public class CfgReclassRepositoryTest {
         cfgReclass.setEraProductTypeIn("era_product_type_in");
         cfgReclass.setCheck("check");
         cfgReclass.setEraEntityTypeOut("era_entity_type_out");
-        cfgReclass.setEraProductTypeOut("era_product_type_out");
+        cfgReclass.setEraAssetClassOut("era_asset_class_out");
         return cfgReclass;
     }
 

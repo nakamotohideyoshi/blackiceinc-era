@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "CFG_CRM_HAIRCUT")
-public class CfgCrmHaircut  {
+public class CfgCrmHaircut extends CfgObject {
 
     @EmbeddedId
     private CfgCrmHaircutKey cfgCrmHaircutKey;

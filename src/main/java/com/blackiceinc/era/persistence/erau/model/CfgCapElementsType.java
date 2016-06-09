@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "CFG_CAP_ELEMENTS_TYPE")
-public class CfgCapElementsType  {
+public class CfgCapElementsType extends CfgObject {
 
     @Id
     @Column(name = "CAP_ELEMENT_TYPE")

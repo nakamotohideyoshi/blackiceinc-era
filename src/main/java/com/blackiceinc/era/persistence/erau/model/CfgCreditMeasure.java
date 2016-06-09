@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "CFG_CREDIT_MEASURE")
-public class CfgCreditMeasure  {
+public class CfgCreditMeasure extends CfgObject {
 
     @Id
     @Column(name = "CREDIT_MEASURE")

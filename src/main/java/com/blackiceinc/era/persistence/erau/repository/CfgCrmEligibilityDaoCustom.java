@@ -1,6 +1,7 @@
 package com.blackiceinc.era.persistence.erau.repository;
 
 import com.blackiceinc.era.persistence.erau.model.CfgCrmEligibility;
+import com.blackiceinc.era.persistence.erau.model.CfgObject;
 import org.hibernate.Session;
 import org.hibernate.type.LongType;
 import org.hibernate.type.StringType;
@@ -10,12 +11,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @Repository
-public class CfgCrmEligibilityDaoCustom {
+public class CfgCrmEligibilityDaoCustom extends CfgRepository {
 
     @PersistenceContext
     private EntityManager em;
 
-    public void insert(CfgCrmEligibility cfgCrmEligibility) {
+    @Override
+    public void insert(CfgObject cfgObject) {
+        CfgCrmEligibility cfgCrmEligibility = (CfgCrmEligibility) cfgObject;
         Session currentSession = getCurrentSession();
         currentSession.createSQLQuery("INSERT INTO " +
                 "CFG_CRM_ELIGIBILITY " +
@@ -49,6 +52,11 @@ public class CfgCrmEligibilityDaoCustom {
                 .setParameter("seq",
                         cfgCrmEligibility.getSeq(), new LongType())
                 .executeUpdate();
+    }
+
+    @Override
+    public void deleteAll() {
+        this.em.createNativeQuery("delete from CFG_CRM_ELIGIBILITY").executeUpdate();
     }
 
     protected Session getCurrentSession() {

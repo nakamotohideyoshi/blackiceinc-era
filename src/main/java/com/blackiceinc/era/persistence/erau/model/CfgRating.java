@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "CFG_RATING")
-public class CfgRating  {
+public class CfgRating extends CfgObject {
 
     @EmbeddedId
     private CfgRatingKey cfgRatingKey;

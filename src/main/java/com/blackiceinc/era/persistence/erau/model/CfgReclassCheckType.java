@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "CFG_RECLASS_CHECK_TYPE")
-public class CfgReclassCheckType  {
+public class CfgReclassCheckType extends CfgObject {
 
     @Id
     @Column(name = "CHECK_TYPE")

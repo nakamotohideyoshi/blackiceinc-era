@@ -1,6 +1,6 @@
 package com.blackiceinc.era.web.rest;
 
-import com.blackiceinc.era.services.dataExtraction.DataExtractService;
+import com.blackiceinc.era.services.dataextraction.DataExtractService;
 import com.blackiceinc.era.services.exception.DataExtractionEntityException;
 import com.blackiceinc.era.services.exception.DataExtractionException;
 import org.slf4j.Logger;

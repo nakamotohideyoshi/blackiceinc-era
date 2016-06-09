@@ -1,6 +1,7 @@
 package com.blackiceinc.era.persistence.erau.repository;
 
 import com.blackiceinc.era.persistence.erau.model.CfgCrmHaircut;
+import com.blackiceinc.era.persistence.erau.model.CfgObject;
 import org.hibernate.Session;
 import org.hibernate.type.DoubleType;
 import org.hibernate.type.LongType;
@@ -11,12 +12,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @Repository
-public class CfgCrmHaircutDaoCustom {
+public class CfgCrmHaircutDaoCustom extends CfgRepository {
 
     @PersistenceContext
     private EntityManager em;
 
-    public void insert(CfgCrmHaircut cfgCrmHaircut) {
+    @Override
+    public void insert(CfgObject cfgObject) {
+        CfgCrmHaircut cfgCrmHaircut = (CfgCrmHaircut) cfgObject;
         Session currentSession = getCurrentSession();
         currentSession.createSQLQuery("INSERT INTO " +
                 "CFG_CRM_HAIRCUT " +
@@ -54,6 +57,11 @@ public class CfgCrmHaircutDaoCustom {
                 .setParameter("seq",
                         cfgCrmHaircut.getSeq(), new LongType())
                 .executeUpdate();
+    }
+
+    @Override
+    public void deleteAll() {
+        this.em.createNativeQuery("delete from CFG_CRM_HAIRCUT").executeUpdate();
     }
 
     protected Session getCurrentSession() {

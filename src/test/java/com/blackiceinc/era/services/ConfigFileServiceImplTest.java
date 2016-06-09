@@ -1,6 +1,5 @@
 package com.blackiceinc.era.services;
 
-import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;

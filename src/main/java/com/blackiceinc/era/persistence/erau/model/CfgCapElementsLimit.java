@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "CFG_CAP_ELEMENTS_LIMIT")
-public class CfgCapElementsLimit  {
+public class CfgCapElementsLimit extends CfgObject {
 
     @Id
     @Column(name = "LIMIT_TYPE")

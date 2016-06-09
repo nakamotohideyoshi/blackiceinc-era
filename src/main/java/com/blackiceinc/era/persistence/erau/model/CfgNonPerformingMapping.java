@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "CFG_NON_PERFORMING_MAPPING")
-public class CfgNonPerformingMapping  {
+public class CfgNonPerformingMapping extends CfgObject {
 
     @EmbeddedId
     private CfgNonPerformingMappingKey cfgNonPerformingMappingKey;

@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "CFG_MKT_PRODUCT_MAPPING")
-public class CfgMktProductMapping  {
+public class CfgMktProductMapping extends CfgObject {
 
     @Id
     @Column(name = "MKT_PRODUCT_TYPE")

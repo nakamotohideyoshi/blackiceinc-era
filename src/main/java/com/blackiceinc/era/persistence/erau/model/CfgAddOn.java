@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "CFG_ADD_ON")
-public class CfgAddOn {
+public class CfgAddOn extends CfgObject {
 
     @EmbeddedId
     private CfgAddOnKey cfgAddOnKey;

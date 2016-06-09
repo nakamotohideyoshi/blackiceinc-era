@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "CFG_RISK_WEIGHT_MAPPING")
-public class CfgRiskWeightMapping  {
+public class CfgRiskWeightMapping extends CfgObject {
 
     @Column(name = "ASSET_CLASS")
     private String assetClass;

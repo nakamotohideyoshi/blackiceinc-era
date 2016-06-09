@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "CFG_FX_PROD_MAPPING")
-public class CfgFxProdMapping {
+public class CfgFxProdMapping extends CfgObject {
 
     @Id
     @Column(name = "GL_CODE")

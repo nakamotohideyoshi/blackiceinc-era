@@ -1,5 +1,6 @@
 package com.blackiceinc.era.persistence.erau.repository;
 
+import com.blackiceinc.era.persistence.erau.model.CfgObject;
 import com.blackiceinc.era.persistence.erau.model.CfgRating;
 import org.hibernate.Session;
 import org.hibernate.type.LongType;
@@ -10,12 +11,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @Repository
-public class CfgRatingDaoCustom {
+public class CfgRatingDaoCustom extends CfgRepository {
 
     @PersistenceContext
     private EntityManager em;
 
-    public void insert(CfgRating cfgRating) {
+    @Override
+    public void insert(CfgObject cfgObject) {
+        CfgRating cfgRating = (CfgRating) cfgObject;
         Session currentSession = getCurrentSession();
         currentSession.createSQLQuery("INSERT " +
                 "INTO CFG_RATING " +
@@ -41,6 +44,11 @@ public class CfgRatingDaoCustom {
                 .setParameter("riskBucket",
                         cfgRating.getRiskBucket(), new LongType())
                 .executeUpdate();
+    }
+
+    @Override
+    public void deleteAll() {
+        this.em.createNativeQuery("delete from CFG_RATING").executeUpdate();
     }
 
     protected Session getCurrentSession() {

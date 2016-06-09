@@ -1,5 +1,6 @@
 package com.blackiceinc.era.persistence.erau.repository;
 
+import com.blackiceinc.era.persistence.erau.model.CfgObject;
 import com.blackiceinc.era.persistence.erau.model.CfgProductTypeMapping;
 import org.hibernate.Session;
 import org.hibernate.type.LongType;
@@ -10,12 +11,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @Repository
-public class CfgProductTypeMappingDaoCustom {
+public class CfgProductTypeMappingDaoCustom extends CfgRepository {
 
     @PersistenceContext
     private EntityManager em;
 
-    public void insert(CfgProductTypeMapping cfgProductTypeMapping) {
+    @Override
+    public void insert(CfgObject cfgObject) {
+        CfgProductTypeMapping cfgProductTypeMapping = (CfgProductTypeMapping) cfgObject;
         Session currentSession = getCurrentSession();
         currentSession.createSQLQuery("INSERT INTO " +
                 "CFG_PRODUCT_TYPE_MAPPING " +
@@ -89,6 +92,11 @@ public class CfgProductTypeMappingDaoCustom {
                 .setParameter("repaymentProperty",
                         cfgProductTypeMapping.getRepaymentProperty(), new StringType())
                 .executeUpdate();
+    }
+
+    @Override
+    public void deleteAll() {
+        this.em.createNativeQuery("delete from CFG_PRODUCT_TYPE_MAPPING").executeUpdate();
     }
 
     protected Session getCurrentSession() {

@@ -46,7 +46,7 @@ A fix contributed by @swalters for #436:
 Editing Cells
 ----------------------------------
 
-When editing a cell, the ng-cell-has-focus directive will broadcast a message named ngGridEventStartCellEdit to let all children know that you can now give yourself focus. When the editable cell template is done with editing (usually on a blur event) you need to emit ngGridEventEndCellEdit to let ng-cell-has-focus know that you are done editing and it will then show the non-editable cell template. The reasoning for this is (good quote): "Now I can wrap my input elements in divs/spans, whatever and control exactly what element's blur triggers the end edit" - @swalters. An example (used for ng-input directive):
+When editing a cell, the ng-cell-has-focus directive will broadcast a cfgMessage named ngGridEventStartCellEdit to let all children know that you can now give yourself focus. When the editable cell template is done with editing (usually on a blur event) you need to emit ngGridEventEndCellEdit to let ng-cell-has-focus know that you are done editing and it will then show the non-editable cell template. The reasoning for this is (good quote): "Now I can wrap my input elements in divs/spans, whatever and control exactly what element's blur triggers the end edit" - @swalters. An example (used for ng-input directive):
 
 scope.$on('ngGridEventStartCellEdit', function () {
     elm.focus();
@@ -168,7 +168,7 @@ Too many to list. Here is the pull request https://github.com/angular-ui/ng-grid
 <a name="1.7.1"></a>
 ## 1.7.1 *(2013-02-06)*
 
- - Fixed bug with selections and multiple grids. New emit message for notifying when hitting bottom of viewport. Can disable virtualization. ng-grid virtualization is on by default, but can be disabled if there are less than 50 rows in the grid. Anything > 50 rows virtualization is forced on for performance considerations.
+ - Fixed bug with selections and multiple grids. New emit cfgMessage for notifying when hitting bottom of viewport. Can disable virtualization. ng-grid virtualization is on by default, but can be disabled if there are less than 50 rows in the grid. Anything > 50 rows virtualization is forced on for performance considerations.
 
 <a name="1.7.0"></a>
 ## 1.7.0 *(2013-02-05)*

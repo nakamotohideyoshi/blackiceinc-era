@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "CFG_RECLASS")
 @NamedNativeQuery(name = "CfgReclass.insert",
         query = "INSERT INTO CFG_RECLASS (CHECK_NO, DESCRIPTION, ERA_ENTITY_TYPE_IN, ERA_PRODUCT_TYPE_IN, \"CHECK\", ERA_ENTITY_TYPE_OUT, ERA_ASSET_CLASS_OUT) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)")
-public class CfgReclass {
+public class CfgReclass extends CfgObject {
 
     @Id
     @Column(name = "CHECK_NO")

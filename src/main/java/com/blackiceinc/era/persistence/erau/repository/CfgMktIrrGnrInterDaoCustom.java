@@ -1,6 +1,7 @@
 package com.blackiceinc.era.persistence.erau.repository;
 
 import com.blackiceinc.era.persistence.erau.model.CfgMktIrrGnrInter;
+import com.blackiceinc.era.persistence.erau.model.CfgObject;
 import org.hibernate.Session;
 import org.hibernate.type.DoubleType;
 import org.hibernate.type.StringType;
@@ -10,12 +11,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @Repository
-public class CfgMktIrrGnrInterDaoCustom {
+public class CfgMktIrrGnrInterDaoCustom extends CfgRepository {
 
     @PersistenceContext
     private EntityManager em;
 
-    public void insert(CfgMktIrrGnrInter cfgMktIrrGnrInter) {
+    @Override
+    public void insert(CfgObject cfgObject) {
+        CfgMktIrrGnrInter cfgMktIrrGnrInter = (CfgMktIrrGnrInter) cfgObject;
         Session currentSession = getCurrentSession();
         currentSession.createSQLQuery("INSERT INTO " +
                 "CFG_MKT_IRR_GNR_INTER " +
@@ -41,6 +44,11 @@ public class CfgMktIrrGnrInterDaoCustom {
                 .setParameter("riskWeight",
                         cfgMktIrrGnrInter.getRiskWeight(), new DoubleType())
                 .executeUpdate();
+    }
+
+    @Override
+    public void deleteAll() {
+        this.em.createNativeQuery("delete from CFG_MKT_IRR_GNR_INTER").executeUpdate();
     }
 
     protected Session getCurrentSession() {

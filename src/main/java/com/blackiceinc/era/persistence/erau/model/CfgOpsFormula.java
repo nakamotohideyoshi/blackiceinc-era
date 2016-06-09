@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "CFG_OPS_FORMULA")
-public class CfgOpsFormula  {
+public class CfgOpsFormula extends CfgObject {
 
     @Id
     @Column(name = "BASIC_INDICATOR")

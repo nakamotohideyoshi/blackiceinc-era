@@ -2,7 +2,7 @@ package com.blackiceinc.era.services;
 
 import com.blackiceinc.era.persistence.erau.model.*;
 import com.blackiceinc.era.persistence.erau.repository.*;
-import com.blackiceinc.era.services.excel.mapper.*;
+import com.blackiceinc.era.services.excelmapper.*;
 import org.apache.commons.codec.CharEncoding;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,9 +27,6 @@ public class ConfigurationExportImportServiceImplTest {
 
     @Mock
     private ConfigFileRepository configFileRepository;
-
-    @Mock
-    private ImportConfigIntoDb importConfigIntoDb;
 
     @Mock
     private CfgFinancialBookRepository cfgFinancialBookRepository;
@@ -282,23 +279,7 @@ public class ConfigurationExportImportServiceImplTest {
         cfgFxProdMappingObjectMapper = new CfgFxProdMappingObjectMapper(cfgFxProdMappingRepository);
 
 
-        configurationExportImportService = new ConfigurationExportImportServiceImpl(configFileRepository, importConfigIntoDb,
-                cfgFinancialBookObjectMapper, cfgCompanyObjectMapper, cfgCompanyLinkageObjectMapper,
-                cfgCompanyDimensionObjectMapper, cfgCompanyDimensionConsolidationObjectMapper,
-                cfgEntityTypeObjectMapper, cfgEntityTypeMappingObjectMapper, cfgProductTypeObjectMapper,
-                cfgProductTypeMappingObjectMapper, cfgAssetClassObjectMapper, cfgAssetClassMappingObjectMapper,
-                cfgNonPerformingMappingObjectMapper, cfgAgencyEligibilityObjectMapper, cfgRatingObjectMapper,
-                cfgCreditMeasureObjectMapper, cfgRiskWeightMappingObjectMapper, cfgCcfMappingObjectMapper,
-                cfgAddOnObjectMapper, cfgCrmEligibilityObjectMapper, cfgCrmHaircutObjectMapper, cfgReclassObjectMapper,
-                cfgReclassCheckDefObjectMapper, cfgReclassCheckTypeObjectMapper, cfgMktProductTypeObjectMapper,
-                cfgMktProductMappingObjectMapper, cfgMktAssetClassObjectMapper, cfgMktAssetClassMappingObjectMapper,
-                cfgMktIrrSpcRiskObjectMapper, cfgMktIrrGnrRiskObjectMapper, cfgMktIrrGnrBandObjectMapper,
-                cfgMktIrrGnrIntraObjectMapper, cfgMktIrrGnrInterObjectMapper, cfgMktEqtSpcObjectMapper,
-                cfgMktEqtGnrObjectMapper, cfgMktComDrtObjectMapper, cfgMktComOthObjectMapper, cfgMktFxObjectMapper,
-                cfgOpsProductTypeObjectMapper, cfgOpsProductTypeMappingObjectMapper, cfgOpsFormulaObjectMapper,
-                cfgOpsRiskObjectMapper, cfgCapElementsObjectMapper, cfgCapElementsTypeObjectMapper,
-                cfgCapElementsLimitObjectMapper, cfgCapElementsMappingObjectMapper, cfgCapElementsFormulaObjectMapper,
-                cfgOtherAssetsObjectMapper, cfgFxProdTypeObjectMapper, cfgFxProdMappingObjectMapper);
+        configurationExportImportService = new ConfigurationExportImportServiceImpl();
     }
 
     @Test
@@ -306,8 +287,9 @@ public class ConfigurationExportImportServiceImplTest {
         URL resource = this.getClass().getResource("/VIB_ERA_Configuration v1.11.xlsx");
 
         mockConfigFile(resource);
-
-        configurationExportImportService.exportConfigurationFromDbIntoFile(1L);
+        ConfigFile configFile = new ConfigFile();
+        configFile.setId(1L);
+        configurationExportImportService.exportConfigurationFromDbIntoExcel(configFile);
     }
 
     @Test
@@ -317,7 +299,7 @@ public class ConfigurationExportImportServiceImplTest {
 
         ConfigFile configFile = new ConfigFile();
         configFile.setId(1L);
-        configurationExportImportService.importConfigurationFromFileIntoDb(configFile);
+        configurationExportImportService.importConfigurationFromExcelIntoDb(configFile);
     }
 
     private void createMocksForImportTest(URL resource) throws UnsupportedEncodingException {

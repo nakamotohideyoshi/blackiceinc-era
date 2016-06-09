@@ -6,7 +6,4 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 public interface CfgFinancialBookRepository extends JpaRepository<CfgFinancialBook, String> {
-    @Modifying
-    @Query("delete from #{#entityName}")
-    void deleteAll();
 }

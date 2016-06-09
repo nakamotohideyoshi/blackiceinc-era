@@ -1,4 +1,4 @@
-package com.blackiceinc.era.services.dataExtraction;
+package com.blackiceinc.era.services.dataextraction;
 
 import com.blackiceinc.era.services.exception.DataExtractionEntityException;
 import com.blackiceinc.era.services.exception.DataExtractionException;

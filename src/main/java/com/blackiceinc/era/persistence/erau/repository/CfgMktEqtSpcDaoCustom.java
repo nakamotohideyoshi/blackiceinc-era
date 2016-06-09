@@ -1,6 +1,7 @@
 package com.blackiceinc.era.persistence.erau.repository;
 
 import com.blackiceinc.era.persistence.erau.model.CfgMktEqtSpc;
+import com.blackiceinc.era.persistence.erau.model.CfgObject;
 import org.hibernate.Session;
 import org.hibernate.type.DoubleType;
 import org.hibernate.type.StringType;
@@ -10,12 +11,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @Repository
-public class CfgMktEqtSpcDaoCustom {
+public class CfgMktEqtSpcDaoCustom extends CfgRepository {
 
     @PersistenceContext
     private EntityManager em;
 
-    public void insert(CfgMktEqtSpc cfgMktEqtSpc) {
+    @Override
+    public void insert(CfgObject cfgObject) {
+        CfgMktEqtSpc cfgMktEqtSpc = (CfgMktEqtSpc) cfgObject;
         Session currentSession = getCurrentSession();
         currentSession.createSQLQuery("INSERT " +
                 "INTO CFG_MKT_EQT_SPC " +
@@ -43,6 +46,11 @@ public class CfgMktEqtSpcDaoCustom {
                 .setParameter("liquidEquity", cfgMktEqtSpc.getLiquidEquity(), new StringType())
                 .setParameter("riskWeight", cfgMktEqtSpc.getRiskWeight(), new DoubleType())
                 .executeUpdate();
+    }
+
+    @Override
+    public void deleteAll() {
+        this.em.createNativeQuery("delete from CFG_MKT_EQT_SPC").executeUpdate();
     }
 
     protected Session getCurrentSession() {

@@ -1,5 +1,6 @@
 package com.blackiceinc.era.persistence.erau.repository;
 
+import com.blackiceinc.era.persistence.erau.model.CfgObject;
 import com.blackiceinc.era.persistence.erau.model.CfgOtherAssets;
 import org.hibernate.Session;
 import org.hibernate.type.DoubleType;
@@ -10,12 +11,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @Repository
-public class CfgOtherAssetsDaoCustom {
+public class CfgOtherAssetsDaoCustom extends CfgRepository {
 
     @PersistenceContext
     private EntityManager em;
 
-    public void insert(CfgOtherAssets cfgOtherAssets) {
+    @Override
+    public void insert(CfgObject cfgObject) {
+        CfgOtherAssets cfgOtherAssets = (CfgOtherAssets) cfgObject;
         Session currentSession = getCurrentSession();
         currentSession.createSQLQuery("INSERT INTO " +
                 "CFG_OTHER_ASSETS " +
@@ -53,6 +56,11 @@ public class CfgOtherAssetsDaoCustom {
                 .setParameter("riskWeight",
                         cfgOtherAssets.getRiskWeight(), new DoubleType())
                 .executeUpdate();
+    }
+
+    @Override
+    public void deleteAll() {
+        this.em.createNativeQuery("delete from CFG_OTHER_ASSETS").executeUpdate();
     }
 
     protected Session getCurrentSession() {

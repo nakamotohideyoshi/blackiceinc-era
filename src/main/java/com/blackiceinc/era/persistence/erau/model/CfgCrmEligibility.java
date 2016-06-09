@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "CFG_CRM_ELIGIBILITY")
-public class CfgCrmEligibility  {
+public class CfgCrmEligibility extends CfgObject {
 
     @EmbeddedId
     private CfgCrmEligibilityKey cfgCrmEligibilityKey;

@@ -1,11 +1,12 @@
 package com.blackiceinc.era.services;
 
 import com.blackiceinc.era.persistence.erau.model.ConfigFile;
+import com.blackiceinc.era.services.exception.CfgImportExportException;
 
 public interface ConfigurationExportImportService {
 
-    void exportConfigurationFromDbIntoFile(Long id);
+    void exportConfigurationFromDbIntoExcel(ConfigFile configFile) throws CfgImportExportException;
 
-    ConfigFile importConfigurationFromFileIntoDb(ConfigFile configFile) throws Exception;
+    ConfigFile importConfigurationFromExcelIntoDb(ConfigFile configFile) throws CfgImportExportException;
 
 }

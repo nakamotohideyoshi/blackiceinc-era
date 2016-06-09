@@ -1,5 +1,6 @@
 package com.blackiceinc.era.persistence.erau.repository;
 
+import com.blackiceinc.era.persistence.erau.model.CfgObject;
 import com.blackiceinc.era.persistence.erau.model.CfgRiskWeightMapping;
 import org.springframework.stereotype.Repository;
 
@@ -7,12 +8,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @Repository
-public class CfgRiskWeightMappingDaoCustom {
+public class CfgRiskWeightMappingDaoCustom extends CfgRepository {
 
     @PersistenceContext
     private EntityManager em;
 
-    public void insert(CfgRiskWeightMapping cfgRiskWeightMapping) {
+    @Override
+    public void insert(CfgObject cfgObject) {
+        CfgRiskWeightMapping cfgRiskWeightMapping = (CfgRiskWeightMapping) cfgObject;
         this.em.createNativeQuery("INSERT INTO CFG_RISK_WEIGHT_MAPPING " +
                 "(ASSET_CLASS, ERA_NPL_CODE, YEAR_OF_ESTABLISHMENT, CREDIT_MEASURE_1, CREDIT_MEASURE_1_BEG, CREDIT_MEASURE_1_END, CREDIT_MEASURE_2, CREDIT_MEASURE_2_BEG, CREDIT_MEASURE_2_END, RISK_WEIGHT, SEQ) " +
                 "VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11)")
@@ -29,5 +32,10 @@ public class CfgRiskWeightMappingDaoCustom {
                 .setParameter(11, cfgRiskWeightMapping.getSeq())
 
                 .executeUpdate();
+    }
+
+    @Override
+    public void deleteAll() {
+        this.em.createNativeQuery("delete from CFG_RISK_WEIGHT_MAPPING").executeUpdate();
     }
 }

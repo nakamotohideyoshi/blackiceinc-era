@@ -1,18 +1,20 @@
 package com.blackiceinc.era.persistence.erau.repository;
 
 import com.blackiceinc.era.persistence.erau.model.CfgCapElementsLimit;
+import com.blackiceinc.era.persistence.erau.model.CfgObject;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @Repository
-public class CfgCapElementsLimitDaoCustom {
+public class CfgCapElementsLimitDaoCustom extends CfgRepository {
 
     @PersistenceContext
     private EntityManager em;
 
-    public void insert(CfgCapElementsLimit cfgCapElementsLimit) {
+    public void insert(CfgObject cfgObject) {
+        CfgCapElementsLimit cfgCapElementsLimit = (CfgCapElementsLimit) cfgObject;
         this.em.createNativeQuery("INSERT INTO CFG_CAP_ELEMENTS_LIMIT " +
                 "(LIMIT_TYPE, OPERATOR, THRESHOLD, CONSO_TABLE, CONSO_FIELD, CONSO_FIELD_VALUE, CONSO_AMT) " +
                 "VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)")
@@ -25,6 +27,11 @@ public class CfgCapElementsLimitDaoCustom {
                 .setParameter(7, cfgCapElementsLimit.getConsoAmt())
 
                 .executeUpdate();
+    }
+
+    @Override
+    public void deleteAll() {
+        this.em.createNativeQuery("delete from CFG_CAP_ELEMENTS_LIMIT").executeUpdate();
     }
 
 }

@@ -8,7 +8,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "CFG_FINANCIAL_BOOK")
-public class CfgFinancialBook  {
+public class CfgFinancialBook extends CfgObject {
 
     @Id
     @Column(name = "BOOK_CODE")

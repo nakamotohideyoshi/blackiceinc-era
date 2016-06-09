@@ -104,7 +104,7 @@ public class ConfigurationResource {
         Response res = new Response();
         try {
             ConfigFile configFile = configFileRepository.findOne(id);
-            res.setContent(configurationExportImportService.importConfigurationFromFileIntoDb(configFile));
+            res.setContent(configurationExportImportService.importConfigurationFromExcelIntoDb(configFile));
             log.info("Final import of configFile.id : {} finished in {} ms", id, System.currentTimeMillis() - start);
         } catch (Exception ex) {
             log.error("Error making an import", ex);
@@ -123,7 +123,8 @@ public class ConfigurationResource {
         Response res = new Response();
         try {
             // export current ConfigFileDTO
-            configurationExportImportService.exportConfigurationFromDbIntoFile(id);
+            ConfigFile configFile = configFileRepository.findOne(id);
+            configurationExportImportService.exportConfigurationFromDbIntoExcel(configFile);
         } catch (Exception ex) {
             log.error("Error making an export", ex);
             res.setMessage("Error importing configuration!");

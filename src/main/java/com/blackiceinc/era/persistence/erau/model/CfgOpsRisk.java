@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "CFG_OPS_RISK")
-public class CfgOpsRisk {
+public class CfgOpsRisk extends CfgObject {
 
     @Id
     @Column(name = "CODE")

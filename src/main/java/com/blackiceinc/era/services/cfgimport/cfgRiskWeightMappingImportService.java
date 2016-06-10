@@ -10,7 +10,7 @@ import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 
 @Component
-public class cfgRiskWeightMappingImportService implements CfgImportService {
+public class CfgRiskWeightMappingImportService implements CfgImportService {
     public static final String RISK_WEIGHT_MAPPING = "RISK_WEIGHT_MAPPING";
 
     @Autowired

@@ -1,10 +1,14 @@
 package com.blackiceinc.era.services.stresstesting;
 
+import com.blackiceinc.era.persistence.erau.model.ConfigFile;
+import com.blackiceinc.era.services.exception.CfgImportExportException;
 import com.blackiceinc.era.services.exception.ServiceException;
 import com.blackiceinc.era.services.exception.StressTestingException;
 import com.blackiceinc.era.services.stresstesting.model.ExcelMapping;
+import org.apache.commons.codec.CharEncoding;
 import org.apache.poi.hssf.util.CellReference;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -18,9 +22,11 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.*;
@@ -32,7 +38,11 @@ public class StressTestingService {
     public static final String CURRENT_YEAR = "CURRENT_YEAR";
     public static final String COUNTRY_CODE = "COUNTRY_CODE";
     public static final String FORMULA = "FORMULA";
-    private static final String STRESS_TESTING_VIB_STRESS_TESTING_XLSX = "/stress-testing/VIB_Stress_Testing.xlsx";
+    private static final String STRESS_TESTING_VIB_STRESS_TESTING_XLSX = "/stress-testing/BEST BlackIce Enterprise Stress Testing v5.3.xlsm";
+    public static final String PERIODS_YEAR = "PERIODS_YEAR";
+    public static final String FIGURES_BASE = "FIGURES_BASE";
+    public static final String CURRENCY = "CURRENCY";
+    public static final String CONVERSION_RATE = "CONVERSION_RATE";
 
     private static Logger log = LoggerFactory.getLogger(StressTestingService.class);
 
@@ -60,7 +70,7 @@ public class StressTestingService {
 
     private XSSFWorkbook getWorkbook() {
         try {
-            return new XSSFWorkbook(getStressTestingExcelPath().toFile());
+            return new XSSFWorkbook(OPCPackage.open(getStressTestingExcelPath().toFile()));
         } catch (IOException | InvalidFormatException e) {
             throw new StressTestingException(e);
         }
@@ -75,7 +85,16 @@ public class StressTestingService {
             cell.setCellValue("VNM");
         } else if (FORMULA.equals(excelMapping.getValue())) {
             evaluateFunction(excelMapping, cell, evaluator);
-        } else {
+        } else if (PERIODS_YEAR.equals(excelMapping.getValue())) {
+            cell.setCellValue("12");
+        } else if (FIGURES_BASE.equals(excelMapping.getValue())){
+            cell.setCellValue("1000000");
+        } else if (CURRENCY.equals(excelMapping.getValue())){
+            cell.setCellValue("VND");
+        } else if (CONVERSION_RATE.equals(excelMapping.getValue())){
+            cell.setCellValue("22290");
+        }
+        else {
             handleQueryEvaluation(excelMapping, cell);
         }
     }

@@ -15,6 +15,10 @@ class Configuration {
         // Financial Statements / Balance Sheet BEGIN
         add("M", "17", StressTestingService.CURRENT_YEAR, conf);
         add("T", "17", StressTestingService.COUNTRY_CODE, conf);
+        add("M", "18", StressTestingService.PERIODS_YEAR, conf);
+        add("M", "19", StressTestingService.FIGURES_BASE, conf);
+        add("M", "20", StressTestingService.CURRENCY, conf);
+        add("M", "21", StressTestingService.CONVERSION_RATE, conf);
         add("G", "29", "select sum(Outstanding_Lcy_Amt) from MEASUREMENT_SENSITIVITY", conf);
         add("W", "29", "select abs(sum(EXPOSURE_VALUE_LCY_AMT)) from SBV_SUMMARY where SBV_SUMMARY_TYPE='CAP_ELEMENTS' and HEADING IN ('CHAR_CAP', 'CAP_SURP')", conf);
         add("G", "30", "select sum(OUTSTANDING_LCY_AMT) from MEASUREMENT_SENSITIVITY where ASSET_CLASS_FINAL in ('CLASS_DOM_BANK', 'CLASS_FOREIGN_BANK')", conf);

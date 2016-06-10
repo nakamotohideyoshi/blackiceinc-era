@@ -10,7 +10,7 @@ import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CfgAddOnImportService1 implements CfgImportService {
+public class CfgAddOnImportService implements CfgImportService {
     public static final String ADD_ON = "ADD_ON";
 
     @Autowired

@@ -10,7 +10,7 @@ import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CfgNonPerformingMappingImportService implements CfgImportService {
+public class CfgNonPerformingMappingImportService1 implements CfgImportService {
     public static final String NON_PERFORMING_MAPPING = "NON_PERFORMING_MAPPING";
 
     @Autowired

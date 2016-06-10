@@ -10,7 +10,7 @@ import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CfgRatingImportService implements CfgImportService {
+public class CfgRatingImportService1 implements CfgImportService {
     public static final String RATING = "RATING";
 
     @Autowired

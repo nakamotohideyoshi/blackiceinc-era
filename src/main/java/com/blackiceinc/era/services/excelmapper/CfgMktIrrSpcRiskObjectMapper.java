@@ -32,6 +32,7 @@ public class CfgMktIrrSpcRiskObjectMapper extends AbstractObjectMapper<CfgObject
         cfgMktIrrSpcRisk.setResidualMaturityEnd(getStringValue(row.getCell(4)));
         cfgMktIrrSpcRisk.setInstrumentGroup(getStringValue(row.getCell(5)));
         cfgMktIrrSpcRisk.setRiskWeight(getDoubleValue(row.getCell(6)));
+        cfgMktIrrSpcRisk.setSeq(getLongValue(row.getCell(7)));
 
         return cfgMktIrrSpcRisk;
     }
@@ -50,6 +51,7 @@ public class CfgMktIrrSpcRiskObjectMapper extends AbstractObjectMapper<CfgObject
             createCell(row, 4, cfgMktIrrSpcRisk.getResidualMaturityEnd());
             createCell(row, 5, cfgMktIrrSpcRisk.getInstrumentGroup());
             createCell(row, 6, cfgMktIrrSpcRisk.getRiskWeight());
+            createCell(row, 7, cfgMktIrrSpcRisk.getSeq());
 
             rowIndex++;
         }

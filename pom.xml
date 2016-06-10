@@ -162,6 +162,7 @@
                 <filtering>true</filtering>
                 <excludes>
                     <exclude>**/*.xlsx</exclude>
+                    <exclude>**/*.xlsm</exclude>
                 </excludes>
             </resource>
             <resource>
@@ -169,6 +170,7 @@
                 <filtering>false</filtering>
                 <includes>
                     <include>**/*.xlsx</include>
+                    <include>**/*.xlsm</include>
                 </includes>
             </resource>
         </resources>

@@ -35,8 +35,8 @@ public class StressTestingResource {
             XSSFWorkbook xssfWorkbook = stressTestingService.prepareStressTestExcel();
 
             String name = "VIB Stress Testing";
-            response.setHeader("Content-Disposition", "attachment;filename=\"" + name + ".xlsx\"");
-            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-Disposition", "attachment;filename=\"" + name + ".xlsm\"");
+            response.setContentType("application/vnd.ms-excel.sheet.macroEnabled.12");
 
             Cookie c = new Cookie("fileDownload", "true");
             c.setPath("/");

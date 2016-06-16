@@ -21,6 +21,7 @@ class Configuration {
         add("M", "21", StressTestingService.CONVERSION_RATE, conf);
         add("G", "29", "select sum(Outstanding_Lcy_Amt) from MEASUREMENT_SENSITIVITY", conf);
         add("W", "29", "select abs(sum(EXPOSURE_VALUE_LCY_AMT)) from SBV_SUMMARY where SBV_SUMMARY_TYPE='CAP_ELEMENTS' and HEADING IN ('CHAR_CAP', 'CAP_SURP')", conf);
+        add("O", "29", "select SUM(BALANCE_LCY_AMT) from GL_BALANCE WHERE (SBV_CODE IN (4010,4020,4111,4112,4121,4122,4131,4132,4141,4142) OR DECODE(SBV_CODE,1,2) IN (42))", conf);
         add("G", "30", "select sum(OUTSTANDING_LCY_AMT) from MEASUREMENT_SENSITIVITY where ASSET_CLASS_FINAL in ('CLASS_DOM_BANK', 'CLASS_FOREIGN_BANK')", conf);
         add("W", "30", "select abs(sum(EXPOSURE_VALUE_LCY_AMT)) from SBV_SUMMARY where SBV_SUMMARY_TYPE = 'CAP_ELEMENTS' and HEADING in ('RET_EAR')", conf);
         add("G", "31", "select sum(OUTSTANDING_LCY_AMT) from MEASUREMENT_SENSITIVITY where ASSET_CLASS_FINAL in ('CLASS_DOM_BANK', 'CLASS_FOREIGN_BANK')", conf);

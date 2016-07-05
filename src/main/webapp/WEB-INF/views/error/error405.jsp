@@ -59,7 +59,7 @@
         }
 
         #header #logo img {
-            margin-top: 2px;
+            margin-top: 13px;
             width: 90px;
         }
 
@@ -76,7 +76,7 @@
 <!-- HEADER -->
 <header id="header">
     <div id="logo-group">
-        <span id="logo"> <img src="resources/img/VIBLogo_93x45.png" alt="VIB"> </span>
+        <span id="logo"> <img src="resources/img/ERALogo_139x45.png" alt="ERA"> </span>
 
     </div>
 

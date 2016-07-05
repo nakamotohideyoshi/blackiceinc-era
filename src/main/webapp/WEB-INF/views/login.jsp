@@ -6,7 +6,7 @@
 	<meta charset="utf-8">
 	<!--<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">-->
 
-	<title> VIB - Risk and Capital Management Data Platform </title>
+	<title> ERA - Enterprise Risk Aggregation </title>
 	<meta name="description" content="">
 	<meta name="author" content="">
 
@@ -68,7 +68,7 @@
 		}
 
 		#extr-page #header #logo img {
-			margin-top: 2px;
+			margin-top: 13px;
 			width: 90px;
 		}
 
@@ -87,7 +87,7 @@
 	<!--<span id="logo"></span>-->
 
 	<div id="logo-group">
-		<span id="logo"> <img src="${contextRoot}/resources/img/VIBLogo_93x45.png" alt="VIB"> </span>
+		<span id="logo"> <img src="${contextRoot}/resources/img/ERALogo_139x45.png" alt="ERA"> </span>
 
 		<!-- END AJAX-DROPDOWN -->
 	</div>
@@ -109,11 +109,12 @@
 				<div class="hero">
 
 					<div class="pull-left login-desc-box-l">
-						<h4 class="paragraph-header">Welcome to the VIB - ERA.</h4>
+						<h4 class="paragraph-header">Welcome to the Enterprise Risk Aggregation (ERA) the new generation in enterprise risk data solutions.</h4>
 
 					</div>
 
-					<img src="${contextRoot}/resources/img/VIBLogo.png" class="pull-right display-image" alt="" >
+					<img src="${contextRoot}/resources/img/ERALogo-1.png" class="pull-right display-image" alt=""
+					style="width: 230px; margin-right: 0px; margin-top: -45px;">
 
 				</div>
 
@@ -134,16 +135,16 @@
 
 						<fieldset>
 
-							<section>
-								<label class="label">Domain</label>
-								<label class="select"> <i></i>
-									<select name="domain" >
-										<option value=""> - Select - </option>
-										<option value="north.vib.corp">north.vib.corp</option>
-										<option value="south.vib.corp">south.vib.corp</option>
-									</select>
-									<b class="tooltip tooltip-top-right"><i class="fa fa-user txt-color-teal"></i> Please select domain</b></label>
-							</section>
+							<%--<section>--%>
+								<%--<label class="label">Domain</label>--%>
+								<%--<label class="select"> <i></i>--%>
+									<%--<select name="domain" >--%>
+										<%--<option value=""> - Select - </option>--%>
+										<%--<option value="north.vib.corp">north.vib.corp</option>--%>
+										<%--<option value="south.vib.corp">south.vib.corp</option>--%>
+									<%--</select>--%>
+									<%--<b class="tooltip tooltip-top-right"><i class="fa fa-user txt-color-teal"></i> Please select domain</b></label>--%>
+							<%--</section>--%>
 
 							<section>
 								<label class="label">Username</label>
@@ -233,9 +234,9 @@
 		$("#login-form").validate({
 			// Rules for form validation
 			rules : {
-				domain : {
-					required : true
-				},
+//				domain : {
+//					required : true
+//				},
 				email : {
 					required : true,
 					email : true
@@ -249,9 +250,9 @@
 
 			// Messages for form validation
 			messages : {
-				domain : {
-					required : 'Please select your domain'
-				},
+//				domain : {
+//					required : 'Please select your domain'
+//				},
 				email : {
 					required : 'Please enter your email address',
 					email : 'Please enter a VALID email address'

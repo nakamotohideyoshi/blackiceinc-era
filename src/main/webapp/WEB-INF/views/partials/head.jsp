@@ -35,8 +35,8 @@
 		
 
 		<!-- FAVICONS -->
-		<link rel="shortcut icon" href="${contextRoot}/resources/img/favicon/favicon.ico" type="image/x-icon">
-		<link rel="icon" href="${contextRoot}/resources/img/favicon/favicon.ico" type="image/x-icon">
+		<link rel="shortcut icon" href="${contextRoot}/resources/img/favicon/favicon.ico?v=2" type="image/x-icon">
+		<link rel="icon" href="${contextRoot}/resources/img/favicon/favicon.ico?v=2" type="image/x-icon">
 
 		<!-- GOOGLE FONT -->
 		<link rel="stylesheet" href="${contextRoot}/resources/css/google-fonts-css.css">

@@ -59,7 +59,7 @@
         }
 
         #header #logo img {
-            margin-top: 13px;
+            margin-top: 5px;
             width: 90px;
         }
 
@@ -76,7 +76,7 @@
 <!-- HEADER -->
 <header id="header">
     <div id="logo-group">
-        <span id="logo"> <img src="resources/img/ERALogo_139x45.png" alt="ERA"> </span>
+        <span id="logo"> <img src="resources/img/ERALogo-3.png" alt="ERA"> </span>
 
     </div>
 

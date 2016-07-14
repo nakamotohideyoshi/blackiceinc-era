@@ -1,11 +1,7 @@
 package com.blackiceinc.era.services.stresstesting;
 
-import com.blackiceinc.era.persistence.erau.model.ConfigFile;
-import com.blackiceinc.era.services.exception.CfgImportExportException;
-import com.blackiceinc.era.services.exception.ServiceException;
 import com.blackiceinc.era.services.exception.StressTestingException;
 import com.blackiceinc.era.services.stresstesting.model.ExcelMapping;
-import org.apache.commons.codec.CharEncoding;
 import org.apache.poi.hssf.util.CellReference;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
@@ -22,11 +18,9 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.*;
@@ -38,11 +32,12 @@ public class StressTestingService {
     public static final String CURRENT_YEAR = "CURRENT_YEAR";
     public static final String COUNTRY_CODE = "COUNTRY_CODE";
     public static final String FORMULA = "FORMULA";
-    private static final String STRESS_TESTING_VIB_STRESS_TESTING_XLSX = "/stress-testing/BEST BlackIce Enterprise Stress Testing v5.3.xlsm";
     public static final String PERIODS_YEAR = "PERIODS_YEAR";
     public static final String FIGURES_BASE = "FIGURES_BASE";
     public static final String CURRENCY = "CURRENCY";
     public static final String CONVERSION_RATE = "CONVERSION_RATE";
+    private static final String STRESS_TESTING_VIB_STRESS_TESTING_XLSX = "/stress-testing/BEST BlackIce Enterprise Stress Testing v5.3.xlsm";
+    private static final int ONE_MILLION = 1000000;
 
     private static Logger log = LoggerFactory.getLogger(StressTestingService.class);
 
@@ -87,14 +82,13 @@ public class StressTestingService {
             evaluateFunction(excelMapping, cell, evaluator);
         } else if (PERIODS_YEAR.equals(excelMapping.getValue())) {
             cell.setCellValue("12");
-        } else if (FIGURES_BASE.equals(excelMapping.getValue())){
+        } else if (FIGURES_BASE.equals(excelMapping.getValue())) {
             cell.setCellValue("1000000");
-        } else if (CURRENCY.equals(excelMapping.getValue())){
+        } else if (CURRENCY.equals(excelMapping.getValue())) {
             cell.setCellValue("VND");
-        } else if (CONVERSION_RATE.equals(excelMapping.getValue())){
+        } else if (CONVERSION_RATE.equals(excelMapping.getValue())) {
             cell.setCellValue("22290");
-        }
-        else {
+        } else {
             handleQueryEvaluation(excelMapping, cell);
         }
     }
@@ -102,7 +96,7 @@ public class StressTestingService {
     private void evaluateFunction(ExcelMapping excelMapping, XSSFCell cell, FormulaEvaluator evaluator) {
         try {
             evaluator.evaluateInCell(cell);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             log.error("Error function evaluation excelMapping : {}", excelMapping.toString());
             throw new StressTestingException(ex);
         }
@@ -112,7 +106,7 @@ public class StressTestingService {
         try {
             BigDecimal bigDecimal = executeQuery(excelMapping.getValue());
             if (bigDecimal != null) {
-                cell.setCellValue(bigDecimal.doubleValue());
+                cell.setCellValue(bigDecimal.doubleValue() / ONE_MILLION);
             } else {
                 cell.setCellValue(0);
             }

@@ -198,16 +198,30 @@ public class RunCalculatorServiceImpl implements RunCalculatorService {
         }
     }
 
-    @Transactional
     public void executeRunCalcProcedure(RunCalculator runCalculator) throws SQLException {
         long start = System.currentTimeMillis();
         log.info("Running procedure RUN_CALC for runCalculator : {}", runCalculator.toString());
-        this.em.createNativeQuery("CALL CALC_RUN(:scenarioId, :loadJobNbr, :snapshotDate)")
-                .setParameter(SCENARIO_ID, runCalculator.getScenarioId())
-                .setParameter(LOAD_JOB_NBR, runCalculator.getLoadJobNbr())
-                .setParameter(SNAPSHOT_DATE, runCalculator.getSnapshotDate())
-                .executeUpdate();
-        log.info("Procedure RUN_CALC for runCalculator : {} finished in {} ms", runCalculator.toString(), System.currentTimeMillis() - start);
+
+        Connection conn = null;
+        CallableStatement callableStatement = null;
+        try {
+            conn = getConnection();
+            conn.setAutoCommit(false);
+            callableStatement = conn.prepareCall("{call CALC_RUN (?, ?, ?)}");
+            callableStatement.setString(1, runCalculator.getScenarioId());
+            callableStatement.setLong(2, runCalculator.getLoadJobNbr());
+            callableStatement.setDate(3, runCalculator.getSnapshotDate());
+            callableStatement.execute();
+
+            log.info("Procedure RUN_CALC for runCalculator : {} finished in {} ms", runCalculator.toString(), System.currentTimeMillis() - start);
+        }finally {
+            if (callableStatement != null) {
+                callableStatement.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
     }
 
 }

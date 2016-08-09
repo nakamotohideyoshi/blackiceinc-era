@@ -35,8 +35,8 @@ class Configuration {
                 "WHERE SBV_SUMMARY_TYPE = 'CAP_ELEMENTS'\n" +
                 "AND HEADING IN ('CHAR_CAP','CAP_SURP')\n" +
                 "AND SNAPSHOT_DATE = '31-JAN-16'\n" +
-                "AND SCENARIO_ID = '3'\n" +
-                "AND LOAD_JOB_NBR = '3'", conf);
+                "AND SCENARIO_ID = '1'\n" +
+                "AND LOAD_JOB_NBR = '1'", conf);
         add("G", "30", "select sum(balance_lcy_amt) from gl_balance\n" +
                 "where SNAPSHOT_DATE = '31-jan-16'\n" +
                 "and substr(sbv_code,1,2) in ('21','22','23','24','25','26','27','28','29')\n" +
@@ -45,8 +45,8 @@ class Configuration {
                 "WHERE SBV_SUMMARY_TYPE = 'CAP_ELEMENTS'\n" +
                 "AND HEADING IN ('RET_EAR')\n" +
                 "AND SNAPSHOT_DATE = '31-JAN-16'\n" +
-                "AND SCENARIO_ID = '3'\n" +
-                "AND LOAD_JOB_NBR = '3'", conf);
+                "AND SCENARIO_ID = '1'\n" +
+                "AND LOAD_JOB_NBR = '1'", conf);
         add("G", "31", "select sum(balance_lcy_amt) from gl_balance\n" +
                 "where SNAPSHOT_DATE = '31-jan-16'\n" +
                 "and substr(sbv_code,1,3) in ('201','202','203','204','205')\n" +
@@ -61,8 +61,8 @@ class Configuration {
                 "and substr(sbv_code,1,4) in ('1510')", conf);
         add("G", "35", "select sum(NOMINAL_LCY_AMT) from MARKET_RISK\n" +
                 "where snapshot_Date = '31-jan-2016'\n" +
-                "and SCENARIO_ID = '3'\n" +
-                "and LOAD_JOB_NBR = '3'\n" +
+                "and SCENARIO_ID = '1'\n" +
+                "and LOAD_JOB_NBR = '1'\n" +
                 "and MKT_ASSET_CLASS = 'SOV_BOND'", conf);
         add("G", "37", "select sum(BALANCE_LCY_AMT) from gl_balance\n" +
                 "where snapshot_Date = '31-jan-16'\n" +
@@ -70,12 +70,13 @@ class Configuration {
                 "and balance_lcy_amt > 0", conf);
         add("G", "46", "SELECT SUM(EXPOSURE_VALUE_LCY_AMT) FROM SBV_SUMMARY\n" +
                 "WHERE SNAPSHOT_DATE = '31-JAN-16'\n" +
-                "AND SCENARIO_ID = '3'\n" +
-                "AND LOAD_JOB_NBR = '3'\n" +
+                "AND SCENARIO_ID = '1'\n" +
+                "AND LOAD_JOB_NBR = '1'\n" +
                 "AND SBV_SUMMARY_TYPE = 'OTH_ASSETS'\n" +
                 "AND HEADING NOT IN ('CASH_AND_CASH_EQUIV')", conf);
 
         // set formulas to be executed in Financial Statements / Balance Sheet
+        add("O", "42", StressTestingService.FORMULA, conf);
         add("G", "27", StressTestingService.FORMULA, conf);
         add("O", "27", StressTestingService.FORMULA, conf);
         add("W", "27", StressTestingService.FORMULA, conf);
@@ -83,8 +84,8 @@ class Configuration {
 
         // Income Statement BEGIN
         add("G", "51", "SELECT ABS(SUM(EXPOSURE_VALUE_LCY_AMT)) FROM SBV_SUMMARY\n" +
-                "WHERE SCENARIO_ID = '3'\n" +
-                "AND LOAD_JOB_NBR = '3'\n" +
+                "WHERE SCENARIO_ID = '1'\n" +
+                "AND LOAD_JOB_NBR = '1'\n" +
                 "AND SBV_SUMMARY_TYPE = 'OPS_RISK'\n" +
                 "AND HEADING = 'INTEREST_INCOME'\n" +
                 "AND EXTRACT (YEAR FROM SNAPSHOT_DATE) = '2015'", conf);
@@ -93,32 +94,32 @@ class Configuration {
                 "and donviid = '01314000'\n" +
                 "AND TK IN ('8822','8827')", conf);
         add("G", "52", "SELECT ABS(SUM(EXPOSURE_VALUE_LCY_AMT)) FROM SBV_SUMMARY\n" +
-                "WHERE SCENARIO_ID = '3'\n" +
-                "AND LOAD_JOB_NBR = '3'\n" +
+                "WHERE SCENARIO_ID = '1'\n" +
+                "AND LOAD_JOB_NBR = '1'\n" +
                 "AND SBV_SUMMARY_TYPE = 'OPS_RISK'\n" +
                 "AND HEADING = 'INTEREST_EXPENSES'\n" +
                 "AND EXTRACT (YEAR FROM SNAPSHOT_DATE) = '2015'", conf);
         add("G", "54", "SELECT ABS(SUM(EXPOSURE_VALUE_LCY_AMT)) FROM SBV_SUMMARY\n" +
-                "WHERE SCENARIO_ID = '3'\n" +
-                "AND LOAD_JOB_NBR = '3'\n" +
+                "WHERE SCENARIO_ID = '1'\n" +
+                "AND LOAD_JOB_NBR = '1'\n" +
                 "AND SBV_SUMMARY_TYPE = 'OPS_RISK'\n" +
                 "AND HEADING IN ('SERVICE_INCOME')\n" +
                 "AND EXTRACT (YEAR FROM SNAPSHOT_DATE) = '2015'", conf);
         add("G", "55", "SELECT ABS(SUM(EXPOSURE_VALUE_LCY_AMT)) FROM SBV_SUMMARY\n" +
-                "WHERE SCENARIO_ID = '3'\n" +
-                "AND LOAD_JOB_NBR = '3'\n" +
+                "WHERE SCENARIO_ID = '1'\n" +
+                "AND LOAD_JOB_NBR = '1'\n" +
                 "AND SBV_SUMMARY_TYPE = 'OPS_RISK'\n" +
                 "AND HEADING IN ('SERVICE_EXPENSES')\n" +
                 "AND EXTRACT (YEAR FROM SNAPSHOT_DATE) = '2015'", conf);
         add("G", "57", "SELECT ABS(SUM(EXPOSURE_VALUE_LCY_AMT)) FROM SBV_SUMMARY\n" +
-                "WHERE SCENARIO_ID = '3'\n" +
-                "AND LOAD_JOB_NBR = '3'\n" +
+                "WHERE SCENARIO_ID = '1'\n" +
+                "AND LOAD_JOB_NBR = '1'\n" +
                 "AND SBV_SUMMARY_TYPE = 'OPS_RISK'\n" +
                 "AND HEADING IN ('GAIN/LOSS FROM FX', 'GAIN/LOSS FROM SECURITIES')\n" +
                 "AND EXTRACT (YEAR FROM SNAPSHOT_DATE) = '2015'", conf);
         add("G", "59", "SELECT ABS(SUM(EXPOSURE_VALUE_LCY_AMT)) FROM SBV_SUMMARY\n" +
-                "WHERE SCENARIO_ID = '3'\n" +
-                "AND LOAD_JOB_NBR = '3'\n" +
+                "WHERE SCENARIO_ID = '1'\n" +
+                "AND LOAD_JOB_NBR = '1'\n" +
                 "AND SBV_SUMMARY_TYPE = 'OPS_RISK'\n" +
                 "AND HEADING IN ('SERVICE_INCOME_OTH', 'SERVICE_EXPENSES_OTH')\n" +
                 "AND EXTRACT (YEAR FROM SNAPSHOT_DATE) = '2015'", conf);
@@ -126,8 +127,8 @@ class Configuration {
                 "WHERE SBV_SUMMARY_TYPE = 'CAP_ELEMENTS'\n" +
                 "AND HEADING IN ('RET_EAR')\n" +
                 "AND SNAPSHOT_DATE = '31-JAN-16'\n" +
-                "AND SCENARIO_ID = '3'\n" +
-                "AND LOAD_JOB_NBR = '3'", conf);
+                "AND SCENARIO_ID = '1'\n" +
+                "AND LOAD_JOB_NBR = '1'", conf);
 
         // set formulas to be executed in Income Statement
         add("G", "50", StressTestingService.FORMULA, conf);
@@ -150,31 +151,31 @@ class Configuration {
         // Regulatory Data BEGIN
         add("G", "74", "select ABS(SUM(EXPOSURE_VALUE_LCY_AMT)) from sbv_summary\n" +
                 "where snapshot_date = '31-jan-16'\n" +
-                "AND SCENARIO_ID = '3'\n" +
-                "AND LOAD_JOB_NBR = '3'\n" +
+                "AND SCENARIO_ID = '1'\n" +
+                "AND LOAD_JOB_NBR = '1'\n" +
                 "AND HEADING = 'TIER_1_CAP_AFTER_DEDUCT'", conf);
         add("O", "74", "SELECT SUM(RWA_LCY_AMT) FROM SBV_SUMMARY\n" +
                 "WHERE SNAPSHOT_DATE = '31-JAN-16'\n" +
-                "AND SCENARIO_ID = '3'\n" +
-                "AND LOAD_JOB_NBR = '3'\n" +
+                "AND SCENARIO_ID = '1'\n" +
+                "AND LOAD_JOB_NBR = '1'\n" +
                 "AND (HEADING IN ('SOVEREIGN','FINANCIAL_INSTIT','CORP','RETAIL','MORTGAGES','NON-PERFORM_CLAIMS',\n" +
                 "'LOANS_SECURED_BY_REAL_ESTATE')\n" +
                 "OR SBV_SUMMARY_TYPE = 'OTH_ASSETS')", conf);
         add("O", "75", "SELECT SUM(RWA_LCY_AMT) FROM SBV_SUMMARY\n" +
                 "WHERE SNAPSHOT_DATE = '31-JAN-16'\n" +
-                "AND SCENARIO_ID = '3'\n" +
-                "AND LOAD_JOB_NBR = '3'\n" +
+                "AND SCENARIO_ID = '1'\n" +
+                "AND LOAD_JOB_NBR = '1'\n" +
                 "AND HEADING IN ('FX_RISK','IRR_GNR','IRR_SPC')\n" +
                 "AND SBV_SUMMARY_TYPE = 'SUMMARY'", conf);
         add("G", "76", "select ABS(SUM(EXPOSURE_VALUE_LCY_AMT)) from sbv_summary\n" +
                 "where snapshot_date = '31-jan-16'\n" +
-                "AND SCENARIO_ID = '3'\n" +
-                "AND LOAD_JOB_NBR = '3'\n" +
+                "AND SCENARIO_ID = '1'\n" +
+                "AND LOAD_JOB_NBR = '1'\n" +
                 "AND HEADING = 'TIER_2_CAP'", conf);
         add("O", "76", "SELECT SUM(RWA_LCY_AMT) FROM SBV_SUMMARY\n" +
                 "WHERE SNAPSHOT_DATE = '31-JAN-16'\n" +
-                "AND SCENARIO_ID = '3'\n" +
-                "AND LOAD_JOB_NBR = '3'\n" +
+                "AND SCENARIO_ID = '1'\n" +
+                "AND LOAD_JOB_NBR = '1'\n" +
                 "AND HEADING IN ('OPS_SUM_TOTAL')", conf);
         add("O", "77", "select sum(RWA_LCY_AMT)from SBV_SUMMARY where SBV_SUMMARY_TYPE = 'SUMMARY' and SBV_SUMMARY.HEADING in ('OTH_ONB')", conf);
 
@@ -192,36 +193,36 @@ class Configuration {
         // Credit Risk BEGIN
         add("T", "95", "select sum(RWA_LCY_AMT) from sbv_summary\n" +
                 "WHERE SNAPSHOT_DATE = '31-JAN-16'\n" +
-                "AND SCENARIO_ID = '3'\n" +
-                "AND LOAD_JOB_NBR = '3'\n" +
+                "AND SCENARIO_ID = '1'\n" +
+                "AND LOAD_JOB_NBR = '1'\n" +
                 "and heading = 'SOVEREIGN'", conf);
         add("T", "97", "select sum(RWA_LCY_AMT) from sbv_summary\n" +
                 "WHERE SNAPSHOT_DATE = '31-JAN-16'\n" +
-                "AND SCENARIO_ID = '3'\n" +
-                "AND LOAD_JOB_NBR = '3'\n" +
+                "AND SCENARIO_ID = '1'\n" +
+                "AND LOAD_JOB_NBR = '1'\n" +
                 "and heading in ('FINANCIAL_INSTIT')", conf);
         add("T", "98", "select sum(ms.RWA_AMT) FROM MEASUREMENT_SENSITIVITY ms\n" +
                 "              WHERE SNAPSHOT_DATE = '31-JAN-16'\n" +
-                "              AND SCENARIO_ID = '3'\n" +
-                "              AND LOAD_JOB_NBR = '3'\n" +
+                "              AND SCENARIO_ID = '1'\n" +
+                "              AND LOAD_JOB_NBR = '1'\n" +
                 "              AND ms.ASSET_CLASS_FINAL in\n" +
                 "              ('CLASS_CORP','CLASS_CORP_PF','CLASS_CORP_OF','CLASS_CORP_CF','CLASS_CORP_IPRE','CLASS_FINANCIAL_LEASE_CORP')\n" +
                 "              AND ms.ERA_NPL_CODE = 'P'", conf);
         add("T", "99", "select sum(ms.RWA_AMT) FROM MEASUREMENT_SENSITIVITY ms\n" +
                 "WHERE SNAPSHOT_DATE = '31-JAN-16'\n" +
-                "AND SCENARIO_ID = '3'\n" +
-                "AND LOAD_JOB_NBR = '3'\n" +
+                "AND SCENARIO_ID = '1'\n" +
+                "AND LOAD_JOB_NBR = '1'\n" +
                 "AND ms.ASSET_CLASS_FINAL in ('CLASS_SME')\n" +
                 "AND ms.ERA_NPL_CODE = 'P'", conf);
         add("T", "100", "select sum(RWA_LCY_AMT) from sbv_summary\n" +
                 "WHERE SNAPSHOT_DATE = '31-JAN-16'\n" +
-                "AND SCENARIO_ID = '3'\n" +
-                "AND LOAD_JOB_NBR = '3'\n" +
+                "AND SCENARIO_ID = '1'\n" +
+                "AND LOAD_JOB_NBR = '1'\n" +
                 "and heading = 'RETAIL'", conf);
         add("T", "101", "select sum(RWA_LCY_AMT) from sbv_summary\n" +
                 "WHERE SNAPSHOT_DATE = '31-JAN-16'\n" +
-                "AND SCENARIO_ID = '3'\n" +
-                "AND LOAD_JOB_NBR = '3'\n" +
+                "AND SCENARIO_ID = '1'\n" +
+                "AND LOAD_JOB_NBR = '1'\n" +
                 "and heading = 'MORTGAGES'", conf);
 
         // set formulas to be executed in Credit Risk

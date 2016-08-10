@@ -200,20 +200,19 @@ public class RunCalculatorServiceImpl implements RunCalculatorService {
 
     public void executeRunCalcProcedure(RunCalculator runCalculator) throws SQLException {
         long start = System.currentTimeMillis();
-        log.info("Running procedure RUN_CALC for runCalculator : {}", runCalculator.toString());
+        log.info("Running procedure CALC_RUN for runCalculator : {}", runCalculator.toString());
 
         Connection conn = null;
         CallableStatement callableStatement = null;
         try {
             conn = getConnection();
-            conn.setAutoCommit(false);
             callableStatement = conn.prepareCall("{call CALC_RUN (?, ?, ?)}");
             callableStatement.setString(1, runCalculator.getScenarioId());
             callableStatement.setLong(2, runCalculator.getLoadJobNbr());
             callableStatement.setDate(3, runCalculator.getSnapshotDate());
-            callableStatement.execute();
+            callableStatement.executeUpdate();
 
-            log.info("Procedure RUN_CALC for runCalculator : {} finished in {} ms", runCalculator.toString(), System.currentTimeMillis() - start);
+            log.info("Procedure CALC_RUN for runCalculator : {} finished in {} ms", runCalculator.toString(), System.currentTimeMillis() - start);
         }finally {
             if (callableStatement != null) {
                 callableStatement.close();

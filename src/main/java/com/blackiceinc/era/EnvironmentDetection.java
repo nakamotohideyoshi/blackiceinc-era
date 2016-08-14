@@ -33,7 +33,7 @@ public class EnvironmentDetection {
 
             String profile = getProfileByIpAddress(hostName, hostAddress);
 
-            log.info("Profile : {}, applies to host address : {}", profile, hostAddress);
+            log.info("Profile : {}, applies to host name : {} and address : {}", profile, hostName, hostAddress);
             return profile;
         } catch (UnknownHostException e) {
             throw new IllegalStateException("Unable to detect environment", e);

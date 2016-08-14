@@ -1,5 +1,6 @@
 package com.blackiceinc.era;
 
+import com.blackiceinc.era.config.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,15 +45,15 @@ public class EnvironmentDetection {
         String profile;
 
         if (hostName.equals(HOST_ERA_BLACKICEINC_COM)) {
-            profile = "dev_era";
+            profile = Constants.SPRING_PROFILE_DEV_ERA;
         } else if (IP_ONSITE.equals(hostAddress)) {
-            profile = "onsite";
+            profile = Constants.SPRING_PROFILE_ONSITE;
         } else if (IP_PRODUCTION.equals(hostAddress)) {
-            profile = "production";
+            profile = Constants.SPRING_PROFILE_PRODUCTION;
         } else if (IP_RECOVERY.equals(hostAddress)) {
-            profile = "recovery";
+            profile = Constants.SPRING_PROFILE_RECOVERY;
         } else {
-            profile = "local";
+            profile = Constants.SPRING_PROFILE_LOCAL;
         }
 
         return profile;

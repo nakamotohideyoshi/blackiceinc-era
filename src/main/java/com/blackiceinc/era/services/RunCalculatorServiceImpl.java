@@ -1,5 +1,6 @@
 package com.blackiceinc.era.services;
 
+import com.blackiceinc.era.persistence.erau.DbUtils;
 import com.blackiceinc.era.persistence.erau.model.RunCalculator;
 import com.blackiceinc.era.persistence.erau.repository.MeasurementSensitivityDaoCustom;
 import com.blackiceinc.era.persistence.erau.repository.RunCalculatorRepository;
@@ -7,7 +8,6 @@ import com.blackiceinc.era.persistence.erau.specifications.RunCalculatorSpecific
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -34,7 +34,7 @@ public class RunCalculatorServiceImpl implements RunCalculatorService {
     private final Logger log = LoggerFactory.getLogger(RunCalculatorServiceImpl.class);
 
     @Autowired
-    private Environment env;
+    private DbUtils dbUtils;
 
     @Autowired
     private RunCalculatorRepository runCalculatorRepository;
@@ -86,7 +86,7 @@ public class RunCalculatorServiceImpl implements RunCalculatorService {
         Statement stmt = null;
         ResultSet resultSet = null;
         try {
-            conn = getConnection();
+            conn = dbUtils.getConnection();
             conn.setAutoCommit(false);
             stmt = conn.createStatement();
             log.info("Starting taking distinct snapshotData INSTRUMENT table");
@@ -100,28 +100,12 @@ public class RunCalculatorServiceImpl implements RunCalculatorService {
                 }
             }
         } finally {
-            if (resultSet != null) {
-                resultSet.close();
-            }
-            if (stmt != null) {
-                stmt.close();
-            }
-            if (conn != null) {
-                conn.close();
-            }
+            DbUtils.close(resultSet);
+            DbUtils.close(stmt);
+            DbUtils.close(conn);
         }
 
-
         return snapshotDateOptions;
-    }
-
-    private Connection getConnection() throws SQLException {
-        Connection conn;
-        conn = DriverManager.getConnection(
-                env.getProperty("jdbc.url"),
-                env.getProperty("jdbc.user"),
-                env.getProperty("jdbc.pass"));
-        return conn;
     }
 
     @Transactional
@@ -161,7 +145,7 @@ public class RunCalculatorServiceImpl implements RunCalculatorService {
         Statement stmt = null;
         ResultSet resultSet = null;
         try {
-            conn = getConnection();
+            conn = dbUtils.getConnection();
             conn.setAutoCommit(false);
             stmt = conn.createStatement();
             log.info("Starting taking distinct data from ERA_RUN_CALCULATOR");
@@ -186,15 +170,9 @@ public class RunCalculatorServiceImpl implements RunCalculatorService {
                 }
             }
         } finally {
-            if (resultSet != null) {
-                resultSet.close();
-            }
-            if (stmt != null) {
-                stmt.close();
-            }
-            if (conn != null) {
-                conn.close();
-            }
+            DbUtils.close(resultSet);
+            DbUtils.close(stmt);
+            DbUtils.close(conn);
         }
     }
 
@@ -205,7 +183,7 @@ public class RunCalculatorServiceImpl implements RunCalculatorService {
         Connection conn = null;
         CallableStatement callableStatement = null;
         try {
-            conn = getConnection();
+            conn = dbUtils.getConnection();
             callableStatement = conn.prepareCall("{call CALC_RUN (?, ?, ?)}");
             callableStatement.setString(1, runCalculator.getScenarioId());
             callableStatement.setLong(2, runCalculator.getLoadJobNbr());
@@ -214,20 +192,8 @@ public class RunCalculatorServiceImpl implements RunCalculatorService {
 
             log.info("Procedure CALC_RUN for runCalculator : {} finished in {} ms", runCalculator.toString(), System.currentTimeMillis() - start);
         } finally {
-            if (callableStatement != null) {
-                try {
-                    callableStatement.close();
-                } catch (SQLException e) {
-                    log.error("Error while trying to close statement", e);
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    log.error("Error while trying to close connection", e);
-                }
-            }
+            DbUtils.close(callableStatement);
+            DbUtils.close(conn);
         }
     }
 

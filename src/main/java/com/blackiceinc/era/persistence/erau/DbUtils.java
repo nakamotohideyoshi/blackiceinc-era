@@ -1,5 +1,7 @@
 package com.blackiceinc.era.persistence.erau;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
@@ -9,6 +11,8 @@ import java.sql.*;
 @Component
 public class DbUtils {
 
+    private static final Logger log = LoggerFactory.getLogger(DbUtils.class);
+
     @Autowired
     private Environment env;
 
@@ -16,11 +20,14 @@ public class DbUtils {
      * Close a <code>Connection</code>, avoid closing if null.
      *
      * @param conn Connection to close.
-     * @throws SQLException if a database access error occurs
      */
-    public static void close(Connection conn) throws SQLException {
+    public static void close(Connection conn) {
         if (conn != null) {
-            conn.close();
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                log.error("Error while trying to close Connection", e);
+            }
         }
     }
 
@@ -28,11 +35,14 @@ public class DbUtils {
      * Close a <code>ResultSet</code>, avoid closing if null.
      *
      * @param rs ResultSet to close.
-     * @throws SQLException if a database access error occurs
      */
-    public static void close(ResultSet rs) throws SQLException {
+    public static void close(ResultSet rs) {
         if (rs != null) {
-            rs.close();
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                log.error("Error while trying to close ResultSet", e);
+            }
         }
     }
 
@@ -40,11 +50,24 @@ public class DbUtils {
      * Close a <code>Statement</code>, avoid closing if null.
      *
      * @param stmt Statement to close.
-     * @throws SQLException if a database access error occurs
      */
-    public static void close(Statement stmt) throws SQLException {
+    public static void close(Statement stmt) {
         if (stmt != null) {
-            stmt.close();
+            try {
+                stmt.close();
+            } catch (SQLException e) {
+                log.error("Error while trying to close Statement", e);
+            }
+        }
+    }
+
+    public static void close(CallableStatement callableStatement){
+        if (callableStatement != null) {
+            try {
+                callableStatement.close();
+            } catch (SQLException e) {
+                log.error("Error while trying to close CallableStatement", e);
+            }
         }
     }
 
@@ -56,6 +79,5 @@ public class DbUtils {
                 env.getProperty("jdbc.pass"));
         return conn;
     }
-
 
 }

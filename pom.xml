@@ -234,52 +234,5 @@
             </plugin>
         </plugins>
     </build>
-    <profiles>
-        <profile>
-            <id>local</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <spring.active.profile>local</spring.active.profile>
-            </properties>
-        </profile>
-        <profile>
-            <id>dev_era</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <properties>
-                <spring.active.profile>dev_era</spring.active.profile>
-            </properties>
-        </profile>
-        <profile>
-            <id>onsite</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <properties>
-                <spring.active.profile>onsite</spring.active.profile>
-            </properties>
-        </profile>
-        <profile>
-            <id>production</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <properties>
-                <spring.active.profile>production</spring.active.profile>
-            </properties>
-        </profile>
-        <profile>
-            <id>recovery</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <properties>
-                <spring.active.profile>recovery</spring.active.profile>
-            </properties>
-        </profile>
-    </profiles>
 
 </project>

@@ -1,6 +1,5 @@
 package com.blackiceinc.era;
 
-import com.blackiceinc.era.config.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,8 @@ public class BlackiceincEraApplication {
         SpringApplication app = new SpringApplication(BlackiceincEraApplication.class);
 
         SimpleCommandLinePropertySource source = new SimpleCommandLinePropertySource(args);
-        addDefaultProfile(app, source);
+
+        addEnvironmentDetectedProfile(app, source);
 
         Environment env = app.run(args).getEnvironment();
         log.info("Access URLs:\n----------------------------------------------------------\n\t" +
@@ -38,13 +38,18 @@ public class BlackiceincEraApplication {
     }
 
     /**
-     * If no profile has been configured, set by default the "dev" profile.
+     * Detect environment and set proper profile. If nothing is detected set local.
      */
-    private static void addDefaultProfile(SpringApplication app, SimpleCommandLinePropertySource source) {
+    private static void addEnvironmentDetectedProfile(SpringApplication app, SimpleCommandLinePropertySource source) {
         if (!source.containsProperty("spring.profiles.active") &&
                 !System.getenv().containsKey("SPRING_PROFILES_ACTIVE")) {
 
-            app.setAdditionalProfiles(Constants.SPRING_PROFILE_LOCAL);
+            String profile = EnvironmentDetection.detectEnvironmentProfile();
+            log.info("Setting profile : {}", profile);
+            app.setAdditionalProfiles(profile);
+        } else {
+            log.info("No environment detection is made. Outside configuration is made setting SPRING_PROFILES_ACTIVE : {} and spring.profiles.active : {}",
+                    System.getenv().get("SPRING_PROFILES_ACTIVE"), source.getProperty("spring.profiles.active"));
         }
     }
 

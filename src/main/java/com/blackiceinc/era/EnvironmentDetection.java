@@ -8,10 +8,11 @@ import java.net.UnknownHostException;
 
 public class EnvironmentDetection {
 
-    private static final String IP_DEV_ERA = "107.170.230.231";
     private static final String IP_ONSITE = "10.50.143.8";
     private static final String IP_PRODUCTION = "10.60.9.7";
     private static final String IP_RECOVERY = "10.50.10.7";
+
+    private static final String HOST_ERA_BLACKICEINC_COM = "era.blackiceinc.com";
 
     private static final Logger log = LoggerFactory.getLogger(EnvironmentDetection.class);
 
@@ -30,7 +31,7 @@ public class EnvironmentDetection {
                 return "test-local";
             }
 
-            String profile = getProfileByIpAddress(hostAddress);
+            String profile = getProfileByIpAddress(hostName, hostAddress);
 
             log.info("Profile : {}, applies to host address : {}", profile, hostAddress);
             return profile;
@@ -39,24 +40,21 @@ public class EnvironmentDetection {
         }
     }
 
-    private static String getProfileByIpAddress(String hostAddress) {
+    private static String getProfileByIpAddress(String hostName, String hostAddress) {
         String profile;
-        switch (hostAddress) {
-            case IP_DEV_ERA:
-                profile = "dev_era";
-                break;
-            case IP_ONSITE:
-                profile = "onsite";
-                break;
-            case IP_PRODUCTION:
-                profile = "production";
-                break;
-            case IP_RECOVERY:
-                profile = "recovery";
-                break;
-            default:
-                profile = "local";
+
+        if (hostName.equals(HOST_ERA_BLACKICEINC_COM)) {
+            profile = "dev_era";
+        } else if (IP_ONSITE.equals(hostAddress)) {
+            profile = "onsite";
+        } else if (IP_PRODUCTION.equals(hostAddress)) {
+            profile = "production";
+        } else if (IP_RECOVERY.equals(hostAddress)) {
+            profile = "recovery";
+        } else {
+            profile = "local";
         }
+
         return profile;
     }
 

@@ -6,33 +6,33 @@ angular.module('app.services', [])
 		return {
 			formatMoney : function(xx, c, d, t) {
 				var n = xx,
-                    c = isNaN(c = Math.abs(c)) ? 2 : c,
-                    d = d == undefined ? "." : d,
-                    t = t == undefined ? "," : t,
-                    s = n < 0 ? "-" : "",
-                    i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "",
-                    j = (j = i.length) > 3 ? j % 3 : 0;
-                return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) //+ (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+					c = isNaN(c = Math.abs(c)) ? 2 : c,
+					d = d == undefined ? "." : d,
+					t = t == undefined ? "," : t,
+					s = n < 0 ? "-" : "",
+					i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "",
+					j = (j = i.length) > 3 ? j % 3 : 0;
+				return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) //+ (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
 			}
 		}
 	})
 	.filter('truncate', function () {
-        return function (text, length, end) {
-            if (isNaN(length))
-                length = 10;
+		return function (text, length, end) {
+			if (isNaN(length))
+				length = 10;
 
-            if (end === undefined)
-                end = "...";
+			if (end === undefined)
+				end = "...";
 
-            if (text.length <= length || text.length - end.length <= length) {
-                return text;
-            }
-            else {
-                return String(text).substring(0, length-end.length) + end;
-            }
+			if (text.length <= length || text.length - end.length <= length) {
+				return text;
+			}
+			else {
+				return String(text).substring(0, length-end.length) + end;
+			}
 
-        };
-    })
+		};
+	})
 	.service('MessageService', function(){
 		var date = null;
 		return {
@@ -103,36 +103,36 @@ angular.module('app.services', [])
 		return {
 			removeNulls : function(obj) {
 				for (var i in obj)
-				 	if (obj[i] === null || obj[i] === undefined || obj[i]==="")
-				    	delete obj[i];
+					if (obj[i] === null || obj[i] === undefined || obj[i]==="")
+						delete obj[i];
 				return obj;
 			},
 			parseFilterOption : function(data) {
 				for (var i = 0; i < data.directive.length; i++)
-                 	data.directive[i].type = data.directive[i].directiveType.txtDirectiveTypeName;
-                return data;
+					data.directive[i].type = data.directive[i].directiveType.txtDirectiveTypeName;
+				return data;
 			},
 			isEmpty:function(obj) {
-			    for(var prop in obj) {
-			        if(obj.hasOwnProperty(prop))
-			            return false;
-			    }
+				for(var prop in obj) {
+					if(obj.hasOwnProperty(prop))
+						return false;
+				}
 
-			    return true;
+				return true;
 			},
 			serialize: function(obj){
 				var str = [];
 				for(var p in obj)
-				    if (obj.hasOwnProperty(p)) {
-				      str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-				    }
+					if (obj.hasOwnProperty(p)) {
+						str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+					}
 				return str.join("&");
 			},
 			merge : function (obj1,obj2){
-			    var obj3 = {};
-			    for (var attrname in obj1) { obj3[attrname] = obj1[attrname]; }
-			    for (var attrname in obj2) { obj3[attrname] = obj2[attrname]; }
-			    return obj3;
+				var obj3 = {};
+				for (var attrname in obj1) { obj3[attrname] = obj1[attrname]; }
+				for (var attrname in obj2) { obj3[attrname] = obj2[attrname]; }
+				return obj3;
 			}
 
 		};
@@ -189,7 +189,7 @@ angular.module('app.services', [])
 			if (
 				! angular.isObject( response.data ) ||
 				! response.data.message
-				) {
+			) {
 
 				return( $q.reject( "An unknown error occurred." ) );
 			}
@@ -244,20 +244,20 @@ angular.module('app.services', [])
 				return CustomHttp.get('api/runCalculator?' + $.param(params), {});
 			},
 			generateCheck : function(params) {
-			    return CustomHttp.get('api/runCalculator/check', params);
+				return CustomHttp.get('api/runCalculator/check', params);
 			},
 			create : function(data) {
-			    return CustomHttp.post('api/runCalculator', data);
+				return CustomHttp.post('api/runCalculator', data);
 			},
 			remove : function( idArray ) {
-                return CustomHttp.remove('api/runCalculator', idArray);
-            },
-            runCalculation: function(data) {
-                return CustomHttp.post('api/runCalculator/runCalculation', data);
-            },
-            closeCalculation: function(id) {
-                return CustomHttp.post('api/runCalculator/closeCalculation/'+id, {});
-            }
+				return CustomHttp.remove('api/runCalculator', idArray);
+			},
+			runCalculation: function(data) {
+				return CustomHttp.post('api/runCalculator/runCalculation', data);
+			},
+			closeCalculation: function(id) {
+				return CustomHttp.post('api/runCalculator/closeCalculation/'+id, {});
+			}
 		});
 	})
 
@@ -283,7 +283,7 @@ angular.module('app.services', [])
 
 	.service('DataExtractionService', function(CustomHttp){
 		return({
-			
+
 		});
 	})
 
@@ -303,8 +303,8 @@ angular.module('app.services', [])
 				return request;
 			},
 			remove : function( idArray ) {
-          return CustomHttp.remove('api/configuration', idArray);
-      },
+				return CustomHttp.remove('api/configuration', idArray);
+			},
 			download : function( id ) {
 				var request = $http.get('api/configuration/download?id='+id);
 				return request;
@@ -350,14 +350,14 @@ angular.module('app.services', [])
 				return CustomHttp.get('api/user/roles');
 			},
 			create : function(data) {
-			    return CustomHttp.post('api/user', data);
+				return CustomHttp.post('api/user', data);
 			},
 			update : function(data) {
 				return CustomHttp.put('api/user', data);
 			},
 			remove : function( idArray ) {
-          return CustomHttp.remove('api/user', idArray);
-      }
+				return CustomHttp.remove('api/user', idArray);
+			}
 		});
 	})
 
@@ -490,9 +490,17 @@ angular.module('app.services', [])
 				return( $q.reject( 'An unknown error occurred.' ) );
 			}
 
-			return( $q.reject( response.data.message ) );
+			return( $q.reject( response.data ) );
 		}
 		function handleSuccess(response) {
+			// handle redirect 302
+			if (typeof response.data === 'string') {
+				if (response.data.indexOf instanceof Function &&
+					response.data.indexOf('<meta name="description" content="Login page">') != -1) {
+					$window.location.href ="login";
+				}
+			}
+
 			return( response.data );
 		}
 	}]);

@@ -7,7 +7,7 @@
 	<!--<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">-->
 
 	<title> ERA - Enterprise Risk Aggregation </title>
-	<meta name="description" content="">
+	<meta name="description" content="Login page">
 	<meta name="author" content="">
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -114,7 +114,7 @@
 					</div>
 
 					<img src="${contextRoot}/resources/img/ERALogo-1.png" class="pull-right display-image" alt=""
-					style="width: 230px; margin-right: 0px; margin-top: -45px;">
+						 style="width: 230px; margin-right: 0px; margin-top: -45px;">
 
 				</div>
 
@@ -136,14 +136,14 @@
 						<fieldset>
 
 							<%--<section>--%>
-								<%--<label class="label">Domain</label>--%>
-								<%--<label class="select"> <i></i>--%>
-									<%--<select name="domain" >--%>
-										<%--<option value=""> - Select - </option>--%>
-										<%--<option value="north.vib.corp">north.vib.corp</option>--%>
-										<%--<option value="south.vib.corp">south.vib.corp</option>--%>
-									<%--</select>--%>
-									<%--<b class="tooltip tooltip-top-right"><i class="fa fa-user txt-color-teal"></i> Please select domain</b></label>--%>
+							<%--<label class="label">Domain</label>--%>
+							<%--<label class="select"> <i></i>--%>
+							<%--<select name="domain" >--%>
+							<%--<option value=""> - Select - </option>--%>
+							<%--<option value="north.vib.corp">north.vib.corp</option>--%>
+							<%--<option value="south.vib.corp">south.vib.corp</option>--%>
+							<%--</select>--%>
+							<%--<b class="tooltip tooltip-top-right"><i class="fa fa-user txt-color-teal"></i> Please select domain</b></label>--%>
 							<%--</section>--%>
 
 							<section>
@@ -159,16 +159,16 @@
 									<input type="password" name="password">
 									<b class="tooltip tooltip-top-right"><i class="fa fa-lock txt-color-teal"></i> Enter your password</b> </label>
 								<%--<div class="note">--%>
-									<%--<a href="forgotpassword.html">Forgot password?</a>--%>
+								<%--<a href="forgotpassword.html">Forgot password?</a>--%>
 								<%--</div>--%>
 							</section>
 
 							<input id="hiddenURL" type="text" name="urlParam" value="" style="display: none">
 
 							<%--<section>--%>
-								<%--<label class="checkbox">--%>
-									<%--<input type="checkbox" name="remember" checked="">--%>
-									<%--<i></i>Stay signed in</label>--%>
+							<%--<label class="checkbox">--%>
+							<%--<input type="checkbox" name="remember" checked="">--%>
+							<%--<i></i>Stay signed in</label>--%>
 							<%--</section>--%>
 						</fieldset>
 						<footer>

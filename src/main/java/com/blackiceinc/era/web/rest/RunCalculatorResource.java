@@ -155,6 +155,7 @@ public class RunCalculatorResource {
         } catch (Exception ex) {
             log.error("Error executing PL/SQL procedure", ex);
             res.setMessage("Error running calculation!");
+            res.setDescription(ex.getMessage());
             return new ResponseEntity<>(res, HttpStatus.EXPECTATION_FAILED);
         }
 

@@ -1,8 +1,8 @@
 angular.module('ng.run-calculator.controller', [])
     .controller('RunCalculatorController', ['$scope', '$timeout', 'RunCalculatorService', 'RunCalculatorState',
-        'Util', '$routeParams', 'VNotificationService', '$location', 'ConfirmService',
+        'Util', '$routeParams', 'VNotificationService', '$location', 'ConfirmService', '$modal',
         function ($scope, $timeout, RunCalculatorService, RunCalculatorState, Util, $routeParams,
-                  VNotificationService, $location, ConfirmService) {
+                  VNotificationService, $location, ConfirmService, $modal) {
             var CONSTANT_id = 'id';
             var CONSTANT_snapshotDate = 'snapshotDate';
             var CONSTANT_loadJobNbr = 'loadJobNbr';
@@ -111,7 +111,7 @@ angular.module('ng.run-calculator.controller', [])
                             },
                             function (response) {
                                 $scope.loading = false;
-                                ConfirmService.open(response, null, true);
+                                ConfirmService.open(response.message, null, true);
                             });
                     }
                 });
@@ -161,7 +161,7 @@ angular.module('ng.run-calculator.controller', [])
 
                     }, function (response) {
                         $scope.RunCalculator.$saving = false;
-                        ConfirmService.open(response, null, true);
+                        ConfirmService.open(response.message, null, true);
                     });
                 } else {
                     $scope.hideValidityStyle = false;
@@ -176,10 +176,45 @@ angular.module('ng.run-calculator.controller', [])
                 $scope.loading = true;
                 RunCalculatorService.runCalculation(checkedRow).then(function () {
                     $scope.loading = false;
-                    ConfirmService.open("Calculation succesfully run.", null, true);
+                    ConfirmService.open("Calculation successfully run.", null, true);
                 }, function (response) {
                     $scope.loading = false;
-                    ConfirmService.open(response, null, true);
+
+                    var modalInstance = $modal.open({
+                        template:        '<div class="modal-header">' +
+                        '<button type="button" class="close" ng-click="cancel()"  data-dismiss="modal" aria-hidden="true">' +
+                        '<i class="fa fa-times"></i>' +
+                        '</button>' +
+                        '<div class="modal-title "><Strong class = "desc">{{text.title}}</Strong></div>' +
+                        '</div>' +
+                        '<div class="modal-body" style="padding: 10px 15px 10px 15px;">' +
+                        '<a class="btn btn-default btn-xs" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Error details</a>'+
+                        '<div class="collapse" id="collapseExample"><div class="well" style="margin-bottom: 0px; margin-top: 5px;">{{text.description}}</div></div>'+
+                        '</div>' +
+                        '<div class="modal-footer" style="margin-top: 0px;">' +
+                        '<div>'+
+                        '<button type="button" class="btn btn-primary" ng-click="ok()"  aria-hidden="true" style="margin-right:5px;width: 66px;">OK</button> ' +
+                        '<button type="button" ng-hide="isAlert" class="btn btn-default" ng-click="cancel()" aria-hidden="true" >Cancel</button>' +
+                        '</div>' +
+                        '</div>',
+                        controller: 'ModalConfirmCtrl',
+                        size: 'sm',
+                        backdrop: 'static',
+                        resolve: {
+                            text: function () {
+                                return {'title':response.message, 'description':response.description};
+                            },
+                            isAlert: function(){
+                                return true;
+                            }
+                        }
+                    });
+
+                    modalInstance.result.then(function (selectedItem) {
+                        if(onOk) onOk();
+                    }, function () {
+                    });
+
                 });
             };
 

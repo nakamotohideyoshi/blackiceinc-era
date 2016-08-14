@@ -97,7 +97,7 @@ angular.module('ng.account-settings.controller', [])
                             },
                             function (response) {
                                 $scope.loading = false;
-                                ConfirmService.open(response, null, true);
+                                ConfirmService.open(response.message, null, true);
                             });
                     }
 
@@ -182,7 +182,7 @@ angular.module('ng.account-settings.controller', [])
                             },
                             function (response) {
                                 $scope.UserModal.$saving = false;
-                                ConfirmService.open(response, null, true);
+                                ConfirmService.open(response.message, null, true);
                             }
                         );
                     } else {
@@ -201,7 +201,7 @@ angular.module('ng.account-settings.controller', [])
                             },
                             function (response) {
                                 $scope.UserModal.$saving = false;
-                                ConfirmService.open(response, null, true);
+                                ConfirmService.open(response.message, null, true);
                             }
                         );
                     }

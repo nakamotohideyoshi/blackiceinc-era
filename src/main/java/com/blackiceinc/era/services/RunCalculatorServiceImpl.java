@@ -213,12 +213,20 @@ public class RunCalculatorServiceImpl implements RunCalculatorService {
             callableStatement.executeUpdate();
 
             log.info("Procedure CALC_RUN for runCalculator : {} finished in {} ms", runCalculator.toString(), System.currentTimeMillis() - start);
-        }finally {
+        } finally {
             if (callableStatement != null) {
-                callableStatement.close();
+                try {
+                    callableStatement.close();
+                } catch (SQLException e) {
+                    log.error("Error while trying to close statement", e);
+                }
             }
             if (conn != null) {
-                conn.close();
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    log.error("Error while trying to close connection", e);
+                }
             }
         }
     }

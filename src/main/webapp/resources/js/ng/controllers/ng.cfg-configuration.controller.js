@@ -274,7 +274,7 @@ angular.module('ng.cfg-configuration.controller', [])
                             },
                             function (response) {
                                 $scope.loading = false;
-                                ConfirmService.open(response, null, true);
+                                ConfirmService.open(response.message, null, true);
                                 $scope.setBtnsAvailability();
                             });
                     }

@@ -9,13 +9,12 @@ import java.net.UnknownHostException;
 
 public class EnvironmentDetection {
 
-    private static final String IP_ONSITE = "10.50.143.8";
-    private static final String IP_PRODUCTION = "10.60.9.7";
-    private static final String IP_RECOVERY = "10.50.10.7";
-
     private static final String HOST_ERA_BLACKICEINC_COM = "era.blackiceinc.com";
 
     private static final Logger log = LoggerFactory.getLogger(EnvironmentDetection.class);
+    private static final String HOST_DEV_BASEL2_COGNOS = "DEV-BASEL2-COGNOS";
+    private static final String HOST_DC_BASEL2_COGNOS = "DC-BASEL2-COGNOS";
+    private static final String HOST_DR_BASEL2_COGNOS = "DR-BASEL2-COGNOS";
 
     private EnvironmentDetection() {
     }
@@ -32,7 +31,7 @@ public class EnvironmentDetection {
                 return "test-local";
             }
 
-            String profile = getProfileByIpAddress(hostName, hostAddress);
+            String profile = getProfileByIpAddress(hostName);
 
             log.info("Profile : {}, applies to host name : {} and address : {}", profile, hostName, hostAddress);
             return profile;
@@ -41,16 +40,16 @@ public class EnvironmentDetection {
         }
     }
 
-    private static String getProfileByIpAddress(String hostName, String hostAddress) {
+    private static String getProfileByIpAddress(String hostName) {
         String profile;
 
-        if (hostName.equals(HOST_ERA_BLACKICEINC_COM)) {
+        if (hostName.startsWith(HOST_ERA_BLACKICEINC_COM)) {
             profile = Constants.SPRING_PROFILE_DEV_ERA;
-        } else if (IP_ONSITE.equals(hostAddress)) {
+        } else if (hostName.startsWith(HOST_DEV_BASEL2_COGNOS)) {
             profile = Constants.SPRING_PROFILE_ONSITE;
-        } else if (IP_PRODUCTION.equals(hostAddress)) {
+        } else if (hostName.startsWith(HOST_DC_BASEL2_COGNOS)) {
             profile = Constants.SPRING_PROFILE_PRODUCTION;
-        } else if (IP_RECOVERY.equals(hostAddress)) {
+        } else if (hostName.startsWith(HOST_DR_BASEL2_COGNOS)) {
             profile = Constants.SPRING_PROFILE_RECOVERY;
         } else {
             profile = Constants.SPRING_PROFILE_LOCAL;

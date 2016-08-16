@@ -1,5 +1,6 @@
 package com.blackiceinc.era.services.stresstesting;
 
+import com.blackiceinc.era.persistence.erau.DbUtils;
 import com.blackiceinc.era.services.exception.StressTestingException;
 import com.blackiceinc.era.services.stresstesting.model.ExcelMapping;
 import org.apache.poi.hssf.util.CellReference;
@@ -23,7 +24,10 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 @Service
@@ -44,6 +48,14 @@ public class StressTestingService {
     @Autowired
     private Environment env;
 
+    @Autowired
+    private DbUtils dbUtils;
+
+    /**
+     * Applies the mappings and returns the excel document where the configuration is being executed.
+     *
+     * @return XSSFWorkbook
+     */
     public XSSFWorkbook prepareStressTestExcel() {
         XSSFWorkbook workbook = getWorkbook();
 
@@ -116,7 +128,7 @@ public class StressTestingService {
         }
     }
 
-    private Path getStressTestingExcelPath() {
+    public Path getStressTestingExcelPath() {
         URL resource = this.getClass().getResource(STRESS_TESTING_VIB_STRESS_TESTING_XLSX);
         try {
             return Paths.get(resource.toURI());
@@ -132,7 +144,7 @@ public class StressTestingService {
         Statement stmt = null;
         ResultSet resultSet = null;
         try {
-            conn = getConnection();
+            conn = dbUtils.getConnection();
             conn.setAutoCommit(false);
             stmt = conn.createStatement();
             resultSet = stmt.executeQuery(query);
@@ -140,25 +152,12 @@ public class StressTestingService {
                 result = resultSet.getBigDecimal(1);
             }
         } finally {
-            if (resultSet != null) {
-                resultSet.close();
-            }
-            if (stmt != null) {
-                stmt.close();
-            }
-            if (conn != null) {
-                conn.close();
-            }
+            DbUtils.close(resultSet);
+            DbUtils.close(stmt);
+            DbUtils.close(conn);
         }
 
         return result;
-    }
-
-    private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(
-                env.getProperty("jdbc.url"),
-                env.getProperty("jdbc.user"),
-                env.getProperty("jdbc.pass"));
     }
 
 }

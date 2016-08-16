@@ -2,7 +2,7 @@ package com.blackiceinc.era.web.rest;
 
 import com.blackiceinc.era.services.exception.StressTestingException;
 import com.blackiceinc.era.services.stresstesting.StressTestingService;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.util.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 @RestController
@@ -32,8 +32,6 @@ public class StressTestingResource {
         log.debug("Requesting extraction for stress-testing document");
 
         try {
-            XSSFWorkbook xssfWorkbook = stressTestingService.prepareStressTestExcel();
-
             String name = "VIB Stress Testing";
             response.setHeader("Content-Disposition", "attachment;filename=\"" + name + ".xlsm\"");
             response.setContentType("application/vnd.ms-excel.sheet.macroEnabled.12");
@@ -42,11 +40,8 @@ public class StressTestingResource {
             c.setPath("/");
             response.addCookie(c);
 
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            xssfWorkbook.write(baos);
-
             ServletOutputStream outStream = response.getOutputStream();
-            outStream.write(baos.toByteArray());
+            outStream.write(IOUtils.toByteArray(new FileInputStream(stressTestingService.getStressTestingExcelPath().toFile())));
             outStream.close();
             response.flushBuffer();
         } catch (StressTestingException e) {

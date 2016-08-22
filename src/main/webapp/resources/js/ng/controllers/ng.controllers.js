@@ -67,6 +67,7 @@ angular.module('app.controllers', ['ui.bootstrap'])
 		$scope.userRole = USER_ROLE;
 		$scope.ibmcognosUrl = IBMCOGNOS_URL;
 		$scope.contextRoot = CONTEXT_ROOT;
+		$scope.version = VERSION;
 
 		$scope.downloadStressTesting = function () {
 			var $preparingFileModal = $("#preparing-file-modal");

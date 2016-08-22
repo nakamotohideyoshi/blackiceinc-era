@@ -41,6 +41,9 @@ public class HomeController {
     @Value("${era.app.config.enabled:false}")
     private String eraAppConfigEnabled;
 
+    @Value("${era.app.version:0.0.0-SNAPSHOT}")
+    private String version;
+
     @Autowired
     private ConfigAppRepository configAppRepository;
 
@@ -49,6 +52,7 @@ public class HomeController {
         String userRole = SecurityUtils.getUserRole();
         String currentLogin = SecurityUtils.getCurrentLogin();
 
+        model.addAttribute("version", version);
         if (userRole != null) {
             Date date = new Date();
             DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
@@ -98,6 +102,7 @@ public class HomeController {
         if (logout != null) {
             model.addObject("msg", "You've been logged out successfully.");
         }
+        model.addObject("version", version);
         model.setViewName("login");
 
         return model;

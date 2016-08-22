@@ -110,7 +110,7 @@
 
 					<div class="pull-left login-desc-box-l">
 						<h4 class="paragraph-header">Welcome to the Enterprise Risk Aggregation (ERA) the new generation in enterprise risk data solutions.</h4>
-
+						<p style="color: lightgrey">ver. ${version}</p>
 					</div>
 
 					<img src="${contextRoot}/resources/img/ERALogo-1.png" class="pull-right display-image" alt=""

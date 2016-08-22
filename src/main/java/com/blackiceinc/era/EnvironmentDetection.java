@@ -9,12 +9,12 @@ import java.net.UnknownHostException;
 
 public class EnvironmentDetection {
 
-    private static final String HOST_ERA_BLACKICEINC_COM = "era.blackiceinc.com";
-
     private static final Logger log = LoggerFactory.getLogger(EnvironmentDetection.class);
-    private static final String HOST_DEV_BASEL2_COGNOS = "DEV-BASEL2-COGNOS";
-    private static final String HOST_DC_BASEL2_COGNOS = "DC-BASEL2-COGNOS";
-    private static final String HOST_DR_BASEL2_COGNOS = "DR-BASEL2-COGNOS";
+
+    private static final String HOST_ERA_BLACKICEINC_COM = "era.blackiceinc.com";
+    private static final String HOST_DEV_BASEL2_COGNOS = "dev-basel2-cognos";
+    private static final String HOST_DC_BASEL2_COGNOS = "dc-basel2-cognos";
+    private static final String HOST_DR_BASEL2_COGNOS = "dr-basel2-cognos";
 
     private EnvironmentDetection() {
     }
@@ -43,14 +43,14 @@ public class EnvironmentDetection {
     private static String getProfileByIpAddress(String hostName) {
         String profile;
 
-        String hostNameUpper = hostName.toUpperCase();
-        if (hostNameUpper.startsWith(HOST_ERA_BLACKICEINC_COM)) {
+        String hostNameLower = hostName.toLowerCase();
+        if (hostNameLower.startsWith(HOST_ERA_BLACKICEINC_COM.toLowerCase())) {
             profile = Constants.SPRING_PROFILE_DEV_ERA;
-        } else if (hostNameUpper.startsWith(HOST_DEV_BASEL2_COGNOS)) {
+        } else if (hostNameLower.startsWith(HOST_DEV_BASEL2_COGNOS.toLowerCase())) {
             profile = Constants.SPRING_PROFILE_ONSITE;
-        } else if (hostNameUpper.startsWith(HOST_DC_BASEL2_COGNOS)) {
+        } else if (hostNameLower.startsWith(HOST_DC_BASEL2_COGNOS.toLowerCase())) {
             profile = Constants.SPRING_PROFILE_PRODUCTION;
-        } else if (hostNameUpper.startsWith(HOST_DR_BASEL2_COGNOS)) {
+        } else if (hostNameLower.startsWith(HOST_DR_BASEL2_COGNOS.toLowerCase())) {
             profile = Constants.SPRING_PROFILE_RECOVERY;
         } else {
             profile = Constants.SPRING_PROFILE_LOCAL;
